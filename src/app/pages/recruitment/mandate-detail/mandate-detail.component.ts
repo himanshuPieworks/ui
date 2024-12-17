@@ -1066,7 +1066,7 @@ export class MandateDetailComponent {
     });
   }
 
-  private _Pyramid(colors: any) {
+  public _Pyramid(colors: any) {
     colors = this.getChartColorsArray(colors);
     var tempData: any = [];
     var tempLabels: any = [];
