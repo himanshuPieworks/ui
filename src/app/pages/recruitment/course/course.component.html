@@ -1,0 +1,638 @@
+<app-breadcrumbs title="Knowledge Master" [breadcrumbItems]="breadCrumbItems">
+</app-breadcrumbs>
+<br />
+
+<!-- tab for adding  start -->
+<div class="row">
+  <div class="col-lg">
+    <div class="card" style="background-image: url('assets/images/background.png')">
+      <div class="card-body">
+        <div class="row align-items-center gy-3">
+          <div class="col-6"></div>
+          <!--end col-->
+          <div class="col-auto ms-auto">
+            <!-- button for popup  -->
+            <button
+              class="btn btn-primary me-1 rounded-pill default-btn-width"
+              (click)="showAddCourse()"
+            >
+              <i class="bi bi-plus align-baseline fs-2xl"></i></button
+            >&nbsp;
+          </div>
+          <!--end col-->
+        </div>
+        <!--end row-->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- tab for adding and copy link and filter end -->
+
+<!-- showing the courses -->
+<div class="row">
+  <div
+    *ngFor="let course of allCourses; let i = index"
+    class="col-xxl-3 col-lg-3 col-md-4 p-2"
+  >
+    <div
+      class="card real-estate-grid-widgets card-animate p-3"
+      style="height: 100%"
+      (click)="clickedOnCourse(course)"
+    >
+      <div class="p-1">
+        <div class="row gy-4 d-flex">
+          <div class="col-xl-10 col-8">
+            <div class="text-center vertical-align">
+              <h4>{{ course?.title ? course?.title : "N/A" }}</h4>
+            </div>
+          </div>
+          <div class="col-xl-2 col-4 text-end">
+            <div class="relative text-end">
+              <div
+                dropdown
+                class="dropdown dropdown-real-estate absolute top-0 right-0"
+              >
+                <i
+                  (click)="selectedCourse = course"
+                  dropdownToggle
+                  class="bi bi-three-dots-vertical text-dark fs-2xl"
+                ></i>
+
+                <ul
+                  *bsDropdownMenu
+                  class="dropdown-menu dropdown-menu-end mb-0"
+                >
+                  <li *ngFor="let item of menuOptions">
+                    <a
+                      (click)="handleMenu(item)"
+                      class="dropdown-item edit-list"
+                      href="javascript:void(0);"
+                      style="font-size: 12px"
+                      >{{ item }}</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <hr class="mb-1 mt-1" />
+        </div>
+      </div>
+      <carousel
+        [noWrap]="true"
+        [interval]="0"
+        class="carousel carousel-dark slide"
+      >
+        <div class="carousel-inner">
+          <slide class="carousel-item active" data-bs-interval="10000">
+            <div class="">
+              <ul
+                class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+              >
+                <li tooltip="" style="width: 100%">
+                  <div class="d-flex justify-content-between">
+                    <div style="width: 6%" *ngIf="false">
+                      <i
+                        class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                        style="font-size: 15px"
+                      ></i>
+                    </div>
+                    <div style="width: 47%">
+                      <span class="text-muted">Status</span>
+                      <p class="mb-0 text-dark">
+                        {{ course?.status ? course?.status : "N/A" }}
+                      </p>
+                    </div>
+                    <div style="width: 47%; text-align: right">
+                      <span class="text-muted">Creation Date</span>
+                      <p class="mb-0 text-dark">
+                        {{
+                          course.creationDate
+                            ? commonService.changeMysqlToNormalDate(
+                                course.creationDate
+                              )
+                            : "N/A"
+                        }}
+                      </p>
+                    </div>
+                  </div>
+                </li>
+                <li tooltip="" style="width: 100%">
+                  <div class="d-flex justify-content-between">
+                    <div style="width: 6%" *ngIf="false">
+                      <i
+                        class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                        style="font-size: 15px"
+                      ></i>
+                    </div>
+                    <div style="width: 47%">
+                      <span class="text-muted">Is Mandatory</span>
+                      <p class="mb-0 text-dark">
+                        {{ course.mandatory ? "Yes" : "N/A" }}
+                      </p>
+                    </div>
+                    <div style="width: 47%; text-align: right">
+                      <span class="text-muted">Complete Within</span>
+                      <p class="mb-0 text-dark">
+                        {{
+                          course.completeWithin ? course.completeWithin : "N/A"
+                        }}
+                      </p>
+                    </div>
+                  </div>
+                </li>
+                <li tooltip="" style="width: 100%">
+                    <div class="d-flex justify-content-between">
+                      <div style="width: 6%" *ngIf="false">
+                        <i
+                          class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                          style="font-size: 15px"
+                        ></i>
+                      </div>
+                      <div style="width: 47%">
+                        <span class="text-muted">Enrolled</span>
+                        <p class=" mb-0 text-dark">
+                          {{
+                            course.enrolledCount
+                              ? course.enrolledCount
+                              : "0"
+                          }}
+                        </p>
+                      </div>
+                      <div style="width: 47%; text-align: right">
+                        <span class="text-muted">In Progress</span>
+                        <p class=" mb-0 text-dark">
+                          {{ course.inProgressCount ? course.inProgressCount : "0" }}
+                        </p>
+                      </div>
+                    </div>
+                  </li>
+                <li tooltip="" style="width: 100%">
+                    <div class="d-flex justify-content-between">
+                      <div style="width: 6%" *ngIf="false">
+                        <i
+                          class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                          style="font-size: 15px"
+                        ></i>
+                      </div>
+                      <div style="width: 47%">
+                        <span class="text-muted">Completed</span>
+                        <p class=" mb-0 text-dark">
+                          {{
+                            course.completedCount
+                              ? course.completedCount
+                              : "0"
+                          }}
+                        </p>
+                      </div>
+                      <!-- <div style="width: 47%; text-align: right">
+                        <span class="text-muted">In Progress</span>
+                        <p class=" mb-0 text-dark">
+                          {{ course.inProgressCount ? course.inProgressCount : "0" }}
+                        </p>
+                      </div> -->
+                    </div>
+                  </li>
+              </ul>
+            </div>
+          </slide>
+        </div>
+      </carousel>
+    </div>
+  </div>
+</div>
+<!-- Ending of courses -->
+
+<!--  New Course  from here pop up is calling  -->
+<div
+  bsModal
+  #addCourse="bs-modal"
+  class="modal bs-example-modal-lg fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        *ngIf="true"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <p class="modal-title" id="myLargeModalLabel">Add Course</p>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          (click)="addCourse.hide()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="model-body">
+        <br />
+        <ng-stepper
+          #cdkStepper
+          [linear]="true"
+          class="cdksteppercontent nav nav-pills progress-bar-tab custom-nav"
+        >
+          <cdk-step [optional]="false">
+            <ng-template cdkStepLabel>
+              <button class="step-bullet border-0" style="z-index: 10">
+                1
+              </button>
+            </ng-template>
+            <hr
+              class="w-2 absolute top-0"
+              style="
+                margin-top: -60px;
+                width: 35%;
+                text-align: center;
+                margin-left: 18%;
+              "
+            />
+
+            <div>
+              <div class="mb-3">
+                <label for="courseName" class="form-label">Course Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="courseName"
+                  id="courseName"
+                  placeholder="Course Name"
+                  [(ngModel)]="payload.title"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="description"
+                  id="description"
+                  placeholder="Description"
+                  [(ngModel)]="payload.description"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label for="mandatory" class="form-label align-middle"
+                  >Mandatory</label
+                >
+                <span class="align-middle mx-2">
+                  <input
+                    type="checkbox"
+                    name="mandatory"
+                    id="mandatory"
+                    placeholder="mandatory"
+                    [(ngModel)]="payload.mandatory"
+                    (change)="toggleMandatory()"
+                  />
+                </span>
+              </div>
+
+              <div class="mb-3" *ngIf="mandatory">
+                <label for="completedWithin" class="form-label"
+                  >Complete Within(Day's)</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  name="completedWithin"
+                  id="completedWithin"
+                  placeholder="Day's to complete"
+                  [(ngModel)]="payload.completeWithin"
+                />
+              </div>
+            </div>
+            <br />
+            <div class="text-end">
+              <button
+                type="button"
+                class="btn btn-success btn-label right ms-auto nexttab nexttab"
+                data-nexttab="pills-info-desc-tab"
+                cdkStepperNext
+              >
+                <i
+                  class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
+                ></i
+                >Next
+              </button>
+            </div>
+          </cdk-step>
+
+          <cdk-step [optional]="false">
+            <ng-template cdkStepLabel>
+              <button class="step-bullet border-0" style="z-index: 10">
+                2
+              </button>
+            </ng-template>
+            <hr
+              class="w-2 absolute top-0"
+              style="
+                margin-top: -60px;
+                width: 35%;
+                text-align: center;
+                margin-left: 18%;
+              "
+            />
+            <br />
+            <!-- for course material -->
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-xl-6">
+                    <div class="mb-3">
+                      <label for="courseMaterialName" class="form-label"
+                        >Course Material Name</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="courseMaterialName"
+                        id="courseMaterialName"
+                        placeholder="Course Name"
+                        [(ngModel)]="courseMaterial.materialTitle"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-xl-6">
+                    <div class="mb-3">
+                      <label for="type" class="form-label"
+                        >Course Material Type</label
+                      >
+                      <ng-select
+                        [items]="type"
+                        [multiple]="false"
+                        bindLabel="name"
+                        placeholder="Course Type *"
+                        class="form-control"
+                        name="type"
+                        [(ngModel)]="courseMaterial.materialType"
+                        [clearable]="false"
+                        style="padding: 0"
+                      >
+                      </ng-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xl-6">
+                    <div class="mb-3">
+                      <label for="courseMaterialDescription" class="form-label"
+                        >Course Description</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="courseMaterialDescription"
+                        id="courseMaterialDescription"
+                        placeholder="Course Description"
+                        [(ngModel)]="courseMaterial.materialDescription"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-xl-6">
+                    <div class="mb-3">
+                      <label for="courseMaterialLink" class="form-label"
+                        >Course Link</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="courseMaterialLink"
+                        id="courseMaterialLink"
+                        placeholder="Course Link"
+                        [(ngModel)]="courseMaterial.materialLink"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xl-6">
+                    <div class="mb-3">
+                      <label for="courseMaterialDuration" class="form-label"
+                        >Course Duration(in Minutes)</label
+                      >
+                      <ng-select
+                        [items]="duration"
+                        [multiple]="false"
+                        bindLabel="name"
+                        placeholder="Course Duration in Minutes *"
+                        class="form-control"
+                        name="type"
+                        [(ngModel)]="courseMaterial.materialDuration"
+                        [clearable]="false"
+                        style="padding: 0"
+                      >
+                      </ng-select>
+                      <!-- <input
+                        type="text"
+                        class="form-control"
+                        name="courseMaterialDuration"
+                        id="courseMaterialDuration"
+                        placeholder="Course Timing 1:30 Hours, 30 Minutes"
+                        [(ngModel)]="courseMaterial.materialDuration"
+                      /> -->
+                    </div>
+                  </div>
+                  <div class="col-xl-6">
+                    <br />
+                    <button
+                      type="submit"
+                      class="btn btn-success mt-1"
+                      (click)="addCourseMaterial()"
+                    >
+                      + Add
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <br />
+              <ul>
+                <li *ngFor="let c of courseMaterialArray">
+                  <i class="icofont-hand-drawn-right"></i
+                  >{{ c?.materialTitle }} &nbsp;&nbsp;&nbsp;<a
+                    (click)="removeCourseMaterial(c)"
+                    href="javascript:void(0)"
+                    ><i class="bi bi-trash" style="font-size: 17px"></i
+                  ></a>
+                </li>
+              </ul>
+            </div>
+            <br />
+            <div class="text-end">
+              <button
+                type="button"
+                class="btn btn-success btn-label right ms-auto nexttab nexttab"
+                data-nexttab="pills-info-desc-tab"
+                [disabled]="disabledBtn"
+                cdkStepperNext
+                (click)="saveCourse()"
+              >
+                <i
+                  class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
+                ></i
+                >Save
+              </button>
+            </div>
+          </cdk-step>
+        </ng-stepper>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- status update -->
+<div
+  bsModal
+  #courseStatusModal="bs-modal"
+  class="modal bs-example-modal-md fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        *ngIf="true"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <p class="modal-title" id="myLargeModalLabel"></p>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          (click)="courseStatusModal.hide()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center pt-3 pb-4 mb-1">
+          <h5>Update Status</h5>
+        </div>
+        <div class="w-50 text-center mx-auto">
+          <ng-select
+            [items]="courseStatus"
+            [multiple]="false"
+            bindLabel="name"
+            class="form-control"
+            placeholder="Status"
+            [(ngModel)]="selectedCourse.status"
+            [clearable]="false"
+            style="padding: 0"
+          ></ng-select>
+        </div>
+
+        <br />
+        <div class="text-center">
+          <button
+            type="submit"
+            class="btn btn-success"
+            (click)="updateCourse()"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- update the Course -->
+<div
+  bsModal
+  #courseUpdateModal="bs-modal"
+  class="modal bs-example-modal-md fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        *ngIf="true"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <p class="modal-title" id="myLargeModalLabel"></p>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          aria-label="Close"
+          (click)="courseUpdateModal.hide()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center pt-3 pb-4 mb-1">
+          <h5>Update Course</h5>
+        </div>
+        <div>
+          <div class="mb-3">
+            <label for="courseName" class="form-label">Course Name</label>
+            <input
+              type="text"
+              class="form-control"
+              name="courseName"
+              id="courseName"
+              placeholder="Course Name"
+              [(ngModel)]="selectedCourse.title"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <input
+              type="text"
+              class="form-control"
+              name="description"
+              id="description"
+              placeholder="Description"
+              [(ngModel)]="selectedCourse.description"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="mandatory" class="form-label align-middle"
+              >Mandatory</label
+            >
+            <span class="align-middle mx-2">
+              <input
+                type="checkbox"
+                name="mandatory"
+                id="mandatory"
+                placeholder="mandatory"
+                [(ngModel)]="selectedCourse.mandatory"
+                (change)="toggleMandatory()"
+              />
+            </span>
+          </div>
+
+          <div class="mb-3" *ngIf="mandatory">
+            <label for="completedWithin" class="form-label"
+              >Complete Within(Day's)</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              name="completedWithin"
+              id="completedWithin"
+              placeholder="Day's to complete"
+              [(ngModel)]="selectedCourse.completeWithin"
+            />
+          </div>
+        </div>
+
+        <br />
+        <div class="text-center">
+          <button
+            type="submit"
+            class="btn btn-success"
+            (click)="updateCourse()"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

@@ -1,0 +1,24 @@
+<!-- Term and Condition  -->
+<section class="py-5">
+  <div class="card mx-auto" style="width: 80%">
+    <div class="card-body text-center">
+      <div class="d-flex justify-content-between mb-1">
+        <button class="btn btn-outline-dark" (click)="backToRegister()">
+          <i class="bi bi-arrow-left"></i> Back
+        </button>
+        <h4>Terms & Conditions</h4>
+       
+      </div>
+      <!-- <img src="assets/images/pie-works.svg" alt="" style="width: 80%" /> -->
+
+      <div class="text-center">
+        <object
+          type="application/pdf"
+          [attr.data]="contractUrl | safe"
+          height="600px"
+          width="100%"
+        ></object>
+      </div>
+    </div>
+  </div>
+</section>

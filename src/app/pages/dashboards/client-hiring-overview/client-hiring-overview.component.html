@@ -1,0 +1,265 @@
+<div class="row">
+  <!-- Client Hiring Overview -->
+  <div class="col-xl-9">
+    <div class="card">
+      <div class="card-header">
+        <div class="d-flex justify-content-between gap-2">
+          <div class="align-self-center flex-grow-1 bd-highlight">
+            <h4>Hiring Overview</h4>
+          </div>
+
+          <div class="align-self-center">
+            <button
+              class="btn btn-primary rounded-pill"
+              (click)="rsppModalShow()"
+            >
+              Create JD
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-borderless table-fixed" id="StoreData">
+            <thead style="border: 0 !important">
+              <tr>
+                <th class="text-center"></th>
+                <th class="text-center">New</th>
+                <th class="text-center">Exploratory Call/Test</th>
+                <th class="text-center">Interview</th>
+                <th class="text-center">Offer</th>
+                <th class="text-center">Total Candidates</th>
+              </tr>
+            </thead>
+            <tbody
+              style="border: 0 !important"
+              *ngFor="let hiring of hiringOverview"
+            >
+              <tr>
+                <!-- client Role and Batch -->
+                <th style="max-width: 100px" class="border-0 p-1">
+                  <p class="m-0 clickable" tooltip="{{ hiring.roleName }}">
+                    {{ truncateString(hiring.roleName, 16) }}
+                  </p>
+                  <p class="text-muted m-0">
+                    {{ hiring.clientName }}
+                  </p>
+                  <p class="text-muted m-0" style="font-size: 10px">
+                    Batches - {{ hiring.batches }}
+                  </p>
+                  <p class="text-muted m-0" style="font-size: 10px">
+                    {{ hiring.aging }} days old
+                  </p>
+                </th>
+                <!-- New or S2c for client -->
+                <td
+                  [ngStyle]="{
+                    'background-color':
+                      hiring.offers > 0 ||
+                      hiring.intrv > 0 ||
+                      hiring.exploratoryCall > 0 ||
+                      hiring.new > 0
+                        ? hiring.bgColor
+                        : 'initial'
+                  }"
+                  class="border-0 align-middle rounded-start-pill text-center mb-0 mt-o py-0 px-2"
+                  style="height: 30px"
+                  [ngClass]="{
+                    'rounded-end-pill': !(
+                      hiring.offers > 0 ||
+                      hiring.intrv > 0 ||
+                      hiring.exploratoryCall > 0
+                    )
+                  }"
+                >
+                  <div
+                    (click)="navigateToTracker(hiring.reqId, 'new', '6')"
+                    *ngIf="hiring.new > 0"
+                    [ngStyle]="{
+                      'background-color': !(
+                        hiring.offers > 0 ||
+                        hiring.intrv > 0 ||
+                        hiring.exploratoryCall > 0
+                      )
+                        ? hiring.color
+                        : 'initial',
+                      color: !(
+                        hiring.offers > 0 ||
+                        hiring.intrv > 0 ||
+                        hiring.exploratoryCall > 0
+                      )
+                        ? 'white'
+                        : hiring.color
+                    }"
+                    class="rounded-pill p-2 mb-0 align-middle text-center clickable"
+                  >
+                    {{
+                      hiring.new === 1
+                        ? hiring.new + " Candidate"
+                        : hiring.new + " Candidates"
+                    }}
+                  </div>
+                </td>
+                <!-- Exploratory Call/Test stage of candidate -->
+                <td
+                  [ngStyle]="{
+                    'background-color':
+                      hiring.offers > 0 ||
+                      hiring.intrv > 0 ||
+                      hiring.exploratoryCall > 0
+                        ? hiring.bgColor
+                        : 'initial'
+                  }"
+                  class="border-0 align-middle text-center py-0 px-2"
+                  [ngClass]="{
+                    'rounded-end-pill': !(hiring.offers > 0 || hiring.intrv > 0)
+                  }"
+                >
+                  <div
+                    (click)="
+                      navigateToTracker(hiring.reqId, 'exploratoryCall', '19')
+                    "
+                    *ngIf="hiring.exploratoryCall > 0"
+                    class="rounded-pill p-2 mb-0 align-middle text-center clickable"
+                    [ngStyle]="{
+                      'background-color': !(
+                        hiring.offers > 0 || hiring.intrv > 0
+                      )
+                        ? hiring.color
+                        : 'initial',
+                      color: !(hiring.offers > 0 || hiring.intrv > 0)
+                        ? 'white'
+                        : hiring.color
+                    }"
+                  >
+                    {{
+                      hiring.exploratoryCall === 1
+                        ? hiring.exploratoryCall + " Candidate"
+                        : hiring.exploratoryCall + " Candidates"
+                    }}
+                  </div>
+                </td>
+                <!-- Interview stage of candidate -->
+                <td
+                  [ngStyle]="{
+                    'background-color':
+                      hiring.offers > 0 || hiring.intrv > 0
+                        ? hiring.bgColor
+                        : 'initial'
+                  }"
+                  class="border-0 align-middle text-center py-0 px-2"
+                  [ngClass]="{ 'rounded-end-pill': !(hiring.offers > 0) }"
+                >
+                  <div
+                    (click)="navigateToTracker(hiring.reqId, 'intrv', '8-9')"
+                    *ngIf="hiring.intrv > 0"
+                    [ngStyle]="{
+                      'background-color': !(hiring.offers > 0)
+                        ? hiring.color
+                        : 'initial',
+                      color: !(hiring.offers > 0) ? 'white' : hiring.color
+                    }"
+                    class="rounded-pill p-2 mb-0 align-middle text-center clickable"
+                  >
+                    {{
+                      hiring.intrv === 1
+                        ? hiring.intrv + " Candidate"
+                        : hiring.intrv + " Candidates"
+                    }}
+                  </div>
+                </td>
+                <!-- Offered Candidate -->
+                <td
+                  [ngStyle]="{
+                    'background-color':
+                      hiring.offers > 0 ? hiring.bgColor : 'initial'
+                  }"
+                  class="border-0 align-middle text-center rounded-end-pill py-0 px-2"
+                >
+                  <div
+                    (click)="
+                      navigateToTracker(hiring.reqId, 'offers', '10-13-23-24')
+                    "
+                    *ngIf="hiring.offers > 0"
+                    [ngStyle]="{
+                      'background-color':
+                        hiring.offers > 0 ? hiring.color : 'initial',
+                      color: hiring.offers > 0 ? 'white' : hiring.color
+                    }"
+                    class="rounded-pill p-2 mb-0 align-middle text-center clickable"
+                  >
+                    {{
+                      hiring.offers === 1
+                        ? hiring.offers + " Candidate"
+                        : hiring.offers + " Candidates"
+                    }}
+                  </div>
+                </td>
+                <!-- Total candidate sent -->
+                <td
+                  [ngStyle]="{
+                    'background-color':
+                      hiring.total > 0 ? hiring.bgColor : 'initial'
+                  }"
+                  class="border-0 align-middle text-center rounded-pill py-0 px-2 ms-2"
+                >
+                  <div
+                    (click)="navigateToTracker(hiring.reqId, 'total', '')"
+                    *ngIf="hiring.total > 0"
+                    [ngStyle]="{
+                      'background-color':
+                        hiring.total > 0 ? hiring.color : 'initial',
+                      color: hiring.total > 0 ? 'white' : hiring.color
+                    }"
+                    class="rounded-pill p-2 mb-0 align-middle text-center clickable"
+                  >
+                    {{
+                      hiring.total === 1
+                        ? hiring.total + " Candidate"
+                        : hiring.total + " Candidates"
+                    }}
+                  </div>
+                </td>
+              </tr>
+              <br />
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Actionable -->
+  <div class="col-xl-3">
+    <app-client-side-bar></app-client-side-bar>
+  </div>
+</div>
+<!-- from here you get the rspp component called  -->
+<div
+  bsModal
+  #addModal="bs-modal"
+  class="modal bs-example-modal-lg fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" *ngIf="true">
+        <h5 class="modal-title" id="myLargeModalLabel"></h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="addModal.hide()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <app-client-rspp #apprspp [parentObj]="thisObj"></app-client-rspp>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+
+<app-rspp #apprspp [parentObj]="thisObj"></app-rspp>

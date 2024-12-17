@@ -1,0 +1,42 @@
+<br>
+<div class="row" style='height: 50px;margin-top: 10px'>
+    <div class="col-lg-9"style="text-align: left;">
+
+    </div>
+    <div class="col-lg-2"style="text-align: right;">
+        {{welcome}}
+    </div>
+</div>
+<div class="card" style="background-image: url('assets/images/Left.png')">
+    <h1 class="text-center">Building career around your <span>life-goals...</span></h1>
+    <p class="text-center"><i>We engage with top talents in the country to drive career growth</i></p>   
+    <div class="banner-form-area" [hidden]="message || message.length>0">
+        <form>
+            <div class="row" >
+                <div class="col-lg-12"style="text-align: center;">
+                    How likely are you to refer Pieworks to your family, friends, acquaintances?<br>
+                </div><br><br>
+                <div class="col-lg-12"style="text-align: center;">
+                    <!--<mat-radio-group aria-label="Select an option" [(ngModel)]="selectedNps">-->
+                    <input type="radio" name="radio" value="1" (click)="selectedNps=1">1&nbsp;
+                    <input type="radio" name="radio" value="2" (click)="selectedNps=2">2&nbsp;
+                    <input type="radio" name="radio" value="3" (click)="selectedNps=3">3&nbsp;
+                    <input type="radio" name="radio" value="4" (click)="selectedNps=4">4&nbsp;
+                    <input type="radio" name="radio" value="5" (click)="selectedNps=5">5&nbsp;
+                    <input type="radio" name="radio" value="6" (click)="selectedNps=6">6&nbsp;
+                    <input type="radio" name="radio" value="7" (click)="selectedNps=7">7&nbsp;
+                    <input type="radio" name="radio" value="8" (click)="selectedNps=8">8&nbsp;
+                    <input type="radio" name="radio" value="9" (click)="selectedNps=9">9&nbsp;
+                    <input type="radio" name="radio" value="10" (click)="selectedNps=10">10&nbsp;
+                </div>
+            </div><br><!-- comment --><div class="row" >
+                <div class="col-lg-12 text-center">
+                    <button type="submit" class="btn btn-info text-center" (click)="submit()">Submit</button>
+                </div>
+            </div>
+        </form>                            
+    </div>
+    <br>
+    <h2 style="color:white" [hidden]="!message || message.length===0">{{message}}</h2>
+</div>
+

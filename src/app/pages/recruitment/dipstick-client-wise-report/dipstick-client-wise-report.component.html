@@ -1,0 +1,533 @@
+<div *ngIf="myData">
+  <div class="text-end">
+    <button type="button" class="btn btn-primary" (click)="downloadPDF()">
+      PDF
+    </button>
+  </div>
+  <div class="card" id="content-to-convert">
+    <div class="card-header">
+      <div class="d-flex justify-content-between">
+        <img src="assets/images/logo.png" alt="" srcset="" width="250px" />
+        <div class="text-end">
+          <i
+            ><a
+              style="color: #3fd6ad"
+              href="https://www.pieworks.in/"
+              target="_blank"
+              >pieworks.in</a
+            ><br /><span style="color: rgb(163, 162, 162)"
+              >Wework Galaxy, 43 Residency Rd,<br />
+              Ashok Nagar Bengaluru Karnataka</span
+            ></i
+          >
+        </div>
+      </div>
+    </div>
+    <div class="px-3">
+      <div class="card-body mt-5">
+        <div class="text-center">
+          <h4>
+            Candidate <span style="color: #3fd6ad">30 Days</span> pulse Check
+          </h4>
+        </div>
+
+        <div class="row justify-content-between mt-5">
+          <div class="col-xl-4 text-center">
+            <div class="">
+              <p class="mb-0">
+                {{ myData?.clientName  }}
+              </p>
+              <p class="mb-0 text-sm-center"></p>
+            </div>
+          </div>
+          <div class="col-xl-4 text-center">
+            <!-- {{ myData?.client?.name }} -->
+          </div>
+          <div class="col-xl-4 text-center">
+            Overall Score -
+            {{ myData?.overAllScore }}%
+          </div>
+        </div>
+        <br />
+        <!-- Onboarding experience  -->
+        <section>
+          <div class="row mt-3">
+            <div class="col-xl-4">
+              <h5>Onboarding experience</h5>
+              <p class="text-center fs-lg mt-4 mb-0">Average score</p>
+              <p class="text-center fs-lg">
+                {{ myData?.section1Avg }}
+              </p>
+            </div>
+            <div class="col-xl-4">
+              <!-- graph label  -->
+              <div class="d-none d-lg-block">
+                <br />
+                <div class="position-relative">
+                  <p class="text-end mb-1">Onboarding materials</p>
+                </div>
+                <br />
+                <div class="position-relative">
+                  <p class="text-end mb-1">Overall planning of onboarding</p>
+                </div>
+                <br />
+                <div class="position-relative">
+                  <p class="text-end mb-0">
+                    Communication of org culture and values
+                  </p>
+                </div>
+                <br />
+              </div>
+            </div>
+            <div class="col-xl-4">
+              <div class="border-start border-bottom border-dark border-3">
+                <br />
+                <div class="position-relative" style="width: 92%">
+                  <div
+                    class="position-absolute"
+                    style="
+                      height: 40px;
+                      background: #595959;
+                      width: 7px;
+
+                      bottom: -7px;
+                    "
+                    [ngStyle]="getStyle(myData?.section1Q1Avg)"
+                  ></div>
+                  <div class="d-flex">
+                    <div
+                      class="w-100"
+                      style="height: 25px; background: #cc0000"
+                    ></div>
+                    <div
+                      class="w-100"
+                      style="height: 25px; background: #ffbf00"
+                    ></div>
+                    <div
+                      class="w-100"
+                      style="height: 25px; background: #6aa84f"
+                    ></div>
+                  </div>
+                </div>
+                <br />
+                <div class="position-relative" style="width: 92%">
+                  <div
+                    class="position-absolute"
+                    style="
+                      height: 40px;
+                      background: #595959;
+                      width: 7px;
+
+                      bottom: -7px;
+                    "
+                    [ngStyle]="getStyle(myData?.section1Q2Avg)"
+                  ></div>
+                  <div class="d-flex">
+                    <div
+                      class="w-100"
+                      style="height: 25px; background: #cc0000"
+                    ></div>
+                    <div
+                      class="w-100"
+                      style="height: 25px; background: #ffbf00"
+                    ></div>
+                    <div
+                      class="w-100"
+                      style="height: 25px; background: #6aa84f"
+                    ></div>
+                  </div>
+                </div>
+                <br />
+                <div class="position-relative" style="width: 92%">
+                  <div
+                    class="position-absolute"
+                    style="
+                      height: 40px;
+                      background: #595959;
+                      width: 7px;
+
+                      bottom: -7px;
+                    "
+                    [ngStyle]="getStyle(myData?.section1Q3Avg)"
+                  ></div>
+                  <div class="d-flex">
+                    <div
+                      class="w-100"
+                      style="height: 25px; background: #cc0000"
+                    ></div>
+                    <div
+                      class="w-100"
+                      style="height: 25px; background: #ffbf00"
+                    ></div>
+                    <div
+                      class="w-100"
+                      style="height: 25px; background: #6aa84f"
+                    ></div>
+                  </div>
+                </div>
+                <br />
+              </div>
+              <!-- graph number label -->
+              <div>
+                <div class="d-flex justify-content-between" style="width: 92%">
+                  <p>0</p>
+                  <p class="text-end">1</p>
+                  <p class="text-end">2</p>
+                  <p class="text-end">3</p>
+
+                  <p>4</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- Role clarity  -->
+        <section class="mt-5">
+          <div class="row mt-3">
+            <div class="col-xl-4">
+              <h5>Role clarity</h5>
+              <p class="text-center fs-lg mt-4 mb-0">Average score</p>
+              <p class="text-center fs-lg">
+                {{ myData?.section2Avg }}
+              </p>
+            </div>
+            <div class="col-xl-4">
+              <!-- graph label  -->
+              <div class="d-none d-lg-block">
+                <br />
+                <div class="position-relative">
+                  <p class="text-end mb-2">Understanding of role</p>
+                </div>
+                <br />
+                <div class="position-relative">
+                  <p class="text-end mb-2">Goal setting</p>
+                </div>
+                <br />
+                <div class="position-relative">
+                  <p class="text-end">Feedback and course correction</p>
+                </div>
+                <br />
+              </div>
+            </div>
+            <div class="col-xl-4">
+              <div class="border-start border-bottom border-dark border-3">
+                <br />
+                <div class="position-relative" style="width: 92%">
+                  <div
+                    class="position-absolute"
+                    style="
+                      height: 40px;
+                      background: #595959;
+                      width: 7px;
+
+                      bottom: -7px;
+                    "
+                    [ngStyle]="getStyle(myData?.section2Q1Avg)"
+                  ></div>
+                  <div class="d-flex">
+                    <div
+                      class="w-100"
+                      style="height: 25px; background: #cc0000"
+                    ></div>
+                    <div
+                      class="w-100"
+                      style="height: 25px; background: #ffbf00"
+                    ></div>
+                    <div
+                      class="w-100"
+                      style="height: 25px; background: #6aa84f"
+                    ></div>
+                  </div>
+                </div>
+                <br />
+                <div class="position-relative" style="width: 92%">
+                  <div
+                    class="position-absolute"
+                    style="
+                      height: 40px;
+                      background: #595959;
+                      width: 7px;
+
+                      bottom: -7px;
+                    "
+                    [ngStyle]="getStyle(myData?.section2Q2Avg)"
+                  ></div>
+                  <div class="d-flex">
+                    <div
+                      class="w-100"
+                      style="height: 25px; background: #cc0000"
+                    ></div>
+                    <div
+                      class="w-100"
+                      style="height: 25px; background: #ffbf00"
+                    ></div>
+                    <div
+                      class="w-100"
+                      style="height: 25px; background: #6aa84f"
+                    ></div>
+                  </div>
+                </div>
+                <br />
+                <div class="position-relative" style="width: 92%">
+                  <div
+                    class="position-absolute"
+                    style="
+                      height: 40px;
+                      background: #595959;
+                      width: 7px;
+
+                      bottom: -7px;
+                    "
+                    [ngStyle]="getStyle(myData?.section2Q3Avg)"
+                  ></div>
+                  <div class="d-flex">
+                    <div
+                      class="w-100"
+                      style="height: 25px; background: #cc0000"
+                    ></div>
+                    <div
+                      class="w-100"
+                      style="height: 25px; background: #ffbf00"
+                    ></div>
+                    <div
+                      class="w-100"
+                      style="height: 25px; background: #6aa84f"
+                    ></div>
+                  </div>
+                </div>
+                <br />
+              </div>
+              <!-- Graph number  -->
+              <div>
+                <div class="d-flex justify-content-between" style="width: 92%">
+                  <p>0</p>
+                  <p class="text-end">1</p>
+                  <p class="text-end">2</p>
+                  <p class="text-end">3</p>
+
+                  <p>4</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- Cultural alignment  -->
+        <section class="mt-5">
+          <div class="row mt-3">
+            <div class="col-xl-4">
+              <h5>Cultural alignment</h5>
+              <p class="text-center fs-lg mt-4 mb-0">Average score</p>
+              <p class="text-center fs-lg">
+                {{ myData?.section3Avg }}
+              </p>
+            </div>
+            <div class="col-xl-4">
+              <!-- graph label  -->
+              <div class="d-none d-lg-block">
+                <br />
+                <div class="position-relative">
+                  <p class="text-end mb-2">Connect with stakeholders</p>
+                </div>
+                <br />
+                <div class="position-relative">
+                  <p class="text-end mb-2">Openness to the team members</p>
+                </div>
+                <br />
+                <div class="position-relative">
+                  <p class="text-end">Alignment to the company’s goals</p>
+                </div>
+                <br />
+              </div>
+            </div>
+            <div class="col-xl-4">
+              <div class="border-start border-bottom border-dark border-3">
+                <br />
+                <div class="position-relative" style="width: 92%">
+                  <div
+                    class="position-absolute"
+                    style="
+                      height: 40px;
+                      background: #595959;
+                      width: 7px;
+                      bottom: -7px;
+                    "
+                    [ngStyle]="getStyle(myData?.section3Q1Avg)"
+                  ></div>
+                  <div class="d-flex">
+                    <div
+                      class="w-100"
+                      style="height: 25px; background: #cc0000"
+                    ></div>
+                    <div
+                      class="w-100"
+                      style="height: 25px; background: #ffbf00"
+                    ></div>
+                    <div
+                      class="w-100"
+                      style="height: 25px; background: #6aa84f"
+                    ></div>
+                  </div>
+                </div>
+                <br />
+                <div class="position-relative" style="width: 92%">
+                  <div
+                    class="position-absolute"
+                    style="
+                      height: 40px;
+                      background: #595959;
+                      width: 7px;
+                      bottom: -7px;
+                    "
+                    [ngStyle]="getStyle(myData?.section3Q2Avg)"
+                  ></div>
+                  <div class="d-flex">
+                    <div
+                      class="w-100"
+                      style="height: 25px; background: #cc0000"
+                    ></div>
+                    <div
+                      class="w-100"
+                      style="height: 25px; background: #ffbf00"
+                    ></div>
+                    <div
+                      class="w-100"
+                      style="height: 25px; background: #6aa84f"
+                    ></div>
+                  </div>
+                </div>
+                <br />
+                <div class="position-relative" style="width: 92%">
+                  <div
+                    class="position-absolute"
+                    style="
+                      height: 40px;
+                      background: #595959;
+                      width: 7px;
+                      bottom: -7px;
+                    "
+                    [ngStyle]="getStyle(myData?.section3Q3Avg)"
+                  ></div>
+                  <div class="d-flex">
+                    <div
+                      class="w-100"
+                      style="height: 25px; background: #cc0000"
+                    ></div>
+                    <div
+                      class="w-100"
+                      style="height: 25px; background: #ffbf00"
+                    ></div>
+                    <div
+                      class="w-100"
+                      style="height: 25px; background: #6aa84f"
+                    ></div>
+                  </div>
+                </div>
+                <br />
+              </div>
+              <!-- Graph number  -->
+              <div>
+                <div class="d-flex justify-content-between" style="width: 92%">
+                  <p>0</p>
+                  <p class="text-end">1</p>
+                  <p class="text-end">2</p>
+                  <p class="text-end">3</p>
+
+                  <p>4</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <!-- remarks -->
+      <div class="mb-4">
+        <div *ngIf="remarks?.length > 0">
+          <p class="px-3">{{ remarks }}</p>
+        </div>
+      </div>
+      <!-- End of remarks -->
+      <div class="card-footer">
+        <div class="d-flex justify-content-between">
+          <div class="small">Pieworks Life Private Limited .</div>
+          <div class="d-flex justify-content-end">
+            <!-- <pagination [totalItems]="totalItems" [(ngModel)]="currentPage">
+                </pagination> -->
+            <button
+              style="
+                width: 30px;
+                height: 30px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+              [disabled]="pageNum == 1"
+              class="btn border-0"
+              (click)="previous()"
+            >
+              <i class="bi bi-caret-left-fill fs-xl" tooltip="previous"></i>
+            </button>
+
+            <button
+              style="
+                width: 30px;
+                height: 30px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+              [disabled]="pageNum >= totalPages"
+              class="btn border-0"
+              (click)="next()"
+            >
+              <i class="bi bi-caret-right-fill fs-xl" tooltip="next"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div>
+        <div class="relative">
+          <textarea
+            name=""
+            id=""
+            [(ngModel)]="remarks"
+            class="p-2"
+            style="width: 100%; height: 200px; resize: none"
+            placeholder="Pls keep your questions short and informative. It helps the expert to guide you better."
+          ></textarea>
+          <div class="absolute" *ngIf="false">
+            <button
+              class="btn btn-success rounded-circle"
+              [ngStyle]="
+                commonService.isMobileDevice
+                  ? { 'left.%': '87' }
+                  : { 'left.%': '94' }
+              "
+              style="
+                bottom: 49px;
+                left: 94%;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding-left: 7px;
+              "
+            >
+              <!-- <i class="ri-send-plane-2-fill fs-5xl"></i> -->
+              <i class="bi bi-send fs-xl" style="rotate: 43deg"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!myData">
+  <h1 class="text-center">No Data Available</h1>
+</div>

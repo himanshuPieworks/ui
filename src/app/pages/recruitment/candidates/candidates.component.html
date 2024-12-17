@@ -1,0 +1,509 @@
+<app-breadcrumbs [breadcrumbItems]="breadCrumbItems"> </app-breadcrumbs><br />
+<div class="row">
+  <div
+    class="card"
+    style="background-image: url('assets/images/background.png')"
+  >
+    <div class="card-body">
+      <div class="row align-items-center gy-3">
+        <div class="col-6">
+          <h4 class="card-tooltip fs-2xl mb-0">
+            Total
+            <span class="badge fs-2xl text-secondary align-baseline ms-1"
+              >{{ totalCandidates + totalFutures }}
+            </span>
+          </h4>
+        </div>
+
+        <div class="col-auto ms-auto">
+          <button
+            class="btn btn-primary me-1 myButton rounded-circle default-btn-width"
+            (click)="filterWindow.show()"
+          >
+            <i
+              class="bi bi-funnel align-baseline fs-2xl"
+              tooltip="show filters"
+            ></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="candidates.length === 0">
+  <div class="col-lg-4" style="margin-left: 39%">
+    <h1>No Candidates found</h1>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12" style="text-align: right">
+    <a (click)="exportFutureCandidtes()" title="Futures -Download xls report"
+      ><i
+        class="icofont-file-spreadsheet"
+        *ngIf="amIAceMaker || commonService.rbac['futures-export']"
+        style="font-size: 23px; color: green; cursor: pointer"
+      ></i></a
+    >&nbsp;&nbsp;
+    <a (click)="exportToXls()" title="Candidates - Download xls report"
+      ><i
+        class="icofont-file-excel"
+        *ngIf="amIAceMaker || commonService.rbac['candidates-export']"
+        style="font-size: 23px; color: green; cursor: pointer"
+      ></i></a
+    >&nbsp;&nbsp;
+    <a
+      (click)="tableView = !tableView"
+      href="javascript:void(0)"
+      title="Click to toggle view"
+      ><i
+        class="icofont-table"
+        [hidden]="tableView"
+        style="font-size: 25px; color: green"
+      ></i
+      ><i
+        class="icofont-surface-tablet"
+        [hidden]="!tableView"
+        style="font-size: 25px; color: green"
+      ></i
+    ></a>
+  </div>
+</div>
+
+<div class="row" id="property-list">
+  <div
+    *ngFor="let c of candidates; let i = index"
+    class="col-xxl-3 col-lg-3 col-md-4 p-2"
+  >
+    <div
+      class="card real-estate-grid-widgets border card-animate p-3"
+      style="height: 100%"
+    >
+      <div class="p-2">
+        <div class="row gy-4 d-flex">
+          <div class="card-body p-2">
+            <div class="row">
+              <div class="col-xl-10 col-8">
+                <div class="d-flex gap-4 flex-wrap">
+                  <div>
+                    <h6>
+                      {{ c.name ? c.name : "N/A" }}
+                      <span *ngIf="c.orgCulture">(Future)</span>
+                    </h6>
+                  </div>
+                  <div class="align-self-center"></div>
+                </div>
+              </div>
+              <div class="col-xl-2 col-4">
+                <div class="relative">
+                  <div
+                    dropdown
+                    class="dropdown dropdown-real-estate absolute top-0 right-0"
+                  >
+                    <i
+                      dropdownToggle
+                      class="bi bi-three-dots-vertical text-dark fs-2xl"
+                      (click)="selectedCandidate = c; loadMenuItems()"
+                    ></i>
+
+                    <ul
+                      *bsDropdownMenu
+                      class="dropdown-menu dropdown-menu-end mb-0"
+                    >
+                      <li
+                        *ngFor="let item of menuOptions"
+                        (click)="candidateSelected = c; handleMenuClick(item)"
+                      >
+                        <a
+                          class="dropdown-item edit-list"
+                          style="font-size: 12px"
+                          href="javascript:void(0);"
+                          >{{ item }}</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr class="mt-2 mb-0" />
+          </div>
+        </div>
+        <carousel
+          [noWrap]="true"
+          [interval]="0"
+          class="carousel carousel-dark slide"
+        >
+          <div class="carousel-inner">
+            <slide class="carousel-item active" data-bs-interval="10000">
+              <ul
+                class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+              >
+                <li tooltip="" style="width: 100%">
+                  <div class="d-flex">
+                    <div style="width: 6%" *ngIf="false">
+                      <i
+                        class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                        style="font-size: 15px"
+                      ></i>
+                    </div>
+                    <div style="width: 47%">
+                      <span class="text-muted">Current Company</span>
+                      <p
+                        class="mb-0 text-dark"
+                        tooltip="{{ c?.candidate?.currentCompany }}"
+                      >
+                        {{
+                          c?.currentCompany
+                            ? truncateString(c?.currentCompany, 15)
+                            : "N/A"
+                        }}
+                      </p>
+                    </div>
+                    <div
+                      *ngIf="c.validated == undefined"
+                      style="width: 47%; text-align: right"
+                    >
+                      <span class="text-muted">Location</span>
+                      <p class="mb-0 text-dark">
+                        {{ c?.currentLocation ? c?.currentLocation : "N/A" }}
+                      </p>
+                    </div>
+                    <div
+                      *ngIf="c.validated != undefined"
+                      style="width: 47%; text-align: right"
+                    >
+                      <span class="text-muted">Location</span>
+                      <p class="mb-0 text-dark">
+                        {{
+                          c?.preferredLocation ? c?.preferredLocation : "N/A"
+                        }}
+                      </p>
+                    </div>
+                  </div>
+                </li>
+                <li tooltip="" style="width: 100%">
+                  <div class="d-flex">
+                    <div style="width: 6%" *ngIf="false">
+                      <i
+                        class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                        style="font-size: 15px"
+                      ></i>
+                    </div>
+                    <div style="width: 47%">
+                      <span class="text-muted">Expected CTC</span>
+                      <p class="mb-0 text-dark">
+                        {{ c?.expectedCtc ? c?.expectedCtc + " (LPA)" : "N/A" }}
+                      </p>
+                    </div>
+                    <div
+                      style="width: 47%; text-align: right"
+                      *ngIf="c.validated"
+                    >
+                      <span class="text-muted">Status</span>
+                      <p class="mb-0 text-dark">
+                        {{ c.validated ? "Validated" : "Not Validated" }}
+                      </p>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </slide>
+          </div>
+        </carousel>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- filter -->
+<div
+  bsModal
+  #filterWindow="bs-modal"
+  class="modal fade bs-example-modal-lg"
+  id="exampleModalScrollable"
+>
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <h5
+          class="modal-tooltip"
+          id="exampleModalScrollableTitle"
+          style="width: 90%"
+        >
+          Filter
+        </h5>
+        <i
+          class="mdi mdi-broom clickable text-white-75"
+          style="font-size: 20px"
+          (click)="clearFilters()"
+        ></i>
+        <button
+          type="button"
+          class="btn-close btn-close-white rightMost"
+          (click)="filterWindow.hide()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="card border">
+          <div class="card-body">
+            <div>
+              <div>
+                <i class="icofont-search"></i>
+                <p>Search</p>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="form-group">
+                      <div class="job-category-area">
+                        <input
+                          type="text"
+                          class="form-control"
+                          maxlength="100"
+                          [(ngModel)]="searchText"
+                          (keyup)="filterChanged()"
+                        />&nbsp;
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <i class="icofont-calendar"></i>
+                <p>Experience (yrs)</p>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label>Min</label>
+                      <div class="job-category-area">
+                        <input
+                          type="number"
+                          min="0"
+                          max="60"
+                          class="form-control"
+                          [(ngModel)]="minExperience"
+                          (change)="filterChanged()"
+                        />&nbsp;
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label>Max</label>
+                      <div class="job-category-area">
+                        <input
+                          type="number"
+                          min="1"
+                          max="60"
+                          class="form-control"
+                          [(ngModel)]="maxExperience"
+                          (change)="filterChanged()"
+                        />&nbsp;
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <i class="icofont-rupee"></i>
+                <p>Expected CTC (LPA)</p>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="form-group">
+                      <div class="job-category-area">
+                        <input
+                          type="number"
+                          class="form-control"
+                          maxlength="100"
+                          [(ngModel)]="expectedCtc"
+                          (change)="filterChanged()"
+                        />&nbsp;
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="false">
+                <i class="icofont-tag"></i>
+                <p>Tags</p>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="form-group">
+                      <div
+                        class="job-category-area form-control"
+                        style="
+                          height: 100px;
+                          overflow-y: auto;
+                          border-style: solid;
+                          padding: 5px;
+                          border-width: 1px;
+                        "
+                      >
+                        <div class="row" *ngFor="let c of availableTags">
+                          <div
+                            class="col-sm-12"
+                            style="background-color: {{
+                              c.color ? c.color : ''
+                            }}"
+                          >
+                            <a
+                              href="javascript:void(0)"
+                              (click)="
+                                searchByTag(c.name);
+                                !c.color
+                                  ? (c.color = 'blue')
+                                  : (c.color = 'blue')
+                              "
+                              style="color: black"
+                              >{{ c.name }}</a
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <i class="icofont-calendar"></i>
+                <p>Discovered From</p>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <input
+                      type="date"
+                      class="form-control"
+                      maxlength="100"
+                      [(ngModel)]="startDate"
+                      (change)="filterChanged()"
+                    />&nbsp;
+                  </div>
+                </div>
+              </div>
+              <div>
+                <i class="icofont-calendar"></i>
+                <p>Discovered Till</p>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <input
+                      type="date"
+                      class="form-control"
+                      maxlength="100"
+                      [(ngModel)]="endDate"
+                      (change)="filterChanged()"
+                    />&nbsp;
+                  </div>
+                </div>
+              </div>
+              <div>
+                <p>Sector</p>
+                <div class="row">
+                  <div class="col-lg-10">
+                    <div class="form-group">
+                      <div class="job-category-area">
+                        <ng-select
+                          [items]="availableSectors"
+                          [multiple]="false"
+                          bindLabel="name"
+                          bindValue="name"
+                          class="form-control"
+                          placeholder="Select client"
+                          [(ngModel)]="searchText"
+                          [clearable]="false"
+                          style="padding: 0; width: 100%"
+                          (ngModelChange)="filterChanged()"
+                        ></ng-select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <i class="icofont-search"></i>
+                <p>Show future talents</p>
+                <div class="row">
+                  <div class="col-lg-10">
+                    <div class="form-group">
+                      <div class="job-category-area">
+                        <input
+                          type="checkbox"
+                          [(ngModel)]="showFutureOnly"
+                          (click)="filterChanged()"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-light"
+          (click)="filterWindow.hide()"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- filter Model End -->
+
+<!-- filter -->
+<div
+  bsModal
+  #reDiscover="bs-modal"
+  class="modal fade bs-example-modal-lg"
+  id="exampleModalScrollable"
+>
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <h5
+          class="modal-tooltip"
+          id="exampleModalScrollableTitle"
+          style="width: 90%"
+        >
+          Discover Talent
+        </h5>
+
+        <button
+          type="button"
+          class="btn-close btn-close-white rightMost"
+          (click)="reDiscover.hide()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="card border">
+          <div class="card-body">
+            <div>
+              <app-discover-talent
+                #discover
+                [parentObj]="this"
+              ></app-discover-talent>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="reDiscover.hide()">
+          Close
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- filter Model End -->

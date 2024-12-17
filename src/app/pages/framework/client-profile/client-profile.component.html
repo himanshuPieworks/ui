@@ -1,0 +1,360 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs
+  title="Profile"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+<br />
+<div class="row">
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="card border-0 shadow-none mb-0">
+          <div
+            class="card-body rounded profile-basic"
+            style="
+              background-image: url('assets/images/small/img-4.jpg');
+              background-size: cover;
+            "
+          ></div>
+          
+          <div class="card-body">
+            <!-- name and profile pic -->
+            <div class="text-center" style="margin-top: -90px">
+              <img
+                src="{{ commonService.getPicUrl(commonService.clientProfile) }}"
+                alt=""
+                class="rounded-circle clickable p-1 mt-n3 bg-white border"
+                style="width: 140px; height: 140px"
+              />
+              <input
+                type="file"
+                [hidden]="true"
+                class="form-control-file"
+                id="logoHiddenButton"
+                name="logo"
+                (change)="onLogoSelect($event)"
+              />
+              <p class="text-center mb-0 fs-6 fw-bold">
+                {{ user?.name }}
+              </p>
+              <p class="text-center text-muted">
+                {{ convertToTitleCase(role) }}
+              </p>
+            </div>
+            <hr />
+          </div>
+          <!-- all the details  -->
+          <div class="card-body pt-0">
+            <div class="row justify-content-between gy-4">
+              <div class="col-xl-12 col-md-7">
+                <div class="d-flex align-items-center gap-2">
+                  <p
+                    class="fs-md mb-0 text-muted"
+                    *ngIf="isOwnAccount"
+                    tooltip="edit contact details"
+                  ></p>
+                </div>
+                <div class="mb-3">
+                  <!-- Mail Id -->
+                  <div>
+                    <p class="mb-0">
+                      <i
+                        class="ri-mail-send-line text-muted align-middle me-1 fs-4xl"
+                      ></i>
+                      <span> Email </span>
+                    </p>
+                    <p
+                      class="mb-1"
+                      style="color: black"
+                      style="margin-left: 31px"
+                    >
+                      <span>
+                        <a
+                          href="mailto:{{ user?.username }}"
+                          style="color: black"
+                        >
+                          {{ user?.username }}</a
+                        > </span
+                      ><br />
+                    </p>
+                  </div>
+                  <!-- Referral  code -->
+                  <div *ngIf="false">
+                    <p class="mb-0">
+                      <i
+                        class="ri-user-shared-2-fill text-muted align-middle me-1 fs-4xl"
+                      ></i>
+                      <span class="text-muted fs-5"> Referral Code </span>
+                    </p>
+                    <p
+                      class="mb-1"
+                      style="color: black"
+                      style="margin-left: 31px"
+                    >
+                      <span *ngIf="isOwnAccount">{{ user?.myReferalCode }}</span
+                      ><br />
+                    </p>
+                  </div>
+                  <!-- contact / Mobile Number -->
+                  <div>
+                    <p class="mb-0">
+                      <i
+                        class="bx bx-phone-call text-muted align-middle me-1 fs-4xl"
+                      ></i>
+                      <span> Phone Number </span>
+                    </p>
+                    <p
+                      class="mb-1"
+                      style="color: black"
+                      style="margin-left: 31px"
+                    >
+                      <span *ngIf="!editContactDetails">{{
+                        user?.mobileno
+                          ? user?.mobileno
+                          : 'N/A'
+                      }}</span>
+                      &nbsp;
+                      <i
+                        (click)="editContactDetails = !editContactDetails"
+                        tooltip="edit contact details"
+                        class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                      ></i>
+
+                      <input
+                        style="width: 50%"
+                        *ngIf="editContactDetails"
+                        type="text"
+                        class="form form-control"
+                        id="mobileno"
+                        name="mobileno"
+                        [(ngModel)]="user.mobileno"
+                        placeholder="enter mobile number"
+                      />
+                    </p>
+                  </div>
+                  <!-- LinkedIn -->
+                  <div>
+                    <p class="mb-0">
+                      <i
+                        class="ri-linkedin-box-fill text-muted align-middle me-1 fs-4xl"
+                      ></i>
+                      <span>LinkedIn URL</span>
+                    </p>
+                    <p
+                      class="mb-1"
+                      style="color: black"
+                      style="margin-left: 31px"
+                    >
+                      <span>
+                        <a
+                          *ngIf="!editSocial"
+                          href="{{
+                            user?.linkedIn
+                             
+                          }}"
+                          target="_blank"
+                          >{{
+                            user?.linkedIn 
+                              ? "Linkedin Profile"
+                              : "NA"
+                          }}</a
+                        ></span
+                      >
+                      &nbsp;
+                      <i
+                        (click)="editSocial = !editSocial"
+                        tooltip="edit contact details"
+                        class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                      ></i>
+                      <input
+                        style="width: 50%"
+                        *ngIf="editSocial"
+                        type="text"
+                        class="form form-control"
+                        id="linkedIn"
+                        name="linkedIn"
+                        [(ngModel)]="user.linkedIn"
+                        placeholder="enter mobile number"
+                      />
+                    </p>
+                  </div>
+                  <!-- Joined Date -->
+                  <div>
+                    <p class="mb-0">
+                      <i
+                        class="ri-calendar-check-fill text-muted align-middle me-1 fs-4xl"
+                      ></i>
+                      <span>Joined</span>
+                    </p>
+                    <p
+                      class="mb-1"
+                      style="color: black"
+                      style="margin-left: 31px"
+                    >
+                      <span>{{
+                        commonService.changeMysqlToNormalDate(user?.createdOn)
+                      }}</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- save button start -->
+            <div
+              class="row justify-content-between gy-4 mb-2"
+              *ngIf="editSocial || editContactDetails || editUserName"
+            >
+              <div
+                class="col-xl-12 col-md-12 d-flex justify-content-center text-center mb-2"
+              >
+                <button
+                  class="btn btn-primary rounded-pill"
+                  (click)="saveUser()"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+            <button
+              class="btn btn-primary"
+              style="width: 100%"
+              (click)="contractModal.show()"
+            >
+            <i class="bi bi-file-earmark-pdf"></i>
+              View Contract
+            </button>
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--end card-->
+  </div>
+  <!--end col-->
+  <!-- container for mail profile stats -->
+  <div class="col-xl-8">
+    <div class="card">
+        <div class="card-header"><h4>Historical  Overview</h4></div>
+        <div class="card-body">
+            <div class="d-flex justify-content-between gap-1">
+                <div class="card" style="width: 224px; height: 100px;">
+             
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>Total Mandates</div>
+                            <div><img src="assets/images/iconCircle1.png" width="30px" alt="" srcset=""></div>
+                        </div>
+                        <div>
+                            <h2>{{this.profileTopBar?.totalMandates ?this.profileTopBar?.totalMandates : 0 }}</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="width: 224px; height: 100px;">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>Closures</div>
+                            <div><img src="assets/images/iconCircle3.png" width="30px" alt="" srcset=""></div>
+                        </div>
+                        <div>
+                            <h2>{{this.profileTopBar?.totalClosures ? this.profileTopBar?.totalClosures : 0 }}</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="width: 224px; height: 100px;">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>Avg Tat</div>
+                            <div><img src="assets/images/iconCircle2.png" width="30px" alt="" srcset=""></div>
+                        </div>
+                        <div>
+                            <h2>{{this.profileTopBar?.avgTat ?this.profileTopBar?.avgTat : 0 }} days</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="width: 224px; height: 100px;">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>Avg time for Offer Sent</div>
+                            <div><img src="assets/images/iconCircle1.png" width="30px" alt="" srcset=""></div>
+                        </div>
+                        <div>
+                            <h2>{{this.profileTopBar?.avgTimeToOfferSent ? (this.profileTopBar?.avgTimeToOfferSent/7).toString().split('.')[0] : 0 }} weeks</h2>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <tabset>
+          <tab heading="Candidate Pulse Check">
+             <app-client-dipstick></app-client-dipstick> 
+          </tab>
+          <tab heading="Analytics"> 
+            <div class="text-center mb-5"><h5>Coming Soon ....</h5></div>
+          </tab>
+          <tab heading="Reports"> 
+            <div class="text-center mb-5"><h5>Coming Soon ....</h5></div>
+          </tab>
+        </tabset>
+      </div>
+    </div>
+  </div>
+</div>
+<!--end row-->
+
+
+
+<!-- modal start here  -->
+<div
+  bsModal
+  #contractModal="bs-modal"
+  class="modal bs-example-modal-lg fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header" >
+        <h5 class="modal-title" id="myLargeModalLabel">Contract Details</h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="contractModal.hide()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row gy-4" >
+          <div class="col-xxl-12 col-md-12 col-sm-12" >
+            <div class="text-center" >
+              <object
+                type="application/pdf"
+                [attr.data]="contractUrl | safe"
+                height="500px"
+                width="100%"
+              ></object>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-light"
+          (click)="contractModal.hide()"
+        >
+          Close
+        </button>
+       
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

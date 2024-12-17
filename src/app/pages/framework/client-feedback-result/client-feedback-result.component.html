@@ -1,0 +1,95 @@
+<section class="job-area job-area-two pt-100" style="padding-top: 10px">
+  <div class="single-profile-area pt-100">
+    <div class="row align-items-center">
+      <div class="col-lg-12" style="text-align: center; font-size: 40px">
+        <h5>{{ message }}</h5>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-12">
+          <div class="single-profile-item">
+            <div class="single-profile-left">
+              <div class="single-profile-name">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <h5 class="fieldLabel">
+                      What are the areas of improvement Pieworks can work on ?
+                    </h5>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <ul>
+                      <li *ngFor="let ans of answer1Array; let i = index">
+                        {{ ans.answer }}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <br />
+              </div>
+              <br /><br />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-12">
+          <div class="single-profile-item">
+            <div class="single-profile-left">
+              <div class="single-profile-name">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <h5 class="fieldLabel">
+                      What do you really appreciate about Pieworks ?
+                    </h5>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <ul>
+                      <li *ngFor="let ans of answer2Array; let i = index">
+                        {{ ans.answer }}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <br />
+              </div>
+              <br /><br />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container" *ngIf="false">
+      <div class="row align-items-center">
+        <div class="col-lg-12">
+          <div class="single-profile-item">
+            <div class="single-profile-left">
+              <div class="single-profile-name">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <h5>Piescore</h5>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <!--<li *ngFor="let ans of answer3Array" >{{ans.answer}}</li>-->
+                    <li>{{ member.clientNps }}</li>
+                  </div>
+                </div>
+                <br />
+              </div>
+              <br /><br />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,180 @@
+<div class="mt-sm-0 mt-4"></div>
+<app-breadcrumbs
+    tooltip="Piecoins-Statement"
+    [breadcrumbItems]="breadCrumbItems"
+    ></app-breadcrumbs
+><br />
+<br />
+<div class="page-title-area">
+    <div class="d-table">
+        <div class="d-table-cell">
+            <div class="container">
+                <div class="page-title-text">
+                    <h5>Piecoins Statement</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="job-area job-area-two pt-100">
+    <div class="row">
+        <div [ngClass]="showInfo ? 'col-lg-12' : 'col-lg-12'" class=" card">
+            <div class="row">
+                <!--<div class="col-lg-2">&nbsp;</div>-->
+                <div class="col-lg-12" style="text-align: center">
+                    <table
+                        [ngClass]="
+                        commonService.isMobileDevice
+                        ? 'table overflow'
+                        : 'table table-striped'
+                        "
+                        >
+                        <thead class="thead-dark">
+                            <tr>
+                                <th style="height: 50px" class="table-th">Remarks</th>
+                                <th style="height: 50px" class="table-th">Credit</th>
+                                <th style="height: 50px" class="table-th">Debit</th>
+                                <th style="height: 50px" class="table-th">Balance</th>
+                                <th style="height: 50px" class="table-th">
+                                    Reverse Status Recovery
+                                </th>
+                                <th style="height: 50px" class="table-th">Worth of 1 Piecoin</th>
+                                <th style="height: 50px" class="table-th">Date</th>
+                            </tr>
+                        </thead>
+                        <tr *ngFor="let entry of statement; let i = index">
+                            <td style="height: 50px; text-align: left" class="table-td">
+                                {{ entry?.remarks }}
+                            </td>
+                            <td style="height: 50px" class="table-td">
+                                {{ entry?.credit }}
+                            </td>
+                            <td style="height: 50px" class="table-td">
+                                {{ entry.debit }}
+                            </td>
+                            <td style="height: 50px" class="table-td">
+                                {{ entry.balance }}
+                            </td>
+                            <td style="height: 50px" class="table-td">
+                                {{ entry.recoverable }}
+                            </td>
+                            <td style="height: 50px" class="table-td">
+                                {{ entry.worthOf1Pieco }}
+                            </td>
+                            <td style="height: 50px" class="table-td">
+                                {{ commonService.changeMysqlToNormalDate(entry.createdOn) }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <br /><br /><br />
+            <div class="row">
+                <div class="col-lg-12" style="text-align: center">
+                    {{ paginationMessage }}
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-lg-12" style="text-align: center">
+                    <button class="btn btn-primary" (click)="first()">First</button>
+                    &nbsp;
+                    <button class="btn btn-primary" (click)="previous()">Prev</button
+                    >&nbsp;
+                    <button class="btn btn-primary" (click)="next()">Next</button>&nbsp;
+                    <button class="btn btn-primary" (click)="last()">Last</button>&nbsp;
+                </div>
+            </div>
+        </div>
+        <!-- <div class="col-lg-5" [hidden]="!showInfo">
+            <div class="companies-item wow fadeInUp">
+                <div class="col-lg-12" style="text-align: left">
+                    <div class="faq-head">
+                        <h5>Piecoins</h5>
+                    </div>
+                    
+                    <accordion class="accordion" id="default-accordion-example">
+                        <accordion-group class="accordion-item" [isOpen]="section==1" (click)='section=1'>
+                            <h2 accordion-heading class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button">
+                                    What's Piecoins ?
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show">
+                                <div class="accordion-body">
+                                    Introducing Piecoins, the little pieces of joy to encourage your
+                                    efforts.
+                                </div>
+                            </div>
+                        </accordion-group>
+                        <accordion-group class="accordion-item" [isOpen]="section==2" (click)='section=2'>
+                            <h2 accordion-heading class="accordion-header" id="headingTwo">
+                                <button class="accordion-button" type="button">
+                                    How do I get it ?
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse show">
+                                <div class="accordion-body">
+                                    You are awarded with Piecoins as and when you complete certain tasks or achieve certain goals in the pieworks platform.
+                                </div>
+                            </div>
+                        </accordion-group>
+                        <accordion-group class="accordion-item" [isOpen]="section==3" (click)='section=3'>
+                            <h2 accordion-heading class="accordion-header" id="headingTwo">
+                                <button class="accordion-button" type="button">
+                                    How do I Redeem it ?
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse show">
+                                <div class="accordion-body">
+                                    You can redeem it from the piebank section. The redeem piecoins will be encashed and credited to your bank account with 7 working days.
+                                </div>
+                            </div>
+                        </accordion-group>
+                        <accordion-group class="accordion-item" [isOpen]="section==4" (click)='section=4'>
+                            <h2 accordion-heading class="accordion-header" id="headingTwo">
+                                <button class="accordion-button" type="button">
+                                    So, how do I get benefited from Piecoins 
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse show">
+                                <div class="accordion-body">
+                                    Not only your successful discoveries, but also we value your
+                                    discovery attempts that reached at least the interview level.
+                                    Piecoins are the rewards for keeping you morale and spirits high
+                                    to convert more and more discoveries to successful ones.
+                                </div>
+                            </div>
+                        </accordion-group>
+                        <accordion-group class="accordion-item" [isOpen]="section==5" (click)='section=5'>
+                            <h2 accordion-heading class="accordion-header" id="headingTwo">
+                                <button class="accordion-button" type="button">
+                                    Worth of 1 Piecoin 
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse show">
+                                <div class="accordion-body">
+                                    This is subject to change as per management decision. For now, 1 piecoin is worth Re 1/-.
+                                </div>
+                            </div>
+                        </accordion-group>
+                        
+                        <accordion-group class="accordion-item" [isOpen]="section==6" (click)='section=6'>
+                            <h2 accordion-heading class="accordion-header" id="headingTwo">
+                                <button class="accordion-button" type="button">
+                                    Do my piecoins get expired if I dont redeem it soon.
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse show">
+                                <div class="accordion-body">
+                                    No, piecoins are safe in your piebank. You can redeem them whenever you want.
+                                </div>
+                            </div>
+                        </accordion-group>
+                    </accordion>
+                </div>
+            </div>
+        </div> -->
+    </div>
+</section>

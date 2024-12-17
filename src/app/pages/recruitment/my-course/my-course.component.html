@@ -1,0 +1,81 @@
+<app-breadcrumbs
+  tooltip="My Course"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs
+><br />
+
+<div>
+  <div class="row">
+    <h6 *ngIf="myCourse.status == 'Completed'">
+      You have completed this course.
+    </h6>
+    <div class="col-xl-4">
+      <accordion
+        class="accordion"
+        id="default-accordion-example"
+        *ngFor="let courseMaterial of courseMaterialByCourseId"
+      >
+        <accordion-group
+          class="accordion-item"
+          [isOpen]="section == courseMaterial.id"
+          (click)="
+            section = courseMaterial.id;
+            getCourseMaterialById(section);
+            isButtonDisabled = true;
+            disableButtonForTime();
+            loadCourseProgress();
+          "
+        >
+          <h2 accordion-heading class="accordion-header" id="headingOne">
+            <button class="accordion-button fw-bolder" type="button">
+              {{ courseMaterial.materialTitle }}
+            </button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse show">
+            <div class="accordion-body">
+              {{ courseMaterial.materialDescription }}
+            </div>
+          </div>
+        </accordion-group>
+      </accordion>
+    </div>
+    <div class="col-xl-8">
+      <div *ngIf="courseMaterialById?.materialLink" class="mb-3">
+        <iframe
+          class="rounded w-100"
+          [src]="courseMaterialById?.materialLink | safe"
+          title="YouTube video player"
+          style="height: 500px"
+          allowfullscreen
+        ></iframe>
+      </div>
+
+      <div class="text-end" *ngIf="courseMaterialById?.materialLink ">
+        <button
+          class="btn btn-success me-2"
+          [disabled]="isButtonDisabled"
+          (click)="saveCourseProgress('Completed')"
+          *ngIf="courseMaterialStatus == 'OnGoing' || courseMaterialStatus == undefined"
+        >
+          {{
+            isButtonDisabled
+              ? "Please wait " + timer + " Second"
+              : "Mark as completed"
+          }}
+        </button>
+        <div *ngIf="courseMaterialStatus == 'Completed'">
+          Material Completed
+        </div>
+        <div *ngIf="myCourse.status != 'Completed'">
+          <button
+            class="btn btn-success"
+            *ngIf="allMaterialDone"
+            (click)="saveCourseCompleted()"
+          >
+            Finish Course
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,303 @@
+<div class="mt-sm-0 mt-4"></div>
+<br />
+<div class="row">
+  <div class="col-lg">
+    <div
+      class="card"
+      style="background-image: url('assets/images/background.png')"
+    >
+      <div class="card-body">
+        <div class="row align-items-center gy-3">
+          <!-- style="filter: blur(8px); -webkit-filter: blur(4px)" -->
+          <div class="col-6">
+            <!-- <h6 class="card-tooltip fs-2xl mb-0">
+              Open {{ rssppMandateLabel }}&nbsp;
+              <span class="fs-2xl text-secondary align-baseline">{{
+                analysis.arg4
+              }}</span>
+
+              <span
+                class="fs-2xl text-secondary align-baseline"
+                
+                >, Clients &nbsp;&nbsp;{{ analysis.arg5 }}</span
+              >
+            </h6> -->
+          </div>
+          <!--end col-->
+          <div class="col-auto ms-auto">
+            &nbsp;
+            <button
+              class="btn btn-primary myButton rounded-pill default-btn-width"
+              (click)="commonService.navigateTo('/auth/register', undefined)"
+            >
+              <i
+                class="bi bi-funnel align-baseline fs-2xl"
+                tooltip="show filters"
+              ></i></button
+            >&nbsp;
+            <button
+              class="btn btn-primary myButton rounded-pill default-btn-width"
+            >
+              <i
+                class="ri-filter-off-line align-baseline fs-2xl"
+                tooltip="clear filters"
+              ></i>
+            </button>
+          </div>
+          <!--end col-->
+
+          <!--Search Input-->
+          <div class="col-xl-3">
+            <div
+              class="form-group has-search"
+              (click)="commonService.navigateTo('/auth/register', undefined)"
+            >
+              <span class="bi bi-search fs-2xl form-control-feedback"></span>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Search"
+                maxlength="100"
+              />
+            </div>
+          </div>
+        </div>
+        <!--end row-->
+      </div>
+    </div>
+
+    <div class="row" id="property-list">
+      <div
+        *ngFor="let req of mandates; let i = index"
+        class="col-xxl-4 col-lg-4 col-md-6 p-2"
+      >
+        <div
+          class="card real-estate-grid-widgets card-animate p-3"
+          style="height: 100%"
+          [ngStyle]="{
+              'box-shadow':
+                req.status.name === 'Hot'
+                  ? '0px 0px 10px #1A9783'
+                  : req.status.name === 'Cold'
+                  ? '0px 0px 10px #EB3D4D'
+                  : req.status.name === 'Warm'
+                  ? '0px 0px 10px #2BB2FE'
+                  : req.status.name === 'Hold'
+                  ? '0px 0px 10px #1D1F2C'
+                  : req.status.name === 'Success'
+                  ? '0px 0px 10px #F9C80E'
+                  : '',
+              'background-image':
+                req.offeredCandidates != null && req.noOfVaccancyPending == 0
+                  ? 'url(assets/images/stampForSuccess.png)'
+                  : '',
+              'background-position':
+                req.offeredCandidates != null ? 'center center' : '',
+              'background-size': 
+                req.offeredCandidates != null ? '150px 150px' : '',
+              'background-repeat': 
+                req.offeredCandidates != null ? 'no-repeat' : '',
+            }"
+        >
+          <!-- Label for Projected Earning -->
+          <div
+            class="projected-earning-label"
+            style="
+              position: absolute;
+              top: 10px;
+              right: 10px;
+              background-color: #3FD6AD;
+              padding: 5px 10px;
+              border-radius: 5px;
+              
+              color: black;
+              font-size: 10px;
+          font-style: italic;
+            "
+          >
+            <p class="mb-0 mt-0 text-center">earn upto</p>
+            <p class="mb-0 mt-0">
+              <i class="bi bi-currency-rupee" *ngIf="req.projectedPayoutDiscoverer"></i>
+              {{ req.projectedPayoutDiscoverer ? (formatToIndianCurrency(req.projectedPayoutDiscoverer)) : ""  }}
+            </p>
+          </div>
+          <!--  style="background-color: {{getRandomColor()}}" -->
+          <div
+            class="card-body p-2 clickable"
+            (click)="commonService.navigateTo('/auth/register', undefined)"
+          >
+            <!-- logo and roles  -->
+            <div class="row">
+              <div class="col-xl-10 col-8">
+                <div class="d-flex gap-4">
+                  <!-- icon of company -->
+                  <div
+                    class="align-self-center"
+                    style="filter: blur(8px); -webkit-filter: blur(4px)"
+                  >
+                    <img
+                      src="http://"
+                      alt="img-01.jpg"
+                      class="rounded-circle border"
+                      style="height: 70px; width: 70px"
+                    />
+                  </div>
+                  <!-- role and company name -->
+                  <div class="align-self-center">
+                    <span class="text-dark fw-bold">{{
+                      req.role?.name ? req?.role?.name : "NA"
+                    }}</span>
+                    <p
+                      class="text-muted m-0"
+                      style="filter: blur(8px); -webkit-filter: blur(4px)"
+                    >
+                      <!-- {{ req.orgName }} -->
+                      {{
+                        req.client.name == "common"
+                          ? req.orgName
+                          : req.client.name
+                      }}
+                      <i *ngIf="req.client.name != 'common' && req.pilotBatch"
+                        >(Pilot batch)</i
+                      >
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr class="mt-2 mb-0" />
+          </div>
+          <div class="card-body p-2">
+            <ul
+              class="d-flex justify-content-between gap-2 flex-wrap list-unstyled mb-1"
+            >
+              <li>
+                <p class="text-muted text-start mb-0 mt-0">
+                  Budget
+                  <br />
+                  <span class="text-dark">
+                    {{ req.minFixedLpa + req.minVariableLpa }} -
+                    {{ req.maxFixedLpa + req.maxVariableLpa
+                    }}{{ req.esops ? " LPA - " + req.esops : " LPA" }}
+                  </span>
+                </p>
+              </li>
+              <li style="width: 50%">
+                <p Class="text-muted text-end mb-0">
+                  Designation
+                  <br />
+                  <span class="text-dark">
+                    {{ req.role?.name ? req?.role?.name : "NA" }}
+                  </span>
+                </p>
+              </li>
+            </ul>
+            <ul
+              class="d-flex justify-content-between gap-2 flex-wrap list-unstyled mb-1"
+            >
+              <li style="width: 50%">
+                <p class="text-muted mb-0 mt-0">
+                  Experience
+                  <br />
+                  <span class="text-dark">
+                    {{ req?.experience ? req?.experience : "NA" }} -
+                  </span>
+                  <span class="text-dark">
+                    {{ req?.experienceLimit ? req?.experienceLimit : "NA" }} yrs
+                  </span>
+                </p>
+              </li>
+              <li style="width: 40%">
+                <p class="text-muted text-end mb-0 mt-0">
+                  Location
+                  <br />
+                  <span class="text-dark">
+                    {{
+                      req.location ? req?.location?.split(",").join(", ") : "NA"
+                    }}
+                  </span>
+                </p>
+              </li>
+            </ul>
+            <ul
+              class="d-flex justify-content-between gap-2 flex-wrap list-unstyled mb-1"
+            >
+              <li style="max-width: 40%">
+                <p class="text-muted mb-0">
+                  Job Family
+                  <br />
+                  <span class="text-dark">
+                    {{ req?.jobFamily?.name ? req?.jobFamily?.name : "NA" }}
+                  </span>
+                </p>
+              </li>
+              <li>
+                <p class="text-muted text-end mb-0 mt-0">
+                  Status
+                  <br />
+                  <span class="text-dark">
+                    {{ req.status.name }}
+                  </span>
+                </p>
+              </li>
+            </ul>
+            <div
+              class="mt-0 pt-3 d-flex justify-content-between justify-content-between gap-3"
+            >
+              <span class="mb-0 text-muted"
+                >intv/s2c
+                <span class="text-dark">{{
+                  req.interviews + "/" + req.sentToClients
+                }}</span>
+              </span>
+              <span class="mb-0 text-muted"
+                >Total Discovery
+                <span class="text-dark">
+                  {{ req.totalDiscoveries ? req.totalDiscoveries : "0" }}
+                </span>
+              </span>
+              <span class="mb-0 text-dark">{{ req.daysOld }}</span>
+            </div>
+          </div>
+
+          <div class="d-flex gap-2 justify-content-around">
+            <button
+              class="btn btn-outline-primary w-100"
+              style="height: 50px"
+              (click)="commonService.navigateTo('/auth/register', undefined)"
+            >
+              <p class="mb-0">
+                <i class="bi bi-search fs-2xl"></i>
+                <span class="align-middle"> Discover </span>
+              </p>
+            </button>
+            <button
+              class="btn btn-primary w-100"
+              style="height: 50px"
+              (click)="commonService.navigateTo('/auth/register', undefined)"
+            >
+              + Join Pod
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--end row-->
+  </div>
+</div>
+
+<div class="mt-2 mb-2">
+  <div class="d-flex justify-content-center gap-2">
+    <div class="align-self-center">
+      <h6>Want to see more jobs ?</h6>
+    </div>
+    <div class="align-self-center">
+      <button
+        class="btn btn-primary w-100"
+        (click)="commonService.navigateTo('/auth/register', undefined)"
+      >
+        Sign Up
+      </button>
+    </div>
+  </div>
+</div>

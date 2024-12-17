@@ -1,0 +1,18 @@
+apx-chart {
+    border: none;
+}
+::ng-deep .tooltip-inner {
+     display: none !important;
+    }
+
+::ng-deep .tooltip.top .tooltip-arrow {
+      display: none !important ;
+    }
+    
+::ng-deep .custom-tooltip{
+/*    border-radius : 10px;
+    background-color: #E9E9EA;
+    color: #4A4C46; 
+    font-style: italic;
+    border-top-color: #E9E9EA;*/
+}

@@ -1,0 +1,742 @@
+<div class="mt-sm-0 mt-4"></div>
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs
+  tooltip="Manage"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs
+><br />
+
+<div class="card" style="background-image: url('assets/images/background.png')">
+  <div class="card-body">
+    <div class="row align-items-center gy-3 justify-content-between">
+      <div class="col-6">
+        <h6 class="card-tooltip fs-2xl mb-0">Client Verfication</h6>
+      </div>
+      <!--end col-->
+
+      <!--end col-->
+
+      <!--Search Input-->
+      <div class="col-xl-3">
+        <div class="form-group has-search">
+          <span class="bi bi-search fs-2xl form-control-feedback"></span>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search"
+            maxlength="100"
+            [(ngModel)]="searchText"
+            (keyup)="filterChanged()"
+          />
+        </div>
+      </div>
+    </div>
+    <!--end row-->
+  </div>
+</div>
+
+<div>
+  <tabset>
+    <tab heading="Pending" (selectTab)="approval = 0; tabSelected()">
+      <div class="row" id="prospect-list">
+        <div
+          *ngFor="let c of clients; let i = index"
+          class="col-xxl-3 col-lg-3 col-md-4 p-2"
+        >
+          <div class="card" style="height: 100%">
+            <div class="card-body">
+              <div class="pt-2">
+                <div class="row gy-4 d-flex">
+                  <div style="width: 35%" class="position-relative">
+                    <img
+                      src="{{ commonService.getPicUrl(c.user.profilepic) }}"
+                      alt="img-01.jpg"
+                      class="avatar-md rounded-pill"
+                      style="
+                        object-fit: contain !important;
+                        height: 60px;
+                        width: 60px;
+                      "
+                    />
+                  </div>
+                  <div style="width: 55%" class="align-self-center">
+                    <h5>{{ commonService.truncateString(c.user.name, 12) }}</h5>
+                  </div>
+
+                  <hr class="mb-0 mt-2" />
+                </div>
+              </div>
+              <carousel
+                [noWrap]="true"
+                [interval]="0"
+                class="carousel carousel-dark slide"
+              >
+                <div class="carousel-inner">
+                  <slide class="carousel-item active" data-bs-interval="10000">
+                    <div class="card-body">
+                      <ul
+                        class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+                      >
+                        <li tooltip="" style="width: 100%">
+                          <div class="d-flex">
+                            <div style="width: 6%" *ngIf="false">
+                              <i
+                                class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                                style="font-size: 15px"
+                              ></i>
+                            </div>
+                            <div
+                              style="width: 47%"
+                              *ngIf="commonService.rbac['cm-mobile-no']"
+                            >
+                              <span class="text-muted">Phone No.</span>
+                              <p class="mb-0 text-dark">
+                                {{
+                                  c?.user?.mobileno ? c?.user?.mobileno : "N/A"
+                                }}
+                              </p>
+                            </div>
+
+                            <div style="width: 47%; text-align: right">
+                              <span class="text-muted">Linkedin</span>
+                              <p class="mb-0 text-dark">
+                                <a
+                                  href="{{ c?.user?.linkedIn }}"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  >Profile</a
+                                >
+                              </p>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                      <ul
+                        class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+                      >
+                        <li tooltip="" style="width: 100%">
+                          <div class="d-flex">
+                            <div style="width: 6%" *ngIf="false">
+                              <i
+                                class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                                style="font-size: 15px"
+                              ></i>
+                            </div>
+                            <div
+                              style="width: 100%"
+                              *ngIf="commonService.rbac['cm-email-id']"
+                            >
+                              <span class="text-muted">Email</span>
+                              <p class="mb-0 text-dark">
+                                {{ c?.user?.username }}
+                              </p>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                      <ul
+                        class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+                      >
+                        <li tooltip="" style="width: 100%">
+                          <div class="d-flex">
+                            <div style="width: 6%" *ngIf="false">
+                              <i
+                                class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                                style="font-size: 15px"
+                              ></i>
+                            </div>
+                            <div style="width: 47%">
+                              <span class="text-muted">Company Name</span>
+
+                              <p class="mb-0 text-dark">
+                                {{ c?.companyName ? c?.companyName : "N/A" }}
+                              </p>
+                            </div>
+                            <div style="width: 47%; text-align: right">
+                              <span class="text-muted">Created On</span>
+                              <p class="mb-0 text-dark">
+                                {{
+                                  commonService.changeMysqlToNormalDate(
+                                    c?.user?.createdOn
+                                  )
+                                }}
+                              </p>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </slide>
+                  <!-- <slide class="carousel-item active" data-bs-interval="10000">
+                    <div class="card-body p-2">
+                      <ul
+                        class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+                      >
+                        <li tooltip="" style="width: 100%">
+                          <div class="d-flex">
+                            
+                            <div style="width: 47%">
+                              <span class="text-muted">Client Name</span>
+                              <p class="mb-0 text-dark">
+                                {{ c?.client?.name ? c?.client?.name : "N/A" }}
+                              </p>
+                            </div>
+                            <div style="width: 47%; text-align: right">
+                              <span class="text-muted">Months Old</span>
+                              <p class="mb-0 text-dark">
+                                {{
+                                  c.memberSince
+                                    ? commonService.ageInMonths(c.memberSince)
+                                    : "N/A"
+                                }}
+                              </p>
+                            </div>
+                          </div>
+                        </li>
+                        
+                      </ul>
+                    </div>
+                  </slide> -->
+                </div>
+              </carousel>
+              <div class="d-flex gap-1">
+                <div
+                  class="btn btn-subtle-danger w-100"
+                  (click)="selectedClient = c; rejectClientAccountDetail()"
+                >
+                  Reject
+                </div>
+                <div
+                  class="btn btn-subtle-success w-100"
+                  (click)="selectedClient = c; approveClientIdentity()"
+                >
+                  Approve
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </tab>
+    <tab heading="Approved" (selectTab)="approval = 1; tabSelected()">
+      <div class="row" id="prospect-list">
+        <div
+          *ngFor="let c of clients; let i = index"
+          class="col-xxl-3 col-lg-3 col-md-4 p-2"
+        >
+          <div class="card" style="height: 100%">
+            <div class="card-body">
+              <div class="pt-2">
+                <div class="row gy-4 d-flex">
+                  <div style="width: 35%" class="position-relative">
+                    <img
+                      src="{{ commonService.getPicUrl(c?.client?.icon) }}"
+                      alt="img-01.jpg"
+                      class="avatar-md rounded-pill"
+                      style="
+                        object-fit: contain !important;
+                        height: 60px;
+                        width: 60px;
+                      "
+                    />
+                  </div>
+                  <div style="width: 55%" class="align-self-center">
+                    <h5>{{ commonService.truncateString(c.user.name, 12) }}</h5>
+                  </div>
+
+                  <hr class="mb-0 mt-2" />
+                </div>
+              </div>
+              <carousel
+                [noWrap]="true"
+                [interval]="0"
+                class="carousel carousel-dark slide"
+              >
+                <div class="carousel-inner">
+                  <slide class="carousel-item active" data-bs-interval="10000">
+                    <div class="card-body">
+                      <ul
+                        class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+                      >
+                        <li tooltip="" style="width: 100%">
+                          <div class="d-flex">
+                            <div style="width: 6%" *ngIf="false">
+                              <i
+                                class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                                style="font-size: 15px"
+                              ></i>
+                            </div>
+                            <div
+                              style="width: 47%"
+                              *ngIf="commonService.rbac['cm-mobile-no']"
+                            >
+                              <span class="text-muted">Phone No.</span>
+                              <p class="mb-0 text-dark">
+                                {{
+                                  c?.user?.mobileno ? c?.user?.mobileno : "N/A"
+                                }}
+                              </p>
+                            </div>
+
+                            <div style="width: 47%; text-align: right">
+                              <span class="text-muted">Linkedin</span>
+                              <p class="mb-0 text-dark">
+                                <a
+                                  href="{{ c?.user?.linkedIn }}"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  >Profile</a
+                                >
+                              </p>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                      <ul
+                        class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+                      >
+                        <li tooltip="" style="width: 100%">
+                          <div class="d-flex">
+                            <div style="width: 6%" *ngIf="false">
+                              <i
+                                class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                                style="font-size: 15px"
+                              ></i>
+                            </div>
+                            <div
+                              style="width: 100%"
+                              *ngIf="commonService.rbac['cm-email-id']"
+                            >
+                              <span class="text-muted">Email</span>
+                              <p class="mb-0 text-dark">
+                                {{ c?.user?.username }}
+                              </p>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                      <ul
+                        class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+                      >
+                        <li tooltip="" style="width: 100%">
+                          <div class="d-flex">
+                            <div style="width: 6%" *ngIf="false">
+                              <i
+                                class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                                style="font-size: 15px"
+                              ></i>
+                            </div>
+                            <div style="width: 47%">
+                              <span class="text-muted">Company Name</span>
+
+                              <p class="mb-0 text-dark">
+                                {{ c?.companyName ? c?.companyName : "N/A" }}
+                              </p>
+                            </div>
+                            <div style="width: 47%; text-align: right">
+                              <span class="text-muted">Created On</span>
+                              <p class="mb-0 text-dark">
+                                {{
+                                  commonService.changeMysqlToNormalDate(
+                                    c?.user?.createdOn
+                                  )
+                                }}
+                              </p>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </slide>
+                  <!-- <slide class="carousel-item active" data-bs-interval="10000">
+                    <div class="card-body p-2">
+                      <ul
+                        class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+                      >
+                        <li tooltip="" style="width: 100%">
+                          <div class="d-flex">
+                            
+                            <div style="width: 47%">
+                              <span class="text-muted">Client Name</span>
+                              <p class="mb-0 text-dark">
+                                {{ c?.client?.name ? c?.client?.name : "N/A" }}
+                              </p>
+                            </div>
+                            <div style="width: 47%; text-align: right">
+                              <span class="text-muted">Months Old</span>
+                              <p class="mb-0 text-dark">
+                                {{
+                                  c.memberSince
+                                    ? commonService.ageInMonths(c.memberSince)
+                                    : "N/A"
+                                }}
+                              </p>
+                            </div>
+                          </div>
+                        </li>
+                        
+                      </ul>
+                    </div>
+                  </slide> -->
+                </div>
+              </carousel>
+            </div>
+          </div>
+        </div>
+      </div>
+    </tab>
+    <tab heading="Rejected" (selectTab)="approval = 2; tabSelected()">
+      <div class="row" id="prospect-list">
+        <div
+          *ngFor="let c of clients; let i = index"
+          class="col-xxl-3 col-lg-3 col-md-4 p-2"
+        >
+          <div class="card" style="height: 100%">
+            <div class="card-body">
+              <div class="pt-2">
+                <div class="row gy-4 d-flex">
+                  <div style="width: 35%" class="position-relative">
+                    <img
+                      src="{{ commonService.getPicUrl(c.user.profilepic) }}"
+                      alt="img-01.jpg"
+                      class="avatar-md rounded-pill"
+                      style="
+                        object-fit: contain !important;
+                        height: 60px;
+                        width: 60px;
+                      "
+                    />
+                  </div>
+                  <div style="width: 55%" class="align-self-center">
+                    <h5>{{ commonService.truncateString(c.user.name, 12) }}</h5>
+                  </div>
+
+                  <hr class="mb-0 mt-2" />
+                </div>
+              </div>
+              <carousel
+                [noWrap]="true"
+                [interval]="0"
+                class="carousel carousel-dark slide"
+              >
+                <div class="carousel-inner">
+                  <slide class="carousel-item active" data-bs-interval="10000">
+                    <div class="card-body">
+                      <ul
+                        class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+                      >
+                        <li tooltip="" style="width: 100%">
+                          <div class="d-flex">
+                            <div style="width: 6%" *ngIf="false">
+                              <i
+                                class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                                style="font-size: 15px"
+                              ></i>
+                            </div>
+                            <div
+                              style="width: 47%"
+                              *ngIf="commonService.rbac['cm-mobile-no']"
+                            >
+                              <span class="text-muted">Phone No.</span>
+                              <p class="mb-0 text-dark">
+                                {{
+                                  c?.user?.mobileno ? c?.user?.mobileno : "N/A"
+                                }}
+                              </p>
+                            </div>
+
+                            <div style="width: 47%; text-align: right">
+                              <span class="text-muted">Linkedin</span>
+                              <p class="mb-0 text-dark">
+                                <a
+                                  href="{{ c?.user?.linkedIn }}"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  >Profile</a
+                                >
+                              </p>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                      <ul
+                        class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+                      >
+                        <li tooltip="" style="width: 100%">
+                          <div class="d-flex">
+                            <div style="width: 6%" *ngIf="false">
+                              <i
+                                class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                                style="font-size: 15px"
+                              ></i>
+                            </div>
+                            <div
+                              style="width: 100%"
+                              *ngIf="commonService.rbac['cm-email-id']"
+                            >
+                              <span class="text-muted">Email</span>
+                              <p class="mb-0 text-dark">
+                                {{ c?.user?.username }}
+                              </p>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                      <ul
+                        class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+                      >
+                        <li tooltip="" style="width: 100%">
+                          <div class="d-flex">
+                            <div style="width: 6%" *ngIf="false">
+                              <i
+                                class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                                style="font-size: 15px"
+                              ></i>
+                            </div>
+                            <div style="width: 47%">
+                              <span class="text-muted">Company Name</span>
+
+                              <p class="mb-0 text-dark">
+                                {{ c?.companyName ? c?.companyName : "N/A" }}
+                              </p>
+                            </div>
+                            <div style="width: 47%; text-align: right">
+                              <span class="text-muted">Created On</span>
+                              <p class="mb-0 text-dark">
+                                {{
+                                  commonService.changeMysqlToNormalDate(
+                                    c?.user?.createdOn
+                                  )
+                                }}
+                              </p>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </slide>
+                  <!-- <slide class="carousel-item active" data-bs-interval="10000">
+                    <div class="card-body p-2">
+                      <ul
+                        class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+                      >
+                        <li tooltip="" style="width: 100%">
+                          <div class="d-flex">
+                            
+                            <div style="width: 47%">
+                              <span class="text-muted">Client Name</span>
+                              <p class="mb-0 text-dark">
+                                {{ c?.client?.name ? c?.client?.name : "N/A" }}
+                              </p>
+                            </div>
+                            <div style="width: 47%; text-align: right">
+                              <span class="text-muted">Months Old</span>
+                              <p class="mb-0 text-dark">
+                                {{
+                                  c.memberSince
+                                    ? commonService.ageInMonths(c.memberSince)
+                                    : "N/A"
+                                }}
+                              </p>
+                            </div>
+                          </div>
+                        </li>
+                        
+                      </ul>
+                    </div>
+                  </slide> -->
+                </div>
+              </carousel>
+            </div>
+          </div>
+        </div>
+      </div>
+    </tab>
+  </tabset>
+</div>
+
+<!--  Client Contact Pop up  -->
+<div
+  bsModal
+  #approveClient="bs-modal"
+  class="modal bs-example-modal-lg fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        *ngIf="true"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <p class="modal-title" id="myLargeModalLabel"></p>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          (click)="approveClient.hide()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="card-body form-steps">
+          <form action="#">
+            <div class="text-center mb-0">
+              <h5>Approve Client</h5>
+            </div>
+            <div>
+              <div class="mb-3">
+                <label for="ContactName" class="form-label">Contact Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="ContactName"
+                  id="ContactName"
+                  placeholder="Contact Name"
+                  [(ngModel)]="contact.name"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="contactType" class="form-label">Contact Type</label>
+                <div class="col-xl-4">
+                  <ng-select
+                    [items]="prospectContactType"
+                    [multiple]="false"
+                    bindLabel="name"
+                    bindValue="name"
+                    placeholder="Contact Type"
+                    class="form-control"
+                    [(ngModel)]="contact.contactType"
+                    [clearable]="false"
+                    name="contactType"
+                    style="padding: 0"
+                  >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="prospectEmailId" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  name="prospectEmailId"
+                  id="prospectEmailId"
+                  aria-describedby="emailHelp"
+                  placeholder="Email"
+                  [(ngModel)]="contact.emailId"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="prospectPhoneNo" class="form-label">Phone</label>
+                <input
+                  type="tel"
+                  class="form-control"
+                  name="prospectPhoneNo"
+                  id="prospectPhoneNo"
+                  placeholder="Phone"
+                  [(ngModel)]="contact.contactNo"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="companyName" class="form-label">LinkedIn</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="linkedIn"
+                  id="companyName"
+                  placeholder="http://linkedIn.com...."
+                  [(ngModel)]="contact.linkedIn"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="companyName" class="form-label">Address</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="companyName"
+                  id="companyName"
+                  placeholder="Address...."
+                  [(ngModel)]="contact.address"
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="submit"
+          class="btn btn-success"
+          (click)="contact.emailId == selectedClient.user.username ?  saveClientAccountDetail(1) : saveClientContact()"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- Client Contact Pop up -->
+<!--  adding client to unknown profile  -->
+<div
+  bsModal
+  #selectClient="bs-modal"
+  class="modal bs-example-modal-sm fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        *ngIf="true"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <p class="modal-title" id="myLargeModalLabel"></p>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          (click)="selectClient.hide()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-12 align-self-center">
+            <p class="mb-0">Client</p>
+            <ng-select
+              [items]="clientsList"
+              [(ngModel)]="selectedClient.client"
+              [multiple]="false"
+              placeholder="Select Client"
+              class="form-control"
+              [clearable]="false"
+              style="padding: 0"
+              [searchFn]="clientLocalSearch"
+              (search)="onClientSearch($event)"
+            >
+              <ng-template ng-label-tmp let-item="item">
+                {{ item.name ? item.name : "Search" }}
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item">
+                {{ item.name }}
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer mt-1">
+        <button
+          type="submit"
+          class="btn btn-success"
+          (click)="selectClient.hide(); onAddingClient()"
+        >
+          Continue
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- adding client to unknown profile -->

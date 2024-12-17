@@ -1,0 +1,73 @@
+
+<div style="color:black">
+    <div  *ngFor="let c of communityClientContacts" style='height: 50px'>
+        <div class="d-flex gap-4">
+
+            <div  style="width: 40px;margin-top: 10px;"><input type="checkbox" [(ngModel)]="c.selected"></div>
+            <div class="align-self-center">
+                <ng-select
+                [items]="toccbcc"
+                [multiple]="false"
+                bindLabel="name"
+                bindValue="toccbcc"
+                placeholder="Select"
+                class="form-control"
+                [(ngModel)]="c.toCcBcc"
+                [clearable]="false"
+                style="padding: 0"
+              >
+              </ng-select>
+              
+            </div>
+            <div class="align-self-center" style="margin-top: 10px;margin-left: 5%">{{c.name+","+c.contactType+" - "+c.emailId}}</div>
+        </div>
+    </div>
+    <!-- <div class="d-flex gap-4" [hidden]="true" >
+        <div class="align-self-center"  style="width: 40px;margin-top: 10px;"><input type="checkbox" [(ngModel)]="othersSelected"></div>
+        <div class="align-self-center">
+            <ng-select
+            [items]="toccbcc"
+            [multiple]="false"
+            bindLabel="name"
+            bindValue="toccbcc"
+            placeholder="Search"
+            class="form-control"
+            [(ngModel)]="otherToCcBcc"
+            [clearable]="false"
+            style="padding: 0"
+          >
+          </ng-select>
+        </div>
+
+    </div> -->
+    <div class="row mt-3">
+        <div class="col-lg-8" style="text-align: left">
+            Sub : Profiles for "{{roles}}" <br>
+            Hi,<br>
+            Glad to share this list of curated talents<br>
+            Look forward to hearing your perspective on them and next step forward...<br>
+        </div>
+    </div><br>
+    <div class="row">
+        <div class="col-lg-8" style="text-align: center">
+            <textarea [(ngModel)]="extraContents" rows="5" cols="80" name="extraContents" placeholder="Additional comments"></textarea>
+        </div>
+    </div>
+    <div class="row">
+        <b><div class="col-lg-10" style="text-align: left" *ngFor='let s of shortlisting'><input type='checkbox' [(ngModel)]='s.selected'> {{s.candidate.name}}</div></b>
+    </div>
+    <div class="row">
+        <b><div class="col-lg-12" style="text-align: center">{{communityClientContacts.length==0?'No contact found':message}}</div></b>
+    </div>
+    <div class="row">
+            <div class="col-lg-12" style="text-align: left">Note : A copy of the mail will be send to the client anchor and the community leaders.</div>
+    </div><br>
+    <div class="row">
+            <div class="col-lg-12"  style="width: 100%;margin-top: 1px"><input type="checkbox" (click)="enableAttachment=='no'?enableAttachment='yes':enableAttachment='no'">&nbsp;Include report as attachment</div>
+    </div>
+</div><br>
+
+    <button mat-button  class="btn btn-primary" (click)="sendMail('no')"  [disabled]="message=='Sending mail ...'">Send Mail</button> &nbsp;&nbsp; &nbsp;&nbsp;
+    <button mat-button  class="btn btn-info" (click)="sendMail('yes')" >Preview</button>  &nbsp;&nbsp;
+
+

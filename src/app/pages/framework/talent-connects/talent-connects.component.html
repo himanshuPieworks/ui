@@ -1,0 +1,55 @@
+<div class="mt-sm-0 mt-4"></div>
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs
+  tooltip="Talent Connect"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs
+><br />
+<!-- End Breadcrumbs -->
+<!-- Ask the Experts -->
+<div class="col-xl-12">
+  <div class="d-flex gap-4">
+    <div *ngFor="let e of guides">
+      <div class="card border">
+        <div class="card-body">
+          <div class="text-center">
+            <img
+              src="{{ commonService.getPicUrl(e?.profilePic) }}"
+              alt=""
+              style="width: 80px; height: 80px"
+              class="rounded-circle mb-2"
+            />
+          </div>
+          <div class="text-center">
+            <h5>{{ e?.name }}</h5>
+            <p class="mb-0">{{ e?.designation }}</p>
+            <p class="mt-1">{{e?.currentJob}}</p>
+          </div>
+
+          <div
+            class="border-top"
+            style="border-style: dashed; opacity: 0.4; border-width: thin"
+          ></div>
+          <div class="d-flex justify-content-between mb-2 mt-3">
+            <div>Job Function</div>
+            <div>{{ e?.currentJobFunction }}</div>
+          </div>
+          <div class="d-flex justify-content-between">
+            <div>Experience</div>
+            <div>{{ e?.experience }} Years</div>
+          </div>
+          <!-- <div class="text-center mt-2">
+              <button
+                type="button"
+                class="btn"
+                style="background-color: #e9faf7; color: #1a9882"
+                (click)="selectedExpert = e; askQuestion.show()"
+              >
+                Seek Guidance
+              </button>
+            </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

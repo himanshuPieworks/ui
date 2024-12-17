@@ -1,0 +1,304 @@
+<div
+  style="height: 787px"
+  [ngStyle]="{
+    background:
+      ' url(' + backgroundImagePath + ') no-repeat center center fixed',
+    'background-size': 'cover'
+  }"
+  class="position-relative"
+>
+  <div class="row justify-content-center mx-0 align-middle fs-xs">
+    <div class="col-xl-6 mt-5">
+      <div class="card">
+        <div class="card-body form-steps">
+          <form action="#">
+            <div class="text-left pt-3 pb-4 mb-1">
+              <h5>{{ currentStep }}</h5>
+            </div>
+            <div id="custom-progress-bar" class="progress-nav">
+              <div class="progress" style="height: 2px">
+                <div
+                  class="progress-bar"
+                  role="progressbar"
+                  style="width: 0%"
+                  aria-valuenow="0"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                ></div>
+              </div>
+              <ng-stepper
+                cdkStepper
+                [linear]="true"
+                (selectionChange)="change($event)"
+                class="cdksteppercontent nav nav-pills progress-bar-tab custom-nav"
+              >
+                <!-- Personal Details Start here  -->
+                <cdk-step [optional]="false">
+                  <ng-template cdkStepLabel class="wizard-nav mb-5">
+                    <!-- <button
+                      class="nav-link rounded-pill active"
+                      data-progressbar="custom-progress-bar"
+                      id="pills-gen-info-tab"
+                      data-bs-toggle="pill"
+                      data-bs-target="#pills-gen-info"
+                      type="button"
+                      role="tab"
+                      aria-controls="pills-gen-info"
+                      aria-selected="member.acceptanceByAceMaker==0"
+                    >
+                      1
+                    </button> -->
+                  </ng-template>
+                  <div>
+                    <!-- <div> -->
+                    <div class="mb-4">
+                      <div>
+                        <h5 class="mb-1">Personal information</h5>
+                        <p class="text-muted">Fill all information as below</p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <div class="mb-3">
+                          <label class="form-label" for="gen-info-email-input"
+                            >Name *</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="gen-info-email-input"
+                            [ngClass]="{
+                              'is-invalid': submitted && user && !user.name
+                            }"
+                            placeholder="Enter name"
+                            [(ngModel)]="user.name"
+                            (keyup)="validateProfileCompletion()"
+                            name="name"
+                          />
+                          <div
+                            class="invalid-feedback"
+                            *ngIf="submitted && !user.name"
+                          >
+                            Please enter name
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="mb-3">
+                          <label
+                            class="form-label"
+                            for="gen-info-username-input"
+                            >Email id *</label
+                          >
+                          <div class="input-group">
+                            <span class="input-group-text ri-mail-line"></span>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="gen-info-username-input"
+                              (keyup)="validateProfileCompletion()"
+                              [ngClass]="{
+                                'is-invalid':
+                                  submitted && user && !user.username
+                              }"
+                              placeholder="Enter email id"
+                              [(ngModel)]="user.username"
+                              [disabled]="false"
+                              name="emailID"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <div class="mb-3">
+                          <label class="form-label" for="gen-info-email-input"
+                            >Phone no *</label
+                          >
+                          <div class="input-group">
+                            <span class="input-group-text ri-phone-line"></span>
+                            <input
+                              type="number"
+                              class="form-control"
+                              id="gen-info-ph-input"
+                              [ngClass]="{
+                                'is-invalid':
+                                  submitted && user && !user.mobileno
+                              }"
+                              maxlength="13"
+                              minlength="10"
+                              placeholder="Enter phone no."
+                              [(ngModel)]="user.mobileno"
+                              (keyup)="validateProfileCompletion()"
+                              name="phone"
+                              required
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="mb-3">
+                          <label class="form-label" for="gen-info-ln-input"
+                            >LinkedIn profile url
+                          </label>
+                          <div class="input-group">
+                            <span
+                              class="input-group-text ri-linkedin-box-line"
+                            ></span>
+                            <!-- <input
+                              type="text"
+                              class="form-control"
+                              id="gen-info-ln-input"
+                              (keyup)="validateProfileCompletion()"
+                              [ngClass]="{
+                                'is-invalid':
+                                  submitted && user && !user.linkedIn
+                              }"
+                              placeholder="Enter linkedIn profile url"
+                              [(ngModel)]="user.linkedIn"
+                              name="linkedin"
+                            /> -->
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="gen-info-ln-input"
+                              (keyup)="validateProfileCompletion()"
+                              [ngClass]="{
+                                'is-invalid':
+                                  (submitted && user && !user.linkedIn) ||
+                                  (!linkedInInput.valid &&
+                                    linkedInInput.touched)
+                              }"
+                              placeholder="Enter LinkedIn profile url"
+                              [(ngModel)]="user.linkedIn"
+                              name="linkedin"
+                              #linkedInInput="ngModel"
+                              [pattern]="linkedInPattern"
+                              required
+                            />
+                            <!-- Error message for invalid LinkedIn URL -->
+                            <div
+                              *ngIf="
+                                linkedInInput.invalid && linkedInInput.touched
+                              "
+                              class="text-danger"
+                            >
+                              Please enter a valid LinkedIn profile URL.
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row" *ngIf="userRole == 'Client'">
+                      <div class="col-lg-6">
+                        <div class="mb-3">
+                          <label class="form-label" for="gen-info-email-input"
+                            >Client Name *</label
+                          >
+                          <div class="input-group">
+                            <span class="input-group-text ri-phone-line"></span>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="gen-info-clientName-input"
+                              [ngClass]="{
+                                'is-invalid':
+                                  submitted && user && !user.companyName
+                              }"
+                              maxlength="13"
+                              minlength="10"
+                              placeholder="Enter company name."
+                              [(ngModel)]="user.companyName"
+                              (keyup)="validateProfileCompletion()"
+                              name="phone"
+                              required
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="mb-3">
+                          <label class="form-label" for="gen-info-ln-input"
+                            >Designation
+                          </label>
+                          <div class="input-group">
+                            <span
+                              class="input-group-text ri-linkedin-box-line"
+                            ></span>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="gen-info-ln-input"
+                              (keyup)="validateProfileCompletion()"
+                              [ngClass]="{
+                                'is-invalid':
+                                  submitted && user && !user.designation
+                              }"
+                              placeholder="Enter Designation"
+                              [(ngModel)]="user.designation"
+                              name="linkedin"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row" *ngIf="false">
+                      <div class="col-lg-6">
+                        <div class="mb-3">
+                          <label class="form-label" for="gen-info-dob-input"
+                            >DOB
+                          </label>
+                          <div class="input-group">
+                            <span
+                              class="input-group-text ri-cake-2-line"
+                            ></span>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="gen-info-dob-input"
+                              showWeekNumbers="false"
+                              bsDatepicker
+                              (ngModelChange)="validateProfileCompletion()"
+                              [ngClass]="{
+                                'is-invalid': submitted && user && !user.dob
+                              }"
+                              [bsConfig]="bsConfig"
+                              [(ngModel)]="user.dob"
+                              name="dob"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- </div> -->
+                    <!-- wizard-tab -->
+                    <div class="d-flex align-items-start gap-3 mt-4">
+                      <button
+                        type="button"
+                        class="btn btn-success btn-label right ms-auto nexttab nexttab"
+                        data-nexttab="pills-info-desc-tab"
+                        [disabled]="!completedStep1"
+                        cdkStepperNext
+                        (click)="saveProfile(); callParent()"
+                        (mouseover)="validateProfileCompletion()"
+                      >
+                        <i
+                          class="bi bi-check2-all label-icon align-middle fs-xs fs-16 ms-2"
+                        ></i
+                        >Submit
+                      </button>
+                    </div>
+                  </div>
+                </cdk-step>
+                <!-- Personal Details End here -->
+              </ng-stepper>
+            </div>
+          </form>
+        </div>
+        <!-- end card body -->
+      </div>
+      <!-- end card -->
+    </div>
+  </div>
+</div>

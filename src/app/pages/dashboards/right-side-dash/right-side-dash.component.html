@@ -1,0 +1,224 @@
+<!--<div class="row gy-4" *ngIf="commonService.rbac['my-wip']">                    
+    <div class="col-xxl-12 col-md-12">
+        <div class="card bg-soft-light overflow-hidden mb-0">
+            <div class="position-absolute bottom-0" style="opacity: 0.5;">
+              <img src="assets/images/effect-pattern/pattern-2.svg" alt="" class="img-fluid">
+            </div><br>
+            <div class="row gy-4">                    
+                    <div class="col-xxl-12 col-md-12 p-3">
+                        <i class=" ri-line-chart-line" style="font-size: 30px; color: #ffcc00" title='My work in progress'></i>
+                        <h5>Work In Progress</h5>
+                        <hr>
+                    </div>
+                </div>
+            <div class="card-body position-relative">
+                <app-my-wip></app-my-wip>
+            </div>
+        </div>
+    </div>
+</div><br> -->
+<div class="row gy-4" *ngIf="commonService.rbac['mandates-on-focus']">
+  <div class="col-xxl-12 col-md-12">
+    <div class="card bg-soft-light overflow-hidden mb-0">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-xxl-12 col-md-12 px-2">
+            <!--<i class="ph-binoculars-thin" style="font-size: 30px; color: #ffcc00; font-weight: bolder" title='Mandates on focus'></i>-->
+            <h5>Mandates</h5>
+            <span class="text-muted">Priority of this Week</span>
+            <hr />
+          </div>
+        </div>
+        <div *ngIf="commonService.user.confirmedUser == 1">
+          <app-focus-mandates></app-focus-mandates>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="card bg-soft-light overflow-hidden mb-0">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-xxl-12 col-md-12 px-2">
+            <!--<i class="ph-binoculars-thin" style="font-size: 30px; color: #ffcc00; font-weight: bolder" title='Mandates on focus'></i>-->
+            <h5>Pieworks News</h5>
+            <!-- <span class="text-muted">Priority of this week</span> -->
+            <hr />
+            <ul *ngFor="let news of reversedFeeds">
+              <li>{{ news?.description }}</li>
+            </ul>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+
+    <br />
+    <div class="card bg-soft-light overflow-hidden mb-2">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-xxl-12 col-md-12 px-2">
+            <h5>Today’s Tasks</h5>
+            <hr />
+            <div *ngFor="let task of assignedTask">
+              <div class="card border">
+                <div class="card-body">
+                  <div class="d-flex gap-4 flex-wrap">
+                    <!-- icon of company -->
+                    <div>
+                      <input
+                        type="checkbox"
+                        name="check"
+                        id="check"
+                        (change)="selectedTask = task; onCompletingTask()"
+                      />
+                    </div>
+                    <!-- role and company name -->
+                    <div class="align-self-center flex-grow-1">
+                      <span class="text-dark fw-bold">{{
+                        task.taskTitle
+                      }}</span>
+                      <p class="text-muted m-0">
+                        <!-- {{ req.orgName }} -->
+                        {{ task.taskDescription }}
+                      </p>
+                    </div>
+                    <div>
+                      <i
+                        class="bi bi-person-plus fs-2xl clickable"
+                        (click)="selectedTask = task; showAddCm()"
+                      ></i>
+                      <br>
+                      
+                    </div>
+                  </div>
+                  <!-- <div *ngFor="let img of task.users" class="" >
+                    <div class="d-flex justify-content-center">
+                      <img
+                      src="{{ commonService.getPicUrl(img.userId.profilepic) }}"
+                      alt="img-01.jpg"
+                      class="rounded-circle border d-flex "
+                      style="height: 20px; width: 20px;"
+                    />
+                    </div>
+                    <span style="top: -5px;">+{{task.users.length-2}}</span>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+            <div *ngIf="commonService.user.confirmedUser == 1">
+              <div
+                class="d-flex gap-1 flex-wrap text-primary clickable"
+                (click)="newTask = true"
+                *ngIf="!newTask"
+              >
+                <!-- icon of company -->
+                <div>
+                  <i class="ri-calendar-check-line fs-4xl"></i>
+                </div>
+                <!-- role and company name -->
+                <div class="align-self-center">Add Task..</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+
+    <div class="card" *ngIf="newTask">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-xl-12">
+            <input
+              type="text"
+              name="task_title"
+              placeholder="Task 'to do' *"
+              id="task_title"
+              class="form-control mb-1"
+              style="border-top: 0; border-left: 0; border-right: 0"
+              [(ngModel)]="task.taskTitle"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-12">
+            <input
+              type="text"
+              name="task_title"
+              placeholder="Task Description *"
+              id="task_title"
+              class="form-control"
+              style="border-top: 0; border-left: 0; border-right: 0"
+              [(ngModel)]="task.taskDescription"
+            />
+          </div>
+        </div>
+        <div class="d-flex justify-content-center gap-4 mt-1">
+          <div class="align-self-center">
+            <button class="btn btn-primary" (click)="showAddCm()">
+              <i class="bi bi-person-plus fs-md clickable"></i>
+            </button>
+          </div>
+          <div class="align-self-center">
+            <button class="btn btn-primary" (click)="saveTask()">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Model box for assigning  -->
+<div
+  bsModal
+  #addCM="bs-modal"
+  class="modal bs-example-modal-sm fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        *ngIf="true"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <h5 class="modal-title" id="myLargeModalLabel"></h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="addCM.hide()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <ng-select
+            [items]="users"
+            [multiple]="true"
+            [searchFn]="memberLocalSearch"
+            (search)="onMemberSearch($event)"
+            bindLabel="name"
+            [(ngModel)]="userAssigned"
+            class="form-control"
+            [clearable]="true"
+            placeholder="Select community member"
+            style="padding: 0"
+          >
+          </ng-select>
+          <br />
+          <div class="text-center">
+            <button
+              type="button"
+              class="btn rounded-pill btn-info text-center"
+              (click)="saveTask()"
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+</div>

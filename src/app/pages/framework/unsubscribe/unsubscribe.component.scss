@@ -1,0 +1,53 @@
+.buttons {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	align-items: center;
+	button {
+		padding: 10px 30px;
+		font-size: 20px;
+		background-color: #d960ae;
+		border: 0;
+		cursor: pointer;
+		border-radius: 4px;
+		letter-spacing: 0.1em;
+		color: #ffffff;
+		margin-right: 20px;
+		margin-bottom: 15px;
+		transition: all 0.25s ease-in-out;
+		&:hover {
+			background-color: darken(#d960ae, 10%);
+		}
+		&#cancel {
+			margin-right: 0;
+			color: #333;
+			background-color: #eddfeb;
+			&:hover {
+				background-color: darken(#eddfeb, 10%);
+			}
+		}
+		
+		&:focus {
+			border: none;
+			outline: 0;
+		}
+	}
+}
+
+#unsubscribe-body{
+   
+	background: #fefefe;
+	color: #373737;
+	margin: 0;
+	padding: 0;
+	background: #543093;
+	background: -moz-linear-gradient(45deg, #543093 32%, #d960ae 100%);
+	background: -webkit-linear-gradient(45deg, #543093 32%, #d960ae 100%);
+	background: linear-gradient(45deg, #543093 32%, #d960ae 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(
+			startColorstr="#543093",
+			endColorstr="#d960ae",
+			GradientType=1
+		);
+}

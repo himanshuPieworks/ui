@@ -1,0 +1,231 @@
+<app-breadcrumbs [breadcrumbItems]="breadCrumbItems"> </app-breadcrumbs>
+<br />
+
+<!-- tab for adding  start -->
+<div class="row">
+  <div class="col-lg">
+    <div
+      class="card"
+      style="background-image: url('assets/images/background.png')"
+    >
+      <div class="card-body">
+        <div class="row align-items-center gy-3">
+          <div class="col-6">
+            <h6 class="card-tooltip fs-2xl mb-0">
+              Roles<span
+                class="badge bg-secondary-subtle text-secondary align-baseline ms-1"
+              ></span>
+            </h6>
+          </div>
+          <!--end col-->
+          <div class="col-auto ms-auto">
+            <!-- button for popup  -->
+            <button
+              class="btn btn-primary me-1 rounded-pill default-btn-width"
+              (click)="addRoles.show()"
+            >
+              <i class="bi bi-plus align-baseline fs-2xl"></i></button
+            >&nbsp;
+          </div>
+          <!--end col-->
+        </div>
+        <!--end row-->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- tab for adding and copy link and filter end -->
+
+<div class="row" id="prospect-list">
+  <div *ngFor="let role of roles" class="col-xxl-4 col-lg-4 col-md-6 p-2">
+    <div
+      class="card real-estate-grid-widgets card-animate"
+      style="height: 100%"
+    >
+      <div class="card-body">
+        <div class="d-flex gap-4 flex-wrap">
+          <!-- icon of role-->
+          <div
+            class="rounded-circle"
+            style="height: 30px; width: 30px"
+            [ngStyle]="{ 'background-color': role.colorValue }"
+          >
+            <div class="d-flex justify-content-center align-item-center">
+              <div class="mt-1">
+                {{ role.shortName }}
+              </div>
+            </div>
+          </div>
+          <!-- role name -->
+          <div class="align-self-center">
+            <h5>
+              {{ role.name ? role.name : "Role Name - NA" }}
+            </h5>
+          </div>
+        </div>
+
+        <hr class="mt-1" />
+        <div dropdown class="dropdown dropdown-real-estate">
+          <div
+            style="min-width: inherit"
+            dropdownToggle
+            class="fs-2xl"
+            type="button"
+          >
+            <i class="bi bi-three-dots-vertical"></i>
+          </div>
+          <div *bsDropdownMenu class="dropdown-menu dropdown-menu-end">
+            <li>
+              <a
+                (click)="removeRole(role)"
+                class="dropdown-item edit-list"
+                href="javascript:void(0);"
+                >Delete Role</a
+              >
+            </li>
+            <li>
+              <a
+                (click)="
+                  selectedRole = role; loadRoleMembers(); membersModal.show()
+                "
+                class="dropdown-item edit-list"
+                href="javascript:void(0);"
+                >Show Members</a
+              >
+            </li>
+          </div>
+        </div>
+        <div>
+          <p>
+            {{ role.description ? role.description : "No Description- NA" }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  New Role  from here pop up is calling  -->
+<div
+  bsModal
+  #addRoles="bs-modal"
+  class="modal bs-example-modal-lg fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        *ngIf="true"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <p class="modal-title" id="myLargeModalLabel"></p>
+        <button
+          type="button"
+          class="btn-close clickable btn-close-white"
+          (click)="addRoles.hide()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="roleName" class="form-label">Role Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="roleName"
+            id="roleName"
+            placeholder="Role Name"
+            [(ngModel)]="payload.name"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="clubName" class="form-label">Role Shortcut</label>
+          <input
+            type="text"
+            class="form-control"
+            name="clubName"
+            id="clubName"
+            placeholder="Role Shortcut"
+            [(ngModel)]="payload.shortName"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="clubName" class="form-label">Role Color</label>
+          <input
+            type="color"
+            class="form-control"
+            name="clubName"
+            id="clubName"
+            placeholder="Role Name"
+            [(ngModel)]="payload.colorValue"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            name="description"
+            id="description"
+            placeholder="Description"
+            [(ngModel)]="payload.description"
+          />
+        </div>
+
+        <button type="submit" class="btn btn-success" (click)="saveRoles()">
+          Submit
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- New Role prospect card start -->
+
+<!--  members   -->
+<div
+  bsModal
+  #membersModal="bs-modal"
+  class="modal bs-example-modal-sm fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        *ngIf="true"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <p class="modal-title" id="myLargeModalLabel">Members</p>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          (click)="membersModal.hide()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="roleMembers && roleMembers?.length === 0">
+          <p>There are no members.</p>
+        </div>
+        <div *ngFor="let m of roleMembers">
+          <div class="d-flex gap-3 mb-1">
+            <div class="align-self-center">
+              <img src="{{ commonService.getPicUrl(m.user.profilepic) }}" alt="" style="width: 40px; height:40px;" class="rounded-circle">
+            </div>
+            <div>
+              <h6 class="mb-0">{{ m.user.name }}</h6>
+              <span>{{commonService.convertToTitleCase(m.user.userrole)}}</span>
+            </div>
+          </div>
+          <!-- <h6>{{ m.user.name }} </h6> -->
+        </div>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- New Club prospect card start -->

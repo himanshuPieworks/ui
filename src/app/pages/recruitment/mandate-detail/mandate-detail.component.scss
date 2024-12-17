@@ -1,0 +1,65 @@
+
+.rounded {
+    border-radius: 30px !important;
+}
+::ng-deep .carousel-control-next {
+    display: none !important;
+}
+::ng-deep .carousel-control-prev {
+    display: none !important;
+}
+::ng-deep .mat-menu-panel {
+  max-height: none !important;
+}
+
+.badge-label:before {
+    content: "";
+    position: absolute;
+    border: 10px solid transparent;
+    left: -18px;
+    top: 0;
+  }
+  
+  .badge-label:before {
+    border-right-color: #EF6471; /* Color for Hot status */
+  }
+
+  /* share-modal.component.css */
+.modal-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.share-icons {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.share-icons a img {
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.share-icons a img:hover {
+  transform: scale(1.1);
+}
+
+.instagram-share {
+  margin-top: 20px;
+}
+
+textarea {
+  width: 100%;
+  
+}
+
+ngx-editor {
+  height: auto;
+  max-height: 400px; /* Adjust the max height as needed */
+  overflow-y: auto;
+}
+::ng-deep .NgxEditor {
+  border: none !important;
+}

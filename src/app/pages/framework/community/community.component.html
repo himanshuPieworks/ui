@@ -1,0 +1,1509 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs
+  
+  [breadcrumbItems]="breadCrumbItems"
+  [title]="'Community'"
+></app-breadcrumbs>
+<br />
+<!-- End Breadcrumbs -->
+<div class="row">
+  <div class="col-lg">
+    <div
+      class="card"
+      style="background-image: url('assets/images/background.png')"
+    >
+      <div class="card-body">
+        <div class="row align-items-center gy-3">
+          <div class="col-6">
+            <h6 class="card-tooltip fs-2xl mb-0">
+              Total {{ memberType
+              }}<span class="badge text-dark fs-2xl align-baseline ms-1">{{
+                totalEntries
+              }}</span>
+            </h6>
+          </div>
+          <!--end col-->
+          <div class="col-auto ms-auto">
+            <button
+              class="btn btn-primary myButton rounded-pill default-btn-width"
+              (click)="copyEmailIds()"
+              tooltip="Copy Email IDs"
+              *ngIf="commonService.rbac['copy-cms-email-id']"
+            >
+              <i class="bx bx-envelope align-baseline fs-2xl"></i>
+            </button>
+            &nbsp;
+            <button
+              class="btn btn-primary myButton rounded-pill default-btn-width"
+              (click)="fillMemberTypes(); filterWindow.show()"
+            >
+              <i
+                class="bi bi-funnel align-baseline fs-2xl"
+                tooltip="show filters"
+              ></i>
+            </button>
+            &nbsp;
+            <button
+              class="btn btn-primary myButton rounded-pill default-btn-width"
+              (click)="clearFilters()"
+            >
+              <i
+                class="ri-filter-off-line align-baseline fs-2xl"
+                tooltip="clear filters"
+              ></i>
+            </button>
+          </div>
+          <!--end col-->
+          <!--Search Input-->
+          <div class="col-xl-3">
+            <div class="form-group has-search">
+              <span class="bi bi-search fs-2xl form-control-feedback"></span>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Search"
+                maxlength="100"
+                [(ngModel)]="searchText"
+                (keyup)="filterChanged()"
+              />
+            </div>
+          </div>
+        </div>
+        <!--end row-->
+      </div>
+    </div>
+
+    <div class="row" id="property-list">
+      <div
+        *ngFor="let m of members; let i = index"
+        class="col-xxl-3 col-lg-3 col-md-4 p-2"
+      >
+        <div
+          class="card real-estate-grid-widgets card-animate px-3 pt-3"
+          style="height: 100%"
+        >
+          <!--  style="background-color{{getRandomColor()}}" -->
+          <div class="pt-2" (click)="clickedOnMember(m)">
+            <div class="row gy-4 d-flex">
+              <div style="width: 35%" class="position-relative">
+                <img
+                  src="{{ commonService.getPicUrl(m.user.profilepic) }}"
+                  alt="img-01.jpg"
+                  class="avatar-md rounded-pill"
+                  style="
+                    object-fit: contain !important;
+                    height: 60px;
+                    width: 60px;
+                  "
+                />
+                <span
+                  class="position-absolute translate-middle"
+                  tooltip="{{ m.user.onlineStatus }}"
+                  [ngClass]="getOnlineStatusIcon(m.user.onlineStatus)"
+                  [ngStyle]="
+                    commonService.isMobileDevice
+                      ? { 'font-size': '15px', top: '10px', right: '38px' }
+                      : { 'font-size': '15px', top: '10px', right: '21px' }
+                  "
+                ></span>
+              </div>
+              <div style="width: 55%; align-items: center" class="text-center">
+                <h4>{{ m.user.name }}</h4>
+                <i
+                  [ngClass]="{
+                    'bx bxs-star': m.starRating > 0,
+                    'ri-star-line': m.starRating < 0
+                  }"
+                  [ngStyle]="{
+                    color: m.starRating >= 0 ? '#ffcc00' : '#C2C6CE'
+                  }"
+                ></i>
+                <i
+                  [ngClass]="{
+                    'bx bxs-star': m.starRating >= 2,
+                    'ri-star-line': m.starRating < 2
+                  }"
+                  [ngStyle]="{
+                    color: m.starRating >= 2 ? '#ffcc00' : '#C2C6CE'
+                  }"
+                ></i>
+                <i
+                  [ngClass]="{
+                    'bx bxs-star': m.starRating >= 3,
+                    'ri-star-line': m.starRating < 3
+                  }"
+                  [ngStyle]="{
+                    color: m.starRating >= 3 ? '#ffcc00' : '#C2C6CE'
+                  }"
+                ></i>
+                <i
+                  [ngClass]="{
+                    'bx bxs-star': m.starRating >= 4,
+                    'ri-star-line': m.starRating < 4
+                  }"
+                  [ngStyle]="{
+                    color: m.starRating >= 4 ? '#ffcc00' : '#C2C6CE'
+                  }"
+                ></i>
+                <i
+                  [ngClass]="{
+                    'bx bxs-star': m.starRating >= 5,
+                    'ri-star-line': m.starRating < 5
+                  }"
+                  [ngStyle]="{
+                    color: m.starRating >= 5 ? '#ffcc00' : '#C2C6CE'
+                  }"
+                ></i>
+              </div>
+              <div
+                style="width: 5%; text-align: right; white-space: pre-line"
+                class="vertical-align"
+                *ngIf="
+                  amIAceMaker ||
+                  commonService.rbac['community-member-tile-menu']
+                "
+              >
+                <div dropdown class="">
+                  <!--<ul class="dropdown-menu dropdown-menu-end">-->
+                  <div dropdown class="">
+                    <button
+                      style="min-width: inherit; margin-top: -80px"
+                      dropdownToggle
+                      class="btn btn-icon btn-sm rounded-pill"
+                      type="button"
+                      (click)="fillMenuOptions(m)"
+                    >
+                      <i
+                        class="bi bi-three-dots-vertical"
+                        style="font-size: 1.125rem"
+                      ></i>
+                    </button>
+                    <ul *bsDropdownMenu class="dropdown-menu dropdown-menu-end">
+                      <li
+                        *ngFor="let item of menuOptions"
+                        (click)="handleMenuClick(item)"
+                      >
+                        <a
+                          class="dropdown-item edit-list"
+                          href="javascript:void(0);"
+                          >{{ item }}</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                  <!--</ul>-->
+                </div>
+              </div>
+              <hr class="mb-0 mt-2" />
+            </div>
+          </div>
+          <carousel
+            [noWrap]="true"
+            [interval]="0"
+            class="carousel carousel-dark slide"
+            (activeSlideChange)="changedCarosel(m, $event)"
+          >
+            <div class="carousel-inner">
+              <slide class="carousel-item active" data-bs-interval="10000">
+                <div
+                  class="card-body p-2"
+                  (click)="clickedOnMember(m)"
+                  *ngIf="m.acceptanceByAceMaker == 1"
+                >
+                  <ul
+                    class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+                  >
+                    <li tooltip="" style="width: 100%">
+                      <div class="d-flex">
+                        <div style="width: 6%" *ngIf="false">
+                          <i
+                            class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                            style="font-size: 15px"
+                          ></i>
+                        </div>
+                        <div style="width: 47%">
+                          <span class="text-muted">Clubs</span>
+                          <div class="d-flex">
+                            <div *ngFor="let club of m.selectedClubArray">
+                              <i
+                                class="{{ club.icon }}"
+                                tooltip="{{ club.name }}"
+                              ></i
+                              >&nbsp;&nbsp;
+                            </div>
+                            <p
+                              class="mb-0 text-dark"
+                              *ngIf="m.selectedClubArray?.length == 0"
+                            >
+                              N/A
+                            </p>
+                          </div>
+                        </div>
+                        <div style="width: 47%; text-align: right">
+                          <span class="text-muted">Job Families</span>
+                          <p class="mb-0 text-dark">
+                            {{ m.jobFamilies ? m.jobFamilies : "N/A" }}
+                          </p>
+                          <!-- <p class="text-dark mb-0 ">Sales</p>
+                                                    <p class="text-dark mb-0 ">Product</p>
+                                                    <p class="text-dark mb-0 ">Engineering</p> -->
+                        </div>
+                      </div>
+                    </li>
+                    <li tooltip="" style="width: 100%">
+                      <div class="d-flex">
+                        <div style="width: 6%" *ngIf="false">
+                          <i
+                            class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                            style="font-size: 15px"
+                          ></i>
+                        </div>
+                        <div style="width: 47%">
+                          <span class="text-muted">Piecoins Earned</span>
+                          <p class="mb-0 text-dark">
+                            {{ m?.piecosTillDate ? m?.piecosTillDate : "0" }}
+                          </p>
+                        </div>
+
+                        <div style="width: 47%; text-align: right">
+                          <span class="text-muted">Role</span>
+                          <div class="d-flex gap-1 justify-content-end">
+                            <div *ngFor="let role of m.selectedRoleArray">
+                              <div
+                                style="width: 20px; height: 20px"
+                                class="rounded-circle text-center"
+                                [ngStyle]="{
+                                  'background-color': role.colorValue
+                                }"
+                                tooltip="{{ role.name }}"
+                              >
+                                {{ role.shortName }}
+                              </div>
+                              &nbsp;&nbsp;
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li tooltip="" style="width: 100%">
+                      <div class="d-flex">
+                        <div style="width: 6%" *ngIf="false">
+                          <i
+                            class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                            style="font-size: 15px"
+                          ></i>
+                        </div>
+                        <div style="width: 47%">
+                          <span class="text-muted" tooltip="s2c/Disc"
+                            >Economy</span
+                          >
+                          <p class="mb-0 text-dark">
+                            {{
+                              m?.sentToClient
+                                ? commonService.restrictToTwoDecimals(
+                                    (m?.sentToClient / m.discoveries) * 100
+                                  ) + "%"
+                                : "N/A"
+                            }}
+                          </p>
+                        </div>
+                        <div style="width: 47%; text-align: right">
+                          <span class="text-muted" tooltip="Intrv/S2C"
+                            >Strike Rate</span
+                          >
+                          <p class="mb-0 text-dark">
+                            {{
+                              m?.interviewed
+                                ? commonService.restrictToTwoDecimals(
+                                    (m?.interviewed / m?.sentToClient) * 100
+                                  ) + "%"
+                                : "N/A"
+                            }}
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div
+                  class="card-body p-2"
+                  (click)="clickedOnMember(m)"
+                  *ngIf="m.acceptanceByAceMaker != 1"
+                >
+                  <ul
+                    class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+                  >
+                    <li tooltip="" style="width: 100%">
+                      <div class="d-flex">
+                        <div style="width: 6%" *ngIf="false">
+                          <i
+                            class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                            style="font-size: 15px"
+                          ></i>
+                        </div>
+                        <div
+                          style="width: 47%"
+                          *ngIf="commonService.rbac['cm-mobile-no']"
+                        >
+                          <span class="text-muted">Phone No.</span>
+                          <p class="mb-0 text-dark">
+                            {{ m?.user?.mobileno ? m?.user?.mobileno : "N/A" }}
+                          </p>
+                        </div>
+                        <!-- <div style="width: 47%; text-align: right">
+                                                    <span class="text-muted">Email</span>
+                                                    <p class=" mb-0 text-dark">
+                                                        {{ m?.user?.username }}
+                                                    </p>
+                                                </div> -->
+                        <div style="width: 47%; text-align: right">
+                          <span class="text-muted">Linkedin</span>
+                          <p class="mb-0 text-dark">
+                            <a
+                              href="{{ m?.user?.linkedIn }}"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              >Profile</a
+                            >
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                  <ul
+                    class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+                  >
+                    <li tooltip="" style="width: 100%">
+                      <div class="d-flex">
+                        <div style="width: 6%" *ngIf="false">
+                          <i
+                            class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                            style="font-size: 15px"
+                          ></i>
+                        </div>
+                        <div
+                          style="width: 100%"
+                          *ngIf="commonService.rbac['cm-email-id']"
+                        >
+                          <span class="text-muted">Email</span>
+                          <p class="mb-0 text-dark">
+                            {{ m?.user?.username }}
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                  <ul
+                    class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+                  >
+                    <li tooltip="" style="width: 100%">
+                      <div class="d-flex">
+                        <div style="width: 6%" *ngIf="false">
+                          <i
+                            class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                            style="font-size: 15px"
+                          ></i>
+                        </div>
+                        <div style="width: 47%">
+                          <span class="text-muted">Location</span>
+
+                          <p class="mb-0 text-dark">
+                            {{
+                              m?.user?.currentLocation
+                                ? m?.user?.currentLocation
+                                : "N/A"
+                            }}
+                          </p>
+                        </div>
+                        <div style="width: 47%; text-align: right">
+                          <span class="text-muted">Created On</span>
+                          <p class="mb-0 text-dark">
+                            {{
+                              commonService.changeMysqlToNormalDate(
+                                m?.user?.createdOn
+                              )
+                            }}
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </slide>
+              <slide class="carousel-item active" data-bs-interval="10000">
+                <div class="card-body p-2" (click)="clickedOnMember(m)">
+                  <ul
+                    class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+                  >
+                    <li tooltip="" style="width: 100%">
+                      <div class="d-flex">
+                        <div style="width: 6%" *ngIf="false">
+                          <i
+                            class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                            style="font-size: 15px"
+                          ></i>
+                        </div>
+                        <div style="width: 47%">
+                          <span class="text-muted">Total Discoveries</span>
+                          <p class="mb-0 text-dark">
+                            {{ m.discoveries ? m.discoveries : "N/A" }}
+                          </p>
+                        </div>
+                        <div style="width: 47%; text-align: right">
+                          <span class="text-muted">Months Old</span>
+                          <p class="mb-0 text-dark">
+                            {{
+                              m.memberSince
+                                ? commonService.ageInMonths(m.memberSince)
+                                : "N/A"
+                            }}
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                    <li tooltip="" style="width: 100%">
+                      <div class="d-flex">
+                        <div style="width: 6%" *ngIf="false">
+                          <i
+                            class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                            style="font-size: 15px"
+                          ></i>
+                        </div>
+                        <div style="width: 47%">
+                          <span class="text-muted">Stage</span>
+                          <p class="mb-0 text-dark">
+                            {{ m.grade?.name }}
+                          </p>
+                        </div>
+                        <div style="width: 47%; text-align: right">
+                          <span class="text-muted">Money Earned</span>
+                          <p class="mb-0 text-dark">
+                            {{
+                              m?.earningsTillDate ? m?.earningsTillDate : "N/A"
+                            }}
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+
+                    <li tooltip="" style="width: 100%">
+                      <div class="d-flex">
+                        <div style="width: 6%" *ngIf="false">
+                          <i
+                            class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                            style="font-size: 15px"
+                          ></i>
+                        </div>
+                        <div style="width: 47%">
+                          <span class="text-muted">Northstar</span>
+                          <p class="mb-0 text-dark">
+                            {{ m.weeklyTarget ? m.weeklyTarget * 5 : "N/A" }}
+                          </p>
+                        </div>
+                        <div style="width: 47%; text-align: right">
+                          <span></span>
+                          <p class="text-muted mb-0">Median salary</p>
+                          <p class=" mb-0 text-dark">
+                            {{
+                              m?.medianSalary ? m?.medianSalary  : "N/A"
+                            }}
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </slide>
+              <slide class="carousel-item active" data-bs-interval="10000">
+                <div class="card-body p-2" (click)="clickedOnMember(m)">
+                  <ul
+                    class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+                  >
+                    <li tooltip="" style="width: 100%">
+                      <div class="d-flex">
+                        <div style="width: 6%" *ngIf="false">
+                          <i
+                            class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                            style="font-size: 15px"
+                          ></i>
+                        </div>
+                        <div style="width: 47%">
+                          <span class="text-muted">Joined talents</span>
+                          <p class="mb-0 text-dark">
+                            {{ m?.joinedTalents ? m?.joinedTalents : "N/A" }}
+                          </p>
+                        </div>
+                        <div style="width: 47%; text-align: right" *ngIf="commonService.rbac['cm-mobile-no']">
+                          <span class="text-muted">LinkedIn</span>
+                          <p class="mb-0 text-dark">
+                            <a
+                              href="{{ m?.user?.linkedIn }}"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              >Profile</a
+                            >
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                  <ul
+                    class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+                  >
+                    <li tooltip="" style="width: 100%">
+                      <div class="d-flex">
+                        <div style="width: 6%" *ngIf="false">
+                          <i
+                            class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                            style="font-size: 15px"
+                          ></i>
+                        </div>
+                        <div
+                          style="width: 47%"
+                          *ngIf="commonService.rbac['cm-mobile-no']"
+                        >
+                          <span class="text-muted">Phone No.</span>
+                          <p class="mb-0 text-dark">
+                            {{ m?.user?.mobileno ? m?.user?.mobileno : "N/A" }}
+                          </p>
+                        </div>
+                        <!-- <div style="width: 47%; text-align: right">
+                                                    <span class="text-muted">Email</span>
+                                                    <p class=" mb-0 text-dark">
+                                                        {{ m?.user?.username }}
+                                                    </p>
+                                                </div> -->
+                        <div style="width: 47%; text-align: right" *ngIf="commonService.rbac['cm-mobile-no']">
+                          <span class="text-muted">Connect</span>
+                          <p class=" mb-0 text-dark">
+                           <i class="bi bi-whatsapp fs-2xl clickable" (click)="whatsappMessage(m.user)" style="color: rgb(60, 215, 60)"></i> &nbsp;&nbsp;<i class="bi bi-telephone-fill fs-2xl clickable" (click)="phoneCall(m.user)" style="color: #357DE8"></i>
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                  <ul
+                    class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+                  >
+                    <li
+                      tooltip=""
+                      style="width: 100%"
+                      *ngIf="commonService.rbac['cm-email-id']"
+                    >
+                      <div class="d-flex">
+                        <div style="width: 6%" *ngIf="false">
+                          <i
+                            class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                            style="font-size: 15px"
+                          ></i>
+                        </div>
+                        <div style="width: 100%">
+                          <span class="text-muted">Email</span>
+                          <p class="mb-0 text-dark">
+                            {{ m?.user?.username }}
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </slide>
+            </div>
+          </carousel>
+          <!-- Peer rating hiding temporarily
+                    new requirement is . Peer rating to be handled in different scale from 1 to 4 -->
+          <button
+            *ngIf="false && activateNpsForm && m.acceptanceByAceMaker == 1"
+            (click)="selectedMember = m; showFeedbackWindow()"
+            class="btn btn-outline-primary w-100"
+            style="height: 50px"
+          >
+            feedback
+          </button>
+
+          <div
+          
+            class="d-flex align-items-center gap-2"
+            *ngIf="acceptanceByAceMakerValues == '0,6,7,8,9,10' && false"
+          >
+            <div class="progress progress-step-arrow progress-info mb-4 w-100">
+              <a
+              *ngIf="false"
+                href="javascript:void(0);"
+                class="progress-bar {{
+                  m.verified ? 'active' : 'pending'
+                }}  d-none d-md-inline-block"
+                role="progressbar"
+                style="width: 100%"
+                tooltip="click to mark as validated"
+                aria-valuenow="100"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                (click)="
+                  selectedMember = m;
+                  confirmMenu(
+                    'Confirm',
+                    'Are you sure you want to mark ' +
+                      m.user.name +
+                      ' as validated ?',
+                    markAsVerified
+                  )
+                "
+                >Val</a
+              >
+              <a
+              *ngIf="false"
+                href="javascript:void(0);"
+                class="progress-bar {{
+                  m.obCall == 'true' ? 'active' : 'pending'
+                }}  d-none d-md-inline-block"
+                role="progressbar"
+                style="width: 100%"
+                tooltip="click to mark as onboarding call completed"
+                aria-valuenow="100"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                (click)="
+                  selectedMember = m;
+                  confirmMenu(
+                    'Confirm',
+                    'Are you sure you want to mark ' +
+                      m.user.name +
+                      ' as onboarding call completed ?',
+                    markAsObCallCompleted
+                  )
+                "
+                >OB Call</a
+              >
+              <a
+              *ngIf="false"
+                href="javascript:void(0);"
+                class="progress-bar {{
+                  m.acceptanceByAceMaker == 9 ||
+                  m.acceptanceByAceMaker == 8 ||
+                  m.acceptanceByAceMaker == 2 ||
+                  m.acceptanceByAceMaker == 1
+                    ? 'active'
+                    : 'pending'
+                }} d-none d-md-inline-block"
+                role="progressbar"
+                style="width: 100%"
+                aria-valuenow="30"
+                aria-valuemin="0"
+                (click)="
+                  selectedMember = m; kycModal.show(); loadKyc(m.user.id)
+                "
+                aria-valuemax="100"
+                tooltip="click to view kyc documents"
+              >
+                KYC</a
+              >
+              <a
+                href="javascript:void(0);"
+                class="progress-bar {{
+                  m.acceptanceByAceMaker == 9 ||
+                  m.acceptanceByAceMaker == 8 ||
+                  m.acceptanceByAceMaker == 2 ||
+                  m.acceptanceByAceMaker == 1
+                    ? 'active'
+                    : 'active'
+                }} d-none d-md-inline-block"
+                role="progressbar"
+                style="width: 100%"
+                tooltip="Click to mark as verified and allow user to the community."
+                aria-valuenow="20"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                (click)="
+                  selectedMember = m;
+                  m.acceptanceByAceMaker == 9 ||
+                  m.acceptanceByAceMaker == 8 ||
+                  m.acceptanceByAceMaker == 2 ||
+                  m.acceptanceByAceMaker == 1
+                    ? markAsKycCompleted()
+                    : markAsKycCompleted()
+                "
+                >Ver</a
+              >
+
+              <a
+                *ngIf="false"
+                href="javascript:void(0);"
+                class="progress-bar {{
+                  m.verified &&
+                  m.acceptanceByAceMaker == 8 &&
+                  (m.acceptanceByAceMaker == 2 || m.acceptanceByAceMaker == 1)
+                    ? 'active'
+                    : 'pending'
+                }} d-none d-md-inline-block"
+                role="progressbar"
+                style="width: 100%"
+                aria-valuenow="20"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                tooltip="Click to accept"
+                (click)="
+                  selectedMember = m; updateMembershipReqFromAce(m, 1, false)
+                "
+                >Accept</a
+              >
+            </div>
+          </div>
+          <div
+            class="d-flex justify-content-between gap-2 "
+            
+            *ngIf="acceptanceByAceMakerValues == '0,6,7,8,9,10'"
+          >
+            <button
+              class="btn btn-secondary rounded"
+              (click)="
+                selectedMember = m; updateMembershipReqFromAce(m, 2, false)
+              "
+            >
+              Reject
+            </button>
+            <button
+              class="btn btn-primary rounded"
+              (click)="
+                selectedMember = m; updateMembershipReqFromAce(m, 1, false)
+              "
+            >
+              Approve
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--end row-->
+
+    <div id="elmLoader" *ngIf="false">
+      <div class="spinner-border text-primary avatar-sm" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <div id="noresult" [ngClass]="members?.length != 0 ? 'd-none' : ''">
+      <div class="text-center py-4">
+        <div class="avatar-md mx-auto mb-4">
+          <div
+            class="avatar-tooltip bg-light text-primary rounded-circle fs-4xl"
+          >
+            <i class="bi bi-search"></i>
+          </div>
+        </div>
+        <h5 class="mt-2">Sorry! No Result Found</h5>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- for showing loading during data load -->
+<div
+  id="elmLoader"
+  [ngClass]="members?.length != 0 ? 'd-none' : ''"
+  *ngIf="false"
+>
+  <div class="spinner-border text-primary avatar-sm" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+<!-- for showing not loaded data -->
+
+<!-- /.modal -->
+<div
+  bsModal
+  #filterWindow="bs-modal"
+  class="modal fade bs-example-modal-lg"
+  id="exampleModalScrollable"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <h5
+          class="modal-tooltip"
+          id="exampleModalScrollableTitle"
+          style="width: 90%"
+        >
+          Filter
+        </h5>
+        <i
+          class="mdi mdi-broom clickable text-white-75"
+          style="font-size: 20px"
+          (click)="clearFilters()"
+        ></i>
+        <button
+          type="button"
+          class="btn-close btn-close-white rightMost"
+          (click)="filterWindow.hide()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row gy-4">
+          <div class="col-xxl-6 col-md-6 col-sm-6">
+            <div class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3">
+              <i class="ri-user-2-line"></i>Status
+            </div>
+            <ng-select
+              *ngIf="
+                commonService.rbac['joining-requests'] ||
+                commonService.rbac['inactive-requests']
+              "
+              [items]="memberTypes"
+              [multiple]="false"
+              bindLabel="name"
+              bindValue="value"
+              class="form-control"
+              name="memberType"
+              id="memberType"
+              placeholder="Select status"
+              [(ngModel)]="acceptanceByAceMakerValues"
+              [clearable]="false"
+              style="padding: 0"
+              (ngModelChange)="filterChanged()"
+            ></ng-select>
+          </div>
+          <div
+            class="col-xxl-6 col-md-6 col-sm-6 align-self-center"
+            *ngIf="commonService.rbac['lonely-members']"
+          >
+            <div class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3">
+              <i class="bi bi-people"></i>Unassigned Buddy
+              <input
+                type="checkbox"
+                [(ngModel)]="lonelyMembers"
+                (click)="filterChanged()"
+              />
+            </div>
+          </div>
+        </div>
+        <br />
+        <div class="row gy-4">
+          <div class="col-xxl-6 col-md-6 col-sm-6">
+            <div class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3">
+              <i class="mdi mdi-wrench"></i>Show enablers
+              <input
+                type="checkbox"
+                [(ngModel)]="showEnablers"
+                (click)="filterChanged()"
+              />
+            </div>
+          </div>
+          <div class="col-xxl-6 col-md-6 col-sm-6">
+            <div class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3">
+              <i class="mdi mdi-phone"></i>Show members with Phone no
+              <input
+                type="checkbox"
+                [(ngModel)]="showMembersWithPhone"
+                [(ngModel)]="showMembersWithPhone"
+                (click)="filterChanged()"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row gy-4">
+          <div class="col-xxl-6 col-md-6 col-sm-6">
+            <div class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3">
+              <i class="mdi mdi-calendar"></i>Registration Month
+            </div>
+            <ng-select
+              [items]="monthYearOptions"
+              [(ngModel)]="creationMonth"
+              placeholder="yyyy-mm"
+              (change)="filterChanged()"
+            ></ng-select>
+          </div>
+          <div class="col-xxl-6 col-md-6 col-sm-6">
+            <div class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3">
+              <i class="mdi mdi-timer-sand-complete"></i>Show members with KYC
+              <input
+                type="checkbox"
+                [(ngModel)]="showMembersWithKyc"
+                (click)="
+                  showMembersWithKyc = !showMembersWithKyc; filterChanged()
+                "
+              />
+            </div>
+            <div class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3">
+              <i class="mdi mdi-phone"></i>Onboarding Call
+              <ng-select
+                [items]="obCallOptions"
+                bindLabel="name"
+                bindValue="value"
+                [(ngModel)]="showObCallCompleted"
+                placeholder="select"
+                (change)="filterChanged()"
+              ></ng-select>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div class="row gy-4">
+          <div class="col-xxl-6 col-md-6 col-sm-6">
+            <div class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3">
+              <i class="mdi mdi-calendar"></i>Approval Month
+            </div>
+            <ng-select
+              [items]="monthYearOptions"
+              [(ngModel)]="approvedOnMonth"
+              placeholder="yyyy-mm"
+              (change)="filterChanged()"
+            ></ng-select>
+          </div>
+          <div class="col-xxl-6 col-md-6 col-sm-6">
+            <div class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3">
+              <div class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3">
+                <i class="ri-user-2-line"></i>Job Family
+              </div>
+              <ng-select
+                [items]="jobFamilies"
+                [multiple]="false"
+                bindLabel="name"
+                bindValue="name"
+                class="form-control"
+                name="jobFamilies"
+                id="jobFamilies"
+                placeholder="Select Job Family"
+                [(ngModel)]="jobFamily"
+                [clearable]="false"
+                style="padding: 0"
+                (ngModelChange)="filterChanged()"
+              ></ng-select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" *ngIf="false">
+        <button
+          type="button"
+          class="btn btn-light"
+          (click)="filterWindow.hide()"
+        >
+          Close
+        </button>
+        <button type="button" class="btn btn-primary">Apply</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<div
+  bsModal
+  #setWeeklyTargetModal="bs-modal"
+  class="modal bs-example-modal-lg fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        *ngIf="true"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <h5 class="modal-title" id="myLargeModalLabel">
+          Configure weekly target for {{ selectedMember?.user?.name }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          (click)="setWeeklyTargetModal.hide()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row gy-4">
+          <div class="col-xxl-6 col-md-6 col-sm-6">
+            <input
+              type="number"
+              placeholder="Enter weekly target"
+              [(ngModel)]="formItemArray[0].value"
+              name="weeklyTarget"
+              id="weeklyTarget"
+              class="form form-control"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-light"
+          (click)="setWeeklyTargetModal.hide()"
+        >
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="setWeeklyTargetForMember(formItemArray)"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<div
+  bsModal
+  #setGradeModal="bs-modal"
+  class="modal bs-example-modal-lg fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        *ngIf="true"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <h5 class="modal-title" id="myLargeModalLabel">
+          Configure grade for {{ selectedMember?.user?.name }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          (click)="setGradeModal.hide()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row gy-4">
+          <div class="col-xxl-6 col-md-6 col-sm-6">
+            <ng-select
+              [items]="grades"
+              [multiple]="true"
+              bindLabel="name"
+              bindValue="id"
+              class="form-control"
+              placeholder="{{
+                selectedMember?.grade
+                  ? selectedMember?.grade.name
+                  : 'Select Grade'
+              }}"
+              [(ngModel)]="formItemArray[0].value"
+              [clearable]="false"
+              style="padding: 0"
+              id="setGrade"
+              name="setGrade"
+            ></ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-light"
+          (click)="setGradeModal.hide()"
+        >
+          Close
+        </button>
+        <button type="button" class="btn btn-primary" (click)="saveGrade()">
+          Save
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<div
+  bsModal
+  #buddyModal="bs-modal"
+  class="modal bs-example-modal-lg fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        *ngIf="true"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <h5 class="modal-title" id="myLargeModalLabel">
+          Assign Buddies for {{ selectedMember?.user?.name }}
+          {{ this.buddyLessMembers.length }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          (click)="setWeeklyTargetModal.hide()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row gy-4">
+          <div class="col-xxl-6 col-md-6 col-sm-6">
+            <ng-select
+              [items]="buddyLessMembers"
+              [multiple]="true"
+              bindLabel="user.name"
+              class="form-control"
+              placeholder="Select Buddies"
+              [(ngModel)]="buddies"
+              [clearable]="false"
+              style="padding: 0"
+              id="buddiesId"
+              name="buddiesName"
+            ></ng-select>
+          </div>
+        </div>
+        <br />
+        <div class="row gy-4">
+          <div class="col-xxl-6 col-md-6 col-sm-6">
+            {{ buddyMessage }}
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="buddyModal.hide()">
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="setBuddiesForMember()"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<div
+  bsModal
+  #kycModal="bs-modal"
+  class="modal bs-example-modal-lg fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        *ngIf="true"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <h5 class="modal-title" id="myLargeModalLabel">
+          Kyc Details {{ selectedMember?.user?.name }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          (click)="kycModal.hide()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row gy-4">
+          <div
+            class="col-xxl-12 col-md-12 col-sm-12"
+            *ngIf="kyc && kyc.user?.id == selectedMember.user.id"
+          >
+            <!-- {{kyc.panCard ? "hELLO": "Pan Card N/A" }} -->
+            <span *ngIf="kyc.panCard; else noPanCard">
+              <!-- Check if kyc.panCard is truthy -->
+              <a
+                href="{{ commonService.getPicUrl(kyc?.panCard) }}"
+                target="_new"
+                >Pan Card</a
+              >
+            </span>
+
+            <ng-template #noPanCard> Pan Card N/A </ng-template>
+            <!-- <a href="{{ commonService.getPicUrl(kyc?.panCard) }}" target="_new">Pan Card</a> -->
+            <br />
+            <a
+              href="{{ commonService.getPicUrl(kyc?.addressProof) }}"
+              target="_new"
+              >Address Proof</a
+            ><br />
+            <a
+            href="{{ commonService.getPicUrl(kyc?.addressProof2) }}"
+            target="_new"
+            >Address Proof2</a>
+            <br/>
+            <span *ngIf="kyc.cancelledCheque; else noCancelledCheque">
+              <a
+                href="{{ commonService.getPicUrl(kyc?.cancelledCheque) }}"
+                target="_new"
+                >Cancelled Cheque</a
+              >
+            </span>
+
+            <ng-template #noCancelledCheque> Pan Card N/A </ng-template>
+            <!-- <a
+                          href="{{ commonService.getPicUrl(kyc?.cancelledCheque) }}"
+                          target="_new"
+                          >Cancelled Cheque</a> -->
+            <br />
+            Emergency Contact
+            {{
+              kyc?.emergencyContactName +
+                "(" +
+                kyc?.emergencyContactRelation +
+                "), ph: " +
+                kyc?.emergencyContactNumber +
+                ", " +
+                kyc?.emergencyContactAddress
+            }}
+          </div>
+          <div class="col-xxl-6 col-md-6 col-sm-6" *ngIf="!kyc">
+            <h4>No KYC details found.</h4>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="kycModal.hide()">
+          Close
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<div
+  bsModal
+  #acceptModal="bs-modal"
+  class="modal bs-example-modal-lg fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        *ngIf="true"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <h5 class="modal-title" id="myLargeModalLabel">
+          Configure weekly target for {{ selectedMember?.user?.name }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          (click)="acceptModal.hide()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row gy-4">
+          <div class="col-xxl-6 col-md-6 col-sm-6">
+            <input
+              type="number"
+              placeholder="Enter weekly target"
+              [(ngModel)]="selectedWeeklyTarget"
+              name="weeklyTarget"
+              id="weeklyTarget"
+              class="form form-control"
+            />
+          </div>
+        </div>
+        <div class="row gy-4">
+          <div class="col-xxl-6 col-md-6 col-sm-6">
+            <ng-select
+              [items]="grades"
+              [multiple]="true"
+              bindLabel="name"
+              bindValue="id"
+              class="form-control"
+              placeholder="{{
+                selectedMember?.grade
+                  ? selectedMember?.grade.name
+                  : 'Select Grade'
+              }}"
+              [(ngModel)]="selectedGradeId"
+              [clearable]="false"
+              style="padding: 0"
+              id="setGrade"
+              name="setGrade"
+            ></ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-light"
+          (click)="acceptModal.hide()"
+        >
+          Close
+        </button>
+        <button type="button" class="btn btn-primary" (click)="acceptUser()">
+          Save
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<div
+  bsModal
+  #buddiesViewModal="bs-modal"
+  class="modal bs-example-modal-lg fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        *ngIf="true"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <h5 class="modal-title" id="myLargeModalLabel">
+          Buddies of {{ selectedMember?.user?.name }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          (click)="buddiesViewModal.hide()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row gy-4">
+          <div class="col-xxl-12 col-md-12 col-sm-12">
+            {{ buddiesName }}
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-light"
+          (click)="buddiesViewModal.hide()"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- /.modal -->
+<div
+  bsModal
+  #peerViewModel="bs-modal"
+  class="modal bs-example-modal-lg fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        *ngIf="true"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <h5 class="modal-title" id="myLargeModalLabel">Peer feedback Form</h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          (click)="peerViewModel.hide()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row gy-4">
+          <div class="col-xxl-12 col-md-12 col-sm-12">
+            <app-peer-feedback-form #peerForm></app-peer-feedback-form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-light"
+          (click)="peerViewModel.hide()"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<div
+  bsModal
+  #approveRolesModal="bs-modal"
+  class="modal bs-example-modal-md fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        *ngIf="true"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <h5 class="modal-title" id="myLargeModalLabel">
+          Approve Roles of {{ selectedMember?.user?.name }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="approveRolesModal.hide()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row gy-4">
+          <div class="col-xxl-12 col-md-12 col-sm-12">
+            <div class="gap-1">
+              <div *ngFor="let role of selectedMember?.selectedRoleArray">
+                <div class="row">
+                  <div class="col-xl-4">
+                    <span class="text-start" tooltip="{{ role.name }}">
+                      {{ role.name | titlecase }}
+                    </span>
+                  </div>
+                  <div class="col-xl-2 align-middle">
+                    <input
+                      class="align-middle"
+                      type="checkbox"
+                      (change)="role.name = handleRoleCheckboxChange(role.name)"
+                      [checked]="areAllCharactersCapital(role.name)"
+                      name="{{ role.name }}"
+                      id="{{ role.name }}"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" (click)="approveRoles()">
+          Approve
+        </button>
+        <!-- &nbsp;&nbsp;
+        <button
+          type="button"
+          class="btn btn-light"
+          (click)="approveRolesModal.hide()"
+        >
+          Close
+        </button> -->
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

@@ -1,0 +1,290 @@
+<br />
+<div class="row">
+  <div class="col-lg">
+    <div
+      class="card"
+      style="background-image: url('assets/images/background.png')"
+    >
+      <div class="d-flex justify-content-between p-2">
+        <div class="align-self-center">
+          <h3 class="m-0">Future Talent Uploads</h3>
+        </div>
+        <div>
+          <button
+            class="btn btn-primary me-1 myButton rounded-pill default-btn-width"
+            (click)="filterWindow.show()"
+          >
+            <i
+              class="bi bi-funnel align-baseline fs-2xl"
+              tooltip="show filters"
+            ></i>
+          </button>
+  
+          <button
+            class="btn btn-primary myButton rounded-pill default-btn-width"
+            (click)="clearFilters()"
+          >
+            <i
+              class="ri-filter-off-line align-baseline fs-2xl"
+              tooltip="clear filters"
+            ></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="!selectedMemberCandidates; else candidateView" class="text-center">
+  <div class="card">
+    <div class="card-body">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Member Name</th>
+            <th>Discovered Candidates</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let member of membersList">
+            <td>{{ member.referredBy }}</td>
+            <td
+              (click)="showCandidates(member.referralCode)"
+              class="text-primary clickable"
+            >
+              <span>
+                {{ member.count }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<ng-template #candidateView>
+  <div class="mb-3">
+    <button class="btn btn-primary" (click)="goBack()">Go Back</button>
+  </div>
+  <div class="row">
+    <div class="col-md-4" *ngFor="let candidate of candidateList">
+      <div
+        class="card real-estate-grid-widgets border card-animate p-2"
+        style="height: 100%"
+        (click)="selectedCandidate = candidate; clickedOnCandidateTalent(candidate)"
+      >
+        <div class="row gy-4 d-flex">
+          <div class="card-body p-2">
+            <div class="row align-items-center">
+              <!-- Candidate Name and Info -->
+              <div class="col-8 col-md-8">
+                <div class="d-flex gap-4 align-items-center">
+                  <h5 class="text-truncate" tooltip="{{ candidate.name }}">
+                    {{ candidate.name | truncate : 16 || "NA" }}
+                  </h5>
+                </div>
+              </div>
+            </div>
+            <hr class="mt-2 mb-0" />
+          </div>
+        </div>
+        <carousel
+          [noWrap]="true"
+          [interval]="0"
+          class="carousel carousel-dark slide"
+        >
+          <div class="carousel-inner">
+            <slide class="carousel-item active" data-bs-interval="10000">
+              <ul
+                class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+              >
+                <li tooltip="" style="width: 100%">
+                  <div class="d-flex justify-content-between">
+                    <div style="width: 6%" *ngIf="false">
+                      <i
+                        class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                        style="font-size: 15px"
+                      ></i>
+                    </div>
+                    <div style="width: 47%">
+                      <span class="text-muted">LinkedIn</span>
+                      <p class="mb-0 text-dark">
+                        <a
+                          href="{{ candidate?.linkedInUrl }}"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          >Profile</a
+                        >
+                      </p>
+                    </div>
+                    <div style="width: 47%; text-align: right">
+                      <span class="text-muted">Current Company</span>
+                      <p
+                        class="mb-0 text-dark"
+                        tooltip="{{ candidate.currentCompany }}"
+                      >
+                        {{ candidate.currentCompany | truncate : 14 || "NA" }}
+                      </p>
+                    </div>
+                  </div>
+                </li>
+                <li tooltip="" style="width: 100%">
+                  <div class="d-flex justify-content-between">
+                    <div style="width: 6%" *ngIf="false">
+                      <i
+                        class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                        style="font-size: 15px"
+                      ></i>
+                    </div>
+                    <div style="width: 47%">
+                      <span class="text-muted">Location</span>
+                      <p class="mb-0 text-dark">
+                        {{
+                          candidate.preferredLocation
+                            ? candidate.preferredLocation
+                            : "N/A"
+                        }}
+                      </p>
+                    </div>
+                    <div style="width: 47%; text-align: right">
+                      <span class="text-muted">Expected CTC</span>
+                      <p class="mb-0 text-dark">
+                        {{ candidate.expectedCtc + " (LPA)" }}
+                      </p>
+                    </div>
+                  </div>
+                </li>
+                <li tooltip="" style="width: 100%" *ngIf="false">
+                  <div class="d-flex justify-content-between">
+                    <div style="width: 6%" *ngIf="false">
+                      <i
+                        class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                        style="font-size: 15px"
+                      ></i>
+                    </div>
+                    <div style="width: 47%">
+                      <span class="text-muted">Current CTC</span>
+                      <p class="mb-0 text-dark">
+                        {{
+                          candidate.expectedCTC ? candidate.expectedCTC : "N/A"
+                        }}
+                      </p>
+                    </div>
+                    <div style="width: 47%; text-align: right">
+                      <span class="text-muted">Notice Period</span>
+                      <p class="mb-0 text-dark">
+                        {{
+                          candidate?.noticePeriod
+                            ? candidate?.noticePeriod
+                            : "0"
+                        }}
+                      </p>
+                    </div>
+                  </div>
+                </li>
+                <li tooltip="" style="width: 100%">
+                  <div class="d-flex justify-content-between">
+                    <div style="width: 6%" *ngIf="false">
+                      <i
+                        class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                        style="font-size: 15px"
+                      ></i>
+                    </div>
+                    <div style="width: 100%">
+                      <span class="text-muted">Role</span>
+                      <p class="mb-0 text-dark">
+                        {{
+                          candidate?.designation
+                            ? candidate?.designation
+                            : "N/A"
+                        }}
+                      </p>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </slide>
+          </div>
+        </carousel>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- filter model start -->
+<div
+  bsModal
+  #filterWindow="bs-modal"
+  class="modal fade bs-example-modal-lg"
+  id="exampleModalScrollable"
+>
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <h5
+          class="modal-tooltip"
+          id="exampleModalScrollableTitle"
+          style="width: 90%"
+        >
+          Filter
+        </h5>
+        <i
+          class="mdi mdi-broom clickable text-white-75"
+          style="font-size: 20px"
+          (click)="clearFilters()"
+        ></i>
+        <button
+          type="button"
+          class="btn-close btn-close-white rightMost"
+          (click)="filterWindow.hide()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row justify-content-center">
+          <br />
+          <div class="row gy-4">
+            <div class="col-xxl-6 col-md-6 col-sm-6">
+              <p style="margin-left: 10px" title="">Discovered From</p>
+              <input
+                style="margin-left: 10px"
+                type="date"
+                class="form-control"
+                name="discovered From"
+                maxlength="100"
+                [(ngModel)]="startDate"
+              />&nbsp;
+            </div>
+            <div class="col-xxl-6 col-md-6 col-sm-6">
+              <p style="margin-left: 10px" title="">Discovered Till</p>
+              <input
+                style="margin-left: 10px"
+                type="date"
+                class="form-control"
+                maxlength="100"
+                [(ngModel)]="endDate"
+              />&nbsp;
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-light"
+          (click)="filterWindow.hide()"
+        >
+          Close
+        </button>
+        <button class="btn btn-primary" type="button" (click)="filterChanged()">
+          Apply
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- filter Model End -->

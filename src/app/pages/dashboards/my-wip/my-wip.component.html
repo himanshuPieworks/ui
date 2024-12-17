@@ -1,0 +1,50 @@
+<div class="row gy-4">
+  <div class="col-xxl-12 col-md-12">
+    <div class="table-responsive">
+      <table
+        class="table"
+        [hidden]="discoveries.length == 0"
+        style="max-width: 100%"
+        title=""
+      >
+        <thead>
+          <tr>
+            <!--<th scope="col">Image</th>-->
+            <th class="table-th" scope="col" style="text-align: left">
+              Talent
+            </th>
+            <th class="table-th">Role</th>
+            <th class="table-th">Status</th>
+          </tr>
+        </thead>
+        <tr
+          *ngFor="let d of discoveries"
+          [ngClass]="d.classOnRowClick ? d.classOnRowClick : ''"
+          (click)="toggleClassOnRowClick(d)"
+        >
+          <td class="table-td-dashboard" style="text-align: left">
+            {{ d.candidate.name }}
+          </td>
+          <td class="table-td-dashboard">
+            <a
+              (click)="setDiscFilter(d.userId, 1)"
+              style="cursor: pointer; color: blue"
+              >{{
+                d.requirement.role.name + "," + d.requirement.client.name
+              }}</a
+            >
+          </td>
+          <td class="table-td-dashboard">
+            <a
+              (click)="setDiscFilter(d.userId, 2)"
+              style="cursor: pointer; color: blue"
+              >{{ d.status.name }}</a
+            >
+          </td>
+        </tr>
+      </table>
+      <p [hidden]="discoveries.length != 0">No candidates found</p>
+      <!-- end table -->
+    </div>
+  </div>
+</div>

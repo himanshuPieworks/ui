@@ -1,0 +1,121 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="User Role Management" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<br>
+<!-- End Breadcrumbs -->
+<div class='card p-3'>
+    <div  style="width: 100%;text-align: right;white-space: pre-line;">
+        <div dropdown class="dropdown dropdown-real-estate">
+            <div style="min-width: inherit" dropdownToggle class="clickable p-2" type="button"> <i
+                    class="bi bi-three-dots-vertical fs-2xl"></i> </div>
+            <ul *bsDropdownMenu class="dropdown-menu dropdown-menu-end">
+                <li *ngFor="let item of menuOptions"><a (click)="handleMenu(item)" class="dropdown-item edit-list" href="javascript:void(0);">{{item}}</a></li>
+            </ul>
+        </div>
+    </div>
+    <section class="job-area job-area-two pt-100">    
+        <div class="single-profile-area pt-100">
+            <div class="container1">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <p style="margin-left: 10px">Role</p>
+                        <ng-select #Selecter1 [items]="roles" [multiple]="false" bindLabel="name" bindValue='id'  placeholder="User *" class="form-control" 
+                                   labelForId="ngSelectId"  name='role' id="role"
+                                   (change)="filterChanged()"
+                                   [(ngModel)]="selectedRole" [clearable]="false" style="padding: 0">   
+                        </ng-select>
+                    </div>
+                </div><br>
+                <div class="row">
+                    <div class="col-lg-12" style="text-align: left;" *ngFor="let item of nodes"> <!-- root nodes -->
+                        <div class="row">
+                            <div class="col-lg-2" style='background-color: lightblue'><input type="checkbox" (click)="clickedNode(item)" [(ngModel)]="item.isSelected">&nbsp; {{item.node.name}}</div>
+                            <div class="col-lg-10"><br>
+                                <div class="row" style="font-size: 16px">
+                                    <div class="{{child1.children==0?'col-lg-2':'col-lg-12'}}" style="text-align: left;padding-top: 20px;background-color: lightgreen" *ngFor="let child1 of item.children">
+                                        <input type="checkbox"  (click)="clickedNode(child1)" [(ngModel)]="child1.isSelected"> &nbsp;{{child1.node.name}}
+
+                                        <div class="row">
+                                            <div class="col-lg-2"></div>
+                                            <div class="col-lg-10">
+                                                <div class="row">
+                                                    <div class="{{child2.children==0?'col-lg-3':'col-lg-12'}}" style="text-align: left;padding-top: 20px;background-color: lightpink" *ngFor="let child2 of child1.children"> 
+                                                        <input type="checkbox"  (click)="clickedNode(child2)" [(ngModel)]="child2.isSelected">&nbsp;{{child2.node.name}}
+                                                        <div class="row">
+                                                            <div class="col-lg-3"></div>
+                                                            <div class="col-lg-9">
+                                                                <div class="row">
+                                                                    <div class="{{child3.children==0?'col-lg-3':'col-lg-12'}}" style="text-align: left;padding-top: 20px;background-color: lightsalmon" *ngFor="let child3 of child2.children"> 
+                                                                        <input type="checkbox"  (click)="clickedNode(child3)" [(ngModel)]="child3.isSelected">&nbsp;{{child3.node.name}}
+                                                                        <div class="row">
+                                                                            <div class="col-lg-3"></div>
+                                                                            <div class="col-lg-9">
+                                                                                <div class="row">
+                                                                                    <div class="{{child4.children==0?'col-lg-3':'col-lg-12'}}" style="text-align: left;padding-top: 20px;background-color: lightseagreen" *ngFor="let child4 of child3.children"> 
+                                                                                        <input type="checkbox"  (click)="clickedNode(child4)" [(ngModel)]="child4.isSelected">&nbsp;{{child4.node.name}}
+                                                                                        <div class="row">
+                                                                                            <div class="col-lg-3"></div>
+                                                                                            <div class="col-lg-9">
+                                                                                                <div class="row">
+                                                                                                    <div class="{{child5.children==0?'col-lg-3':'col-lg-12'}}" style="text-align: left;padding-top: 20px;background-color: lightgrey" *ngFor="let child5 of child4.children"> 
+                                                                                                        <input type="checkbox"  (click)="clickedNode(child5)" [(ngModel)]="child5.isSelected">&nbsp;{{child5.node.name}}
+                                                                                                        <div class="row">
+                                                                                                            <div class="col-lg-3"></div>
+                                                                                                            <div class="col-lg-9">
+                                                                                                                <div class="row">
+                                                                                                                    <div class="{{child6.children==0?'col-lg-3':'col-lg-12'}}" style="text-align: left;padding-top: 20px;background-color: lightskyblue" *ngFor="let child6 of child5.children"> 
+                                                                                                                        <input type="checkbox"  (click)="clickedNode(child6)" [(ngModel)]="child6.isSelected">&nbsp;{{child6.node.name}}
+                                                                                                                        <div class="row">
+                                                                                                                            <div class="col-lg-3"></div>
+                                                                                                                            <div class="col-lg-9">
+                                                                                                                                <div class="row">
+                                                                                                                                    <div class="{{child7.children==0?'col-lg-3':'col-lg-12'}}" style="text-align: left;padding-top: 20px;background-color: yellow" *ngFor="let child7 of child6.children"> 
+                                                                                                                                        <input type="checkbox"  (click)="clickedNode(child7)" [(ngModel)]="child7.isSelected">&nbsp;{{child7.node.name}}
+                                                                                                                                        <div class="row">
+                                                                                                                                            <div class="col-lg-3"></div>
+                                                                                                                                            <div class="col-lg-9">
+                                                                                                                                                <div class="row">
+                                                                                                                                                    <div class="{{child8.children==0?'col-lg-3':'col-lg-12'}}" style="text-align: left;padding-top: 20px;background-color: orange" *ngFor="let child8 of child7.children"> 
+                                                                                                                                                        <input type="checkbox"  (click)="clickedNode(child8)" [(ngModel)]="child8.isSelected">&nbsp;{{child8.node.name}}
+                                                                                                                                                    </div>
+                                                                                                                                                </div>
+                                                                                                                                            </div>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><br><br>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <input type="button" class="btn btn-success" (click)="save()" value="Save">
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

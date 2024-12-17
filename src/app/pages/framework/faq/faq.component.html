@@ -1,0 +1,46 @@
+<div class="card mt-5">
+  <div class="card-header">
+    <h3>F & Q</h3>
+  </div>
+  <div class="card-body">
+    <accordion class="accordion" id="default-accordion-example">
+      <!-- Loop through each FAQ section -->
+      <ng-container *ngFor="let section of faqData; let i = index">
+        <accordion-group class="accordion-item" [isOpen]="currentSection === i">
+          <h2 accordion-heading class="accordion-header">
+            <button
+              class="accordion-button"
+              type="button"
+              (click)="toggleSection(i)"
+            >
+              {{ section.category }}
+            </button>
+          </h2>
+
+          <!-- Loop through each question inside the section -->
+          <ng-container *ngFor="let faq of section.questions; let j = index">
+            <accordion-group
+              class="accordion-item"
+              [isOpen]="currentFaq === j && currentSection === i"
+            >
+              <h2 accordion-heading class="accordion-header">
+                <button
+                  class="accordion-button"
+                  type="button"
+                  (click)="toggleFaq(j)"
+                >
+                  {{ faq.question }}
+                </button>
+              </h2>
+              <div class="accordion-collapse collapse show">
+                <div class="accordion-body" [innerHTML]="faq.answer">
+                
+                </div>
+              </div>
+            </accordion-group>
+          </ng-container>
+        </accordion-group>
+      </ng-container>
+    </accordion>
+  </div>
+</div>

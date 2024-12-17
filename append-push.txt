@@ -1,0 +1,24 @@
+self.addEventListener('notificationclick', function(event) {
+   console.log("this is the notification", event.notification);
+  console.log("this is the Even", event);
+  console.log("this is the Action", event.action);
+    event.notification.close(); // Close the notification
+
+    const clickActionUrl = event.notification.data?.click_action || event.currentTarget.url;
+
+    event.waitUntil(
+        clients.matchAll({ type: 'window' }).then(function(clientList) {
+            // Check if the URL is already open
+            for (const client of clientList) {
+                if (client.url === clickActionUrl && 'focus' in client) {
+                    return client.focus();
+                }
+            }
+            // If the URL is not open, open it in a new tab
+            if (clients.openWindow) {
+                return clients.openWindow(clickActionUrl);
+            }
+        })
+    );
+});
+

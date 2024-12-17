@@ -1,0 +1,660 @@
+<div class="row">
+  <div class="col-xl-12">
+    <div class="card">
+      
+      <!-- end card header -->
+      <div class="card-body form-steps">
+        <form action="#" *ngIf="false">
+          <div class="text-center pt-3 pb-4 mb-1">
+            <h5>{{ currentStep }}</h5>
+          </div>
+          <div id="custom-progress-bar" class="progress-nav">
+            <div class="progress" style="height: 1px">
+              <div
+                class="progress-bar"
+                role="progressbar"
+                style="width: 2%"
+                aria-valuenow="0"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              ></div>
+            </div>
+            <ng-stepper
+              cdkStepper
+              #stepper
+              [linear]="true"
+              (selectionChange)="change($event)"
+              class="cdksteppercontent nav nav-pills progress-bar-tab custom-nav"
+            >
+              <cdk-step [optional]="false">
+                <ng-template cdkStepLabel class="wizard-nav mb-5">
+                  <button
+                    class="nav-link rounded-pill {{
+                      stepper.selectedIndex == 0 ? 'active' : ''
+                    }}"
+                    data-progressbar="custom-progress-bar"
+                    id="pills-gen-info-tab"
+                    data-bs-toggle="pill"
+                    data-bs-target="#pills-gen-info"
+                    type="button"
+                    role="tab"
+                    aria-controls="pills-gen-info"
+                    aria-selected="member.acceptanceByAceMaker==0"
+                  >
+                    1
+                  </button>
+                </ng-template>
+                <div>
+                  <!-- <div> -->
+                  <div class="mb-4">
+                    <div>
+                      <h5 class="mb-1">Personal information</h5>
+                      <p class="text-muted">Fill all information as below</p>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label class="form-label" for="gen-info-email-input"
+                          >Name</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="gen-info-email-input"
+                          [ngClass]="{
+                            'is-invalid': submitted && user && !user.name
+                          }"
+                          placeholder="Enter name"
+                          [(ngModel)]="user.name"
+                          (keyup)="validateProfileCompletion()"
+                          name="name"
+                        />
+                        <div
+                          class="invalid-feedback"
+                          *ngIf="submitted && !user.name"
+                        >
+                          Please enter name
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label class="form-label" for="gen-info-username-input"
+                          >Email id</label
+                        >
+                        <div class="input-group">
+                          <span class="input-group-text ri-mail-line"></span>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="gen-info-username-input"
+                            (keyup)="validateProfileCompletion()"
+                            [ngClass]="{
+                              'is-invalid': submitted && user && !user.username
+                            }"
+                            placeholder="Enter email id"
+                            [(ngModel)]="user.username"
+                            [disabled]="true"
+                            name="emailID"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label class="form-label" for="gen-info-email-input"
+                          >Phone no</label
+                        >
+                        <div class="input-group">
+                          <span class="input-group-text ri-phone-line"></span>
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="gen-info-ph-input"
+                            [ngClass]="{
+                              'is-invalid': submitted && user && !user.mobileno
+                            }"
+                            maxlength="13"
+                            minlength="10"
+                            placeholder="Enter phone no."
+                            [(ngModel)]="user.mobileno"
+                            (keyup)="validateProfileCompletion()"
+                            name="phone"
+                            required
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label class="form-label" for="gen-info-ln-input"
+                          >LinkedIn profile url</label
+                        >
+                        <div class="input-group">
+                          <span
+                            class="input-group-text ri-linkedin-box-line"
+                          ></span>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="gen-info-ln-input"
+                            (keyup)="validateProfileCompletion()"
+                            [ngClass]="{
+                              'is-invalid': submitted && user && !user.linkedIn
+                            }"
+                            placeholder="Enter linkedIn profile url"
+                            [(ngModel)]="user.linkedIn"
+                            name="linkedin"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label class="form-label" for="gen-info-dob-input"
+                          >DOB</label
+                        >
+                        <div class="input-group">
+                          <span class="input-group-text ri-cake-2-line"></span>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="gen-info-dob-input"
+                            showWeekNumbers="false"
+                            bsDatepicker
+                            (ngModelChange)="validateProfileCompletion()"
+                            [ngClass]="{
+                              'is-invalid': submitted && user && !user.dob
+                            }"
+                            [bsConfig]="bsConfig"
+                            [(ngModel)]="user.dob"
+                            name="dob"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- </div> -->
+                  <!-- wizard-tab -->
+                  <div class="d-flex align-items-start gap-3 mt-4">
+                    <button
+                      type="button"
+                      [disabled]="!completedStep1"
+                      class="btn btn-success btn-label right ms-auto nexttab nexttab"
+                      data-nexttab="pills-info-desc-tab"
+                      cdkStepperNext
+                      (click)="saveProfile()"
+                      (mouseover)="validateProfileCompletion()"
+                    >
+                      <i
+                        class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
+                      ></i
+                      >Next
+                    </button>
+                  </div>
+                </div>
+              </cdk-step>
+
+              <cdk-step [optional]="false">
+                <ng-template cdkStepLabel>
+                  <button
+                    class="nav-link rounded-pill {{
+                      stepper.selectedIndex == 1 ? 'active' : ''
+                    }}"
+                    data-progressbar="custom-progress-bar"
+                    id="pills-info-desc-tab"
+                    data-bs-toggle="pill"
+                    data-bs-target="#pills-info-desc"
+                    type="button"
+                    role="tab"
+                    aria-controls="pills-info-desc"
+                    [disabled]="!completedStep1"
+                    aria-selected="!kyc"
+                  >
+                    2
+                  </button>
+                </ng-template>
+                <div>
+                  <div class="mb-4" *ngIf="false">
+                    <div
+                      class="d-flex justify-content-between align-items-center"
+                    >
+                      <h5 class="mb-1 align-middle">KYC Form</h5>
+                      <div style="margin-right: 40px">
+                        <a
+                          href="https://calendly.com/idreess/introduction-to-pieworks-onboarding-call"
+                          target="_blank"
+                          tooltip="Book your Onboarding call with our community manager ."
+                        >
+                          <img
+                            src="assets/images/calendly.png"
+                            alt=""
+                            height="70"
+                          />
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card1" *ngFor="let item of filesFormArray">
+                    <div
+                      class="card-header"
+                      *ngIf="
+                        (item.name !== 'Bank Details' && item.name !== 'PAN Card' && item.name !== 'Address Proof*') || 
+                        commonService.currentLocation === '/fw/user/' + commonService.user.id
+                      "
+                    >
+                      <h4 class="card-title mb-0">
+                        {{ item.name }} {{ item.help }}
+                      </h4>
+                    </div>
+                    <!-- end card header -->
+
+                    <div
+                      class="card-body"
+                      *ngIf="
+                        (item.name !== 'Bank Details' && item.name !== 'PAN Card' && item.name !== 'Address Proof*') || 
+                        commonService.currentLocation === '/fw/user/' + commonService.user.id
+                      "
+                    >
+                      <p class="text-muted">
+                        Max allowed size : 10 MB, allowed types : pdf, jpg,
+                        jpeg, png
+                      </p>
+                      <div *ngIf="item?.sampleImg">
+                        <img
+                          src="{{ item?.sampleImg }}"
+                          alt="sample Front and Back"
+                          tooltip="sample Front and Back"
+                          width="200px"
+                        />
+                      </div>
+                      <!-- dropzone 1 and dropzone1 preview -->
+                      <div>
+                        <ngx-dropzone
+                          *ngIf="
+                            item?.docType == 'addressProof'
+                              ? item.filesArray.length < 2
+                              : item.filesArray.length == 0
+                          "
+                          (change)="
+                            onFileSelecet(
+                              $event,
+                              true,
+                              item.docType,
+                              item.index
+                            )
+                          "
+                          [accept]="'application/pdf,image/*'"
+                          [multiple]="false"
+                        >
+                          <ngx-dropzone-label>
+                            <div class="mb-3">
+                              <i
+                                class="display-4 text-muted ri-upload-cloud-2-fill"
+                              ></i>
+                            </div>
+
+                            <h5>Drop files here or click to upload.</h5>
+                          </ngx-dropzone-label>
+                        </ngx-dropzone>
+                        <ngx-dropzone-preview
+                          class="border rounded"
+                          *ngFor="let f of item.filesArray"
+                          [removable]="true"
+                          (removed)="onRemove(f, item.index)"
+                        >
+                          <ngx-dropzone-label *ngIf="imageURL">
+                            <div class="d-flex p-2">
+                              <div class="flex-shrink-0 me-3">
+                                <div class="avatar-sm bg-light rounded">
+                                  <img
+                                    *ngIf="f.type != 'application/pdf'"
+                                    class="img-fluid rounded d-block"
+                                    src="{{ item.imageURL }}"
+                                    alt="Dropzone-Image"
+                                  />
+                                  <i
+                                    *ngIf="f.type == 'application/pdf'"
+                                    class="bi bi-filetype-pdf fs-4 text-danger-emphasis"
+                                  ></i>
+                                </div>
+                              </div>
+                              <div class="flex-grow-1">
+                                <div class="pt-1">
+                                  <h5 class="fs-md mb-1">{{ f.name }}&nbsp;</h5>
+                                  <p class="fs-sm text-muted mb-0">
+                                    {{ f.type }}
+                                  </p>
+                                  <strong class="error text-danger"></strong>
+                                </div>
+                              </div>
+                            </div>
+                          </ngx-dropzone-label>
+                        </ngx-dropzone-preview>
+                      </div>
+
+                      <!-- end dropzon-preview -->
+                    </div>
+                    <!-- end card body -->
+                  </div>
+                  <div class="card1">
+                    <div class="card-header">
+                      <h4 class="card-title mb-0">
+                        Emergency contact details *
+                      </h4>
+                    </div>
+                    <!-- end card header -->
+
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-lg-6">
+                          <div class="mb-3">
+                            <label class="form-label" for="gen-info-name2-input"
+                              >Name <span class="text-danger">*</span></label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="gen-info-name2-input"
+                              
+                              placeholder="Enter name"
+                              [(ngModel)]="emergencyContactName"
+                              (keyup)="validateKycCompletion()"
+                              name="name2"
+                            />
+                            <div
+                              class="invalid-feedback"
+                              *ngIf="submitted && !emergencyContactName"
+                            >
+                              Please enter name
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="mb-3">
+                            <label class="form-label" for="gen-info-rel-input"
+                              >Relation <span class="text-danger">*</span></label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="gen-info-rel-input"
+                              (keyup)="validateKycCompletion()"
+                              
+                              placeholder="Enter relation"
+                              [(ngModel)]="emergencyContactRelation"
+                              name="rel"
+                            />
+                            <div
+                              class="invalid-feedback"
+                              *ngIf="submitted && !emergencyContactName"
+                            >
+                              Please enter relation
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-6">
+                          <div class="mb-3">
+                            <label class="form-label" for="gen-info-ph2-input"
+                              >Contact no <span class="text-danger">*</span></label
+                            >
+                            <input
+                              type="number"
+                              class="form-control"
+                              id="gen-info-ph2-input"
+                             
+                              maxlength="13"
+                              minlength="10"
+                              placeholder="Enter phone no."
+                              [(ngModel)]="emergencyContactNumber"
+                              (keyup)="validateKycCompletion()"
+                              name="phone2"
+                              required
+                            />
+                            <div
+                              class="invalid-feedback"
+                              *ngIf="submitted && !emergencyContactNumber"
+                            >
+                              Please enter emergency contact no.
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="mb-3">
+                            <label class="form-label" for="gen-info-ph2-input"
+                              >Contact no <span class="text-danger">*</span></label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="gen-info-add-input"
+                              (keyup)="validateKycCompletion()"
+                              
+                              placeholder="Enter address"
+                              [(ngModel)]="emergencyContactAddress"
+                              name="address"
+                            />
+                            <div
+                              class="invalid-feedback"
+                              *ngIf="submitted && !emergencyContactAddress"
+                            >
+                              Please enter address
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="d-flex align-items-start gap-3 mt-4">
+                    <button
+                      type="button"
+                      class="btn btn-link text-decoration-none btn-label previestab"
+                      data-previous="pills-gen-info-tab"
+                      cdkStepperPrevious
+                    >
+                      <i
+                        class="ri-arrow-left-line label-icon align-middle fs-16 me-2"
+                      ></i>
+                      Back to General
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-success btn-label right ms-auto nexttab"
+                      [disabled]="!completedStep2"
+                      data-nexttab="pills-success-tab"
+                      cdkStepperNext
+                      (click)="submitKyc()"
+                    >
+                      <i
+                        class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
+                      ></i
+                      >Submit
+                    </button>
+                  </div>
+                </div>
+              </cdk-step>
+
+              <cdk-step [optional]="false">
+                <ng-template cdkStepLabel>
+                  <button
+                    class="nav-link rounded-pill {{
+                      stepper.selectedIndex == 2 ? 'active' : ''
+                    }}"
+                    data-progressbar="custom-progress-bar"
+                    id="pills-info-3-tab"
+                    data-bs-toggle="pill"
+                    data-bs-target="#pills-info-3"
+                    type="button"
+                    role="tab"
+                    aria-controls="pills-info-3"
+                    [disabled]="!completedStep2"
+                    aria-selected="member.contractAcceptance == 'pending'"
+                  >
+                    3
+                  </button>
+                </ng-template>
+                <div>
+                  <div class="mb-4" *ngIf="false">
+                    <div
+                      class="d-flex justify-content-between align-items-center"
+                    >
+                      <h5 class="mb-1 align-middle">Terms & Conditions</h5>
+                      <div style="margin-right: 40px">
+                        <a
+                          href="https://calendly.com/idreess/introduction-to-pieworks-onboarding-call"
+                          target="_blank"
+                          tooltip="Book your Onboarding call with our community manager ."
+                        >
+                          <img
+                            src="assets/images/calendly.png"
+                            alt=""
+                            height="70"
+                          />
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="text-center">
+                    <object
+                      type="application/pdf"
+                      [attr.data]="contractUrl | safe"
+                      height="600"
+                      width="100%"
+                    ></object>
+                    <input
+                      type="checkbox"
+                      [(ngModel)]="checked"
+                      (click)="completedStep3 = !completedStep3"
+                      id="contractCheck"
+                      name="contractCheck"
+                    />
+                    &nbsp;By clicking here, I state that I have read and
+                    understood the terms and conditions.
+                  </div>
+                  <div class="d-flex align-items-start gap-3 mt-4">
+                    <button
+                      type="button"
+                      [disabled]="!completedStep3"
+                      (click)="submitContractAcceptance()"
+                      class="btn btn-success btn-label right ms-auto nexttab nexttab"
+                      data-nexttab="pills-info-desc-tab"
+                      cdkStepperNext
+                    >
+                      <i
+                        class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
+                      ></i
+                      >Accept
+                    </button>
+                  </div>
+                </div>
+              </cdk-step>
+
+              <cdk-step [optional]="false">
+                <ng-template cdkStepLabel>
+                  <button
+                    class="nav-link rounded-pill"
+                    data-progressbar="custom-progress-bar"
+                    [disabled]="!completedStep3"
+                    id="pills-success-tab"
+                    data-bs-toggle="pill"
+                    data-bs-target="#pills-success"
+                    type="button"
+                    role="tab"
+                    aria-controls="pills-success"
+                    aria-selected="false"
+                  >
+                    4
+                  </button>
+                </ng-template>
+                <div>
+                  <div class="text-center">
+                    <h5>You have completed all the steps.</h5>
+                    <p class="text-muted">
+                      One of our team member will be contacting you for the
+                      verification.
+                    </p>
+
+                    <!-- Calendly inline widget begin -->
+                    <div *ngIf="false">
+                      <a
+                        href="https://calendly.com/idreess/introduction-to-pieworks-onboarding-call"
+                        target="_blank"
+                        tooltip="Book your Onboarding call with our community manager ."
+                      >
+                        <img
+                          src="assets/images/calendly.png"
+                          alt=""
+                          height="70"
+                        />
+                      </a>
+                    </div>
+
+                    <!-- Calendly inline widget end -->
+                  </div>
+                </div>
+                <div class="d-flex align-items-start gap-3 mt-4">
+                  <button
+                    type="button"
+                    [disabled]="!completedStep3"
+                    (click)="parentObj.finishedOnBoardingSteps()"
+                    class="btn btn-success btn-label right ms-auto nexttab nexttab"
+                    data-nexttab="pills-info-desc-tab"
+                    cdkStepperNext
+                  >
+                    <i
+                      class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
+                    ></i
+                    >Close
+                  </button>
+                </div>
+              </cdk-step>
+            </ng-stepper>
+          </div>
+        </form>
+
+        <div class="col-xxl-12 col-md-12 col-sm-12" style="height: 100%">
+          <div class="text-center" style="height: 100%">
+            <object
+              type="application/pdf"
+              [attr.data]="contractUrl | safe"
+              height="600"
+              width="100%"
+            ></object>
+            <input
+              type="checkbox"
+              [(ngModel)]="checked"
+              id="contractCheck"
+              name="contractCheck"
+            />
+            &nbsp;By clicking here, I state that I have read and understood
+            the terms and conditions.
+          </div>
+          <br>
+          <div class="d-flex justify-content-end">
+            <button
+            type="button"
+            [disabled]="!checked"
+            (click)="submitContractAcceptance()"
+            class="btn btn-success btn-label right ms-auto nexttab nexttab"
+          >
+            <i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i
+            >Accept
+          </button>
+          </div>
+        </div>
+      </div>
+      <!-- end card body -->
+    </div>
+    <!-- end card -->
+  </div>
+  <!-- end col -->
+</div>
+<!-- end row -->
+
+<!-- end row -->

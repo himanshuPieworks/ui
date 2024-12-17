@@ -1,0 +1,125 @@
+<div class="mt-sm-0 mt-4"></div>
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs
+  title="Buddies Performance"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs
+><br />
+<!-- End Breadcrumbs -->
+
+<div class="row mb-3">
+  <div class="col-md-2">
+    <ng-select
+      #Selecter1
+      [items]="years"
+      [multiple]="false"
+      placeholder="Quarter"
+      class="form-control"
+      labelForId="ngSelectId"
+      name="year"
+      id="year"
+      (change)="loadData()"
+      [(ngModel)]="year"
+      [clearable]="false"
+      style="padding: 0"
+    >
+    </ng-select>
+  </div>
+  <div class="col-md-2">
+    <ng-select
+      #Selecter2
+      [items]="months"
+      [multiple]="false"
+      bindValue="id"
+      bindLabel="name"
+      placeholder="Quarter"
+      class="form-control"
+      labelForId="ngSelectId"
+      name="months"
+      id="months"
+      (change)="loadData()"
+      [(ngModel)]="month"
+      [clearable]="false"
+      style="padding: 0"
+    >
+    </ng-select>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead class="text-center">
+          <tr>
+            <th>Buddy</th>
+            <th>Num_of_cobuddies</th>
+            <th>Total_discoveries</th>
+            <th>Discoveries</th>
+            <th>Co_buddy_discoveries</th>
+            <th>Monthly_target</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let user of USERS; index as i" class="text-center">
+          <tr>
+            <td>
+              <accordion class="accordion" id="default-accordion-example">
+                <accordion-group class="accordion-item">
+                  <h2
+                    accordion-heading
+                    class="accordion-header"
+                    id="headingOne"
+                  >
+                    <button
+                      class="accordion-button fw-bolder text-center"
+                      type="button"
+                      style="
+                        background-color:
+                          {{+user.total_discoveries >= +user.monthly_target
+                            ? '#7ADFCE'
+                            : '#F38B94'}}
+                            "
+                    >
+                      {{ user.buddy }}
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseOne"
+                    class="accordion-collapse collapse show"
+                  >
+                    <div class="accordion-body">
+                      <div class="table-responsive">
+                        <table class="table align-middle">
+                          <thead class="text-center">
+                            <tr>
+                              <th>co_buddy</th>
+                              <th>discoveries</th>
+                            </tr>
+                          </thead>
+                          <tbody
+                            *ngFor="let co_buddies of USERS[i].co_buddies"
+                            class="text-center"
+                          >
+                            <tr>
+                              <td>{{ co_buddies.co_buddy }}</td>
+                              <td>{{ co_buddies.discoveries }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </accordion-group>
+              </accordion>
+            </td>
+            <td>{{ user.num_of_cobuddies }}</td>
+            <td>{{ user.total_discoveries }}</td>
+            <td>{{ user.discoveries }}</td>
+            <td>{{ user.cobuddy_discoveries }}</td>
+            <td>{{ user.monthly_target }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,924 @@
+<ng-stepper
+  #cdkStepper
+  [linear]="true"
+  class="cdksteppercontent nav nav-pills progress-bar-tab custom-nav"
+>
+  <cdk-step [optional]="false">
+    <ng-template cdkStepLabel>
+      <button class="step-bullet border-0" style="z-index: 10">1</button>
+    </ng-template>
+    <hr
+      class="w-2 absolute top-0"
+      style="
+        margin-top: -60px;
+        width: 70%;
+        text-align: center;
+        margin-left: 18%;
+      "
+    />
+
+    <div>
+      <div class="row">
+        <div class="col-xl-6" *ngIf="mandates.length > 0">
+          <div class="single-profile-heading">
+            <h6>Mandate*</h6>
+          </div>
+          <ng-select
+            [items]="mandates"
+            [multiple]="false"
+            class="form-control"
+            name="mandateSelect"
+            placeholder="Select mandate"
+            [(ngModel)]="requirement"
+            style="padding: 0"
+            [searchFn]="mandateLocalSearch"
+            (search)="onMandateSearch($event)"
+            (ngModelChange)="onMandateSelect(); validate1Completion()"
+          >
+            <ng-template ng-label-tmp let-item="item">
+              <span>{{ item.role?.name + ", " + item.client?.name }}</span>
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item">
+              <span>{{ item.role?.name + ", " + item.client?.name }}</span>
+            </ng-template>
+            <!-- <ng-option *ngFor="let m of mandates">
+          {{m.role.name+", "+m.client.name}}
+        </ng-option>  -->
+          </ng-select>
+        </div>
+      </div>
+      <br />
+      <div class="row">
+        <div class="col-xl-6">
+          <div *ngIf="false">
+            <!-- Show File Name and Trash Icon if File is Selected -->
+            <div
+              *ngIf="selectedFile"
+              class="d-flex justify-content-center align-items-center flex-column"
+            >
+              <p class="text-success mb-2">
+                File selected: {{ selectedFile?.name }}
+              </p>
+
+              <!-- Bootstrap Trash Icon for removing the file -->
+              <i
+                class="bi bi-trash"
+                role="button"
+                (click)="removeFile()"
+                style="cursor: pointer; font-size: 24px; color: red"
+                aria-label="Remove File"
+              ></i>
+            </div>
+            <!-- Autofill Application Section -->
+            <div class="text-center mb-4" *ngIf="!selectedFile">
+              <!-- Drag and Drop Area -->
+              <div
+                class="upload-box p-4 border mb-2 text-center rounded border-dotted"
+                style="border-color: #e5e5e5"
+                (dragover)="onDragOver($event)"
+                (dragleave)="onDragLeave($event)"
+                (drop)="onFileDrop($event)"
+                [class.dragover]="isDragging"
+                (click)="triggerFileInput()"
+              >
+                <p>Upload Resume</p>
+                <p>or drag and drop it here</p>
+                <p>Only .doc, .docx, .pdf, .odt, .rtf (Optional)</p>
+
+                <!-- Hidden File Input -->
+                <input
+                  type="file"
+                  id="fileInput"
+                  (change)="onFileSelected($event)"
+                  hidden
+                />
+              </div>
+            </div>
+          </div>
+          <!-- old file select -->
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="row">
+                <div class="col-lg-2">
+                  <h6>CV</h6>
+                  <br />
+                </div>
+                <div class="col-lg-6">
+                  <input
+                    class="form form-control"
+                    type="file"
+                    name="cv"
+                    id="cvInput"
+                    class="form-control-file"
+                    accept="application/pdf"
+                    (change)="onCvSelect($event)"
+                    value="Choose CV"
+                  />
+                </div>
+                <div class="col-lg-6" [hidden]="true">
+                  <a href="javascript:void(0)" (click)="showClipBoard()"
+                    ><span
+                      class="icofont-paperclip"
+                      style="font-size: 24px"
+                    ></span
+                  ></a>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <h4>{{ searchMessage }}</h4>
+            </div>
+            <br />
+          </div>
+        </div>
+        <br />
+        <div class="col-xl-6">
+          <div class="single-profile-textarea">
+            <div class="single-profile-heading">
+              <h6>Search By Email ID/ Mobile No</h6>
+            </div>
+            <div class="row">
+              <div class="col-lg-12">
+                <input
+                  type="text"
+                  maxlengths="100"
+                  [(ngModel)]="searchText"
+                  (change)="getCandidateByEmailId(true, false, 0)"
+                  class="from form-control"
+                  placeholder="Email ID/ Mobile No"
+                  title="Lookup sourcing db for existing candidates"
+                />
+                <!-- <input
+                type="text"
+                maxlength="100"
+                [(ngModel)]="searchText"
+                (change)="getCandidateByEmailId(true, false, 0)"
+                class="form-control"
+                placeholder="Email ID/ Mobile No"
+                title="Lookup sourcing db for existing candidates"
+                #emailInput3="ngModel"
+                [ngClass]="{'is-invalid': emailInput3.invalid && emailInput3.touched}"
+                required
+                [pattern]="emailPattern1"
+              /> -->
+                <!-- Error message for invalid email -->
+                <!-- <div *ngIf="emailInput3.invalid && emailInput3.touched" class="text-danger">
+                Please enter a valid Email ID.
+              </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="single-profile-textarea">
+        <div class="single-profile-heading">
+          <span></span>
+          <h6>Contact Info</h6>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label>Full Name <span class="text-danger">*</span></label>
+              <div class="job-category-area">
+                <input
+                  type="text"
+                  maxlengths="100"
+                  (ngModelChange)="validate1Completion()"
+                  [(ngModel)]="candidate.name"
+                  class="from form-control"
+                  placeholder="Full Name"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label>Current Company</label>
+              <div class="job-category-area">
+                <input
+                  type="text"
+                  maxlengths="100"
+                  [(ngModel)]="candidate.currentCompany"
+                  class="from form-control"
+                  placeholder="Current Company"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label>Email ID <span class="text-danger">*</span></label>
+              <div class="job-category-area">
+                <!-- <input
+                type="text"
+                maxlength="100"
+                [(ngModel)]="candidate.emailId"
+                (change)="searchText = candidate.emailId; getCandidateByEmailId(true, false, 0)"
+                class="form-control"
+                placeholder="Email ID/ Mobile No"
+                title="Lookup sourcing db for existing candidates"
+                #emailInput1="ngModel"
+                [ngClass]="{'is-invalid': emailInput1.invalid && emailInput1.touched}"
+                required
+                [pattern]="emailPattern"
+              />
+              
+              <div *ngIf="emailInput1.invalid && emailInput1.touched" class="text-danger">
+                Please enter a valid Email ID.
+              </div> -->
+                <input
+                  type="text"
+                  maxlengths="100"
+                  (ngModelChange)="validate1Completion()"
+                  [(ngModel)]="candidate.emailId"
+                  class="from form-control"
+                  placeholder="Email ID"
+                  (change)="
+                    searchText = candidate.emailId.trim();
+                    getCandidateByEmailId(false, false, 0)
+                  "
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label>Contact Number <span class="text-danger">*</span></label>
+              <div class="job-category-area">
+                <input
+                  type="text"
+                  maxlengths="100"
+                  (ngModelChange)="validate1Completion()"
+                  [(ngModel)]="candidate.phoneNo"
+                  class="from form-control"
+                  placeholder="Contact Number"
+                  (change)="
+                    searchText = candidate.phoneNo;
+                    getCandidateByEmailId(false, false, 0)
+                  "
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label>Current Location <span class="text-danger">*</span></label>
+              <div class="job-category-area">
+                <input
+                  type="text"
+                  maxlengths="100"
+                  (ngModelChange)="validate1Completion()"
+                  [(ngModel)]="candidate.currentLocation"
+                  class="from form-control"
+                  placeholder="Current Location"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label *ngIf="requirement && requirement.linkedInMandatory"
+                >Social Links (Linkedin and any other links)
+                <span class="text-danger">*</span></label
+              >
+              <label *ngIf="!requirement || !requirement.linkedInMandatory"
+                >Social Links
+              </label>
+              <div class="job-category-area">
+                <textarea
+                  (ngModelChange)="validate1Completion()"
+                  class="form-control mt-1 mb-1"
+                  [(ngModel)]="candidate.linkedInUrl"
+                  rows="5"
+                  placeholder="Enter new links as new line"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="text-end">
+      <button
+        type="button"
+        [disabled]="!completedStep1"
+        class="btn btn-success btn-label right ms-auto nexttab nexttab"
+        data-nexttab="pills-info-desc-tab"
+        cdkStepperNext
+        (mouseover)="validate1Completion()"
+      >
+        <i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i
+        >Next
+      </button>
+    </div>
+  </cdk-step>
+
+  <cdk-step [optional]="false">
+    <ng-template cdkStepLabel>
+      <button
+        class="step-bullet border-0"
+        style="z-index: 10"
+        [disabled]="!completedStep1"
+      >
+        2
+      </button>
+    </ng-template>
+    <hr
+      class="w-2 absolute top-0"
+      style="
+        margin-top: -60px;
+        width: 70%;
+        text-align: center;
+        margin-left: 18%;
+      "
+    />
+    <br />
+    <div class="row" *ngFor="let valueSet of valueSets; let ind = index">
+      <div class="col-lg-12">
+        <div class="single-profile-heading">
+          <h6>{{ valueSet.question }}</h6>
+        </div>
+        <div class="row">
+          <div
+            class="col mb-4"
+            *ngFor="let value of valueSet?.values; let i = index"
+          >
+            <input
+              class="btn btn-light"
+              type="button"
+              value="{{ value.value }}"
+              class="{{ value.selected ? 'pieworks-green-background' : '' }}"
+              (mouseover)="validate2Completion()"
+              (click)="
+                value.selected = !value.selected; clickedValue(value, ind)
+              "
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="text-end">
+      <button
+        type="button"
+        [disabled]="!completedStep2"
+        class="btn btn-success btn-label right ms-auto nexttab nexttab"
+        data-nexttab="pills-info-desc-tab"
+        cdkStepperNext
+        (mouseover)="validate2Completion()"
+      >
+        <i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i
+        >Next
+      </button>
+    </div>
+  </cdk-step>
+
+  <cdk-step [optional]="false">
+    <ng-template cdkStepLabel>
+      <button
+        class="step-bullet border-0"
+        style="z-index: 10"
+        [disabled]="!completedStep2"
+      >
+        3
+      </button>
+    </ng-template>
+    <hr
+      class="w-2 absolute top-0"
+      style="
+        margin-top: -60px;
+        width: 70%;
+        text-align: center;
+        margin-left: 18%;
+      "
+    />
+    <div>
+      <div class="single-profile-heading">
+        <span></span>
+        <h6>Other Details</h6>
+      </div>
+      <br />
+
+      <div class="col-lg-12">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label>Expected CTC (LPA) *</label>
+              <div class="job-category-area">
+                <input
+                  type="number"
+                  min="1"
+                  class="form-control"
+                  [(ngModel)]="candidate.expectedCtc"
+                  (mouseover)="validate3Completion()"
+                  (change)="
+                    candidate.expectedCtc < 0
+                      ? (candidate.expectedCtc = 0)
+                      : (candidate.expectedCtc = candidate.expectedCtc)
+                  "
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label>Current CTC Fixed (LPA) </label>
+              <div class="job-category-area">
+                <input
+                  type="number"
+                  min="1"
+                  class="form-control"
+                  [(ngModel)]="candidate.currentCtcFixed"
+                  (mouseover)="validate3Completion()"
+                  (change)="
+                    candidate.currentCtcFixed < 0
+                      ? (candidate.currentCtcFixed = 0)
+                      : (candidate.currentCtcFixed = candidate.currentCtcFixed);
+                    updateCurrentCtcTotal()
+                  "
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label>Current CTC Variable (LPA)</label>
+              <div class="job-category-area">
+                <input
+                  type="number"
+                  min="1"
+                  class="form-control"
+                  [(ngModel)]="candidate.currentCtcVariable"
+                  (mouseover)="validate3Completion()"
+                  (change)="
+                    candidate.currentCtcVariable < 0
+                      ? (candidate.currentCtcVariable = 0)
+                      : (candidate.currentCtcVariable =
+                          candidate.currentCtcVariable);
+                    updateCurrentCtcTotal()
+                  "
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label>Current CTC Total (LPA)</label>
+              <div class="job-category-area">
+                <input
+                  [disabled]="true"
+                  type="number"
+                  min="1"
+                  class="form-control"
+                  [(ngModel)]="candidate.currentCtcTotal"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-lg-6" [hidden]="!reqId">
+            <div class="form-group">
+              <label>Notice Period (Days) *</label>
+              <div class="job-category-area">
+                <input
+                  type="number"
+                  min="1"
+                  class="form-control"
+                  (change)="validate3Completion()"
+                  [(ngModel)]="noticePeriod"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6" [hidden]="!reqId">
+            <div class="form-group">
+              <label>Current ESOP plan ( Granted v/s Vested)</label>
+              <div class="job-category-area">
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="currentEsopPlan"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <div class="row justify-content-between">
+        <div class="col">
+          <div class="text-start">
+            <button
+              type="button"
+              class="btn btn-success text-decoration-none btn-label previestab"
+              data-previous="pills-gen-info-tab"
+              cdkStepperPrevious
+            >
+              <i
+                class="ri-arrow-left-line label-icon align-middle fs-16 me-2"
+              ></i>
+              Previous
+            </button>
+          </div>
+        </div>
+        <div class="col">
+          <div class="text-end" (mouseover)="validate3Completion()">
+            <button
+              type="button"
+              [disabled]="!completedStep3"
+              class="btn btn-success btn-label right ms-auto nexttab nexttab"
+              data-nexttab="pills-info-desc-tab"
+              cdkStepperNext
+            >
+              <i
+                class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
+              ></i
+              >Next
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </cdk-step>
+
+  <cdk-step [optional]="false">
+    <ng-template cdkStepLabel>
+      <button
+        class="step-bullet border-0"
+        style="z-index: 10"
+        [disabled]="!completedStep3"
+      >
+        4
+      </button>
+    </ng-template>
+    <hr
+      class="w-2 absolute top-0"
+      style="
+        margin-top: -60px;
+        width: 70%;
+        text-align: center;
+        margin-left: 18%;
+      "
+    />
+    <br />
+    <div>
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label>Exposure (No. of years) *</label>
+            <div class="job-category-area">
+              <input
+                type="number"
+                class="form-control"
+                (change)="validate4Completion()"
+                [(ngModel)]="candidate.experience"
+                min="0"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group" *ngIf="!reqId">
+            <label>Remarks</label>
+            <div class="job-category-area">
+              <textarea
+                class="form-control"
+                [(ngModel)]="candidate.remarks"
+                rows="5"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="single-profile-heading" [hidden]="!reqId">
+      <span></span>
+      <h6>Job Fitment Justification</h6>
+    </div>
+    <div class="row" [hidden]="!reqId">
+      <div class="col-sm-12 col-lg-12">
+        <div class="row">
+          <div class="col-lg-6">
+            <!--<input type="text"  [(ngModel)]="justification" class="from form-control" placeholder="please type and click '+' sign to add next line item">-->
+            <span *ngIf="justification1 && justification1.length > 0"
+              >In what ways does your candidate stand out from the rest? *</span
+            >
+
+            <textarea
+              rows="5"
+              cols="15"
+              (change)="validate4Completion()"
+              [(ngModel)]="justification1"
+              class="from form-control"
+              placeholder="In what ways does your candidate stand out from the rest? *"
+            ></textarea>
+          </div>
+          <div class="col-lg-6">
+            <!--<input type="text"  [(ngModel)]="justification" class="from form-control" placeholder="please type and click '+' sign to add next line item">-->
+            <span *ngIf="justification2 && justification2.length > 0"
+              >Could you provide an explanation if there is a short-term stint
+              (less than 1 year) in a company or if the candidate has made
+              numerous job changes within a short period? *</span
+            >
+
+            <textarea
+              rows="5"
+              cols="15"
+              [(ngModel)]="justification2"
+              class="from form-control"
+              placeholder="Could you provide an explanation if there is a short-term stint (less than 1 year) in a company or if the candidate has made numerous job changes within a short period?"
+            ></textarea>
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-lg-12">
+            <!--<input type="text"  [(ngModel)]="justification" class="from form-control" placeholder="please type and click '+' sign to add next line item">-->
+            <span *ngIf="justification3 && justification3.length > 0"
+              >If there is a gap in the candidate's career exceeding 6 months,
+              please elaborate on how they were engaged or occupied during that
+              time. *</span
+            >
+
+            <textarea
+              rows="5"
+              cols="15"
+              [(ngModel)]="justification3"
+              class="from form-control"
+              placeholder="If there is a gap in the candidate's career exceeding 6 months, please elaborate on how they were engaged or occupied during that time."
+            ></textarea>
+          </div>
+        </div>
+        <br />
+        <ul [hidden]="true">
+          <li *ngFor="let j of justifications">
+            <i class="icofont-hand-drawn-right"></i
+            >{{ j.justification }} &nbsp;&nbsp;&nbsp;<a
+              (click)="removeJustification(j)"
+              href="javascript:void(0)"
+              ><i class="icofont-trash" style="font-size: 17px"></i
+            ></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="single-profile-heading" *ngIf="false">
+      <span></span>
+      <div class="row">
+        <div class="col-lg-2">
+          <h6>Is Top 50 ?</h6>
+        </div>
+        <br />
+        <div class="col-lg-2">
+          <input type="checkbox" [(ngModel)]="candidate.isTop50" />
+        </div>
+        <div class="col-lg-1" style="margin-left: -10%; margin-top: 5px">
+          <h6>{{ candidate.isTop50 ? "Yes" : "" }}</h6>
+        </div>
+        <br />
+      </div>
+      <br />
+    </div>
+    <br />
+
+    <div class="row">
+      <div class="col-xl-6" [hidden]="!reqId">
+        <h6>Status *</h6>
+        <ng-select
+          [items]="status"
+          [multiple]="false"
+          bindLabel="name"
+          class="form-control"
+          name="roleSelect"
+          placeholder="Select Status"
+          [(ngModel)]="selectedStatus"
+          [clearable]="true"
+          style="padding: 0"
+          (ngModelChange)="status.length == 0 ? loadStatus() : nothing()"
+        >
+        </ng-select>
+      </div>
+      <div class="col-xl-6">
+        <h6>Sector *</h6>
+        <ng-select
+          [items]="availableSectors"
+          [multiple]="false"
+          bindLabel="name"
+          bindValue="name"
+          class="form-control"
+          name="roleSelect"
+          placeholder="Select Sector"
+          [(ngModel)]="newSector"
+          style="padding: 0"
+          (ngModelChange)="
+            status.length == 0 ? loadAvaialbleSectors() : nothing()
+          "
+        >
+        </ng-select>
+      </div>
+    </div>
+    <br />
+
+    <button
+      [hidden]="true"
+      class="btn btn-success"
+      (click)="hideExtraDetails = !hideExtraDetails"
+    >
+      {{ hideExtraDetails ? "Fill " : "Hide " }} Extra Details</button
+    ><br />
+    <div [hidden]="hideExtraDetails">
+      <div class="single-profile-heading">
+        <span></span>
+        <h6>Work Experiences</h6>
+      </div>
+      <br />
+      <div class="single-profile-paragraph">
+        <div class="row">
+          <div class="col-lg-3">
+            <input
+              type="text"
+              maxlengths="50"
+              [(ngModel)]="experience.designation"
+              class="from form-control"
+              placeholder="Designation"
+            />
+          </div>
+          <div class="col-lg-3">
+            <input
+              type="text"
+              maxlengths="50"
+              [(ngModel)]="experience.company"
+              class="from form-control"
+              placeholder="Company"
+            />
+          </div>
+          <div class="col-lg-3">
+            <input
+              type="number"
+              min="1985"
+              maxlengths="50"
+              [(ngModel)]="experience.fromYear"
+              class="from form-control"
+              placeholder="From YYYY"
+            />
+          </div>
+          <div class="col-lg-2">
+            <input
+              type="number"
+              min="1985"
+              maxlengths="50"
+              [(ngModel)]="experience.toYear"
+              class="from form-control"
+              placeholder="To YYYY"
+            />
+          </div>
+          <div class="col-lg-1">
+            <div class="job-category-area">
+              <input
+                type="button"
+                class="btn btn-success"
+                value="+ Add"
+                (click)="addExperience()"
+              />
+            </div>
+          </div>
+        </div>
+        <ul>
+          <li *ngFor="let e of experiences">
+            <i class="icofont-hand-drawn-right"></i
+            >{{
+              e.designation +
+                " , " +
+                e.company +
+                " (" +
+                e.fromYear +
+                " - " +
+                e.toYear +
+                ") "
+            }}<a (click)="removeExperience(e)" href="javascript:void(0)"
+              ><i class="icofont-trash" style="font-size: 17px"></i
+            ></a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="single-profile-heading">
+        <span></span>
+        <h6>Qualification</h6>
+      </div>
+      <br />
+      <div class="single-profile-paragraph">
+        <div class="row">
+          <div class="col-lg-3">
+            <input
+              type="text"
+              maxlengths="50"
+              [(ngModel)]="education.course"
+              class="from form-control"
+              placeholder="Course"
+            />
+          </div>
+          <div class="col-lg-4">
+            <input
+              type="text"
+              maxlengths="50"
+              [(ngModel)]="education.institution"
+              class="from form-control"
+              placeholder="College"
+            />
+          </div>
+          <div class="col-lg-3">
+            <input
+              type="number"
+              min="1985"
+              maxlengths="50"
+              [(ngModel)]="education.year"
+              class="from form-control"
+              placeholder="Year Of YYYY"
+            />
+          </div>
+          <div class="col-lg-1">
+            <div class="job-category-area">
+              <input
+                type="button"
+                class="btn btn-success"
+                value="+ Add"
+                (click)="addEducation()"
+              />
+            </div>
+          </div>
+        </div>
+        <ul>
+          <li *ngFor="let e of educations">
+            <i class="icofont-hand-drawn-right"></i
+            >{{ e.course + " from " + e.institution + " (" + e.year + ") "
+            }}<a (click)="removeEducation(e)" href="javascript:void(0)"
+              ><i class="icofont-trash" style="font-size: 17px"></i
+            ></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="row justify-content-between">
+      <div class="text-start col" style="margin-top: 5px">
+        <button
+          type="button"
+          class="btn btn-success text-decoration-none btn-label previestab"
+          data-previous="pills-gen-info-tab"
+          cdkStepperPrevious
+        >
+          <i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>
+          Previous
+        </button>
+      </div>
+      <div class="text-end text-md-center col" style="margin-top: 5px">
+        <button
+          class="btn btn-info"
+          [disabled]="!completedStep4"
+          (click)="updateCandidate(1)"
+        >
+          Save
+        </button>
+      </div>
+      <div class="text-end text-md-center col" style="margin-top: 5px">
+        <button
+          class="btn btn-primary"
+          (click)="updateCandidate(2)"
+          [disabled]="!completedStep4"
+          title="Save the discovery and discover a new talent for the same requirement."
+          style="width: 200px"
+        >
+          Save And Discover More
+        </button>
+      </div>
+      <div class="text-end col" style="margin-top: 5px">
+        <a class="btn btn-info" (click)="commonService.goBack()">Cancel</a>
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div
+        class="text-center col-lg-8"
+        style="color: rgb(7, 13, 120); text-align: start"
+      >
+        {{ message }}
+      </div>
+    </div>
+  </cdk-step>
+</ng-stepper>

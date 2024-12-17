@@ -1,0 +1,229 @@
+<!-- BreadCrumbs for links -->
+<app-breadcrumbs [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs><br />
+
+<div class="card">
+  <div class="card-body">
+    <!-- search box -->
+    <div class="row justify-content-end">
+      <div class="col-lg-3">
+        <ng-select
+          [items]="clients"
+          [(ngModel)]="client"
+          [multiple]="false"
+          placeholder="Select Client"
+          class="form-control"
+          [clearable]="false"
+          (change)="filterChanged()"
+          style="padding: 0"
+          [searchFn]="clientLocalSearch"
+          (search)="onClientSearch($event)"
+        >
+          <ng-template ng-label-tmp let-item="item">
+            {{ item.name ? item.name : "Search Client" }}
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item">
+            {{ item.name }}
+          </ng-template>
+        </ng-select>
+      </div>
+    </div>
+    <br />
+    <!-- tab Un-Billed and invoice -->
+    <tabset>
+      <tab heading="Un-Billed">
+        <div class="text-center">
+          <br />
+          <h4>
+            Open mandates from
+            {{ commonService.changeMysqlToNormalDate(startingDate) }} to
+            {{
+              commonService.changeMysqlToNormalDate(endingDate.split(" ")[0])
+            }}.
+            {{
+              contract && contract.logTime
+                ? "Contract updated on " +
+                  commonService.changeMysqlToNormalDate(contract.logTime)
+                : "Contract information not available !!"
+            }}
+          </h4>
+        </div>
+
+        <table [ngClass]="commonService.isMobileDevice?'table overflow':'table table-striped'">
+          <thead  class="thead-dark">
+              <tr>
+                  <th scope="col" class="table-th">Sl.No</th><th class="table-th">Select</th><th  class="table-th" scope="col">Role</th>
+                  <th class="table-th">Status</th><th class="table-th">Month 1/2/3</th>
+                  <th class="table-th">Unique Code</th><th class="table-th">Active From</th>
+                  <th class="table-th">Max LPA - Min LPA</th><th class="table-th">Positions Pending</th>
+                  <th class="table-th" title="Retainer Fee for single position X Positions Pending">Retainer Fee</th><th class="table-th">Actions</th>
+              </tr>
+          </thead>
+          <tr *ngFor="let req of unbilledItems; let i = index" style="{{(req.ignore)?'text-decoration: line-through;':''}}">
+              <th scope="row" class="table-td">{{i+1}}</th>
+              <td class="table-td"><input type='checkbox' [(ngModel)]='req.selected'></td>
+              <td class="table-td">{{req.role.name}}</td>                           
+              <td class="table-td">{{req.status.name}}</td>
+              <td class="table-td">{{req.retainerMonth}}</td>
+              <td class="table-td">{{req.uniqueId}}</td>
+              <td class="table-td">{{req.activeFrom}}</td>
+              <td class="table-td">{{req.minLpa+" - "+req.maxLpa}}</td> 
+              <td class="table-td">{{req.noOfVaccancyPending}}</td>
+              <td class="table-td" title="{{req.retainerFee+' X '+req.noOfVaccancyPending}}">{{getInUsd(req.retainerFee*req.noOfVaccancyPending,false)}}</td>
+              <td class="table-td">
+                  <!-- <button mat-button [matMenuTriggerFor]="menu" (click)="selectedReq=req;fillMenu()">
+                      <i class="icofont-navigation-menu" style="font-size: 10px" ></i>
+                  </button> -->
+              </td>
+          </tr>
+          <tr>
+              <td colspan="9" style="text-align: right">Total</td>
+              <td style="text-align: center">{{getInUsd(total,false)}}</td>
+          </tr>
+          <tr *ngIf="taxType=='GST'">
+              <td colspan="9" style="text-align: right">CGST @ 9%</td>
+              <td style="text-align: center">{{getInUsd(total*9/100,false)}}</td>
+          </tr>
+          <tr *ngIf="taxType=='GST'">
+              <td colspan="9" style="text-align: right">SGST @ 9%</td>
+              <td style="text-align: center">{{getInUsd(total*9/100,false)}}</td>
+          </tr>
+          <tr *ngIf="taxType=='IGST'">
+              <td colspan="9" style="text-align: right">IGST @ 18%</td>
+              <td style="text-align: center">{{getInUsd(total*18/100,false)}}</td>
+          </tr>
+          <tr *ngIf="taxType=='IGST'">
+              <td colspan="9" style="text-align: right">Net Total</td>
+              <td style="text-align: center">{{getInUsd(total+total*18/100,true)}}</td>
+          </tr>
+          <tr *ngIf="taxType=='GST'">
+              <td colspan="9" style="text-align: right">Net Total</td>
+              <td style="text-align: center">{{getInUsd(total+total*18/100,true)}}</td>
+          </tr>
+      </table><br>
+
+      <h5 *ngIf="tempItems && tempItems.length>0">Edit invoice details if required.</h5><br>
+      <table *ngIf="tempItems && tempItems.length>0" [ngClass]="commonService.isMobileDevice?'table overflow':'table table-striped'">
+          <thead  class="thead-dark">
+              <tr>
+                  <th scope="col" class="table-th">Sl.No</th>
+                  <th  class="table-th" scope="col">Particulars</th>
+                  <th class="table-th">SAC CODE</th>
+                  <th class="table-th">Qty</th>
+                  <th class="table-th">Amount</th>
+              </tr>
+          </thead>
+          <tr *ngFor="let item of tempItems; let i = index">
+              <th scope="row" class="table-td">{{i+1}}</th>
+              <td class="table-td"><input class="form form-control" type='text' [(ngModel)]='item.particulars'></td>                           
+              <td class="table-td"><input class="form form-control" type='text' [(ngModel)]='item.saccode'></td>
+              <td class="table-td"><input class="form form-control" type='text' [(ngModel)]='item.qty'></td>
+              <td class="table-td"><input class="form form-control" type='text' [(ngModel)]='item.amount'>({{getInUsd(item.amount,false)}})</td>
+          </tr>
+      </table><br>
+      <div class="row" style="margin-right:0px">
+          <div class="col-lg-2"><input type="checkBox" name="invoiceInDollar" [(ngModel)]="invoiceInDollar">&nbsp;&nbsp;&nbsp;<b>Invoice in USD</b></div>
+          <div class="col-lg-1">1 USD</div>
+          <div class="col-lg-3">=&nbsp;&nbsp;<input type="number" name="conversionRate" [(ngModel)]="conversionRate" value="80"> INR</div>
+      </div><br>
+      <div class="row" style="margin-right:0px">
+          <div class="col-lg-1"><h5>Include</h5> </div>
+          <div class="col-lg-1"><input type="radio" name="taxType" (click)="taxType='GST'" value="GST">&nbsp;GST</div>
+          <div class="col-lg-1"><input type="radio" name="taxType" (click)="taxType='IGST'" value="IGST">&nbsp;IGST</div>
+          <div class="col-lg-1"><input type="radio" name="taxType" (click)="taxType='NONE'" value="NONE">&nbsp;NONE</div>
+      </div><br>
+      <div class="row" style="margin-right:0px">
+          <div class="col-lg-1"><h5>Bank Account</h5> </div>
+          <div class="col-lg-1"><input type="radio" name="bankAccount" (click)="bankAccount='pieworks'" value="pieworks">&nbsp;Pieworks</div>
+          <div class="col-lg-1"><input type="radio" name="bankAccount" (click)="bankAccount='pivote'" value="pivote">&nbsp;Pivote</div>
+      </div><br>
+      <div class="row" style="margin-right:0px">
+          <div class="col-lg-1"><h5>Due Date</h5> </div>
+          <div class="col-lg-3"><input type="text" name="dueDate" [(ngModel)]="dueDate" class="form form-control"></div>
+      </div><br>
+      <div class="row" style="margin-right:0px">
+          <div class="col-lg-1"><h5>Invoice Number</h5> </div>
+          <div class="col-lg-3"><input type="text" name="invoiceNumber" [(ngModel)]="invoiceNumber" class="form form-control" placeholder="eg : xxx/2022-23 (optional)" title="if not mentioned, system will auto generate invoice number as a continuous seequence of last invoice generated."></div>
+      </div>
+      <br />
+          <div class="row justify-content-center gap-1">
+            <div class="col-lg-2 btn btn-outline-dark" style="margin-top: 5px">
+              <a
+                style="cursor: pointer; text-align: center"
+                routerLink="/fw/client-contracts"
+                >Update Contract</a
+              >
+            </div>
+            <div class="col-lg-2 btn btn-outline-dark clickable" style="margin-top: 5px" (click)="getPreviewNew()">
+              Preview Invoice
+            </div>
+            <div class="col-lg-2 btn btn-outline-dark clickable" style="margin-top: 5px" (click)="confirmInvoiceGeneration()">
+              Generate Invoice
+            </div>
+            <div class="col-lg-2 btn btn-outline-dark clickable" style="margin-top: 5px" (click)="ignoreSelected()">
+              Ignore Selected
+            </div>
+          </div>
+      </tab>
+      <tab heading="Invoice">
+        <br />
+          <table
+            [ngClass]="
+              commonService.isMobileDevice
+                ? 'table overflow'
+                : 'table table-striped'
+            "
+          >
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col" class="table-th">Invoice Number</th>
+                <th class="table-th" scope="col">Date</th>
+                <th class="table-th">Amount</th>
+                <th class="table-th">Status</th>
+              </tr>
+            </thead>
+            <tr *ngFor="let invoice of invoices; let i = index">
+              <td class="table-td">
+                <a
+                  style="cursor: pointer; color: blue"
+                  (click)="showGeneratedInvoice(invoice.id)"
+                  >{{ invoice.invoiceNumber }}</a
+                >
+              </td>
+              <td class="table-td">{{ invoice.logTime }}</td>
+              <td class="table-td">
+                {{
+                  getInUsdWithConversionRate(
+                    invoice.amount,
+                    invoice.conversionRate,
+                    invoice.invoiceInUsd
+                  )
+                }}
+              </td>
+              <td class="table-td">
+                <ng-select
+                  [items]="status"
+                  [(ngModel)]="invoice.status"
+                  [multiple]="false"
+                  placeholder="Select Client"
+                  class="form-control"
+                  [clearable]="false"
+                  style="padding: 0"
+                  (change)="saveInvoiceStatus(invoice)"
+                >
+                  <ng-template ng-option-tmp let-item="item">
+                    {{ item }}
+                  </ng-template>
+                </ng-select>
+              </td>
+            </tr>
+          </table>
+      </tab>
+    </tabset>
+  </div>
+</div>
+<div
+  id="printDiv"
+  #printDiv
+  [hidden]="hidePrintDiv"
+  style="padding-left: 5%; padding-right: 5%; padding-top: 10%"
+></div>

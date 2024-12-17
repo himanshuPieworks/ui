@@ -1,0 +1,29 @@
+<div class="mt-sm-0 mt-5"></div>
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs tooltip="Workspace" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs><br>
+<!-- End Breadcrumbs -->
+<div class="row">
+    <div class="col-lg">
+        <div class="row" id="property-list">
+            <div class="col-xxl-4 col-lg-4 col-md-6 clickable" *ngFor="let link of links">
+                <a [routerLink]="link.link" *ngIf='commonService.rbac[link.rbacName]'>
+                    <div class="card real-estate-grid-widgets card-animate" style="min-height: 160px"> <!--  style="background-color: {{getRandomColor()}}" -->
+                        <div class="card-body p-2">
+                            <div class="row gy-4 text-white-75 d-flex">   
+                                <div style="width: 100%" class='d-flex align-items-center'>
+                                    <i class="{{link.image}}" alt="img-01.jpg" class="rounded w-100 object-fit-cover" style="object-fit: contain !important;padding-left: 45%;font-size: 30px;color: #e46a3e"> </i>
+                                </div>
+                            </div>
+                            <div class="row gy-4">   
+                                <div class="col-xxl-12 col-md-12" style="text-align: left;"><h2>{{link.title}}</h2></div>
+                            </div>
+                            <div class="row gy-4">   
+                                <div class="col-xxl-12 col-md-12 text-muted">{{link.description}}</div>
+                            </div>
+                        </div>                     
+                    </div>
+                </a>
+            </div>
+        </div><!--end row-->
+    </div>
+</div>

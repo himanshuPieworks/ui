@@ -1,0 +1,452 @@
+<div class="mt-sm-0 mt-5"></div>
+<app-breadcrumbs
+  tooltip="Piebank"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs
+><br />
+<tabset>
+  <tab heading="Piebank">
+    <br />
+    <div class="page-title-area">
+      <div class="d-table">
+        <div class="d-table-cell">
+          <div class="container">
+            <div class="page-title-text">
+              <h5></h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <section class="job-area job-area-two pt-100">
+      <div class="row">
+        <div class="col-lg-4" style="height: 100%">
+          <div
+            class="card card-animate"
+            style="
+              background-image: url('assets/images/bgforfinance.png');
+              background-repeat: repeat;
+              background-attachment: fixed;
+              background-position: top right;
+              min-height: 160px;
+            "
+          >
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-12" style="text-align: center">
+                  <h5><b>Money in the bank</b></h5>
+                  <br />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-12" style="text-align: center">
+                  <h4 title="Payout Ready(Escrow)">
+                    <b> {{ maturedPayout + " ( " + escrowAmt + " )" }}</b>
+                  </h4>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-12" style="text-align: center">
+                  <table
+                    [ngClass]="
+                      commonService.isMobileDevice
+                        ? 'table overflow'
+                        : 'table table-striped'
+                    "
+                  >
+                    <thead class="thead-dark">
+                      <accordion
+                        class="accordion"
+                        id="default-accordion-example"
+                      >
+                        <accordion-group class="accordion-item">
+                          <h2
+                            accordion-heading
+                            class="accordion-header"
+                            id="headingOne"
+                          >
+                            <button class="accordion-button" type="button">
+                              Cash
+                            </button>
+                          </h2>
+                          <div
+                            id="collapseOne"
+                            class="accordion-collapse collapse show"
+                          >
+                            <div class="accordion-body">
+                              <tr>
+                                <th
+                                  scope="col"
+                                  class="table-th"
+                                  style="
+                                    border-width: 2px;
+                                    border-color: #fffbfb;
+                                    border-top-left-radius: 20px;
+                                    border-top-style: solid;
+                                    height: 60px;
+                                    vertical-align: middle;
+                                  "
+                                >
+                                  Description
+                                </th>
+                                <th
+                                  class="table-th"
+                                  scope="col"
+                                  style="
+                                    border-width: 2px;
+                                    border-color: #fffbfb;
+                                    border-top-right-radius: 0px;
+                                    border-top-style: solid;
+                                  "
+                                >
+                                  Escrow Amount
+                                </th>
+                                <th
+                                  class="table-th"
+                                  scope="col"
+                                  style="
+                                    border-width: 2px;
+                                    border-color: #fffbfb;
+                                    border-top-right-radius: 20px;
+                                    border-top-style: solid;
+                                  "
+                                >
+                                  Ready To Payout
+                                </th>
+                              </tr>
+                              <tr
+                                *ngFor="
+                                  let disc of unbilledItems;
+                                  let i = index
+                                "
+                                (click)="
+                                  payoutBreakup.show(); selectedReq = disc
+                                "
+                                style="{{
+                                  disc.ignore
+                                    ? 'text-decoration: line-through;'
+                                    : ''
+                                }}cursor:pointer"
+                                [ngClass]="
+                                  disc.classOnRowClick
+                                    ? disc.classOnRowClick11111
+                                    : ''
+                                "
+                                (click)="toggleClassOnRowClick(disc)"
+                              >
+                                <td class="table-td" style="text-align: left">
+                                  <br />{{
+                                    disc.discovery
+                                      ? disc.discovery?.candidate.name +
+                                        " " +
+                                        disc.discovery.status.name +
+                                        " as " +
+                                        disc.discovery.requirement.role.name +
+                                        ", " +
+                                        disc.discovery.requirement.client.name
+                                      : disc.description
+                                  }}<br /><br />
+                                </td>
+                                <!--                                        <td class="table-td" scope="col">{{disc.advanceAmount>0?(disc.total - disc.advanceAmount):disc.total + disc.advanceAmount}}</td>
+                                                                                                  <td scope="row" class="table-td">{{disc.advanceAmount>0?disc.advanceAmount:0}}</td>-->
+                                <td class="table-td" scope="col">
+                                  {{ disc.escrowAmount }}
+                                </td>
+                                <td scope="row" class="table-td">
+                                  {{ disc.maturedAmount }}
+                                </td>
+                              </tr>
+                              <tr *ngIf="maturedPayout">
+                                <td
+                                  class="table-td"
+                                  colspan="2"
+                                  style="text-align: right"
+                                >
+                                  Total Matured Amount
+                                </td>
+                                <td class="table-td">{{ maturedPayout }}</td>
+                              </tr>
+                              <!--<tr *ngIf="maturedPayout && correctionDueToPenalty">
+                                                          <td class="table-td" colspan="2" style="text-align: right">Eligible Matured Amount {{correctionDueToPenalty}}% of {{maturedPayout}} </td>
+                                                          <td class="table-td">{{maturePayoutAfterPenalty}}</td>
+                                                      </tr>-->
+                              <tr>
+                                <td
+                                  class="table-td"
+                                  colspan="2"
+                                  style="text-align: right"
+                                >
+                                  Tax at 10%
+                                </td>
+                                <td class="table-td">
+                                  {{ (maturedPayout * 10) / 100 }}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td
+                                  class="table-td"
+                                  colspan="2"
+                                  style="text-align: right"
+                                >
+                                  Net Payout
+                                </td>
+                                <td class="table-td">{{ netTotal }}</td>
+                              </tr>
+                            </div>
+                          </div>
+                        </accordion-group>
+                      </accordion>
+                    </thead>
+                  </table>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-12" style="text-align: center">
+                  <button
+                    [disabled]="!maturedPayout"
+                    type="button"
+                    class="btn btn-primary"
+                    value="Cashout ({{ netTotal }})/-"
+                    (click)="confirmCashoutReadyAmount()"
+                  >
+                    <i class="icofont-money" style="font-size: 20px"></i>
+                    Cashout ({{ netTotal }})/-
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4" style="height: 100%">
+          <div
+            class="card card-animate"
+            style="
+              background-image: url('assets/images/bgforfinance.png');
+              background-repeat: repeat;
+              background-attachment: fixed;
+              background-position: top right;
+              min-height: 160px;
+            "
+          >
+            <div class="card-body">
+              <div class="col-lg-12" style="text-align: center">
+                <h5><b>Piecoins in the Bank</b></h5>
+                <br />
+              </div>
+              <div class="row">
+                <div class="col-lg-12" style="text-align: center">
+                  <h5 title="Piecoins available">
+                    Available Piecoins : {{ piecos }}
+                  </h5>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-12" style="text-align: center">
+                  Piecoins are small rewards received for completing tasks on
+                  the platform.
+                </div>
+              </div>
+              <br />
+              <div class="row">
+                <div class="col-lg-6" style="text-align: right">
+                  <button
+                    [disabled]="piecos <= 0 || !member"
+                    type="button"
+                    (click)="confirmCashoutPiecos()"
+                    class="btn btn-primary"
+                  >
+                    <i class="icofont-money" style="font-size: 20px"></i>
+                    Cashout ({{ piecosWorthCashout }})/-
+                  </button>
+                </div>
+                <div class="col-lg-6" style="text-align: left">
+                  &nbsp;&nbsp;<button
+                    type="button"
+                    class="btn btn-primary"
+                    value="Details"
+                    (click)="viewStatement()"
+                  >
+                    <i class="icofont-notebook" style="font-size: 20px"></i
+                    >&nbsp;Statement
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4" style="height: 100%">
+          <div
+            class="card card-animate"
+            data-wow-delay=".1s"
+            style="
+              background-image: url('assets/images/bgforfinance.png ');
+              background-repeat: repeat;
+              background-size: cover;
+              background-attachment: fixed;
+              background-position: top right;
+              min-height: 160px;
+            "
+          >
+            <div class="card-body" style="top: 75px; left: 10px; height: 100%">
+              <div class="col-lg-12" style="text-align: center">
+                <h5><b>Performance Report</b></h5>
+                <br />
+              </div>
+              <div class="col-lg-12" style="margin-left: 25px">
+                {{ correctionDueToPenalty }}% of eligible payout
+              </div>
+              <!-- <app-recr-health-bar [(communities)]="communities" *ngIf="false"></app-recr-health-bar> -->
+
+              <accordion class="accordion" id="default-accordion-example">
+                <accordion-group class="accordion-item">
+                  <h2
+                    accordion-heading
+                    class="accordion-header"
+                    id="headingOne"
+                  >
+                    <button class="accordion-button" type="button">
+                      Performance Report
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseOne"
+                    class="accordion-collapse collapse show"
+                  >
+                    <div class="accordion-body">
+                      <div class="col-lg-12">
+                        <table
+                          [ngClass]="
+                            commonService.isMobileDevice
+                              ? 'table overflow'
+                              : 'table table-striped'
+                          "
+                        >
+                          <thead class="thead-dark">
+                            <!--totalCount#totalWeightedCount#monthlyTarget#month#buddiesAndMineMonthlyTarget#numOfBuddies#buddiesDiscCount#buddiesDiscoWeightedCount -->
+                            <tr>
+                              <th
+                                scope="col"
+                                class="table-th"
+                                style="
+                                  border-width: 2px;
+                                  border-color: #fffbfb;
+                                  border-top-left-radius: 20px;
+                                  border-top-style: solid;
+                                "
+                              >
+                                Month
+                              </th>
+                              <!--<th  class="table-th middle-th" scope="col">Target</th>-->
+                              <!--<th  class="table-th middle-th" scope="col">Weighted Count</th>-->
+                              <!--<th  class="table-th middle-th" scope="col">Num Of Buddies</th>-->
+                              <th class="table-th middle-th" scope="col">
+                                Target
+                              </th>
+                              <th class="table-th last-th" scope="col">
+                                Weighted Count
+                              </th>
+                            </tr>
+                            <tr
+                              *ngFor="
+                                let details of penaltyDetails;
+                                let i = index
+                              "
+                              style="color:{{ getColor(details) }}"
+                            >
+                              <td class="table-td" style="text-align: center">
+                                <br />{{
+                                  commonService.getMonthNameFromNumber(
+                                    details[3]
+                                  )
+                                }}
+                              </td>
+                              <td
+                                scope="row"
+                                class="table-td"
+                                *ngIf="member?.grade?.id == 3"
+                              >
+                                {{ details[2] }}
+                              </td>
+                              <td
+                                class="table-td"
+                                scope="col"
+                                *ngIf="member?.grade?.id == 3"
+                              >
+                                {{ details[1] }}
+                              </td>
+                              <!--<td scope="row" class="table-td">{{details[5]}}</td>-->
+                              <td
+                                scope="row"
+                                class="table-td"
+                                *ngIf="member?.grade?.id !== 3"
+                              >
+                                Team({{ details[5] }}) : {{ details[4] }}<br />
+                                Individual :{{ details[2] }}
+                              </td>
+                              <td
+                                scope="row"
+                                class="table-td"
+                                *ngIf="member?.grade?.id !== 3"
+                              >
+                                Team : {{ details[1] + details[7] }}<br />
+                                Individual :{{ details[1] }}
+                              </td>
+                            </tr>
+                          </thead>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </accordion-group>
+              </accordion>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </tab>
+  <tab heading="Payout" >
+ 
+    <app-my-payout #payout [userIdFromParent]="userId"></app-my-payout>
+  </tab>
+</tabset>
+<!-- this is faq -->
+<app-faq></app-faq>
+<!-- start of payoutBreakupData -->
+<div
+  bsModal
+  #payoutBreakup="bs-modal"
+  class="modal fade bs-example-modal-lg"
+  id="exampleModalScrollable"
+>
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        style="background-image: url('assets/images/bgforfinance.png')"
+      >
+        <h5
+          class="modal-tooltip"
+          id="exampleModalScrollableTitle"
+          style="width: 90%"
+        >
+          Payout Item Breakup
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white rightMost"
+          (click)="payoutBreakup.hide()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <app-payout-item-breakup
+          [data]="selectedReq"
+          [correctionDueToPenalty]="correctionDueToPenalty"
+        ></app-payout-item-breakup>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+</div>
+<!-- end of payoutBreakup-->

@@ -1,0 +1,43 @@
+<br />
+<div class="page-title-area">
+    <div class="d-table">
+        <div class="d-table-cell">
+            <div class="container">
+                <div class="page-title-text text-center">
+                    <h5 class="fieldValue ">Feedback Rating</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="job-area job-area-two pt-100" style="padding-top: 20px">
+    <div class="single-profile-area pt-100">
+        <div class="row align-items-center">
+            <div class="row">
+                <div class="col-lg-2">
+                  <ng-select [(ngModel)]="selectedQuarter" (change)="filterChanged()">
+                    <ng-option *ngFor="let s of quarterArray" [value]="s.id">{{s.name}}</ng-option>
+                  </ng-select>
+                </div>
+                <div class="col-lg-3">
+                  <ng-select [(ngModel)]="selectedYear" (change)="filterChanged()">
+                    <ng-option *ngFor="let s of yearArray" [value]="s">{{s}}</ng-option>
+                  </ng-select>
+                </div>
+                <!-- <div class="col-lg-6">
+                    <h6>Piescore for the selected quarter is {{tab1["member"]?.nps==200?" not available":tab1["member"]?.nps}}</h6>
+                </div> -->
+            </div>
+            <tabset>
+              
+              <tab heading="Talent Rating">
+                
+                <app-talent-nps-report #tab2 [userId]="userId"></app-talent-nps-report>
+              </tab>
+              <tab heading="Client Rating">
+                <app-client-feedback-result #tab3 [userId]="userId"></app-client-feedback-result>
+              </tab>
+            </tabset> 
+        </div>
+    </div>
+</section>

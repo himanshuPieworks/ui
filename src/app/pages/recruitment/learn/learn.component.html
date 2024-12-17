@@ -1,0 +1,751 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs
+  tooltip="My Course"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs
+><br />
+<!-- End Breadcrumbs -->
+<div class="mt-sm-0 mt-5"></div>
+<h4>My Learning</h4>
+
+<div class="row">
+  <div class="col-xl-9">
+    <tabset>
+      <tab heading="Recommended for you">
+        <!-- showing the courses which is not mandatory -->
+        <br />
+        <div class="row flex-wrap">
+          <div
+            class="col-xxl-4 col-lg-3 col-md-4 p-2"
+            *ngFor="let course of recommendedCourses; let i = index"
+            (click)="selectedCourse = course; clickedOnCourse(course)"
+          >
+            <div
+              class="card real-estate-grid-widgets card-animate p-3"
+              style="
+                background-image: url('assets/images/bgforfinance.png');
+                background-repeat: repeat;
+                background-attachment: fixed;
+                background-position: top right;
+                min-height: 160px;
+                height: 100%;
+              "
+            >
+              <div class="p-0">
+                <div class="row gy-4 d-flex">
+                  <div class="col-xl-10 col-8">
+                    <div class="vertical-align">
+                      <h5>{{ course?.title ? course?.title : "N/A" }}</h5>
+                    </div>
+                  </div>
+                  <!-- <div class="col-xl-2 col-4 text-end">
+                    <div class="relative text-end">
+                      <div
+                        dropdown
+                        class="dropdown dropdown-real-estate absolute top-0 right-0"
+                      >
+                        <i
+                          (click)="selectedCourse = course"
+                          dropdownToggle
+                          class="bi bi-three-dots-vertical text-dark fs-2xl"
+                        ></i>
+
+                        <ul
+                          *bsDropdownMenu
+                          class="dropdown-menu dropdown-menu-end mb-0"
+                        >
+                          <li *ngFor="let item of menuOptions">
+                            <a
+                              (click)="handleMenu(item)"
+                              class="dropdown-item edit-list"
+                              href="javascript:void(0);"
+                              style="font-size: 12px"
+                              >{{ item }}</a
+                            >
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div> -->
+
+                  <hr class="mb-0 mt-1" />
+                </div>
+              </div>
+              <carousel
+                [noWrap]="true"
+                [interval]="0"
+                class="carousel carousel-dark slide"
+              >
+                <div class="carousel-inner">
+                  <slide class="carousel-item active" data-bs-interval="10000">
+                    <div class="card-body p-0">
+                      <ul
+                        class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+                      >
+                        <li tooltip="" style="width: 100%">
+                          <div class="d-flex">
+                            <div style="width: 6%" *ngIf="false">
+                              <i
+                                class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                                style="font-size: 15px"
+                              ></i>
+                            </div>
+                            <div style="width: 47%">
+                              <span class="text-muted">Status</span>
+                              <p class="mb-0 text-dark">
+                                {{ course?.status ? course?.status : "N/A" }}
+                              </p>
+                            </div>
+                            <div style="width: 47%; text-align: right">
+                              <span class="text-muted">Creation Date</span>
+                              <p class="mb-0 text-dark">
+                                {{
+                                  course.creationDate
+                                    ? commonService.changeMysqlToNormalDate(
+                                        course.creationDate
+                                      )
+                                    : "N/A"
+                                }}
+                              </p>
+                            </div>
+                          </div>
+                        </li>
+                        <li tooltip="" style="width: 100%">
+                          <div class="d-flex">
+                            <div style="width: 6%" *ngIf="false">
+                              <i
+                                class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                                style="font-size: 15px"
+                              ></i>
+                            </div>
+                            <div style="width: 47%">
+                              <span class="text-muted">Is Mandatory</span>
+                              <p class="mb-0 text-dark">
+                                {{ course.mandatory ? "Yes" : "Not Mandatory" }}
+                              </p>
+                            </div>
+                            <div style="width: 47%; text-align: right">
+                              <span class="text-muted">Complete Within</span>
+                              <p class="mb-0 text-dark">
+                                {{
+                                  course.completeWithin
+                                    ? course.completeWithin
+                                    : "N/A"
+                                }}
+                              </p>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </slide>
+                </div>
+              </carousel>
+
+              <div>
+                <button
+                  class="btn btn-primary w-100"
+                  (click)="
+                    selectedCourse = course; courseEnrollmentConfirmation()
+                  "
+                >
+                  Enroll
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="recommendedCourses?.length < 1">
+          <div class="row">
+            <div class="col-xl-8">
+              <div class="card">
+                <div class="card-body">
+                  <h5>No recommendation yet</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </tab>
+    </tabset>
+    <tabset>
+      <!-- this is for completed tab -->
+      <tab heading="Completed">
+        <br />
+        <div class="row">
+          <div
+            class="col-xxl-4 col-lg-3 col-md-4 p-2"
+            *ngFor="let course of coursesCompleted; let i = index"
+            (click)="clickedOnCourseToGetIn(course.course)"
+          >
+            <div
+              class="card real-estate-grid-widgets card-animate p-3"
+              style="
+                background-image: url('assets/images/bgforfinance.png');
+                background-repeat: repeat;
+                background-attachment: fixed;
+                background-position: top right;
+                min-height: 160px;
+                height: 100%;
+              "
+            >
+              <div class="p-0">
+                <div class="row gy-4 d-flex">
+                  <div class="col-xl-10 col-8">
+                    <div class="vertical-align">
+                      <h5>
+                        {{
+                          course?.course?.title ? course?.course?.title : "N/A"
+                        }}
+                      </h5>
+                    </div>
+                  </div>
+                  <!-- <div class="col-xl-2 col-4 text-end">
+                    <div class="relative text-end">
+                      <div
+                        dropdown
+                        class="dropdown dropdown-real-estate absolute top-0 right-0"
+                      >
+                        <i
+                          (click)="selectedCourse = course.course"
+                          dropdownToggle
+                          class="bi bi-three-dots-vertical text-dark fs-2xl"
+                        ></i>
+
+                        <ul
+                          *bsDropdownMenu
+                          class="dropdown-menu dropdown-menu-end mb-0"
+                        >
+                          <li *ngFor="let item of menuOptions">
+                            <a
+                              (click)="handleMenu(item)"
+                              class="dropdown-item edit-list"
+                              href="javascript:void(0);"
+                              style="font-size: 12px"
+                              >{{ item }}</a
+                            >
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div> -->
+
+                  <hr class="mb-0 mt-1" />
+                </div>
+              </div>
+              <carousel
+                [noWrap]="true"
+                [interval]="0"
+                class="carousel carousel-dark slide"
+              >
+                <div class="carousel-inner">
+                  <slide class="carousel-item active" data-bs-interval="10000">
+                    <div class="card-body p-0">
+                      <ul
+                        class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+                      >
+                        <li tooltip="" style="width: 100%">
+                          <div class="d-flex">
+                            <div style="width: 6%" *ngIf="false">
+                              <i
+                                class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                                style="font-size: 15px"
+                              ></i>
+                            </div>
+                            <div style="width: 47%">
+                              <span class="text-muted">Status</span>
+                              <p class="mb-0 text-dark">
+                                {{
+                                  course?.course?.status
+                                    ? course?.course?.status
+                                    : "N/A"
+                                }}
+                              </p>
+                            </div>
+                            <div style="width: 47%; text-align: right">
+                              <span class="text-muted">Creation Date</span>
+                              <p class="mb-0 text-dark">
+                                {{
+                                  course?.course?.creationDate
+                                    ? commonService.changeMysqlToNormalDate(
+                                        course.course.creationDate
+                                      )
+                                    : "N/A"
+                                }}
+                              </p>
+                            </div>
+                          </div>
+                        </li>
+                        <li tooltip="" style="width: 100%">
+                          <div class="d-flex">
+                            <div style="width: 6%" *ngIf="false">
+                              <i
+                                class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                                style="font-size: 15px"
+                              ></i>
+                            </div>
+                            <div style="width: 47%">
+                              <span class="text-muted">Is Mandatory</span>
+                              <p class="mb-0 text-dark">
+                                {{
+                                  course?.course?.mandatory
+                                    ? "Yes"
+                                    : "Not Mandatory"
+                                }}
+                              </p>
+                            </div>
+                            <div style="width: 47%; text-align: right">
+                              <span class="text-muted">Complete Within</span>
+                              <p class="mb-0 text-dark">
+                                {{
+                                  course?.course?.completeWithin
+                                    ? course?.course?.completeWithin
+                                    : "N/A"
+                                }}
+                              </p>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </slide>
+                </div>
+              </carousel>
+
+              <div>
+                <button
+                  class="btn btn-success w-100"
+                  (click)="clickedOnCourseBtn(course.course)"
+                >
+                  Completed
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="coursesCompleted?.length < 1">
+          <div class="row">
+            <div class="col-xl-8">
+              <div class="card">
+                <div class="card-body">
+                  <h5>Yet to complete any Gyaan</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </tab>
+      <!--This is in Progress -->
+      <tab heading="In Progress">
+        <br />
+        <div class="row">
+          <div
+            class="col-xxl-4 col-lg-3 col-md-4 p-2"
+            *ngFor="let course of courseInProgress; let i = index"
+            (click)="clickedOnCourseToGetIn(course.course)"
+          >
+            <div
+              class="card real-estate-grid-widgets card-animate p-3"
+              style="
+                background-image: url('assets/images/bgforfinance.png');
+                background-repeat: repeat;
+                background-attachment: fixed;
+                background-position: top right;
+                min-height: 160px;
+                height: 100%;
+              "
+            >
+              <div class="p-0">
+                <div class="row gy-4 d-flex">
+                  <div class="col-xl-10 col-8">
+                    <div class="vertical-align">
+                      <h5>
+                        {{
+                          course?.course?.title ? course?.course?.title : "N/A"
+                        }}
+                      </h5>
+                    </div>
+                  </div>
+                  <!-- <div class="col-xl-2 col-4 text-end">
+                    <div class="relative text-end">
+                      <div
+                        dropdown
+                        class="dropdown dropdown-real-estate absolute top-0 right-0"
+                      >
+                        <i
+                          (click)="selectedCourse = course.course"
+                          dropdownToggle
+                          class="bi bi-three-dots-vertical text-dark fs-2xl"
+                        ></i>
+
+                        <ul
+                          *bsDropdownMenu
+                          class="dropdown-menu dropdown-menu-end mb-0"
+                        >
+                          <li *ngFor="let item of menuOptions">
+                            <a
+                              (click)="handleMenu(item)"
+                              class="dropdown-item edit-list"
+                              href="javascript:void(0);"
+                              style="font-size: 12px"
+                              >{{ item }}</a
+                            >
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div> -->
+
+                  <hr class="mb-0 mt-1" />
+                </div>
+              </div>
+              <carousel
+                [noWrap]="true"
+                [interval]="0"
+                class="carousel carousel-dark slide"
+              >
+                <div class="carousel-inner">
+                  <slide class="carousel-item active" data-bs-interval="10000">
+                    <div class="card-body p-0">
+                      <ul
+                        class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+                      >
+                        <li tooltip="" style="width: 100%">
+                          <div class="d-flex">
+                            <div style="width: 6%" *ngIf="false">
+                              <i
+                                class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                                style="font-size: 15px"
+                              ></i>
+                            </div>
+                            <div style="width: 47%">
+                              <span class="text-muted">Status</span>
+                              <p class="mb-0 text-dark">
+                                {{
+                                  course?.course?.status
+                                    ? course?.course?.status
+                                    : "N/A"
+                                }}
+                              </p>
+                            </div>
+                            <div style="width: 47%; text-align: right">
+                              <span class="text-muted">Creation Date</span>
+                              <p class="mb-0 text-dark">
+                                {{
+                                  course.course.creationDate
+                                    ? commonService.changeMysqlToNormalDate(
+                                        course.course.creationDate
+                                      )
+                                    : "N/A"
+                                }}
+                              </p>
+                            </div>
+                          </div>
+                        </li>
+                        <li tooltip="" style="width: 100%">
+                          <div class="d-flex">
+                            <div style="width: 6%" *ngIf="false">
+                              <i
+                                class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                                style="font-size: 15px"
+                              ></i>
+                            </div>
+                            <div style="width: 47%">
+                              <span class="text-muted">Is Mandatory</span>
+                              <p class="mb-0 text-dark">
+                                {{
+                                  course.course.mandatory
+                                    ? "Yes"
+                                    : "Not Mandatory"
+                                }}
+                              </p>
+                            </div>
+                            <div style="width: 47%; text-align: right">
+                              <span class="text-muted">Complete Within</span>
+                              <p class="mb-0 text-dark">
+                                {{
+                                  course.course.completeWithin
+                                    ? course.course.completeWithin
+                                    : "N/A"
+                                }}
+                              </p>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </slide>
+                </div>
+              </carousel>
+
+              <div>
+                <button
+                  class="btn btn-warning w-100"
+                  (click)="clickedOnCourseBtn(course.course)"
+                >
+                  InProgress
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="courseInProgress?.length < 1">
+          <div class="row">
+            <div class="col-xl-8">
+              <div class="card">
+                <div class="card-body">
+                  <h5>No Gyaan in progress</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </tab>
+      <!-- This Overdue  -->
+      <tab heading="Overdue">
+        <!-- showing the courses -->
+        <br />
+        <div class="row">
+          <div
+            class="col-xxl-4 col-lg-3 col-md-4 p-2"
+            *ngFor="let course of overdueCourse; let i = index"
+            (click)="selectedCourse = course; clickedOnCourse(course)"
+          >
+            <div
+              class="card real-estate-grid-widgets card-animate p-3"
+              style="
+                background-image: url('assets/images/bgforfinance.png');
+                background-repeat: repeat;
+                background-attachment: fixed;
+                background-position: top right;
+                min-height: 160px;
+                height: 100%;
+              "
+            >
+              <div class="p-0">
+                <div class="row gy-4 d-flex">
+                  <div class="col-xl-10 col-8">
+                    <div class="vertical-align">
+                      <h5>{{ course?.title ? course?.title : "N/A" }}</h5>
+                    </div>
+                  </div>
+                  <!-- <div class="col-xl-2 col-4 text-end">
+                    <div class="relative text-end">
+                      <div
+                        dropdown
+                        class="dropdown dropdown-real-estate absolute top-0 right-0"
+                      >
+                        <i
+                          (click)="selectedCourse = course"
+                          dropdownToggle
+                          class="bi bi-three-dots-vertical text-dark fs-2xl"
+                        ></i>
+
+                        <ul
+                          *bsDropdownMenu
+                          class="dropdown-menu dropdown-menu-end mb-0"
+                        >
+                          <li *ngFor="let item of menuOptions">
+                            <a
+                              (click)="handleMenu(item)"
+                              class="dropdown-item edit-list"
+                              href="javascript:void(0);"
+                              style="font-size: 12px"
+                              >{{ item }}</a
+                            >
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div> -->
+
+                  <hr class="mb-0 mt-1" />
+                </div>
+              </div>
+              <carousel
+                [noWrap]="true"
+                [interval]="0"
+                class="carousel carousel-dark slide"
+              >
+                <div class="carousel-inner">
+                  <slide class="carousel-item active" data-bs-interval="10000">
+                    <div class="card-body p-0">
+                      <ul
+                        class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+                      >
+                        <li tooltip="" style="width: 100%">
+                          <div class="d-flex">
+                            <div style="width: 6%" *ngIf="false">
+                              <i
+                                class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                                style="font-size: 15px"
+                              ></i>
+                            </div>
+                            <div style="width: 47%">
+                              <span class="text-muted">Status</span>
+                              <p class="mb-0 text-dark">
+                                {{ course?.status ? course?.status : "N/A" }}
+                              </p>
+                            </div>
+                            <div style="width: 47%; text-align: right">
+                              <span class="text-muted">Creation Date</span>
+                              <p class="mb-0 text-dark">
+                                {{
+                                  course.creationDate
+                                    ? commonService.changeMysqlToNormalDate(
+                                        course.creationDate
+                                      )
+                                    : "N/A"
+                                }}
+                              </p>
+                            </div>
+                          </div>
+                        </li>
+                        <li tooltip="" style="width: 100%">
+                          <div class="d-flex">
+                            <div style="width: 6%" *ngIf="false">
+                              <i
+                                class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                                style="font-size: 15px"
+                              ></i>
+                            </div>
+                            <div style="width: 47%">
+                              <span class="text-muted">Is Mandatory</span>
+                              <p class="mb-0 text-dark">
+                                {{ course.mandatory ? "Yes" : "Not Mandatory" }}
+                              </p>
+                            </div>
+                            <div style="width: 47%; text-align: right">
+                              <span class="text-muted">Complete Within</span>
+                              <p class="mb-0 text-dark">
+                                {{
+                                  course.completeWithin
+                                    ? course.completeWithin
+                                    : "N/A"
+                                }}
+                              </p>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </slide>
+                </div>
+              </carousel>
+
+              <div>
+                <button
+                  class="btn btn-primary w-100"
+                  (click)="
+                    selectedCourse = course; courseEnrollmentConfirmation()
+                  "
+                >
+                  Enroll
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="overdueCourse?.length < 1">
+          <div class="row">
+            <div class="col-xl-8">
+              <div class="card">
+                <div class="card-body">
+                  <h5>
+                    You have completed all the mandatory Gyaan sessions on time
+                  </h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Ending of courses -->
+      </tab>
+    </tabset>
+  </div>
+  <div class="col-xl-6"></div>
+</div>
+
+<!--  Course -->
+<div
+  bsModal
+  #courseDetails="bs-modal"
+  class="modal bs-example-modal-md fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        *ngIf="true"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <p class="modal-title" id="myLargeModalLabel">Details</p>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          aria-label="Close"
+          (click)="courseDetails.hide()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div
+          *ngFor="let courseDetails of courseMaterialByCourseId; let i = index"
+        >
+          <div>
+            {{ courseDetails.materialTitle }}
+            <span
+              class="align-middle"
+              *ngIf="courseDetails.materialType == 'YouTube'"
+            >
+              <i class="bi bi-youtube" style="color: red"></i
+            ></span>
+            <span
+              class="align-middle"
+              *ngIf="courseDetails.materialType == 'Spotify'"
+            >
+              <i class="bi bi-spotify" style="color: rgb(0, 255, 106)"></i
+            ></span>
+            <span
+              class="align-middle"
+              *ngIf="courseDetails.materialType == 'PPT'"
+            >
+              <i class="bi bi-filetype-ppt" style="color: rgb(47, 0, 255)"></i
+            ></span>
+            <span
+              class="align-middle"
+              *ngIf="courseDetails.materialType == 'PDF'"
+            >
+              <i
+                class="bi bi-file-earmark-pdf-fill"
+                style="color: rgb(255, 0, 0)"
+              ></i
+            ></span>
+          </div>
+        </div>
+
+        <br />
+        <div class="text-end">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            (click)="courseEnrollmentConfirmation()"
+          >
+            Enroll
+          </button>
+          &nbsp;&nbsp;
+          <button
+            type="submit"
+            class="btn btn-dark"
+            (click)="courseDetails.hide()"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

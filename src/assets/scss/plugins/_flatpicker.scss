@@ -1,0 +1,71 @@
+//
+// _flatpicker.scss
+//
+.bs-datepicker {
+    box-shadow: none;
+
+    .bs-datepicker-container {
+        padding: 0;
+    }
+
+    &.theme-green {
+        .bs-datepicker-head {
+            background-color: $success;
+        }
+    }
+
+    .bs-datepicker-head {
+        bs-datepicker-navigation-view {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
+
+    .bs-datepicker-body table td {
+        padding: 2px;
+    }
+}
+
+.bs-datepicker {
+    background-color: var(--#{$prefix}secondary-bg);
+
+    .bs-datepicker-body {
+        border-color: var(--#{$prefix}border-color);
+
+        table {
+            th {
+                color: var(--#{$prefix}secondary-color);
+                font-weight: $font-weight-semibold;
+            }
+
+            td {
+                color: var(--#{$prefix}body-color);
+            }
+        }
+    }
+
+    &.theme-green {
+        .bs-datepicker-body {
+            table {
+                td {
+                    span.selected {
+                        background-color: var(--#{$prefix}success);
+                    }
+                    &.week span {
+                         color: var(--#{$prefix}success);
+                    }
+                }
+            }
+        }
+    }
+}
+
+bs-datepicker-inline{
+    bs-datepicker-inline-container{
+        display: block !important;
+    }
+    .bs-datepicker-container, bs-days-calendar-view{
+        width: 100%;
+    }
+}

@@ -1,0 +1,648 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs
+  title="Profile"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+<br />
+<div class="row">
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="card border-0 shadow-none mb-0">
+          <div
+            class="card-body rounded profile-basic"
+            style="
+              background-image: url('assets/images/small/img-4.jpg');
+              background-size: cover;
+            "
+          ></div>
+          <div class="card-body">
+            <!-- name and profile pic -->
+            <div class="text-center" style="margin-top: -90px">
+              <img
+                (click)="clickedOnLogo()"
+                src="{{ commonService.getPicUrl(user?.profilepic) }}"
+                alt=""
+                class="rounded-circle clickable p-1 mt-n3"
+                style="width: 140px; height: 140px"
+              />
+              <input
+                type="file"
+                [hidden]="true"
+                class="form-control-file"
+                id="logoHiddenButton"
+                name="logo"
+                (change)="onLogoSelect($event)"
+              />
+              <p class="text-center mb-0 fs-6 fw-bold">
+                {{ user?.name }}
+              </p>
+              <p class="text-center text-muted">
+                {{ convertToTitleCase(role) }}
+              </p>
+            </div>
+            <hr />
+          </div>
+          <!-- all the details  -->
+          <div class="card-body pt-0">
+            <div class="row justify-content-between gy-4">
+              <div class="col-xl-12 col-md-7">
+                <div class="d-flex align-items-center gap-2">
+                  <p
+                    class="fs-md mb-0 text-muted"
+                    *ngIf="isOwnAccount"
+                    tooltip="edit contact details"
+                  ></p>
+                </div>
+                <div class="mb-3">
+                  <!-- Mail Id -->
+                  <div>
+                    <p class="mb-0">
+                      <i
+                        class="ri-mail-send-line text-muted align-middle me-1 fs-4xl"
+                      ></i>
+                      <span> Email </span>
+                    </p>
+                    <p
+                      class="mb-1"
+                      style="color: black"
+                      style="margin-left: 31px"
+                    >
+                      <span>
+                        <a
+                          href="mailto:{{ user?.mobileno }}"
+                          style="color: black"
+                        >
+                          {{ user?.username }}</a
+                        > </span
+                      ><br />
+                    </p>
+                  </div>
+                  <!-- Referral  code -->
+                  <div *ngIf="false">
+                    <p class="mb-0">
+                      <i
+                        class="ri-user-shared-2-fill text-muted align-middle me-1 fs-4xl"
+                      ></i>
+                      <span class="text-muted fs-5"> Referral Code </span>
+                    </p>
+                    <p
+                      class="mb-1"
+                      style="color: black"
+                      style="margin-left: 31px"
+                    >
+                      <span *ngIf="isOwnAccount">{{ user?.myReferalCode }}</span
+                      ><br />
+                    </p>
+                  </div>
+                  <!-- contact / Mobile Number -->
+                  <div>
+                    <p class="mb-0">
+                      <i
+                        class="bx bx-phone-call text-muted align-middle me-1 fs-4xl"
+                      ></i>
+                      <span> Phone Number </span>
+                    </p>
+                    <p
+                      class="mb-1"
+                      style="color: black"
+                      style="margin-left: 31px"
+                    >
+                      <span *ngIf="!editContactDetails">{{
+                        user?.mobileno
+                          ? user?.mobileno
+                          : futureForm?.candidate?.phoneNo
+                      }}</span>
+                      &nbsp;
+                      <i
+                        (click)="editContactDetails = !editContactDetails"
+                        tooltip="edit contact details"
+                        class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                      ></i>
+
+                      <input
+                        style="width: 50%"
+                        *ngIf="editContactDetails"
+                        type="text"
+                        class="form form-control"
+                        id="mobileno"
+                        name="mobileno"
+                        [(ngModel)]="user.mobileno"
+                        placeholder="enter mobile number"
+                      />
+                    </p>
+                  </div>
+                  <!-- LinkedIn -->
+                  <div>
+                    <p class="mb-0">
+                      <i
+                        class="ri-linkedin-box-fill text-muted align-middle me-1 fs-4xl"
+                      ></i>
+                      <span>LinkedIn URL</span>
+                    </p>
+                    <p
+                      class="mb-1"
+                      style="color: black"
+                      style="margin-left: 31px"
+                    >
+                      <span>
+                        <a
+                          *ngIf="!editSocial"
+                          href="{{
+                            user?.linkedIn
+                              ? user?.linkedIn
+                              : futureForm?.candidate?.linkedIn
+                          }}"
+                          target="_blank"
+                          >{{
+                            user?.linkedIn || futureForm?.candidate?.linkedInUrl
+                              ? "Linkedin Profile"
+                              : "NA"
+                          }}</a
+                        ></span
+                      >
+                      &nbsp;
+                      <i
+                        (click)="editSocial = !editSocial"
+                        tooltip="edit contact details"
+                        class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                      ></i>
+                      <input
+                        style="width: 50%"
+                        *ngIf="editSocial"
+                        type="text"
+                        class="form form-control"
+                        id="linkedIn"
+                        name="linkedIn"
+                        [(ngModel)]="user.linkedIn"
+                        placeholder="enter mobile number"
+                      />
+                    </p>
+                  </div>
+                  <!-- Joined Date -->
+                  <div>
+                    <p class="mb-0">
+                      <i
+                        class="ri-calendar-check-fill text-muted align-middle me-1 fs-4xl"
+                      ></i>
+                      <span>Since</span>
+                    </p>
+                    <p
+                      class="mb-1"
+                      style="color: black"
+                      style="margin-left: 31px"
+                    >
+                      <span>{{
+                        commonService.changeMysqlToNormalDate(user?.createdOn)
+                      }}</span>
+                    </p>
+                  </div>
+                  <!-- Current Company -->
+                  <div>
+                    <p class="mb-0">
+                      <i
+                        class="bi bi-building-check text-muted align-middle me-1 fs-4xl"
+                      ></i>
+                      <span> Current Company </span>
+                    </p>
+                    <p
+                      class="mb-1"
+                      style="color: black"
+                      style="margin-left: 31px"
+                    >
+                      <span *ngIf="!editCurrentCompany">{{
+                        futureForm?.candidate?.currentJob
+                          ? futureForm?.candidate?.currentJob
+                          : 'N/A'
+                      }}</span>
+                      &nbsp;
+                      <i
+                        (click)="editCurrentCompany = !editCurrentCompany"
+                        tooltip="edit contact details"
+                        class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                      ></i>
+
+                      <input
+                        style="width: 50%"
+                        *ngIf="editCurrentCompany"
+                        type="text"
+                        class="form form-control"
+                        id="mobileno"
+                        name="mobileno"
+                        [(ngModel)]=" futureForm.candidate.currentJob"
+                        placeholder="enter current company"
+                        (change)="updateFutureForm(); editCurrentCompany=false"
+                      />
+                    </p>
+                    <!-- working on saving the button
+                    <div class="text-center" *ngIf="editCurrentCompany">
+                      <i class="bi bi-floppy2 fs-4xl" style="color:green;" (click)="updateFutureForm(); editCurrentCompany = !editCurrentCompany"></i>
+                    </div> -->
+                  </div>
+                  <!-- unsubscribe/subscribe -->
+                  <div class="mb-1"> 
+                    <p class="mb-0">
+                      <i
+                        class="ri-mail-volume-fill text-muted align-middle me-1 fs-4xl"
+                      ></i>
+
+                      <i
+                        class="clickable"
+                        *ngIf="unsubscribeDone"
+                        (click)="subscribeMail()"
+                        >subscribe here for email notifications
+                      </i>
+                      <i
+                        class="clickable"
+                        *ngIf="!unsubscribeDone"
+                        (click)="unsubscribeMail()"
+                        >Unsubscribe email notifications
+                      </i>
+                    </p>
+                  </div>
+                  
+                  <!-- Update future form -->
+                  <!-- <div>
+                    <p class="mb-0">
+                      <i
+                        (click)="futureFormPopup.show()"
+                        class="bi bi-file-earmark-diff clickable text-muted align-middle me-1 fs-4xl"
+                      ></i>
+                      <span class="clickable" (click)="futureFormPopup.show()"
+                        >Update CV</span
+                      >
+                    </p>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+            <br />
+            <!-- save button start -->
+            <div
+              class="row justify-content-between gy-4 mb-2"
+              *ngIf="editSocial || editContactDetails || editUserName"
+            >
+              <div
+                class="col-xl-12 col-md-12 d-flex justify-content-center text-center mb-2"
+              >
+                <button
+                  class="btn btn-primary rounded-pill"
+                  (click)="saveUser()"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+            <!-- cv for talent login -->
+            <input
+              id="cv"
+              style="width: 100%"
+              hidden
+              type="file"
+              (change)="onFileSelecet($event)"
+            />
+            <div class="d-flex gap-3">
+              <button
+                (click)="showCvInput()"
+                class="btn btn-primary"
+                style="width: 100%"
+              >
+                CV Update !!
+                <!-- {{ futureForm.candidate.cv ? "View CV" : "CV Update !!" }} -->
+              </button>
+              <a
+                style="width: 100%"
+                href="{{ commonService.getPicUrl(futureForm.candidate.cv) }}"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <button class="btn btn-primary" style="width: 100%">
+                  View CV
+
+                  <!-- {{ futureForm.candidate.cv ? "View CV" : "CV Update !!" }} -->
+                </button>
+              </a>
+            </div>
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--end card-->
+  </div>
+  <!--end col-->
+  <!-- tab's for job family/pods/clubs/nps -->
+  <div class="col-xl-8">
+    <div class="card">
+      <div class="card-body">
+        <tabset>
+          <tab heading="Professional Details">
+            <div class="row mt-3">
+              <div class="col-xl-6 mb-3">
+                <div>
+                  <h6 class="text-muted">
+                    Where would you like to live your life ?
+                  </h6>
+                  <p>
+                    {{
+                      futureForm?.candidate?.preferredLocation
+                        ? futureForm?.candidate?.preferredLocation
+                        : "N/A"
+                    }}
+                  </p>
+                </div>
+                <div>
+                  <h6 class="text-muted">
+                    What job function would you like to be in ?
+                  </h6>
+                  <p>
+                    {{
+                      futureForm?.candidate?.nextJobFunction
+                        ? futureForm?.candidate?.nextJobFunction
+                        : "N/A"
+                    }}
+                  </p>
+                </div>
+                <div>
+                  <h6 class="text-muted">Current Sector ?</h6>
+                  <p>
+                    {{
+                      futureForm?.candidate?.sector
+                        ? futureForm?.candidate?.sector
+                        : "N/A"
+                    }}
+                  </p>
+                </div>
+              </div>
+              <div class="col-xl-6">
+                <div>
+                  <h6 class="text-muted">
+                    How do people know you? Your Designation?
+                  </h6>
+                  <p>
+                    {{
+                      futureForm?.candidate?.designation
+                        ? futureForm?.candidate?.designation
+                        : "N/A"
+                    }}
+                  </p>
+                </div>
+                <div>
+                  <h6 class="text-muted">
+                    Which job function do you relate to right now ?
+                  </h6>
+                  <p>
+                    {{
+                      futureForm?.candidate?.currentJobFunction
+                        ? futureForm?.candidate?.currentJobFunction
+                        : "N/A"
+                    }}
+                  </p>
+                </div>
+                <div>
+                  <h6 class="text-muted">
+                    What is your driving force/ motivation for exploring new
+                    opportunities?
+                  </h6>
+                  <p>
+                    {{
+                      futureForm?.candidate?.reasonToSwitch
+                        ? futureForm?.candidate?.reasonToSwitch
+                        : "N/A"
+                    }}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-xl-6 mb-3">
+                <div>
+                  <h6 class="text-muted">
+                    What kind of org. culture would you associate yourself with?
+                  </h6>
+                  <p>
+                    {{
+                      futureForm?.candidate?.orgCulture
+                        ? futureForm?.candidate?.orgCulture
+                        : "N/A"
+                    }}
+                  </p>
+                </div>
+                <div>
+                  <h6 class="text-muted">
+                    Whats your expectation from a Fixed Salary standpoint (INR
+                    Lakhs) ?
+                  </h6>
+                  <p>
+                    {{
+                      futureForm?.candidate?.expectation
+                        ? futureForm?.candidate?.expectation
+                        : "N/A"
+                    }}
+                  </p>
+                </div>
+                <div>
+                  <h6 class="text-muted">
+                    How soon are you likely to make the next career move ?
+                  </h6>
+                  <p>
+                    {{
+                      futureForm?.candidate?.nextCareerMove
+                        ? futureForm?.candidate?.nextCareerMove
+                        : "N/A"
+                    }}
+                  </p>
+                </div>
+              </div>
+              <div class="col-xl-6">
+                <div>
+                  <h6 class="text-muted">
+                    Ideal Company according to you? And Why?
+                  </h6>
+                  <p>
+                    {{
+                      futureForm?.candidate?.idealCompany
+                        ? futureForm?.candidate?.idealCompany
+                        : "N/A"
+                    }}
+                  </p>
+                </div>
+                <div>
+                  <h6 class="text-muted">
+                    Hybrid/Work from Office/ Remote only ?
+                  </h6>
+                  <p>
+                    {{
+                      futureForm?.candidate?.workModel
+                        ? futureForm?.candidate?.workModel
+                        : "N/A"
+                    }}
+                  </p>
+                </div>
+                <div>
+                  <h6 class="text-muted">
+                    Would you like to be considered for our Leadership Talent
+                    Program?
+                  </h6>
+                  <p>{{ futureForm?.candidate?.amIExpert ? "Yes" : "No" }}</p>
+                </div>
+              </div>
+            </div>
+          </tab>
+          <tab heading="Club">
+            <div class="text-end">
+              <i
+                (click)="editClub = !editClub"
+                tooltip="edit club details"
+                class="ri-edit-box-line clickable text-warning align-baseline fs-2xl me-1"
+              ></i>
+            </div>
+
+            <div class="row mt-4" *ngIf="editClub">
+              <div class="col-lg-4 mt-2" *ngFor="let club of clubs">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <div class="text-center">
+                      <button
+                        title="{{ selectedClubsArray.length }}"
+                        [disabled]="
+                          !club.selected && selectedClubsArray.length == 3
+                        "
+                        type="button"
+                        class="w-100 btn  {{
+                          club.selected ? 'btn-info' : 'btn-outline-info'
+                        }}"
+                        (click)="
+                          club.selected = !club.selected;
+                          updateSelectedClubs(club, true)
+                        "
+                      >
+                        <div class="d-flex gap-4 flex-wrap">
+                          <!-- icon of club-->
+                          <div>
+                            <i
+                              class="{{ club?.icon }}"
+                              style="font-size: 20px"
+                            ></i>
+                          </div>
+                          <!-- club name -->
+                          <div class="align-self-center">
+                            <h5>
+                              {{ club?.name ? club?.name : "Club Name - NA" }}
+                            </h5>
+                          </div>
+                        </div>
+                      </button>
+                    </div>
+                    <div *ngIf="editClub" class="mt-3">
+                      <p>{{ club?.description }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-4" *ngIf="editClub">
+              <div class="col-lg-4">&nbsp;</div>
+              <div class="col-lg-4">
+                <button
+                  type="button"
+                  class="w-100 btn btn-primary"
+                  (click)="updateFutureForm()"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+            <div class="row mt-4" *ngIf="!editClub">
+              <div
+                class="col-lg-4"
+                *ngFor="let club of selectedClubsArray; index as i"
+              >
+                <div class="card h-100 border">
+                  <div class="card-body">
+                    <div class="text-center">
+                      <button type="button" class="w-100 btn btn-info">
+                        <div class="d-flex gap-4 flex-wrap">
+                          <!-- icon of club-->
+                          <div>
+                            <i
+                              class="{{ selectedClubIconArray[i] }}"
+                              style="font-size: 20px"
+                            ></i>
+                          </div>
+                          <!-- club name -->
+                          <div class="align-self-center">
+                            <h5>
+                              {{ club }}
+                            </h5>
+                          </div>
+                        </div>
+                      </button>
+                    </div>
+                    <div class="mt-3">
+                      <p>{{ selectedClubDescArray[i] }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12" *ngIf="selectedClubs?.length == 0">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="text-center">
+                      <h6 class="text-muted">
+                        You have not joined any clubs. Please click on edit icon
+                        to join clubs.
+                      </h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </tab>
+        </tabset>
+      </div>
+    </div>
+  </div>
+</div>
+<!--end row-->
+
+<!-- Future Form  -->
+<div
+  bsModal
+  #futureFormPopup="bs-modal"
+  class="modal fade bs-example-modal-lg"
+  id="event-modal"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 rounded">
+      <div
+        class="modal-header p-3 bg-info-subtle"
+        style="
+          background-image: url('assets/images/event_dg_bg.png');
+          height: 50px;
+          border-top-left-radius: 10px !important;
+          border-top-right-radius: 10px !important;
+        "
+      >
+        <button
+          type="button"
+          class="btn-close"
+          (click)="futureFormPopup.hide()"
+        ></button>
+      </div>
+      <div
+        class="modal-body"
+        style="
+          border: solid rgb(255, 255, 255) 8px;
+          border-radius: 10px;
+          border-top: 0px;
+        "
+      >
+        <app-future-form #futureForm></app-future-form>
+      </div>
+    </div>
+  </div>
+</div>

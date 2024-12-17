@@ -1,0 +1,256 @@
+<div class="mt-sm-0 mt-4"></div>
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs
+  tooltip="talent"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs>
+<br />
+<!-- start of card -->
+<div class="row">
+  <div class="col-lg">
+    <div
+      class="card"
+      style="background-image: url('assets/images/background.png')"
+    >
+      <div class="card-body">
+        <div class="row align-items-center gy-3">
+          <div class="col-6">
+            <h6 class="card-tooltip fs-2xl mb-0">
+              Talents &nbsp;
+              <span class="fs-2xl text-secondary align-baseline">{{totalNumberOfTalent?.totalRows}}</span>
+            </h6>
+          </div>
+          <!--end col
+          <div class="col-auto ms-auto">
+            <button
+              class="btn btn-primary me-1 rounded-pill default-btn-width"
+              (click)="exportToXls()"
+              tooltip="export to xls"
+              *ngIf="!isRspp && commonService.rbac['export-xls']"
+            >
+              <i class="bi bi-file-excel align-baseline fs-2xl"></i>
+            </button>
+            <button
+              *ngIf="
+                (rssppMandateLabel == 'Mandates' &&
+                  commonService.rbac['add-new-mandate']) ||
+                (rssppMandateLabel == 'Rspp' &&
+                  commonService.rbac['add-new-rspp'])
+              "
+              class="btn btn-primary me-1 rounded-pill default-btn-width"
+              tooltip="add new {{ rssppMandateLabel }}"
+              (click)="menuAction = 'Create RSPP'; initRspp(); addModal.show()"
+            >
+              <i class="bi bi-plus align-baseline fs-2xl"></i>
+            </button>
+            <button
+              *ngIf="isRspp && commonService.rbac['copy-rspp-form']"
+              class="btn btn-primary rounded-pill"
+              (click)="copyLink()"
+            >
+              <i
+                tooltip="Click to copy link for RSPP form."
+                class="ri-file-copy-line fs-2xl clickable"
+              ></i></button
+            >&nbsp;
+            <button
+              *ngIf="!isRspp"
+              class="btn btn-primary myButton rounded-pill default-btn-width"
+              (click)="filterWindow.show()"
+            >
+              <i
+                class="bi bi-funnel align-baseline fs-2xl"
+                tooltip="show filters"
+              ></i></button
+            >&nbsp;
+            <button
+              *ngIf="
+                (!isRspp && commonService.rbac['earn-filter']) ||
+                (isRspp && commonService.rbac['rspp-filter'])
+              "
+              class="btn btn-primary myButton rounded-pill default-btn-width"
+              (click)="clearFilters()"
+            >
+              <i
+                class="ri-filter-off-line align-baseline fs-2xl"
+                tooltip="clear filters"
+              ></i>
+            </button>
+          </div>
+          
+          <div
+            class="col-xl-3"
+            *ngIf="
+              (!isRspp && commonService.rbac['search-text']) ||
+              (isRspp && commonService.rbac['rspp-search-text'])
+            "
+          >
+            <div class="form-group has-search">
+              <span class="bi bi-search fs-2xl form-control-feedback"></span>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Search"
+                maxlength="100"
+                [(ngModel)]="searchText"
+                (keyup)="filterChanged()"
+              />
+            </div>
+          </div>
+        </div>
+        end row-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end of card -->
+
+<!-- talent profile. -->
+<div class="row" id="property-list">
+  <div
+    *ngFor="let t of talents; let i = index"
+    class="col-xxl-3 col-lg-3 col-md-4 p-2"
+  >
+    <div
+      class="card real-estate-grid-widgets card-animate px-3 pt-3"
+      style="height: 100%"
+      (click)="clickedOnTalent(t)"
+    >
+      <!--  style="background-color{{getRandomColor()}}" -->
+      <div class="pt-2">
+        <div class="row gy-4 d-flex">
+          <div style="width: 35%" class="position-relative">
+            <img
+              src="{{ commonService.getPicUrl(t?.profilepic) }}"
+              alt="img-01.jpg"
+              class="avatar-md rounded-pill"
+              style="object-fit: contain !important; height: 60px; width: 60px"
+            />
+            <!-- <span
+              class="position-absolute translate-middle"
+              tooltip="{{ t?.user.onlineStatus }}"
+              
+              [ngStyle]="
+                commonService.isMobileDevice
+                  ? { 'font-size': '15px', top: '10px', right: '38px' }
+                  : { 'font-size': '15px', top: '10px', right: '21px' }
+              "
+            ></span> -->
+          </div>
+          <div style="width: 55%; align-items: center">
+            <h4>{{ t?.name }}</h4>
+            <p>{{ t?.currentJobFunction }}</p>
+          </div>
+
+          <hr class="mb-0 mt-2" />
+        </div>
+      </div>
+      <carousel
+        [noWrap]="true"
+        [interval]="0"
+        class="carousel carousel-dark slide"
+      >
+        <div class="carousel-inner">
+          <slide class="carousel-item active" data-bs-interval="10000">
+            <div class="card-body p-2" *ngIf="t?.acceptanceByAceMaker != 1">
+              <ul
+                class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+              >
+                <li tooltip="" style="width: 100%">
+                  <div class="d-flex">
+                    <div style="width: 6%" *ngIf="false">
+                      <i
+                        class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                        style="font-size: 15px"
+                      ></i>
+                    </div>
+                    <div
+                      style="width: 47%"
+                      *ngIf="commonService.rbac['cm-mobile-no']"
+                    >
+                      <span class="text-muted">Phone No.</span>
+                      <p class="mb-0 text-dark">
+                        {{ t?.phoneNo ? t?.phoneNo : "N/A" }}
+                      </p>
+                    </div>
+                    <!-- <div style="width: 47%; text-align: right">
+                                                  <span class="text-muted">Email</span>
+                                                  <p class=" mb-0 text-dark">
+                                                      {{ t?.user?.username }}
+                                                  </p>
+                                              </div> -->
+                    <div style="width: 47%; text-align: right">
+                      <span class="text-muted">Linkedin</span>
+                      <p class="mb-0 text-dark">
+                        <a
+                          href="{{ t?.linkedInUrl }}"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          >Profile</a
+                        >
+                      </p>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              <ul
+                class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+              >
+                <li tooltip="" style="width: 100%">
+                  <div class="d-flex">
+                    <div style="width: 6%" *ngIf="false">
+                      <i
+                        class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                        style="font-size: 15px"
+                      ></i>
+                    </div>
+                    <div
+                      style="width: 100%"
+                      *ngIf="commonService.rbac['cm-email-id']"
+                    >
+                      <span class="text-muted">Email</span>
+                      <p class="mb-0 text-dark">
+                        {{ t?.emailId }}
+                      </p>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              <ul
+                class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+              >
+                <li tooltip="" style="width: 100%">
+                  <div class="d-flex">
+                    <div style="width: 6%" *ngIf="false">
+                      <i
+                        class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                        style="font-size: 15px"
+                      ></i>
+                    </div>
+                    <div style="width: 47%">
+                      <span class="text-muted">Location</span>
+
+                      <p class="mb-0 text-dark">
+                        {{
+                          t?.preferredLocation ? t?.preferredLocation : "N/A"
+                        }}
+                      </p>
+                    </div>
+                    <div style="width: 47%; text-align: right">
+                      <span class="text-muted">Created On</span>
+                      <p class="mb-0 text-dark">
+                        {{ commonService.formatDate(t?.createdOn) }}
+                      </p>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </slide>
+          <!--  -->
+        </div>
+      </carousel>
+    </div>
+  </div>
+</div>

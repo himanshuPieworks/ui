@@ -1,0 +1,71 @@
+<div *ngFor="let item of feeds">
+  <div
+    *ngIf="item.type == 'requirement'"
+    class=""
+    (click)="selectedMandate = item; mandateDetails()"
+  >
+   
+      <div class="row gy-4 text-whitex-75 ">
+        <div class="col-xl-12" style="padding-left: 2px;">
+          <div class="d-flex  justify-content-around-discard gap-1" style='width: 100%'>
+            <!-- icon of company -->
+            <div class="align-self-xl-start  clickable ">
+              <img
+                src="{{ commonService.getPicUrl(item?.icon) }}"
+                alt="img-01.jpg"
+                loading="lazy"
+                class="rounded-circle border"
+                style="height: 40px; width: 40px"
+              />
+            </div>
+            <!-- role and company name -->
+            <div class="align-self-xl-center clickable"  style='width: 100%'>
+              <span class="text-dark fw-bold">{{
+                item.position ? item.position : "NA"
+              }}</span>
+
+              <div class="d-flex justify-content-between-discard gap-2 mb-0 mt-1">
+                <div style='width: 40%'>
+                  <p class="text-muted text-start mb-0 mt-0">Company</p>
+                </div>
+                <div class="text-end" style='width: 70%'>
+                  <p  class="mb-0 mt-0" >
+                    <span class="text-muted">
+                      {{ item.companyName }}
+                    </span>
+                  </p>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-between-discard gap-2 mb-0">
+                <div style='width: 30%'>
+                  <p class="text-muted text-start mb-0 mt-0">Location</p>
+                </div>
+                <div class="text-end" style='width: 70%'>
+                  <p class="mb-0 mt-0" >
+                    <span class="text-muted">
+                      {{ item?.location?.split(',')[0] }}
+                    </span>
+                  </p>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-between-discard gap-2">
+                <div style='width: 30%'>
+                  <p class="text-muted text-start mb-0 mt-0">Salary</p>
+                </div>
+                <div class="text-end" style='width: 70%'>
+                  <p class="mb-0 mt-0" >
+                    <span class="text-muted">
+                      {{ item.role }}
+                    </span>
+                  </p>
+                </div>
+              </div>
+             
+            </div>
+          </div>
+        </div>
+      </div><br />
+  </div>
+</div>

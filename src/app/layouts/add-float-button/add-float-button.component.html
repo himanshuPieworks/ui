@@ -1,0 +1,249 @@
+<div
+  *ngIf="!isOpenUrl"
+  class="position-fixed"
+  [ngStyle]="
+    commonService.isMobileDevice
+      ? { 'bottom.px': 100, left: '50%', transform: 'translateX(-50%)' }
+      : { 'bottom.px': 10, left: '50%', transform: 'translateX(-50%)' }
+  "
+>
+  <button
+    class="btn btn-icon rounded-circle shadow-lg p-1"
+    (click)="floatingAddButton.show(); isAddTalent = false"
+    style=" width: 60px;height: 60px; background-color: #162444;"
+  >
+    <i class="bi bi-plus fw-bolder m-0 text-white" style="font-size: 50px"></i>
+  </button>
+</div>
+
+<!-- start of floating -->
+<div
+  bsModal
+  #floatingAddButton="bs-modal"
+  class="modal fade bs-example-modal-lg"
+  id="exampleModalScrollable"
+>
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div
+      class="modal-content"
+      style="background-image: url('assets/images/background.png')"
+    >
+      <!--      <div class="modal-header">
+        <h5
+          class="modal-tooltip"
+          id="exampleModalScrollableTitle"
+          style="width: 90%"
+        >
+          How would you like to contribute ?
+        </h5>
+        <button
+          type="button"
+          class="btn-close rightMost"
+          (click)="floatingAddButton.hide()"
+        ></button>
+      </div>-->
+      <div class="modal-body">
+        <div *ngIf="!isAddTalent">
+          <div class="row">
+            <div class="col-xl-4">
+              <div
+                class="card h-100 clickable"
+                style="opacity: 0.7"
+                onmouseover="this.style.opacity=1;"
+                onmouseout="this.style.opacity=0.7;"
+                (click)="addProspect()"
+              >
+                <div class="card-title text-center">Add Prospect</div>
+                <div class="card-body text-center">
+                  Connect us with growth stage organisations who need to hire &
+                  earn a share
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4">
+              <div
+                class="card h-100 clickable"
+                style="opacity: 0.7"
+                onmouseover="this.style.opacity=1;"
+                onmouseout="this.style.opacity=0.7;"
+                (click)="isAddTalent = true"
+              >
+                <div class="card-title text-center">Add Talent</div>
+                <div class="card-body text-center">
+                  Introduce a talent in your network who is keen to explore
+                  career opportunities, active or passive
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4">
+              <div
+                class="card h-100"
+                style="opacity: 0.7"
+                onmouseover="this.style.opacity=1;"
+                onmouseout="this.style.opacity=0.7;"
+              >
+                <div class="card-title text-center">Grow Community</div>
+                <div class="card-body text-center">
+                  Refer to your friends and acquaintances.
+                  <div class="row justify-content-center">
+                    <div class="col-xl-2">
+                      <!-- whatsapp link share  -->
+                      <div class="me-3">
+                        <a (click)="whatsappLink()">
+                          <i
+                            class="bi bi-whatsapp fs-5xl clickable"
+                            style="color: rgb(60, 215, 60)"
+                          ></i>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="col-xl-2">
+                      <!-- Link copy button -->
+                      <div class="me-4">
+                        <i
+                          class="bi bi-link-45deg fs-5xl clickable"
+                          style="font-size: xx-large"
+                          (click)="copyToClipboard()"
+                        ></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="row justify-content-center mt-1">
+            <div class="col-xl-4">
+              <div
+                class="card h-100 clickable"
+                style="opacity: 0.7"
+                onmouseover="this.style.opacity=1;"
+                onmouseout="this.style.opacity=0.7;"
+                (click)="isAddTalent = true"
+              >
+                <div class="card-title text-center">Add Talent</div>
+                <div class="card-body">
+                  Introduce us to companies and startups
+                </div>
+              </div>
+            </div>
+          </div> -->
+        </div>
+
+        <div *ngIf="isAddTalent">
+          <div class="row">
+            <div class="col-xl-1"></div>
+            <div class="col-xl-4">
+              <div
+                class="card h-100 clickable"
+                style="opacity: 0.7"
+                onmouseover="this.style.opacity=1;"
+                onmouseout="this.style.opacity=0.7;"
+                (click)="
+                  showDiscoveryWindow('quick-discover');
+                  floatingAddButton.hide();
+                  discover.loadMandates()
+                "
+              >
+                <div class="card-title text-center">Discover</div>
+                <div class="card-body">
+                  Upload a Superstar Talent for any Live Position.
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-2"></div>
+            <div class="col-xl-4">
+              <div
+                class="card h-100 clickable"
+                style="opacity: 0.7"
+                onmouseover="this.style.opacity=1;"
+                onmouseout="this.style.opacity=0.7;"
+                (click)="
+                  discover.mandates = [];
+                  discover.reqId = undefined;
+                  floatingAddButton.hide()
+                "
+              >
+                <div class="card-title text-center" (click)="routeFutureForm()">
+                  Future
+                </div>
+                <div class="card-body">
+                  <div (click)="routeFutureForm()">
+                    Upload a Superstar Talent for a future Position.
+                  </div>
+
+                  <div class="row justify-content-center">
+                    <div class="col-xl-2">
+                      <!-- whatsapp link share  -->
+                      <div class="me-3">
+                        <a (click)="whatsappLinkForFuture()">
+                          <i
+                            class="bi bi-whatsapp fs-5xl clickable"
+                            style="color: rgb(60, 215, 60)"
+                          ></i>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="col-xl-2">
+                      <!-- Link copy button -->
+                      <div class="me-4">
+                        <i
+                          class="bi bi-link-45deg fs-5xl clickable"
+                          style="font-size: xx-large"
+                          (click)="copyLinkForFuture()"
+                        ></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+</div>
+<!-- end of floating-->
+
+<!-- start of Discover Talent -->
+<div
+  bsModal
+  #discoverTalent="bs-modal"
+  class="modal fade bs-example-modal-lg"
+  id="exampleModalScrollable"
+>
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <h5
+          class="modal-tooltip"
+          id="exampleModalScrollableTitle"
+          style="width: 90%"
+        >
+          Discover Talent
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white rightMost"
+          (click)="discoverTalent.hide()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <app-discover-talent
+          #discover
+          [parentObj]="this"
+          (closeEvent)="handleCloseEvent()"
+        ></app-discover-talent>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+</div>
+<!-- end of floating-->

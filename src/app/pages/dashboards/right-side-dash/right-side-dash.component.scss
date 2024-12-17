@@ -1,0 +1,38 @@
+.card-body
+{
+    padding: 12px !important;
+}
+ul.ng-star-inserted
+{
+    padding-left: 13px;
+}
+
+hr
+{
+    margin-top: 2px !important;
+}
+
+
+.user-icon-container {
+    position: relative;
+    width: 100px; /* Adjust the size as needed */
+    height: 100px; /* Adjust the size as needed */
+  }
+  
+  .user-icon {
+    position: absolute;
+    width: 100%; /* To make sure the icon takes the full width of the container */
+    height: auto;
+    border-radius: 50%; /* Makes the icon round */
+  }
+  
+  /* Adjust the positioning of the icons as needed */
+  .user-icon:nth-child(2) {
+    top: 20px;
+    left: 20px;
+  }
+  
+  .user-icon:nth-child(3) {
+    top: 40px;
+    left: 40px;
+  }

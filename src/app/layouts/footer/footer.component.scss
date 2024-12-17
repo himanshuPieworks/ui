@@ -1,0 +1,51 @@
+.navbar {
+  background-color: white;
+  border-top: 1px solid #ddd;
+}
+
+.nav-link {
+  color: #555;
+  text-align: center;
+  position: relative;
+}
+
+.nav-link i {
+  font-size: 1.5rem;
+}
+
+.nav-link.active {
+  color: black;
+  border-top: 5px solid black;
+}
+
+.nav-link.active i {
+  color: black;
+}
+.button-container {
+  position: absolute;
+  right: 50%; /* Adjust based on actual layout */
+  bottom: 100%;
+  width: 200px;
+  height: 200px;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .custom-modal {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: 0;
+    max-height: 80%;
+  }
+  .modal-content {
+    border-radius: 0;
+  }
+}
+
+.modal-body-form {
+  position: relative;
+  flex: 1 1 auto;
+  padding: 10px 0 10px 0 !important;
+}

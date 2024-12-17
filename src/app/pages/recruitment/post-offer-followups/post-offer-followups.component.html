@@ -1,0 +1,657 @@
+<br />
+<div class="row">
+  <div class="col-lg-12">
+    <div class="row">
+      <div class="col-lg-12">
+        <h5>
+          <font
+            >{{ discovery?.candidate?.name }}, Date Of Joining :
+            {{ commonService.changeMysqlToNormalDate(discovery?.doj) }}</font
+          >
+        </h5>
+      </div>
+    </div>
+    <div class="single-profile-item">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-12">
+              <h5>
+                How was the interaction of the talent with the Hiring Manager?
+              </h5>
+            </div>
+            <div class="col-lg-3">
+              <ng-select
+                [items]="statusOptions"
+                bindLabel="label"
+                bindValue="value"
+                [(ngModel)]="followUp.followUpOneResult"
+                name="followUpOneResult"
+                class="form-control"
+              >
+                <ng-option
+                  *ngFor="let option of statusOptions"
+                  [value]="option.value"
+                  [style.background-color]="option.color"
+                >
+                  {{ option.label }}
+                </ng-option>
+              </ng-select>
+            </div>
+            <div class="col-lg-8">
+              <textarea
+                rows="2"
+                cols="4"
+                [(ngModel)]="followUp.followUpOneRemark"
+                class="from form-control"
+                placeholder="Enter details."
+                [style.background-color]="followUp.followUpOnResult"
+              ></textarea>
+            </div>
+            <div class="col-lg-1">
+              <input
+                type="button"
+                class="btn btn-info"
+                (click)="save('One')"
+                value="Save"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="single-profile-item" *ngIf="discovery?.doj && followCase <= -60">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-12">
+              <h5>
+                <font>
+                  How was the interaction of the talent with the new team ? ({{
+                    commonService.getFormatedDate(
+                      commonService.getDateXDaysAgo(
+                        60,
+                        commonService.getJsDateObject(discovery?.doj)
+                      ),
+                      "dd-MM-yyyy"
+                    ) +
+                      " to " +
+                      commonService.getFormatedDate(
+                        commonService.getDateXDaysAgo(
+                          45,
+                          commonService.getJsDateObject(discovery?.doj)
+                        ),
+                        "dd-MM-yyyy"
+                      )
+                  }})</font
+                >
+              </h5>
+            </div>
+            <div class="col-lg-3">
+              <ng-select
+                [items]="statusOptions"
+                bindLabel="label"
+                bindValue="value"
+                [(ngModel)]="followUp.followUpTwoResult"
+                name="followUpTwoResult"
+                class="form-control nice-select"
+              >
+                <ng-option
+                  *ngFor="let option of statusOptions"
+                  [value]="option.value"
+                  [style.background-color]="option.color"
+                >
+                  {{ option.label }}
+                </ng-option>
+              </ng-select>
+            </div>
+            <div class="col-lg-8">
+              <textarea
+                rows="2"
+                cols="15"
+                [(ngModel)]="followUp.followUpTwoRemark"
+                class="from form-control"
+                placeholder="Enter details."
+                [style.background-color]="followUp.followUpTwoResult"
+              ></textarea>
+            </div>
+            <div class="col-lg-1">
+              <input
+                type="button"
+                class="btn btn-info"
+                (click)="save('Two')"
+                value="Save"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="single-profile-item" *ngIf="discovery?.doj && followCase <= 45">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-12">
+              <h5>
+                <font
+                  >What was the activity that HM/Team/Anchor/Discoverer did
+                  along with the talent in the past 2 weeks? ({{
+                    commonService.getFormatedDate(
+                      commonService.getDateXDaysAgo(
+                        45,
+                        commonService.getJsDateObject(discovery?.doj)
+                      ),
+                      "dd-MM-yyyy"
+                    ) +
+                      " to " +
+                      commonService.getFormatedDate(
+                        commonService.getDateXDaysAgo(
+                          30,
+                          commonService.getJsDateObject(discovery?.doj)
+                        ),
+                        "dd-MM-yyyy"
+                      )
+                  }})</font
+                >
+              </h5>
+            </div>
+            <div class="col-lg-3">
+              <ng-select
+                [items]="statusOptions"
+                bindLabel="label"
+                bindValue="value"
+                [(ngModel)]="followUp.followUpThreeResult"
+                name="followUpThreeResult"
+                class="form-control nice-select"
+              >
+                <ng-option
+                  *ngFor="let option of statusOptions"
+                  [value]="option.value"
+                  [style.background-color]="option.color"
+                >
+                  {{ option.label }}
+                </ng-option>
+              </ng-select>
+            </div>
+            <div class="col-lg-8">
+              <textarea
+                rows="2"
+                cols="15"
+                [(ngModel)]="followUp.followUpThreeRemark"
+                class="from form-control"
+                placeholder="Enter details."
+                [style.background-color]="followUp.followUpThreeResult"
+              ></textarea>
+            </div>
+            <div class="col-lg-1">
+              <input
+                type="button"
+                class="btn btn-info"
+                (click)="save('Three')"
+                value="Save"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="single-profile-item" *ngIf="discovery?.doj && followCase <= 30">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-12">
+              <h5>
+                <font
+                  >Any Update from talent on joining formalities? Mention if any
+                  challenges are being faced by the talent. ({{
+                    commonService.getFormatedDate(
+                      commonService.getDateXDaysAgo(
+                        30,
+                        commonService.getJsDateObject(discovery?.doj)
+                      ),
+                      "dd-MM-yyyy"
+                    ) +
+                      " to " +
+                      commonService.getFormatedDate(
+                        commonService.getDateXDaysAgo(
+                          15,
+                          commonService.getJsDateObject(discovery?.doj)
+                        ),
+                        "dd-MM-yyyy"
+                      )
+                  }})</font
+                >
+              </h5>
+            </div>
+            <div class="col-lg-3">
+              <ng-select
+                [items]="statusOptions"
+                bindLabel="label"
+                bindValue="value"
+                [(ngModel)]="followUp.followUpFourResult"
+                name="followUpFourResult"
+                class="form-control nice-select"
+              >
+                <ng-option
+                  *ngFor="let option of statusOptions"
+                  [value]="option.value"
+                  [style.background-color]="option.color"
+                >
+                  {{ option.label }}
+                </ng-option>
+              </ng-select>
+            </div>
+            <div class="col-lg-8">
+              <textarea
+                rows="2"
+                cols="15"
+                [(ngModel)]="followUp.followUpFourRemark"
+                class="from form-control"
+                placeholder="Enter details."
+                [style.background-color]="followUp.followUpFourResult"
+              ></textarea>
+            </div>
+            <div class="col-lg-1">
+              <input
+                type="button"
+                class="btn btn-info"
+                (click)="save('Four')"
+                value="Save"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="single-profile-item" *ngIf="discovery?.doj && followCase <= 15">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-12">
+              <h5>
+                <font
+                  >Updates from client recruiter and hiring manager. ({{
+                    commonService.getFormatedDate(
+                      commonService.getDateXDaysAgo(
+                        15,
+                        commonService.getJsDateObject(discovery?.doj)
+                      ),
+                      "dd-MM-yyyy"
+                    ) +
+                      " to " +
+                      commonService.getFormatedDate(
+                        commonService.getDateXDaysAgo(
+                          7,
+                          commonService.getJsDateObject(discovery?.doj)
+                        ),
+                        "dd-MM-yyyy"
+                      )
+                  }})</font
+                >
+              </h5>
+            </div>
+            <div class="col-lg-3">
+              <ng-select
+                [items]="statusOptions"
+                bindLabel="label"
+                bindValue="value"
+                [(ngModel)]="followUp.followUpFiveResult"
+                name="followUpFiveResult"
+                class="form-control nice-select"
+              >
+                <ng-option
+                  *ngFor="let option of statusOptions"
+                  [value]="option.value"
+                  [style.background-color]="option.color"
+                >
+                  {{ option.label }}
+                </ng-option>
+              </ng-select>
+            </div>
+            <div class="col-lg-8">
+              <textarea
+                rows="2"
+                cols="15"
+                [(ngModel)]="followUp.followUpFiveRemark"
+                class="from form-control"
+                placeholder="Enter details."
+                [style.background-color]="followUp.followUpFiveResult"
+              ></textarea>
+            </div>
+            <div class="col-lg-1">
+              <input
+                type="button"
+                class="btn btn-info"
+                (click)="save('Five')"
+                value="Save"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="single-profile-item" *ngIf="discovery?.doj && followCase <= 0">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-12">
+              <h5>
+                <font
+                  >Joining day updates ({{
+                    commonService.getFormatedDate(
+                      commonService.getDateXDaysAgo(
+                        0,
+                        commonService.getJsDateObject(discovery?.doj)
+                      ),
+                      "dd-MM-yyyy"
+                    ) +
+                      " to " +
+                      commonService.getFormatedDate(
+                        commonService.getDateXDaysAgo(
+                          -14,
+                          commonService.getJsDateObject(discovery?.doj)
+                        ),
+                        "dd-MM-yyyy"
+                      )
+                  }})</font
+                >
+              </h5>
+            </div>
+            <div class="col-lg-3">
+              <ng-select
+                [items]="statusOptions"
+                bindLabel="label"
+                bindValue="value"
+                [(ngModel)]="followUp.followUpSixResult"
+                name="followUpSixResult"
+                class="form-control nice-select"
+              >
+                <ng-option
+                  *ngFor="let option of statusOptions"
+                  [value]="option.value"
+                  [style.background-color]="option.color"
+                >
+                  {{ option.label }}
+                </ng-option>
+              </ng-select>
+            </div>
+            <div class="col-lg-8">
+              <textarea
+                rows="2"
+                cols="15"
+                [(ngModel)]="followUp.followUpSixRemark"
+                class="from form-control"
+                placeholder="Enter details."
+                [style.background-color]="followUp.followUpSixResult"
+              ></textarea>
+            </div>
+            <div class="col-lg-1">
+              <input
+                type="button"
+                class="btn btn-info"
+                (click)="save('Six')"
+                value="Save"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="single-profile-item"
+      *ngIf="
+        discovery?.doj
+        && followCase <= -30
+      "
+    >
+      <div>
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-12">
+                <h5>
+                  <font
+                    >Talent feedback on 30 days completion of joining. ({{
+                      commonService.getFormatedDate(
+                        commonService.getDateXDaysAgo(
+                          -30,
+                          commonService.getJsDateObject(discovery?.doj)
+                        ),
+                        "dd-MM-yyyy"
+                      ) +
+                        " to " +
+                        commonService.getFormatedDate(
+                          commonService.getDateXDaysAgo(
+                            -44,
+                            commonService.getJsDateObject(discovery?.doj)
+                          ),
+                          "dd-MM-yyyy"
+                        )
+                    }})</font
+                  >
+                </h5>
+              </div>
+              <div class="col-lg-3">
+                <ng-select
+                  [items]="statusOptions"
+                  bindLabel="label"
+                  bindValue="value"
+                  [(ngModel)]="followUp.followUpSevenResult"
+                  name="followUpSevenResult"
+                  class="form-control nice-select"
+                >
+                  <ng-option
+                    *ngFor="let option of statusOptions"
+                    [value]="option.value"
+                    [style.background-color]="option.color"
+                  >
+                    {{ option.label }}
+                  </ng-option>
+                </ng-select>
+                <!-- <mat-form-field appearance="fill" style='width: 100%' *ngIf='false'>
+                                <mat-select id="dynamicSector" [(ngModel)]="followUp.followUpSevenResult" name="followUpSevenResult" class='form form-control nice-select'>
+                                    <mat-option [value]="'Select'" selected>Select Status</mat-option>
+                                    <mat-option [value]="'#ff6666'" style='background-color: #ff6666'>
+                                        Not ok
+                                    </mat-option>
+                                    <mat-option [value]="'#ffff99'" style='background-color: #ffff99'>
+                                       Ok
+                                    </mat-option>
+                                    <mat-option [value]="'#4fd6ad'" class='pieworks-green-background'>
+                                        All good
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field> -->
+              </div>
+              <div class="col-lg-8">
+                <textarea
+                  [disabled]="false"
+                  rows="2"
+                  cols="15"
+                  [(ngModel)]="followUp.followUpSevenRemark"
+                  class="from form-control"
+                  placeholder="Enter details."
+                  [style.background-color]="followUp.followUpSevenResult"
+                ></textarea>
+              </div>
+              <div class="col-lg-1">
+                <!--                            <input type="button" class="btn btn-success" (click)="save('Seven')" value="Save">-->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="single-profile-item"
+        *ngIf="discovery?.doj && followCase <= -60"
+      >
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-12">
+                <h5>
+                  <font
+                    >Likelihood of talent staying beyond 6 months. ({{
+                      commonService.getFormatedDate(
+                        commonService.getDateXDaysAgo(
+                          -60,
+                          commonService.getJsDateObject(discovery?.doj)
+                        ),
+                        "dd-MM-yyyy"
+                      ) +
+                        " to " +
+                        commonService.getFormatedDate(
+                          commonService.getDateXDaysAgo(
+                            -74,
+                            commonService.getJsDateObject(discovery?.doj)
+                          ),
+                          "dd-MM-yyyy"
+                        )
+                    }})</font
+                  >
+                </h5>
+              </div>
+              <div class="col-lg-3">
+                <ng-select
+                  [items]="statusOptions"
+                  bindLabel="label"
+                  bindValue="value"
+                  [(ngModel)]="followUp.followUpEightResult"
+                  name="followUpEightResult"
+                  class="form-control nice-select"
+                >
+                  <ng-option
+                    *ngFor="let option of statusOptions"
+                    [value]="option.value"
+                    [style.background-color]="option.color"
+                  >
+                    {{ option.label }}
+                  </ng-option>
+                </ng-select>
+                <!-- <mat-form-field appearance="fill" style='width: 100%'>
+                                <mat-select id="dynamicSector" [(ngModel)]="followUp.followUpEightResult" name="followUpEightResult" class='form form-control nice-select'>
+                                    <mat-option [value]="'Select'" selected>Select Status</mat-option>
+                                   <mat-option [value]="'#ff6666'" style='background-color: #ff6666'>
+                                        Not ok
+                                    </mat-option>
+                                    <mat-option [value]="'#ffff99'" style='background-color: #ffff99'>
+                                       Ok
+                                    </mat-option>
+                                    <mat-option [value]="'#4fd6ad'" class='pieworks-green-background'>
+                                        All good
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field> -->
+              </div>
+              <div class="col-lg-8">
+                <textarea
+                  rows="2"
+                  cols="15"
+                  [(ngModel)]="followUp.followUpEightRemark"
+                  class="from form-control"
+                  placeholder="Enter details."
+                  [style.background-color]="followUp.followUpThreeResult"
+                ></textarea>
+              </div>
+              <div class="col-lg-1">
+                <input
+                  type="button"
+                  class="btn btn-info"
+                  (click)="save('Eight')"
+                  value="Save"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="single-profile-item"
+        *ngIf="discovery?.doj && followCase <= -90"
+      >
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-12">
+                <h5>
+                  <font
+                    >Referals if any ? ({{
+                      commonService.getFormatedDate(
+                        commonService.getDateXDaysAgo(
+                          -90,
+                          commonService.getJsDateObject(discovery?.doj)
+                        ),
+                        "dd-MM-yyyy"
+                      ) +
+                        " to " +
+                        commonService.getFormatedDate(
+                          commonService.getDateXDaysAgo(
+                            -104,
+                            commonService.getJsDateObject(discovery?.doj)
+                          ),
+                          "dd-MM-yyyy"
+                        )
+                    }})</font
+                  >
+                </h5>
+              </div>
+              <div class="col-lg-3">
+                <ng-select
+                  [items]="statusOptions"
+                  bindLabel="label"
+                  bindValue="value"
+                  [(ngModel)]="followUp.followUpNineResult"
+                  name="followUpNineResult"
+                  class="form-control nice-select"
+                >
+                  <ng-option
+                    *ngFor="let option of statusOptions"
+                    [value]="option.value"
+                    [style.background-color]="option.color"
+                  >
+                    {{ option.label }}
+                  </ng-option>
+                </ng-select>
+                <!-- <mat-form-field appearance="fill" style='width: 100%'>
+                                <mat-label>Sector</mat-label>
+                                <mat-select id="dynamicSector" [(ngModel)]="followUp.followUpNineResult" name="followUpNineResult" class='form form-control nice-select'>
+                                    <mat-option [value]="'Select'" selected>Select Status</mat-option>
+                                    <mat-option [value]="'#ff6666'" style='background-color: #ff6666'>
+                                        Not ok
+                                    </mat-option>
+                                    <mat-option [value]="'#ffff99'" style='background-color: #ffff99'>
+                                       Ok
+                                    </mat-option>
+                                    <mat-option [value]="'#4fd6ad'" class='pieworks-green-background'>
+                                        All good
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field> -->
+              </div>
+              <div class="col-lg-8">
+                <textarea
+                  rows="2"
+                  cols="15"
+                  [(ngModel)]="followUp.followUpNineRemark"
+                  class="from form-control"
+                  placeholder="Enter details."
+                  [style.background-color]="followUp.followUpNineResult"
+                ></textarea>
+              </div>
+              <div class="col-lg-1">
+                <input
+                  type="button"
+                  class="btn btn-btn-info"
+                  (click)="save('Nine')"
+                  value="Save"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

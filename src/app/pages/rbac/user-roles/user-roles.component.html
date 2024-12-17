@@ -1,0 +1,68 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="User Role Management" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+<br>
+<div class='card'>
+    <div  style="width: 100%;text-align: right;white-space: pre-line;">
+        <div dropdown class="dropdown dropdown-real-estate">
+            <div style="min-width: inherit" dropdownToggle class="clickable p-2" type="button"> <i
+                    class="bi fs-2xl bi-three-dots-vertical"></i> </div>
+            <ul *bsDropdownMenu class="dropdown-menu dropdown-menu-end">
+                <li *ngFor="let item of menuOptions"><a (click)="handleMenu(item)" class="dropdown-item edit-list" href="javascript:void(0);">{{item}}</a></li>
+            </ul>
+        </div>
+    </div>
+    <section class="job-area job-area-two pt-100">    
+        <div class="single-profile-area pt-100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12" style="text-align: left;">
+                        <div class="row">      
+                            <div class="col-lg-3"></div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Role name</label>
+                                    <div class="job-category-area">
+                                        <input type="text" maxlength="100" [(ngModel)]="roleName" class="from form-control" placeholder="Enter name of the role">
+                                    </div><br>
+                                    <label>Description</label>
+                                    <div class="job-category-area">
+                                        <textarea type="text" maxlength="100" [(ngModel)]="description" class="from form-control" placeholder="Description"></textarea>
+                                    </div><br>
+                                </div>
+                            </div>
+                        </div><br>
+                        <div class="row" >
+                            <div class="col-lg-4">&nbsp;</div>
+                            <div class="text-center col-lg-3" style="margin-top: 10px;">
+                                <button class='btn btn-primary' style='cursor: pointer' (click)='save();'>Add new role</button>
+                            </div>
+                        </div>
+                    </div>  
+                </div><br>
+                <div class="row">
+                    <div class="col-lg-12" style="text-align: left;">
+                        <table class="table table-striped ">
+                            <thead  class="thead-dark" style="{{scrollY>=250?'position:sticky !important;top:70px !important':''}}">
+                                <tr>
+                                    <!--<th scope="col">Image</th>-->
+                                    <th scope="col" class="table-th">Sl.No</th><th scope="col" class="table-th">Role</th>
+                                    <th scope="col" class="table-th">Description</th><th scope="col" class="table-th"> </th><th scope="col" class="table-th"> </th>
+                                </tr>
+                            </thead>
+                            <tr *ngFor="let c of roles; let i = index" (click)="toggleClassOnRowClick(c)">
+                                <!--<td><img src="{{c.image?urlPrefix+c.image:'assets/img/home-1/profile/1.jpg'}}" alt="Profile" style="max-height: 100px"></td>-->
+                                <th scope="row" class="table-td" >{{i+1}}</th>
+                                <td style="text-align: left;" class="table-td clickable" *ngIf="!c.edit" (click)="showAssignedUsers(c)">{{c.name}}</td><td class="table-td" *ngIf="c.edit"><input type="text" maxlength="100" [(ngModel)]="c.name" class="from form-control" ></td>
+                                <td style="text-align: left;" class="table-td" *ngIf="!c.edit">{{c.description}}</td><td class="table-td" *ngIf="c.edit"><input type="text" maxlength="100" [(ngModel)]="c.description" class="from form-control" ></td>
+                                <td class="table-td"><a style="cursor: pointer" (click)="c.edit=true"><span class="ri ri-edit-line" *ngIf="!c.edit"></span></a><input type="button"  *ngIf="c.edit" class="btn btn-success" style='cursor: pointer;background-color: greenyellow' (click)='modify(c);c.edit=false' value="Modify"></td>
+                                <td class="table-td"><a style="cursor: pointer" (click)="delete(c)"><span class="ri ri-delete-bin-line"></span></a></td>                
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,540 @@
+<div *ngIf="commonService.dashView == 'CM' || !commonService.dashView">
+  <div class="card" style="margin-top: -130px">
+    <h4
+      class="card-title mx-3 mt-2 d-sm-block d-none"
+      style="margin-bottom: 0px"
+    >
+      Active Stats
+    </h4>
+    <div class="card-title mx-3 mt-2 d-sm-none d-block">
+      <h4 style="margin-bottom: 0px">Mandate</h4>
+      <span class="text-muted">Priority of this week</span>
+    </div>
+    <div class="card-body">
+      <div class="d-sm-block d-none">
+        <div class="d-flex gap-3 justify-content-between">
+          <div
+            placement="top"
+            tooltip="Count of your discoveries for the live mandates who are in interested state"
+            class="clickable"
+            style="width: 20%"
+            (click)="navigateToDiscoveries('interested')"
+          >
+            <div class="card h-100 border">
+              <div class="card-body pb-0 pt-0">
+                <div class="d-flex gap-4 flex-wrap">
+                  <!-- icon -->
+                  <div>
+                    <i class="bi bi-person fs-4xl"></i>
+                  </div>
+                  <!--  name -->
+                  <div class="align-self-center">Interested</div>
+                </div>
+                <h3 class="text-center mb-0">
+                  {{ interested ? interested : 0 }}
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div
+            placement="top"
+            tooltip="Count of your discoveries for the live mandates who are in sent to client state"
+            class="clickable"
+            style="width: 20%"
+            (click)="navigateToDiscoveries('s2c')"
+          >
+            <div class="card h-100 border">
+              <div class="card-body pb-0">
+                <div class="d-flex gap-4 flex-wrap">
+                  <!-- icon -->
+                  <div>
+                    <i class="bi bi-person fs-4xl"></i>
+                  </div>
+                  <!--  name -->
+                  <div class="align-self-center">Sent to Client</div>
+                </div>
+                <h3 class="text-center mb-0">
+                  {{ numberOfS2C ? numberOfS2C : 0 }}
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div
+            placement="top"
+            tooltip="Count of your discoveries for the live mandates whose interviews are in progress"
+            class="clickable"
+            style="width: 20%"
+            (click)="navigateToDiscoveries('interviewWip')"
+          >
+            <div class="card h-100 border">
+              <div class="card-body pb-0">
+                <div class="d-flex gap-4 flex-wrap">
+                  <!-- icon -->
+                  <div>
+                    <i class="bi bi-person fs-4xl"></i>
+                  </div>
+                  <!--  name -->
+                  <div class="align-self-center">Interview WIP</div>
+                </div>
+                <h3 class="text-center mb-0">
+                  {{ interviewWlp ? interviewWlp : 0 }}
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div
+            tooltip="Count of your discoveries for the live mandates who have recieved offer"
+            class="clickable"
+            style="width: 20%"
+            (click)="navigateToDiscoveries('offerSent')"
+          >
+            <div class="card h-100 border">
+              <div class="card-body pb-0">
+                <div class="d-flex gap-4 flex-wrap">
+                  <!-- icon -->
+                  <div>
+                    <i class="bi bi-bookmark-star fs-4xl"></i>
+                  </div>
+                  <!--  name -->
+                  <div class="align-self-center">Offer Sent</div>
+                </div>
+                <h3 class="text-center mb-0">
+                  {{ offerSent ? offerSent : 0 }}
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div
+            placement="top"
+            tooltip="Indicates your current position of Milestone."
+            class="clickable"
+            style="width: 20%"
+            (click)="navigateToDiscoveries('northStar')"
+          >
+            <div class="card h-100 border">
+              <div class="card-body pb-0">
+                <div class="d-flex gap-1 flex-nowrap">
+                  <!-- icon -->
+                  <div>
+                    <i class="bi bi-star fs-4xl"></i>
+                  </div>
+                  <!--  name -->
+                  <div class="align-self-center">Monthly Milestone</div>
+
+                  <div class="align-self-center">
+                    <i
+                      class="bi bi-info-circle-fill clickable  "
+                      style="color: gray;"
+                      [routerLink]="['/fw/faq', 1, 3]"
+                    ></i>
+                  </div>
+                </div>
+                <p class="text-center mb-0" *ngIf="bt && bt.length > 0 && bt!='0/0'">
+                  I<font
+                    >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BT</font
+                  >
+                </p>
+                <h3 class="text-center mb-0 mt-0">
+                  {{ i
+                  }}<font *ngIf="bt && bt.length > 0 && bt!='0/0'"
+                    >&nbsp;&nbsp;{{ bt }}</font
+                  >
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- mobile screen -->
+      <div class="d-sm-none d-block">
+        <div *ngIf="commonService.user.confirmedUser == 1">
+          <app-focus-mandates></app-focus-mandates>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row position-relative" style="z-index: inherit">
+    <div class="col-md-3 d-sm-block d-none">
+      <div>
+        <app-left-side-dash></app-left-side-dash>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <app-middle-side-dash></app-middle-side-dash>
+    </div>
+
+    <div class="col-md-3 d-sm-block d-none">
+      <div>
+        <app-right-side-dash></app-right-side-dash>
+      </div>
+    </div>
+  </div>
+
+  <!-- onboarding model -->
+  <div
+    bsModal
+    #lgModal="bs-modal"
+    class="modal bs-example-modal-lg fade"
+    [config]="{ backdrop: 'static', keyboard: true }"
+  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div
+          class="modal-header"
+          *ngIf="true"
+          style="background-image: url('assets/images/background.png')"
+        >
+          <h5 class="modal-title" id="myLargeModalLabel"></h5>
+          <button
+            type="button"
+            class="btn-close"
+            (click)="lgModal.hide(); checkKyc()"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <app-onboarding-steps [parentObj]="parentObj"></app-onboarding-steps>
+        </div>
+        <div class="modal-footer" *ngIf="false">
+          <a
+            href="javascript:void(0);"
+            class="btn btn-link link-success fw-medium"
+            (click)="lgModal.hide()"
+            ><i class="ri-close-line me-1 align-middle"></i> Close</a
+          >
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
+
+  <!-- kyc alert -->
+  <div
+    bsModal
+    #showCompleteKyc="bs-modal"
+    class="modal bs-example-modal-lg fade"
+    [config]="{ backdrop: 'static', keyboard: true }"
+  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div
+          class="modal-header"
+          *ngIf="true"
+          style="background-image: url('assets/images/background.png')"
+        >
+          <h5 class="modal-title" id="myLargeModalLabel">Alert !!</h5>
+          <button
+            type="button"
+            class="btn-close"
+            (click)="showCompleteKyc.hide()"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div>
+            <div class="text-center">
+              <div class="align-self-center mb-4">
+                <img
+                  src="assets/images/clock.png"
+                  alt="clock"
+                  style="width: 200px"
+                />
+              </div>
+              <h6>
+                We are glad you are joining our community. We will validate your
+                request via phone call/Linkedin profile within the next 24
+                hours.
+              </h6>
+            </div>
+            <!-- <div *ngIf="kycDetails == 'pending'">
+              <iframe
+                class="rounded w-100"
+                height="462"
+                src="https://www.youtube.com/embed/Oi2tE-IpP_c?autoplay=1"
+                title="Community info"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
+              ></iframe>
+            </div> -->
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+  </div>
+</div>
+
+<div *ngIf="commonService.dashView == 'CA'">
+  <div class="card" style="margin-top: -130px">
+    <!-- <h4 class="card-title mx-3 mt-2">Monthly Stats</h4> -->
+    <div class="card-body">
+      <div class="d-sm-block d-none">
+        <div class="d-flex gap-3 justify-content-between">
+          <div class="" style="width: 20%">
+            <div class="card h-100 border">
+              <div class="card-body pb-0">
+                <div class="d-flex gap-4 flex-wrap">
+                  <!-- icon -->
+                  <div>
+                    <i class="bi bi-person fs-4xl"></i>
+                  </div>
+                  <!--  name -->
+                  <div class="align-self-center">Clients</div>
+                </div>
+                <h3 class="text-center mb-0">
+                  {{
+                    clientAnchorData?.clients?.length >= 0
+                      ? clientAnchorData?.clients?.length
+                      : 0
+                  }}
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div
+            class="clickable"
+            (click)="navigateToMandatesCa()"
+            style="width: 20%"
+          >
+            <div class="card h-100 border">
+              <div class="card-body pb-0">
+                <div class="d-flex gap-4 flex-wrap">
+                  <!-- icon -->
+                  <div>
+                    <i class="ri-pie-chart-line fs-4xl"></i>
+                  </div>
+                  <!--  name -->
+                  <div class="align-self-center">Mandates</div>
+                </div>
+                <h3 class="text-center mb-0">
+                  {{
+                    clientAnchorData?.mandates?.length > 0
+                      ? clientAnchorData?.mandates?.length
+                      : 0
+                  }}
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div
+            class="clickable"
+            (click)="navigateToFeedbackPendingCa()"
+            style="width: 20%"
+          >
+            <div class="card h-100 border">
+              <div class="card-body pb-0">
+                <div class="d-flex gap-4 flex-wrap">
+                  <!-- icon -->
+                  <div>
+                    <i class="ri-phone-line fs-4xl"></i>
+                  </div>
+                  <!--  name -->
+                  <div class="align-self-center">Feedback Pending</div>
+                </div>
+                <h3 class="text-center mb-0">
+                  {{
+                    clientAnchorData?.feedbackPendingDiscoveries?.length >= 0
+                      ? clientAnchorData?.feedbackPendingDiscoveries?.length
+                      : 0
+                  }}
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div
+            class="clickable"
+            (click)="navigateToValPendingCa()"
+            style="width: 20%"
+          >
+            <div class="card h-100 border">
+              <div class="card-body pb-0">
+                <div class="d-flex gap-4 flex-wrap">
+                  <!-- icon -->
+                  <div>
+                    <i class="ri-award-line fs-4xl"></i>
+                  </div>
+                  <!--  name -->
+                  <div class="align-self-center">Validation Pending</div>
+                </div>
+                <h3 class="text-center mb-0">
+                  {{
+                    clientAnchorData?.validationPendingDiscoveries?.length >= 0
+                      ? clientAnchorData?.validationPendingDiscoveries?.length
+                      : 0
+                  }}
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div
+            class="clickable"
+            (click)="navigateToThisMonthsOfferCa()"
+            style="width: 20%"
+          >
+            <div class="card h-100 border">
+              <div class="card-body pb-0">
+                <div class="d-flex gap-4 flex-wrap">
+                  <!-- icon -->
+                  <div>
+                    <i class="ri-medal-line fs-4xl"></i>
+                  </div>
+                  <!--  name -->
+                  <div class="align-self-center">Offers Sent</div>
+                </div>
+                <h3 class="text-center mb-0">
+                  {{
+                    clientAnchorData?.thisMonthOffersDiscoveries?.length >= 0
+                      ? clientAnchorData?.thisMonthOffersDiscoveries?.length
+                      : 0
+                  }}
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- mobile screen -->
+      <div class="d-sm-none d-block">
+        <div class="row justify-content-between">
+          <div class="col-xl-2 mb-1">
+            <div class="card h-100 border">
+              <div class="card-body pb-0">
+                <div class="d-flex gap-4 flex-wrap">
+                  <!-- icon -->
+                  <div>
+                    <i class="bi bi-person fs-4xl"></i>
+                  </div>
+                  <!--  name -->
+                  <div class="align-self-center">Clients</div>
+                </div>
+                <h3 class="text-center mb-0">
+                  {{
+                    clientAnchorData?.clients?.length >= 0
+                      ? clientAnchorData?.clients?.length
+                      : 0
+                  }}
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-2 mb-1">
+            <div class="card h-100 border">
+              <div class="card-body pb-0">
+                <div class="d-flex gap-4 flex-wrap">
+                  <!-- icon -->
+                  <div>
+                    <i class="ri-pie-chart-line fs-4xl"></i>
+                  </div>
+                  <!--  name -->
+                  <div class="align-self-center">Mandates</div>
+                </div>
+                <h3 class="text-center mb-0">
+                  {{
+                    clientAnchorData?.mandates?.length > 0
+                      ? clientAnchorData?.mandates?.length - 1
+                      : 0
+                  }}
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-xl-2 mb-1 clickable"
+            (click)="navigateToFeedbackPendingCa()"
+          >
+            <div class="card h-100 border">
+              <div class="card-body pb-0">
+                <div class="d-flex gap-4 flex-wrap">
+                  <!-- icon -->
+                  <div>
+                    <i class="ri-phone-line fs-4xl"></i>
+                  </div>
+                  <!--  name -->
+                  <div class="align-self-center">Feedback Pending</div>
+                </div>
+                <h3 class="text-center mb-0">
+                  {{
+                    clientAnchorData?.feedbackPendingDiscoveries?.length >= 0
+                      ? clientAnchorData?.feedbackPendingDiscoveries?.length
+                      : 0
+                  }}
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-xl-2 mb-1 clickable"
+            (click)="navigateToValPendingCa()"
+          >
+            <div class="card h-100 border">
+              <div class="card-body pb-0">
+                <div class="d-flex gap-4 flex-wrap">
+                  <!-- icon -->
+                  <div>
+                    <i class="ri-award-line fs-4xl"></i>
+                  </div>
+                  <!--  name -->
+                  <div class="align-self-center">Validation Pending</div>
+                </div>
+                <h3 class="text-center mb-0">
+                  {{
+                    clientAnchorData?.validationPendingDiscoveries?.length >= 0
+                      ? clientAnchorData?.validationPendingDiscoveries?.length
+                      : 0
+                  }}
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-xl-2 mb-1 clickable"
+            (click)="navigateToThisMonthsOfferCa()"
+          >
+            <div class="card h-100 border">
+              <div class="card-body pb-0">
+                <div class="d-flex gap-4 flex-wrap">
+                  <!-- icon -->
+                  <div>
+                    <i class="ri-medal-line fs-4xl"></i>
+                  </div>
+                  <!--  name -->
+                  <div class="align-self-center">Offers Sent</div>
+                </div>
+                <h3 class="text-center mb-0">
+                  {{
+                    clientAnchorData?.thisMonthOffersDiscoveries?.length >= 0
+                      ? clientAnchorData?.thisMonthOffersDiscoveries?.length
+                      : 0
+                  }}
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xl-9">
+      <app-hiring-overview></app-hiring-overview>
+    </div>
+    <div class="col-xl-3">
+      <app-talent-overview></app-talent-overview>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="commonService.dashView == 'Client'">
+  <app-client-dashboard></app-client-dashboard>
+</div>

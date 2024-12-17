@@ -1,0 +1,200 @@
+<div class="row gy-4" *ngIf="commonService.rbac['leader-board']">
+  <div class="col-xxl-12 col-md-12">
+    <div class="card mb-0">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-xxl-12 col-md-12" title="Leadership board">
+            <h5 tooltip="Formula-Leaderboard formula- 5%*s2c + 10%interview+20%*offer sent +25%offer accepted+ 30%*Joined + 10% Prospect">Leaderboard</h5>
+            <hr />
+          </div>
+        </div>
+
+        <div *ngFor="let leader of leaderBoard">
+          <div class="d-flex gap-4 flex-wrap mb-2">
+            <!-- icon of company -->
+            <div>
+              <img
+                src="{{ commonService.getPicUrl(leader.user.profilepic) }}"
+                alt="img-01.jpg"
+                loading="lazy"
+                class="rounded-circle border"
+                style="height: 40px; width: 40px"
+              />
+            </div>
+            <!-- role and company name -->
+            <div class="align-self-center">
+              <span class="text-dark fw-bold">{{
+                leader.user?.name ? leader.user?.name : "NA"
+              }}</span>
+              <p class="text-muted m-0">
+                {{
+                  leader?.leaderBoardValue ? leader?.leaderBoardValue : "NA"
+                }}%
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- <app-discovery-dashboard-report  name='Monthly Leadership Board - Weighted(Actual)'></app-discovery-dashboard-report> -->
+      </div>
+    </div>
+  </div>
+</div>
+<br />
+
+<div class="row gy-4" *ngIf="commonService.rbac['earning-potential']">
+  <div class="col-xxl-12 col-md-12">
+    <div class="card mb-0">
+      <div class="card-body">
+        <div class="row gy-4">
+          <div class="col-xxl-12 col-md-12">
+            <div class="col-xxl-12 col-md-12">
+              <h5>Earning Potential</h5>
+              <hr />
+            </div>
+          </div>
+        </div>
+        <div class="d-flex gap-xl-4 gap-2 flex-wrap mb-2" tooltip='sum of (positions * maxLpa * billing %  * 30/100 ) for all open positions.'>
+          <!-- icon of company -->
+          <div>
+            <i class="bi bi-people fs-5xl"></i>
+          </div>
+          <!-- role and company name -->
+          <div class="align-self-center" style='width: 70%'>
+            <span class="text-dark fw-bold" >Community Earning Potential</span>
+            <p class="text-muted m-0">
+              {{ wealth.potential }}
+            </p>
+          </div>
+        </div>
+
+        <div class="d-flex gap-xl-4 gap-2 flex-wrap mb-2 " tooltip='My potenetial if all my active discoveries get successfully closed .'>
+          <!-- icon of company -->
+          <div>
+            <i class="bi bi-person fs-5xl"></i>
+          </div>
+          <!-- role and company name -->
+          <div class="align-self-center">
+            <span class="text-dark fw-bold">My Earning Potential</span>
+            <p class="text-muted m-0">{{ wealth.committed }}/-</p>
+          </div>
+        </div>
+
+        <div class="d-flex gap-xl-4 gap-2 flex-wrap mb-2">
+          <!-- icon of company -->
+          <div>
+            <i class="bi bi-cash-coin fs-5xl"></i>
+          </div>
+          <!-- role and company name -->
+          <div class="align-self-center">
+            <span class="text-dark fw-bold">Earning So Far</span>
+            <p class="text-muted m-0">{{ wealth.realized }}/-</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br />
+<div
+  class="row gy-4"
+  *ngIf="commonService.rbac['earning-potential']"
+>
+  <div class="col-xxl-12 col-md-12">
+    <div class="card mb-0">
+      <div class="card-body">
+        <div class="row gy-4" tooltip="The receiver will get 200 piecoins each month.">
+          <div class="col-xxl-12 col-md-12">
+            <div class="col-xxl-12 col-md-12">
+              <h5 >Monthly Badges</h5>
+              <hr />
+            </div>
+          </div>
+        </div>
+        <div class="d-flex gap-4 flex-wrap mb-2">
+          <!-- icon of company -->
+          <div>
+            <i class="bi bi-balloon fs-5xl"></i>
+          </div>
+          <!-- role and company name -->
+          <div class="align-self-center" tooltip='Piezen with highest number of "Joined" candidates upon CVs uploaded'>
+            <span class="text-dark fw-bold">Impact Player</span>
+            <p class="text-muted m-0">
+              {{
+                monthlyBadges?.impactPlayer
+                  ? monthlyBadges.impactPlayer.name
+                  : "NA"
+              }}
+            </p>
+          </div>
+        </div>
+
+        <div class="d-flex gap-4 flex-wrap mb-2">
+          <!-- icon of company -->
+          <div>
+            <i class="bi bi-bookmark-star fs-5xl"></i>
+          </div>
+          <!-- role and company name -->
+          <div class="align-self-center" tooltip='Piezen with the most "Offers Accepted" in a month. '>
+            <span class="text-dark fw-bold">Top Performer</span>
+            <p class="text-muted m-0">
+              {{
+                monthlyBadges?.topPerformer
+                  ? monthlyBadges.topPerformer.name
+                  : "NA"
+              }}
+            </p>
+          </div>
+        </div>
+
+        <div class="d-flex gap-4 flex-wrap mb-2">
+          <!-- icon of company -->
+          <div>
+            <i class="bi bi-graph-up-arrow fs-5xl"></i>
+          </div>
+          <!-- role and company name -->
+          <div class="align-self-center" tooltip='Piezen who achieved Northstar for three or more consecutive months.'>
+            <span class="text-dark fw-bold">Consistent CM</span>
+            <p class="text-muted m-0">
+              {{
+                monthlyBadges?.consistentCm
+                  ? monthlyBadges.consistentCm.name
+                  : "NA"
+              }}
+            </p>
+          </div>
+        </div>
+
+        <div class="d-flex gap-4 flex-wrap mb-2">
+          <!-- icon of company -->
+          <div>
+            <i class="ri-video-chat-line fs-5xl"></i>
+          </div>
+          <!-- role and company name -->
+          <div class="align-self-center" tooltip='Piezens who upload the most creative content on the platform'>
+            <span class="text-dark fw-bold">Content Creator</span>
+            <p class="text-muted m-0">
+              {{
+                monthlyBadges?.contentCreator
+                  ? monthlyBadges.contentCreator.name
+                  : "NA"
+              }}
+            </p>
+          </div>
+        </div>
+
+        <div class="d-flex gap-4 flex-wrap mb-2" *ngIf="true">
+          <!-- icon of company -->
+          <div>
+            <i class="bi bi-flag fs-5xl"></i>
+          </div>
+          <!-- role and company name -->
+          <div class="align-self-center">
+            <span class="text-dark fw-bold">Club Leader</span>
+            <p class="text-muted m-0">NA</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

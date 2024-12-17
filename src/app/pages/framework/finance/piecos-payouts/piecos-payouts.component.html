@@ -1,0 +1,187 @@
+<div class="page-title-area">
+    <div class="d-table">
+        <div class="d-table-cell">
+            <div class="container">
+                <div class="page-title-text">
+                    <h3><b>Piecoins Payout</b> </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="job-area job-area-two pt-100">    
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="job-details-item">
+                <div class="job-overview">
+                    <div class="row">
+                        <div class="col-lg-2" style="margin-top: 30px"><span class="icofont-calendar pieworks-green" style="top: 60px;font-size: 32px;"></span></div>
+                        <div class="col-lg-10">
+                            <p style="margin-left: 5px;font-weight: bold">Starting Date</p>   
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <input type="month" [(ngModel)]="month" (change)="loadMembers();filterChanged();" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div><br> 
+                    <div class="row">
+                        <div class="col-lg-2" style="margin-top: 30px"><span class="icofont-business-man pieworks-green" style="top: 60px;font-size: 32px;"></span></div>
+                        <div class="col-lg-10">
+                            <p style="margin-left: 5px;font-weight: bold">Member</p>   
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <input type="text" list="dynamicMember" [(ngModel)]="member" (change)="loadMembers();filterChanged();" (click)="member='';" class="form-control" placeholder="Search Member" >
+                                    <datalist id="dynamicMember" [(ngModel)]="member" name="member">
+                                        <option [value]="'Select'">Select</option>
+                                        <option *ngFor="let s of members" [value]="s.name" >
+                                            {{s.name}}
+                                        </option>
+                                    </datalist>
+                                </div>
+                            </div>
+                        </div>
+                    </div><br>                        
+                </div>
+            </div>
+        </div>
+        <div  class="col-lg-9">
+            <div class="row">
+                <tabset>
+                    <tab heading="Piecoins Statement">
+                        <br>
+                        <h2>Pending discoveries for member payout</h2>
+                        <table [ngClass]="commonService.isMobileDevice?'table overflow':'table table-striped'">
+                        <thead  class="thead-dark">
+                            <tr>
+                                <th style="height:50px"  class='table-th'>
+                                    Remarks
+                                </th>
+                                <th style="height:50px"  class='table-th'>
+                                    Credit
+                                </th>
+                                <th style="height:50px"  class='table-th'>
+                                    Debit
+                                </th>
+                                <th style="height:50px"  class='table-th'>
+                                    Wallet Balance
+                                </th>
+                                <th style="height:50px"  class='table-th'>
+                                    Date
+                                </th>
+                            </tr>
+                        </thead>
+                        <tr *ngFor="let entry of statement" >
+                            <td style="height:50px" class='table-td'>
+                                {{entry.remarks}}
+                            </td>
+                            <td style="height:50px" class='table-td'>
+                                {{entry.credit}}
+                            </td>
+                            <td style="height:50px" class='table-td'>
+                                {{entry.debit}}
+                            </td>
+                            <td style="height:50px" class='table-td'>
+                                {{entry?.balance}}
+                            </td>
+                            <td style="height:50px" class='table-td'>
+                                {{commonService.changeMysqlToNormalDate(entry.createdOn)}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class='table-th'>Total</th><th class='table-th'>{{sumOfCredits}}</th><th class='table-th'>{{sumOfDebits}}</th><th class='table-th'>{{statement[statement.length-1]?.balance}}</th><th class='table-th'>Rs.{{(statement[statement.length-1]?.balance)*500}}/-</th>
+                        </tr>
+                        <tr>
+                            <th class='table-th' colspan="4" style="text-align: right">tds</th><th class='table-th'>Rs.{{((statement[statement.length-1]?.balance)*500)*10/100}}/-</th>
+                        </tr>
+                        <tr>
+                            <th class='table-th' colspan="4" style="text-align: right">Net Total</th><th class='table-th'>Rs.{{(statement[statement.length-1]?.balance)*500 - ((statement[statement.length-1]?.balance)*500)*10/100}}/-</th>
+                        </tr>
+                    </table>
+                        <div class="row" style="margin-right:0px" *ngIf="false">
+                            <div class="col-lg-2"></div>
+<!--                            <div class="col-lg-2" style="margin-top: 5px">
+                                <a class="job-details-btn" style="cursor:pointer;text-align: center;" (click)="showContractWindow(1)">New Contract</a>
+                            </div>
+                            <div class="col-lg-2" style="margin-top: 5px">
+                                <a class="job-details-btn" style="cursor:pointer;text-align: center;" (click)="showContractWindow(0)">Update Contract</a>
+                            </div>  -->
+                            <div class="col-lg-2" style="margin-top: 5px">
+                                <a class="job-details-btn" style="cursor:pointer;text-align: center;" (click)="confirmPayoutGeneration()">Generate Payout Slip</a>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-right:0px">
+                            <div class="col-lg-12" style="text-align: center">{{message}}</div>
+                        </div>    
+                    </tab>
+                    <tab heading="Previous Payouts">
+                        <br>
+                        <table [ngClass]="commonService.isMobileDevice?'table overflow':'table table-striped'">
+                            <thead  class="thead-dark">
+                                <tr>
+                                    <th  class="table-th" scope="col">Month</th>
+                                    <th class="table-th">Credit</th>
+                                    <th class="table-th">Debit</th>
+                                    <th class="table-th">Piecoins Before</th>
+                                    <th class="table-th">Piecoins After</th>
+                                    <th class="table-th">Recoverable Before</th>
+                                    <th class="table-th">Recoverable After</th>
+                                    <th class="table-th">Amount</th>
+                                    <th class="table-th">Tds</th>
+                                    <th class="table-th">Net Amount</th>
+                                </tr>
+                            </thead>
+                            <tr *ngFor="let invoice of invoices; let i = index">
+                                <td class="table-td">{{(invoice.month).split(" ")[0]}}</td>                           
+                                <td class="table-td">{{invoice.credit}}</td>
+                                <td class="table-td">{{invoice.debit}}</td>
+                                <td class="table-td">{{invoice.piecosBefore}}</td>
+                                <td class="table-td">{{invoice.piecosAfter}}</td>
+                                <td class="table-td">{{invoice.recoverableBefore}}</td>
+                                <td class="table-td">{{invoice.recoverableAfter}}</td>
+                                <td class="table-td">{{invoice.amount}}/-</td>
+                                <td class="table-td">{{invoice.tds}}/-</td>
+                                <td class="table-td">{{invoice.netAmount}}/-</td>
+                            </tr>
+                        </table>
+                    </tab>
+                    <tab heading="All Member Piecoins Payouts">
+                        <br>
+                        <table [ngClass]="commonService.isMobileDevice?'table overflow':'table table-striped'">
+                            <thead  class="thead-dark">
+                                <tr>
+                                    <th  class="table-th" scope="col">Name</th>
+                                    <th  class="table-th" scope="col">Month</th>
+                                    <th class="table-th">Credit</th>
+                                    <th class="table-th">Debit</th>
+                                    <th class="table-th">Piecoins Before</th>
+                                    <th class="table-th">Piecoins After</th>
+                                    <th class="table-th">Recoverable Before</th>
+                                    <th class="table-th">Recoverable After</th>
+                                    <th class="table-th">Amount</th>
+                                    <th class="table-th">Tds</th>
+                                    <th class="table-th">Net Amount</th>
+                                </tr>
+                            </thead>
+                            <tr *ngFor="let invoice of allMemberInvoices; let i = index">
+                                <td class="table-td">{{invoice.userName}}</td>
+                                <td class="table-td">{{(invoice.month).split(" ")[0]}}</td>                           
+                                <td class="table-td">{{invoice.credit}}/-</td>
+                                <td class="table-td">{{invoice.debit}}/-</td>
+                                <td class="table-td">{{invoice.piecosBefore}}/-</td>
+                                <td class="table-td">{{invoice.piecosAfter}}/-</td>
+                                <td class="table-td">{{invoice.recoverableBefore}}/-</td>
+                                <td class="table-td">{{invoice.recoverableAfter}}/-</td>
+                                <td class="table-td">{{invoice.amount}}/-</td>
+                                <td class="table-td">{{invoice.tds}}/-</td>
+                                <td class="table-td">{{invoice.netAmount}}/-</td>
+                            </tr>
+                        </table>
+                    </tab>
+                </tabset>
+            </div>
+        </div>
+
+    </div>
+
+</section>

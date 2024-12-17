@@ -1,0 +1,32 @@
+
+<div class="row">
+    <div class="col-lg-12" style="text-align: center">
+        <h2>{{message}}</h2>
+    </div><br>
+    <div class="col-lg-12">
+        <div class="job-details-item">
+                <div class="job-overview" [ngClass]="commonService.isMobileDevice?'table table-striped overflow':'table table-striped'"  style="border: none">
+                    <table class="table table-striped ">
+                        <thead  class="thead-dark" style="{{scrollY>=250?'position:sticky !important;top:70px !important':''}}">
+                            <tr>
+                                <!--<th scope="col">Image</th>-->
+                                <th scope="col" class="table-th">Sl.No</th>
+                                <th scope="col" class="table-th">Candidate</th><th scope="col" class="table-th">Client</th><th scope="col" class="table-th">Role</th><th scope="col" class="table-th">Status</th>
+                                <th scope="col" class="table-th">Status Updated On</th><th scope="col" class="table-th">Piescore</th>
+                            </tr>
+                        </thead>
+                        <tr *ngFor="let c of shortlisting; let i = index" [ngClass]="c.classOnRowClick?c.classOnRowClick:''" (click)="toggleClassOnRowClick(c)">
+                            <!--<td><img src="{{c.image?urlPrefix+c.image:'assets/img/home-1/profile/1.jpg'}}" alt="Profile" style="max-height: 100px"></td>-->
+                            <th scope="row" class="table-td" >{{i+1}}</th>
+                            <td class="table-td">{{c.candidate.name}}</td>
+                            <td class="table-td">{{c.requirement?c.requirement.client.name:""}}</td>
+                            <td class="table-td">{{c.requirement?c.requirement.role.name:""}}</td>
+                            <td class="table-td">{{c.requirement?c.status.name:""}}</td>
+                            <td class="table-td">{{c.modifiedOn}}</td>
+                            <td class="table-td">{{c.nps}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div> 
+    </div>
+</div>

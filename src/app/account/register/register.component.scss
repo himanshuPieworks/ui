@@ -1,0 +1,43 @@
+.modal-dialog {
+  width: 360px;
+
+  height: 100px !important;
+}
+.password-meter {
+  display: flex;
+  margin-top: 0.5rem;
+}
+
+.meter-section {
+  flex: 1;
+  height: 8px;
+  background-color: lightgray;
+}
+
+.weak {
+  background-color: red;
+}
+
+.medium {
+  background-color: orange;
+}
+
+.strong {
+  background-color: yellowgreen;
+}
+
+.very-strong {
+  background-color: green;
+}
+
+.google-signin-button-container asl-google-signin-button ::slotted(img) {
+  width: 100%; /* Adjust width */
+  height: 48px; /* Adjust height */
+}
+.linkedin-font {
+  font-weight: 600 !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  color: #4d4e4f;
+}

@@ -1,0 +1,243 @@
+<div>
+  <!-- Client -->
+  <div class="card" style="margin-top: -150px">
+    <!-- <h4 class="card-title mx-3 mt-2">Monthly Stats</h4> -->
+    <div class="card-body">
+      <div class="d-sm-block d-none">
+        <div class="d-flex gap-3 justify-content-between">
+          <div class="" style="width: 20%">
+            <div class="card h-100 border" tooltip="Roles that are active">
+              <div class="card-body pb-0">
+                <div class="d-flex gap-4 flex-wrap">
+                  <!-- icon -->
+                  <div>
+                    <i class="bi bi-person fs-4xl"></i>
+                  </div>
+                  <!--  Roles Referral -->
+                  <div class="align-self-center">Active Mandates</div>
+                </div>
+                <h3 class="text-center mb-0">
+                  {{
+                    clientTopBarData?.activeMandates
+                      ? clientTopBarData?.activeMandates
+                      : 0
+                  }}
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div
+            class="clickable"
+            style="width: 20%"
+            tooltip="Interviews In the pipeline"
+          >
+            <div class="card h-100 border">
+              <div class="card-body pb-0">
+                <div class="d-flex gap-4 flex-wrap">
+                  <!-- icon -->
+                  <div>
+                    <i class="bi bi-pie-chart fs-4xl"></i>
+                  </div>
+                  <!--  name -->
+                  <div class="align-self-center">Active Pipeline</div>
+                </div>
+                <h3 class="text-center mb-0">
+                  {{
+                    clientTopBarData?.candidatePipeline
+                      ? clientTopBarData?.candidatePipeline
+                      : 0
+                  }}
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div
+            class="clickable"
+            style="width: 20%"
+            tooltip="Candidates that await your feedback"
+          >
+            <div class="card h-100 border">
+              <div class="card-body pb-0">
+                <div class="d-flex gap-4 flex-wrap">
+                  <!-- icon -->
+                  <div>
+                    <i class="bi bi-telephone-inbound fs-4xl"></i>
+                  </div>
+                  <!--  name -->
+                  <div class="align-self-center">Feedback Pending</div>
+                </div>
+                <h3 class="text-center mb-0">
+                  {{
+                    clientTopBarData?.feedbackPending
+                      ? clientTopBarData?.feedbackPending
+                      : 0
+                  }}
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div class="clickable" style="width: 20%" tooltip="Average time taken between status changes of a Candidate">
+            <div class="card h-100 border">
+              <div class="card-body pb-0">
+                <div class="d-flex gap-4 flex-wrap">
+                  <div>
+                    <i class="bi bi-bookmark-plus fs-4xl"></i>
+                  </div>
+
+                  <div class="align-self-center">Average TAT(in days)</div>
+                </div>
+                <h3 class="text-center mb-0">
+                  {{
+                    clientTopBarData?.averageTat
+                      ? clientTopBarData?.averageTat
+                      : 0
+                  }}
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div class="clickable" style="width: 20%">
+            <div class="card h-100 border">
+              <div class="card-body pb-0">
+                <div class="d-flex gap-4 flex-wrap">
+                  <!-- icon -->
+                  <div>
+                    <i class="bi bi-calendar2-check fs-4xl"></i>
+                  </div>
+                  <!--  name -->
+                  <div class="align-self-center">Active Offers</div>
+                </div>
+                <h3 class="text-center mb-0">
+                  {{
+                    clientTopBarData?.activeOffers
+                      ? clientTopBarData?.activeOffers
+                      : 0
+                  }}
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- mobile screen -->
+      <div class="d-sm-none d-block">
+        <div class="row justify-content-between">
+          <div class="col-xl-2 mb-1">
+            <div class="card h-100 border" tooltip="Roles that are active">
+              <div class="card-body pb-0">
+                <div class="d-flex gap-4 flex-wrap">
+                  <!-- icon -->
+                  <div>
+                    <i class="bi bi-person fs-4xl"></i>
+                  </div>
+                  <!--  name -->
+                  <div class="align-self-center">Active Mandates</div>
+                </div>
+                <h3 class="text-center mb-0">
+                  {{
+                    clientTopBarData?.activeMandates
+                      ? clientTopBarData?.activeMandates
+                      : 0
+                  }}
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-2 mb-1" tooltip="Interviews In the pipeline">
+            <div class="card h-100 border">
+              <div class="card-body pb-0">
+                <div class="d-flex gap-4 flex-wrap">
+                  <!-- icon -->
+                  <div>
+                    <i class="bi bi-pie-chart fs-4xl"></i>
+                  </div>
+                  <!--  name -->
+                  <div class="align-self-center">Active Pipeline</div>
+                </div>
+                <h3 class="text-center mb-0">
+                  {{
+                    clientTopBarData?.candidatePipeline
+                      ? clientTopBarData?.candidatePipeline
+                      : 0
+                  }}
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-xl-2 mb-1 clickable"
+            tooltip="Candidates that await your feedback"
+          >
+            <div class="card h-100 border">
+              <div class="card-body pb-0">
+                <div class="d-flex gap-4 flex-wrap">
+                  <!-- icon -->
+                  <div>
+                    <i class="bi bi-telephone-inbound fs-4xl"></i>
+                  </div>
+                  <!--  name -->
+                  <div class="align-self-center">Feedback Pending</div>
+                </div>
+                <h3 class="text-center mb-0">
+                  {{
+                    clientTopBarData?.feedbackPending
+                      ? clientTopBarData?.feedbackPending
+                      : 0
+                  }}
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-2 mb-1 clickable" tooltip="Average time taken between status changes of a Candidate">
+            <div class="card h-100 border">
+              <div class="card-body pb-0">
+                <div class="d-flex gap-4 flex-wrap">
+                  <div>
+                    <i class="bi bi-bookmark-plus fs-4xl"></i>
+                  </div>
+
+                  <div class="align-self-center">Average TAT(in days)</div>
+                </div>
+                <h3 class="text-center mb-0">
+                  {{
+                    clientTopBarData?.averageTat
+                      ? clientTopBarData?.averageTat
+                      : 0
+                  }}
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-2 mb-1 clickable">
+            <div class="card h-100 border">
+              <div class="card-body pb-0">
+                <div class="d-flex gap-4 flex-wrap">
+                  <!-- icon -->
+                  <div>
+                    <i class="bi bi-calendar2-check fs-4xl"></i>
+                  </div>
+                  <!--  name -->
+                  <div class="align-self-center">Active Offers</div>
+                </div>
+                <h3 class="text-center mb-0">
+                  {{
+                    clientTopBarData?.activeOffers
+                      ? clientTopBarData?.activeOffers
+                      : 0
+                  }}
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <app-client-hiring-overview
+      #clientHiringOverview
+    ></app-client-hiring-overview>
+  </div>
+</div>

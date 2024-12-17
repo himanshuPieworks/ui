@@ -1,0 +1,193 @@
+<!-- BreadCrumbs for links -->
+<app-breadcrumbs [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs><br />
+
+<div class="card">
+  <div class="card-body">
+      
+    <div class="row">
+      <div class="col-lg-2" style="margin-top: 30px">
+        <span
+          class="icofont-business-man pieworks-green"
+          style="top: 60px; font-size: 32px"
+        ></span>
+      </div>
+      <div class="col-lg-10">
+        <!-- <p class="text-right" style="margin-left: 5px; font-weight: bold;">Client</p> -->
+        <div class="row justify-content-end">
+            <div class="col-lg-3 ">
+              <!-- <i class="ri-user-2-fill"></i> -->
+            <input type='checkBox' (click)='toggleClientView()'>Show clientwise report
+          </div>
+            <div class="col-lg-3 ">
+              <!-- <i class="ri-user-2-fill"></i> -->
+            <ng-select
+              [items]="status"
+              [(ngModel)]="statuses"
+              [multiple]="true"
+              placeholder="Select Status"
+              class="form-control"
+              [clearable]="false"
+              (change)='filterChanged()'
+              style="padding: 0"
+            >
+              <ng-template ng-label-tmp let-item="item">
+                {{ item ? item : "Status" }}
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item">
+                {{ item }}
+              </ng-template>
+            </ng-select>
+          </div>
+            <div class="col-lg-3 ">
+              <!-- <i class="ri-user-2-fill"></i> -->
+            <ng-select
+              [items]="clients"
+              [(ngModel)]="client"
+              [multiple]="false"
+              placeholder="Select Client"
+              class="form-control"
+              [clearable]="false"
+              (change)='filterChanged()'
+              style="padding: 0" [searchFn]="clientLocalSearch" (search)="onClientSearch($event)"
+            >
+              <ng-template ng-label-tmp let-item="item">
+                {{ item.name ? item.name : "Client" }}
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item">
+                {{ item.name }}
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-lg-12" style="margin-top: 30px">
+        Total outstanding balance is {{outstandingBalance}}/-
+      </div>
+      </div>
+    <br/>
+    <!-- table of invoices  -->
+    <table class="table table-striped" *ngIf='toggleClientWiseView'>
+      <thead>
+        <tr>
+          <th scope="col">Client</th>
+          <th class="col">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let invoice of invoices"> <!-- pieworksProperty object comes here -->
+              <td class="table-td">{{ invoice.name }}</td>
+              <td class="table-td">{{ invoice.value }}</td>
+          </tr>
+      </tbody>
+    </table>
+    <table class="table table-striped" *ngIf='!toggleClientWiseView'>
+      <thead>
+        <tr>
+          <th scope="col">Client</th>
+          <th scope="col">Invoice Number</th>
+          <th scope="col">Type</th>
+          <th class="col">Amount</th>
+          <th scope="col">Date</th>
+          <th scope="col">Due Date</th>
+          <th scope="col">Days Overdue</th>
+          <th class="col">Status</th>
+          <th class="col">Remarks</th>
+          <th class="col">Extra Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let invoice of invoices">
+          <td class="table-td">{{ invoice.client?.name }}</td>
+          <td class="table-td">
+            <a
+              style="cursor: pointer; color: blue"
+              (click)="client=invoice.client?.name;showGeneratedInvoice(invoice.id)"
+              >{{ invoice.invoiceNumber }}</a
+            >
+          </td>
+          <td class="table-td">{{ invoice.type }}</td>
+          <td class="table-td">
+            {{
+              getInUsdWithConversionRate(
+                invoice.amount,
+                invoice.conversionRate,
+                invoice.invoiceInUsd
+              )
+            }}
+          </td>
+          <td class="table-td">{{ commonService.changeMysqlToNormalDate(invoice.logTime) }}</td>
+          <td class="table-td">{{ invoice.dueDate}}</td>
+          <td class="table-td">{{ ((invoice.status=='TO_SEND' || invoice.status=='SENT_TO_CLIENT') && commonService.getDaysBetween(commonService.getJsDateObject(commonService.changeNormalToMysqlDate(invoice.dueDate)),today) > 0) ? commonService.getDaysBetween(today,commonService.getJsDateObject(commonService.changeNormalToMysqlDate(invoice.dueDate))) : 'NA' }} </td>
+          <td>
+            <ng-select
+              [items]="status"
+              [(ngModel)]="invoice.status"
+              [multiple]="false"
+              placeholder="Select Client"
+              class="form-control"
+              [clearable]="false"
+              style="padding: 0"
+              (change)="saveInvoiceStatus(invoice)"
+            >
+              <ng-template ng-option-tmp let-item="item">
+                {{ item }}
+              </ng-template>
+            </ng-select>
+          </td>
+          <td class="clickable" (click)="selectedInvoice=invoice;remarksWindow.show()" tooltip="{{invoice.remarks}}">{{invoice.remarks?.length>=20 ? invoice.remarks?.substring(0,19)+'..': invoice.remarks}}</td>
+          <td *ngIf="invoice.status=='RAISED_CREDIT_NOTE'"><a class="clickable" (click)="showGeneratedCN(invoice.id)">View CN</a></td>
+          <td *ngIf="invoice.status!='RAISED_CREDIT_NOTE'">NA</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div
+  id="printDiv"
+  #printDiv
+  [hidden]="hidePrintDiv"
+  style="padding-left: 5%; padding-right: 5%; padding-top: 10%"
+></div>
+<div
+  bsModal
+  #remarksWindow="bs-modal"
+  [ngClass]="'modal fade bs-example-modal-md'"
+  id="exampleModalScrollable"
+>
+  <div [ngClass]="'modal-dialog modal-dialog-scrollable modal-md'">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          class="modal-tooltip text-center"
+          id="exampleModalScrollableTitle"
+          style="width: 80%"
+        >
+         Please mention the remarks. !!
+        </h5>
+
+        <button
+          type="button"
+          class="btn-close btn-close-white rightMost"
+          (click)="remarksWindow.hide()"
+        ></button>
+      </div><br>
+     <div class="row p-3">
+         <div class="col-lg-12">
+             <textarea rows="6" [(ngModel)]="selectedInvoice.remarks" style="width: 100%" placeholder="Enter remarks"></textarea>
+         </div>
+     </div>
+
+      <div class="modal-footer" *ngIf="true">
+        <button type="button" class="btn btn-light" (click)="remarksWindow.hide()">
+          Close
+        </button>
+        <button type="button" class="btn btn-primary" [disabled]="!selectedInvoice.remarks || selectedInvoice.remarks.length==0" (click)="saveInvoiceStatus(selectedInvoice)">Save</button>
+      </div>
+    </div>
+  </div>
+  <!-- /.modal-dialog -->
+</div>

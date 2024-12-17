@@ -1,0 +1,588 @@
+<div class="mt-sm-0 mt-4"></div>
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs
+  tooltip="Manage"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs
+><br />
+<div class="row">
+  <div class="col-lg-3" *ngIf="areColumnsVisible">
+    <div class="card">
+      <div class="card-body">
+        <accordion class="accordion" id="default-accordion-example">
+          <accordion-group
+            class="accordion-item"
+            [isOpen]="section == 1"
+            (click)="section = 1"
+          >
+            <h2 accordion-heading class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button">
+                Top Of The Funnel
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show">
+              <div class="accordion-body">
+                <b>Client Specific</b>
+                <p toopltip="Reached s2c on selected duration. They might have advanced to later stages."
+                  class="clickable"
+                  (click)="hideAllGraphs();
+                    loadBarGraph('s2c', 's2c'); loadLineGraph('s2c', 's2c')
+                  "
+                  style=" {{
+                    selectedReportName == 's2c'
+                      ? 'font-weight:bolder;color:blue;margin-left: 15px'
+                      : 'font-weight:inherit;color:inherit;margin-left: 15px'
+                  }}"
+                >
+                  s2c
+                </p>
+                <p toopltip="All Status mentioned have reached on selected duration. They might have advanced to later stages."
+                  class="clickable"
+                  (click)="hideAllGraphs();
+                    loadBarGraph(
+                      'expCallIntrvBys2c',
+                      '(Exploratory Call+Interview)/s2c'
+                    )
+                  "
+                  style="{{
+                    selectedReportName == 'expCallIntrvBys2c'
+                      ? 'font-weight:bolder;color:blue;margin-left: 15px'
+                      : 'font-weight:inherit;color:inherit;margin-left: 15px'
+                  }}"
+                >
+                  (Exploratory Call+Interview)/s2c
+                </p>
+                <b>Pieworks Health</b>
+                <p toopltip="All Status mentioned have reached on selected duration. They might have advanced to later stages."
+                  class="clickable"
+                  (click)="hideAllGraphs();loadBarGraph('2callNInterested', '2callNInterested')"
+                  style=" {{
+                    selectedReportName == '2callNInterested'
+                      ? 'font-weight:bolder;color:blue;margin-left: 15px'
+                      : 'font-weight:inherit;color:inherit;margin-left: 15px'
+                  }}"
+                >
+                  2call + interested
+                </p>
+                <p toopltip="All Status mentioned have reached on selected duration. They might have advanced to later stages."
+                  class="clickable"
+                  (click)="hideAllGraphs();
+                    loadBarGraph(
+                      's2cBy2callNInterested',
+                      's2c/(2call + Interested)'
+                    )
+                  "
+                  style="{{
+                    selectedReportName == 's2cBy2callNInterested'
+                      ? 'font-weight:bolder;color:blue;margin-left: 15px'
+                      : 'font-weight:inherit;color:inherit;margin-left: 15px'
+                  }}"
+                >
+                  s2c/(2call + Interested)
+                </p>
+              </div>
+            </div>
+          </accordion-group>
+          <accordion-group
+            class="accordion-item"
+            [isOpen]="section == 2"
+            (click)="section = 2"
+          >
+            <h2 accordion-heading class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button">
+                Conversion Through Funnel
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show">
+              <div class="accordion-body">
+                <p toopltip="All Status mentioned have reached on selected duration. They might have advanced to later stages."
+                  class="clickable"
+                  (click)="hideAllGraphs();
+                    loadBarGraph('expCallAndIntv', 'Exploratory Call+Interview')
+                  "
+                  style="font-weight: {{
+                    selectedReportName == 'expCallAndIntv'
+                      ? 'font-weight:bolder;color:blue'
+                      : 'font-weight:inherit;color:inherit'
+                  }}"
+                >
+                  Exploratory Call+Interview
+                </p>
+                <p
+                  class="clickable"
+                  (click)="hideAllGraphs();
+                    loadBarGraph(
+                      'offerByExpIntvAdvance',
+                      'Offer/ (Exploratory + Intv+ select2advance)'
+                    )
+                  "
+                  style="font-weight: {{
+                    selectedReportName == 'offerByExpIntvAdvance'
+                      ? 'font-weight:bolder;color:blue'
+                      : 'font-weight:inherit;color:inherit'
+                  }}"
+                >
+                  Offer/ (Exploratory + Intv+ select2advance)
+                </p>
+              </div>
+            </div>
+          </accordion-group>
+          <accordion-group
+            class="accordion-item"
+            [isOpen]="section == 3"
+            (click)="section = 3"
+          >
+            <h2 accordion-heading class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button">Post Offer</button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show">
+              <div class="accordion-body">
+                <p toopltip="All Status mentioned have reached on selected duration. They might have advanced to later stages."
+                  class="clickable"
+                  (click)="hideAllGraphs();
+                    loadBarGraph('offerSent', 'Offer sent');
+                    loadLineGraph('offerSent', 'Offer sent')
+                  "
+                  style="font-weight: {{
+                    selectedReportName == 'offerSent'
+                      ? 'font-weight:bolder;color:blue'
+                      : 'font-weight:inherit;color:inherit'
+                  }}"
+                >
+                  Offer sent
+                </p>
+                <p toopltip="All Status mentioned have reached on selected duration. They might have advanced to later stages."
+                  class="clickable"
+                  (click)="hideAllGraphs();
+                    loadBarGraph('offerAccepted', 'Offer accepted');
+                    loadLineGraph('offerAccepted', 'Offer accepted')
+                  "
+                  style="font-weight: {{
+                    selectedReportName == 'offerAccepted'
+                      ? 'font-weight:bolder;color:blue'
+                      : 'font-weight:inherit;color:inherit'
+                  }}"
+                >
+                  Offer accepted
+                </p>
+                <p toopltip="All Status mentioned have reached on selected duration. They might have advanced to later stages."
+                  class="clickable"
+                  (click)="hideAllGraphs();
+                    loadBarGraph('joined', 'Joined');
+                    loadLineGraph('joined', 'Joined')
+                  "
+                  style="font-weight: {{
+                    selectedReportName == 'joined'
+                      ? 'font-weight:bolder;color:blue'
+                      : 'font-weight:inherit;color:inherit'
+                  }}"
+                >
+                  Joined
+                </p>
+                <p toopltip="All Status mentioned have reached on selected duration."
+                  class="clickable"
+                  (click)="hideAllGraphs();
+                    loadBarGraph('suretyPrdOver', 'Surety.prd.over');
+                    loadLineGraph('suretyPrdOver', 'Surety.prd.over')
+                  "
+                  style="font-weight: {{
+                    selectedReportName == 'suretyPrdOver'
+                      ? 'font-weight:bolder;color:blue'
+                      : 'font-weight:inherit;color:inherit'
+                  }}"
+                >
+                  Surety.prd.over
+                </p>
+                <p
+                  class="clickable"
+                  (click)="hideAllGraphs();
+                    loadBarGraph(
+                      'offerDeclinedByOfferSent',
+                      'Offer declined/ Offer sent'
+                    )
+                  "
+                  style="font-weight: {{
+                    selectedReportName == 'offerDeclinedByOfferSent'
+                      ? 'font-weight:bolder;color:blue'
+                      : 'font-weight:inherit;color:inherit'
+                  }}"
+                >
+                  Offer declined/ Offer sent
+                </p>
+                <p toopltip="All Status mentioned have reached on selected duration. They might have advanced to later stages."
+                  class="clickable"
+                  (click)="hideAllGraphs();
+                    loadBarGraph('joinedByOfferSent', 'Joined/ Offer sent')
+                  "
+                  style="font-weight: {{
+                    selectedReportName == 'joinedByOfferSent'
+                      ? 'font-weight:bolder;color:blue'
+                      : 'font-weight:inherit;color:inherit'
+                  }}"
+                >
+                  Joined/ Offer sent
+                </p>
+                <p
+                  class="clickable"
+                  (click)="hideAllGraphs();loadBarGraph('timeToHire', 'Time To Hire')"
+                  style="font-weight: {{
+                    selectedReportName == 'timeToHire'
+                      ? 'font-weight:bolder;color:blue'
+                      : 'font-weight:inherit;color:inherit'
+                  }}"
+                >
+                  Time To Hire
+                </p>
+              </div>
+            </div>
+          </accordion-group>
+          <accordion-group
+            class="accordion-item"
+            [isOpen]="section == 4"
+            (click)="section = 4"
+          >
+            <h2 accordion-heading class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button">
+                Hiring Steps Status
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show">
+              <div class="accordion-body">
+                <p
+                  class="clickable"
+                  (click)="hideAllGraphs();
+                    loadStackedBarGraph(
+                      'discStatusWise',
+                      'Discovery Status Wise'
+                    )
+                  "
+                  style="font-weight: {{
+                    selectedReportName == 'discStatusWise'
+                      ? 'font-weight:bolder;color:blue'
+                      : 'font-weight:inherit;color:inherit'
+                  }}"
+                >
+                  Discovery Status Wise
+                </p>
+              </div>
+            </div>
+          </accordion-group>
+          <accordion-group
+            class="accordion-item"
+            [isOpen]="section == 5"
+            (click)="section = 5"
+          >
+            <h2 accordion-heading class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button">
+                Time Functions
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show">
+              <div class="accordion-body">
+                <p
+                  class="clickable"
+                  (click)="hideAllGraphs();loadBarGraph('openMandateAging', 'Mandate Aging')"
+                  style="font-weight: {{
+                    selectedReportName == 'openMandateAging'
+                      ? 'font-weight:bolder;color:blue'
+                      : 'font-weight:inherit;color:inherit'
+                  }}"
+                >
+                  Mandate Aging
+                </p>
+                <p
+                  class="clickable"
+                  (click)="hideAllGraphs();loadBarGraph('timeToHire', 'Time To Hire')"
+                  style="font-weight: {{
+                    selectedReportName == 'timeToHire'
+                      ? 'font-weight:bolder;color:blue'
+                      : 'font-weight:inherit;color:inherit'
+                  }}"
+                >
+                  Time To Hire
+                </p>
+              </div>
+            </div>
+          </accordion-group>
+          <accordion-group
+            class="accordion-item"
+            [isOpen]="section == 6"
+            (click)="section = 6"
+          >
+            <h2 accordion-heading class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button">Others</button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show">
+              <div class="accordion-body">
+                <p
+                  class="clickable"
+                  (click)="hideAllGraphs();
+                    loadCompareLineGraph(
+                      'northstarComparision',
+                      'northstarComparision'
+                    )
+                  "
+                  style="font-weight: {{
+                    selectedReportName == 'northstarComparision'
+                      ? 'font-weight:bolder;color:blue'
+                      : 'font-weight:inherit;color:inherit'
+                  }}"
+                >
+                  North star comparison
+                </p>
+                <p
+                  class="clickable"
+                  (click)="hideAllGraphs();
+                    loadBarGraph(
+                      'unattendedDiscoveries',
+                      'unattendedDiscoveries'
+                    )
+                  "
+                  style="font-weight: {{
+                    selectedReportName == 'unattendedDiscoveries'
+                      ? 'font-weight:bolder;color:blue'
+                      : 'font-weight:inherit;color:inherit'
+                  }}"
+                >
+                  Unattended Discoveries
+                </p>
+              </div>
+            </div>
+          </accordion-group>
+        </accordion>
+      </div>
+    </div>
+  </div>
+  <div [ngClass]="areColumnsVisible ? 'col-xl-7' : 'col-xl-10'">
+    <div class="card">
+      <div class="card-header">
+        <div class="form-check form-switch" tooltip="{{ areColumnsVisible ? 'Hide' : 'Show' }}">
+          <input
+            [ngClass]="{
+              'bg-success': areColumnsVisible,
+              'border-0': areColumnsVisible
+            }"
+            class="form-check-input"
+            type="checkbox"
+            
+            role="switch"
+            [(ngModel)]="areColumnsVisible"
+            (change)="onSelectChange({ selectedOption: areColumnsVisible })"
+            id="flexSwitchCheckDefault"
+            style="width: 50px; height: 30px"
+          />
+        </div>
+
+        <!-- <small>{{ areColumnsVisible ? "Hide " : "Show" }}</small> -->
+      </div>
+      <div class="card-body">
+        <div class="job-details-item">
+          <div class="job-overview">
+            <div class="row">
+              <div class="col-lg-10">
+                <b>{{ selectedDetails ? selectedDetails : "" }}</b
+                ><br />
+                <b>{{ summary ? summary : "" }}</b>
+                <app-generic-barchart
+                  #bargraph
+                  *ngIf="enableBar"
+                ></app-generic-barchart>
+                <app-generic-stacked-bar-chart
+                  #stackedbargraph
+                  *ngIf="enableStackedbargraph"
+                ></app-generic-stacked-bar-chart>
+                <app-generic-line-chart
+                  #linegraph
+                  *ngIf="enableMultipleLineComparison"
+                ></app-generic-line-chart>
+                <app-generic-compare-line-chart
+                  *ngIf="enableCompareLineGraph"
+                  #compareLinegraph
+                ></app-generic-compare-line-chart>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-2" >
+    <div class="card">
+      <div class="card-body">
+        <h3>
+          <div class="col-lg-12">
+            Filters<span
+              class="mdi mdi-broom text-end"
+              style="
+                cursor: pointer;
+                top: 0px;
+                font-size: 20px;
+                padding-left: 40%;
+              "
+              (click)="clearFilter()"
+            ></span>
+          </div>
+        </h3>
+        <div class="row" *ngIf="filters.months">
+          <div class="col-lg-12">
+            <ng-select
+              #Selecter2
+              [items]="allMonths"
+              [multiple]="false"
+              bindLabel="name"
+              placeholder="Month"
+              class="form-control"
+              labelForId="ngSelectId"
+              name="months"
+              id="months"
+              (change)="loadMonthlyReport()"
+              [(ngModel)]="selectedIndividualMonth"
+              [clearable]="false"
+              style="padding: 0"
+            >
+            </ng-select>
+          </div>
+        </div>
+        <br />
+        <div class="row" *ngIf="filters.querter">
+          <div class="col-lg-12">
+            <ng-select
+              #Selecter1
+              [items]="months"
+              [multiple]="false"
+              bindLabel="name"
+              placeholder="Quarter"
+              class="form-control"
+              labelForId="ngSelectId"
+              name="months"
+              id="months"
+              (change)="loadQuarterReport()"
+              [(ngModel)]="selectedMonth"
+              [clearable]="false"
+              style="padding: 0"
+            >
+            </ng-select>
+          </div>
+        </div>
+        <br />
+        <div class="row" *ngIf="filters.year">
+          <div class="col-lg-12">
+            <ng-select
+              #Selecter2
+              [items]="years"
+              [multiple]="false"
+              placeholder="Year"
+              class="form-control"
+              labelForId="ngSelectId"
+              name="years"
+              id="years"
+              (change)="loadQuarterReport()"
+              [(ngModel)]="selectedYear"
+              [clearable]="false"
+              style="padding: 0"
+            >
+            </ng-select>
+          </div>
+        </div>
+        <br />
+        <div class="row" *ngIf="filters.client">
+          <div class="col-lg-12">
+            <p style="margin-left: 10px">Client</p>
+            <ng-select
+              [items]="clients"
+              [multiple]="true"
+              bindLabel="name"
+              bindValue="id"
+              class="form-control"
+              name="clientFilter"
+              placeholder="Select Client"
+              [(ngModel)]="clientId"
+              [clearable]="true"
+              style="padding: 0"
+              (ngModelChange)="filterChanged()"
+              [searchFn]="clientLocalSearch"
+              (search)="onClientSearch($event)"
+            ></ng-select>
+          </div>
+        </div>
+        <br />
+        <div class="row" *ngIf="selectedReportName != 'northstarComparision'">
+          <div class="col-lg-12">
+            <p style="margin-left: 10px">Account Manager</p>
+            <ng-select
+              [items]="members"
+              [multiple]="false"
+              bindLabel="user.name"
+              bindValue="user.id"
+              class="form-control"
+              name="clientFilter"
+              placeholder="Select CA"
+              [(ngModel)]="clientAnchorId"
+              [clearable]="true"
+              style="padding: 0"
+              (ngModelChange)="filterChanged()"
+            ></ng-select>
+          </div>
+        </div>
+        <br />
+        <div class="row" *ngIf="filters.cm">
+          <div class="col-lg-12">
+            <p style="margin-left: 10px">Community Members</p>
+            <ng-select
+              [items]="members"
+              [multiple]="true"
+              bindLabel="user.name"
+              bindValue="user.id"
+              class="form-control"
+              name="clientFilter2"
+              placeholder="Select CM"
+              [(ngModel)]="userIds"
+              [clearable]="true"
+              style="padding: 0"
+              (ngModelChange)="filterChanged()"
+            ></ng-select>
+          </div>
+        </div>
+        <br />
+        <div class="row" *ngIf="filters.from">
+          <div class="col-lg-12">
+            <p style="margin-left: 10px">From</p>
+            <input
+              class="form form-control text-muted"
+              type="date"
+              name="from"
+              id="from"
+              [(ngModel)]="startDate"
+              (change)="
+                selectedYear = undefined;
+                selectedMonth = undefined;
+                selectedIndividualMonth = undefined;
+                filterChanged()
+              "
+            />
+          </div>
+        </div>
+        <br />
+        <div class="row" *ngIf="filters.to">
+          <div class="col-lg-12">
+            <p style="margin-left: 10px">To</p>
+            <input
+              class="form form-control text-muted"
+              type="date"
+              name="to"
+              id="to"
+              [(ngModel)]="endDate"
+              (change)="
+                selectedYear = undefined;
+                selectedMonth = undefined;
+                selectedIndividualMonth = undefined;
+                filterChanged()
+              "
+            />
+          </div>
+        </div>
+        <br />
+      </div>
+    </div>
+  </div>
+</div>

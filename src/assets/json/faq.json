@@ -1,0 +1,98 @@
+{
+  "faq": [
+    {
+      "category": "Piecoins Distribution at Pieworks",
+      "questions": [
+        {
+          "question": "What are Piecoins, and how can I earn them?",
+          "answer": "Piecoins are rewards given for various activities within the Pieworks platform. You can earn Piecoins by participating in community engagements, referring candidates or clients, and being active in the interview lifecycle, among other tasks."
+        },
+        {
+          "question": "How can I earn Piecoins through community engagement?",
+          "answer": "<ul><li><strong>Monthly Quiz:</strong> Participate in the monthly quiz on the platform to earn 200 Piecoins.</li><li><strong>Sharing Domain Expertise:</strong> If you share knowledge or host sessions, you earn 500 Piecoins.</li><li><strong>Top Performer of the Month:</strong> Earn 200 Piecoins by having the most 'Offer Accepted' in a month.</li><li><strong>Consistent CM Performance:</strong> Consistently meeting the Northstar for 3 months straight as a Community Member (CM) earns you 200 Piecoins.</li><li><strong>Impact Player:</strong> Earn 200 Piecoins for having the highest ratio of candidates joined/CVs uploaded per month. If there’s a tie, the tiebreaker will be the number of CVs uploaded.</li></ul>"
+        },
+        {
+          "question": "How does the referral system work for earning Piecoins?",
+          "answer": "<ul><li><strong>On joining:</strong> Earn 100 Piecoins when your referral joins.</li><li><strong>2 relevant CVs:</strong> Earn 100 Piecoins when 2 relevant CVs are uploaded by your referral.</li><li><strong>Achieving Northstar:</strong> Earn 100 Piecoins once the referred member achieves the Northstar in the first month.</li><li><strong>Completion of 90 Days:</strong> Earn 200 Piecoins if the member completes 90 days with the minimum Northstar achieved.</li></ul>"
+        },
+        {
+          "question": "How do I earn Piecoins during the candidate’s interview lifecycle?",
+          "answer": "<ul><li><strong>Resumes Sent on Time:</strong> Earn 50 Piecoins per relevant candidate uploaded on the platform within 48 hours of a Pilot Mandate* going live on Earn page (top 3). *Pilot Mandate: Mandates where contract is being negotiated.</li><li><strong>Exploratory Call:</strong> Earn 50 Piecoins when a candidate moves from the exploratory call to the interview process.</li><li><strong>Interview Rounds:</strong> Earn 50 Piecoins for each interview round the candidate completes, capped at 3 rounds.</li><li><strong>Offer Sent:</strong> Earn 100 Piecoins if your candidate receives an official offer letter.</li><li><strong>Offer Accepted:</strong> Earn an additional 200 Piecoins when your candidate accepts the offer.</li><li><strong>Candidate Joins:</strong> Earn 200 Piecoins once the candidate joins the organization.</li></ul>"
+        },
+        {
+          "question": "How does the NPS (Net Promoter Score) system work for Piecoins?",
+          "answer": "<ul><li><strong>Client NPS:</strong> Earn 200 Piecoins when a client provides NPS feedback.</li><li><strong>Talent NPS:</strong> Earn 100 Piecoins when a candidate provides NPS feedback.</li></ul>"
+        },
+        {
+          "question": "What is the Talent Betting system, and how does it work?",
+          "answer": "You can bet on a candidate’s success in getting placed. If the candidate gets placed, you receive 3x the bet amount. If the candidate only reaches the offer stage, you receive 1.5x your bet amount."
+        }
+      ]
+    },
+    {
+      "category": "FAQs for Community Members",
+      "questions": [
+        {
+          "question": "What services can Community Members (CMs) provide?",
+          "answer": "Community Members can provide services such as: Discovery of Talent: <br/><ul><li><strong>Discovery of Talent:</strong> Identifying suitable candidates for job mandates.</li><li><strong>Account Managing:</strong> Managing client relationships and providing market insights.</li><li><strong>Bringing in Mandates:</strong> Introducing new hiring opportunities from the startup ecosystem.</li></ul>"
+        },
+        {
+          "question": "How is the revenue share structured for different roles?",
+          "answer": "The revenue share is divided based on your role: <br/><ul><li><strong>Discoverer (Recruiter):</strong> Earns 20% of the invoice value for successfully sourcing a candidate.</li><li><strong>Candidate Interaction:</strong> Earns an additional 10% of the invoice value by convincing candidates to attend interviews.</li><li><strong>Account Manager (Account Manager):</strong> Earns 10% of the invoice value when a candidate joins and completes the guarantee period.</li><li><strong>Sales Consultant:</strong> Earns 20% of the invoice value for bringing in new mandates within the first 10 days.</li></ul>"
+        },
+        {
+          "question": "How does the stage system work for Community Members?",
+          "answer": "There are 4 stages, each with different revenue shares and fixed monthly pay: <br/><ul><li><strong>Stage 1:</strong> No fixed pay, 30% revenue share for Discoverers, 10% for Account Managers, 20% for Mandate.</li><li><strong>Stage 2:</strong> 10K fixed pay, 15% for Discoverers, 5% for Account Managers, 10% for Mandate.</li><li><strong>Stage 3:</strong> 50K fixed pay, 7.5% for Discoverers, 2.5% for Account Managers, 2.5% for Mandate.</li><li><strong>Stage 4:</strong> 100K fixed pay, 3.75% for Discoverers, 1.25% for Account Managers, 1.25% for Mandate.</li></ul>"
+        },
+        {
+          "question": "What is the 'North Star' target?",
+          "answer": "The 'North Star' target is the minimum number of weighted candidate profiles you need to upload monthly: <br/><ul><li><strong>Stage 1:</strong> Requires 15 weighted talents. <ul><li>Each candidate’s weight is based on the mandate’s annual CTC (Cost to Company):</li><li>1 point for CTC up to 25 Lakhs</li><li>2 points for CTC between 25 to 50 Lakhs</li><li>3 points for CTC above 50 Lakhs</li></ul></li></ul>"
+        },
+        {
+          "question": "What happens if I don’t meet my 'North Star' target?",
+          "answer": "If you don’t meet your target over consecutive months, your revenue share payout will be impacted:<br/> <ul><li><strong>1 to 3 months:</strong> 80% of the revenue share.</li><li><strong>4 to 6 months:</strong> 50% of the revenue share.</li><li><strong>More than 6 months:</strong> 20% of the revenue share.</li></ul>"
+        },
+        {
+          "question": "What does it mean to be an 'Active' Community Member?",
+          "answer": "You are considered 'Active' if you upload at least 4 weighted talents per month. Falling below this may lead to termination."
+        },
+        {
+          "question": "How can I leave the Community, and what is the Disembarking Period?",
+          "answer": "You can leave by providing written notice via email and the platform. The disembarking period depends on your stage: <ul><li><strong>Refer to the stage system table:</strong> for the exact notice period (15 to 60 days).</li></ul>"
+        },
+        {
+          "question": "How do I receive my payouts?",
+          "answer": "Payouts are managed through the 'Piebank' feature on the platform. Key points:<br/><ul><li><strong>Success payouts:</strong> are paid after deducting TDS (Tax Deducted at Source) as per the Income Tax Act, 1961.</li><li><strong>For Stage 1 CMs:</strong> payouts exceeding INR 5K are eligible only after the 'Joined & Guarantee Period Completed' status.</li></ul>"
+        },
+        {
+          "question": "What confidentiality obligations do Community Members have?",
+          "answer": "You must protect the company's confidential information, including customer lists, strategies, financial data, etc. This information should not be disclosed without permission and must be returned upon termination."
+        },
+        {
+          "question": "Are Community Members employees of the company?",
+          "answer": "No, Community Members are independent contractors. This means:<br/> <ul><li><strong>You are not eligible:</strong> for company benefits like health insurance or retirement plans.</li><li><strong>You have complete flexibility:</strong> in managing your work but are not authorized to act on behalf of the company.</li></ul>"
+        },
+        {
+          "question": "What happens in the event of a breach of contract?",
+          "answer": "In case of a breach, termination is immediate, and any pending payments will be forfeited."
+        },
+        {
+          "question": "How does the 'Leadership Talent Program' (LTP) work?",
+          "answer": "In the LTP, you represent a 'contract' signed by leadership talent. Revenue shares mirror the regular system but with different percentages."
+        },
+        {
+          "question": "What happens if there’s a 'Force Majeure' situation?",
+          "answer": "All terms and conditions of the contract may change based on business exigencies, especially during incidents covered under 'Force Majeure'."
+        },
+        {
+          "question": "Can I use company tools and databases for personal use?",
+          "answer": "No, using the company's tools, databases, and proprietary information for personal use is prohibited."
+        },
+        {
+          "question": "Is there an indemnification clause?",
+          "answer": "Yes, you must indemnify the company against any claims, losses, or damages resulting from negligence in performing services under the agreement."
+        }
+      ]
+    }
+  ]
+}

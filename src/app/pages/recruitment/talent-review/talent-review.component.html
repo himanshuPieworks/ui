@@ -1,0 +1,23 @@
+<br>
+<div class="card">
+    <div class="card-body" style="width: 50%">
+        <h1>Building career around your <span>life-goals...</span></h1>
+        <p>We engage with top talents in the country to drive career growth</p>   
+        <div class="banner-form-area" [hidden]="message || message.length>0">
+            <form class="justify-content-center">
+                <div class="row" >
+                    <div class="col-lg-12"style="text-align: center;">
+                        <br>
+                    </div><br><br>
+                    <div class="col-lg-12"style="text-align: center;"> 
+                        <textarea placeholder="Would love to hear about your experience, you know first impressions matter! " 
+                                  rows="10" cols="10" [(ngModel)]="followUp.followUpSevenRemark" class="form form-control" name="followUpSevenRemark"></textarea>
+                    </div>
+                </div><br>
+                <button type="submit" class="btn banner-form-btn btn-info" (click)="submit()" style="right: 1px;top: 35%;left: 40%">Submit</button>	
+            </form>                            
+        </div>
+        <br>
+        <h2 class="text-muted" [hidden]="!message || message.length===0">{{message}}</h2>
+    </div>
+</div>

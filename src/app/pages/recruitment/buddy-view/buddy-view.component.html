@@ -1,0 +1,289 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs
+  tooltip="Workspace"
+  [breadcrumbItems]="breadCrumbItems"
+  [title]="'Buddies'"
+></app-breadcrumbs>
+<br />
+<!-- End Breadcrumbs -->
+<div class="row">
+  <div class="col-lg">
+    <div
+      class="card"
+      style="background-image: url('assets/images/background.png')"
+    >
+      <div class="card-body">
+        <div class="row align-items-center gy-3">
+          <div class="col-6">
+            <h6 class="card-tooltip fs-2xl mb-0">
+              Total {{ memberType
+              }}<span class="badge text-dark fs-2xl align-baseline ms-1">{{
+                totalEntries
+              }}</span>
+            </h6>
+          </div>
+          <!--end col-->
+          <!--end col-->
+        </div>
+        <!--end row-->
+      </div>
+    </div>
+
+    <div class="row" id="property-list">
+      <div
+        *ngFor="let m of members; let i = index"
+        class="col-xxl-3 col-lg-3 col-md-4 p-2"
+      >
+        <div
+          class="card real-estate-grid-widgets card-animate px-3 pt-3"
+          style="height: 100%"
+        >
+          <!--  style="background-color{{getRandomColor()}} and profile view " -->
+          <div class="card-body p-2">
+            <div class="row gy-4 d-flex">
+              <div style="width: 35%" class="position-relative">
+                <img
+                  src="{{ commonService.getPicUrl(m.user.profilepic) }}"
+                  alt="img-01.jpg"
+                  class="avatar-md rounded-pill"
+                  style="object-fit: contain !important; max-height: 70px"
+                />
+                <span
+                  class="position-absolute translate-middle"
+                  title="{{ m.user.onlineStatus }}"
+                  [ngClass]="getOnlineStatusIcon(m.user.onlineStatus)"
+                  style="font-size: 15px; top: 10px; right: 10px"
+                ></span>
+              </div>
+              <div style="width: 55%" class="text-center vertical-align">
+                <h4>{{ m.user.name }}</h4>
+              </div>
+              <div
+                style="width: 5%; text-align: right; white-space: pre-line"
+                class="vertical-align"
+              ></div>
+              <hr class="mb-0 mt-2" />
+            </div>
+          </div>
+
+
+          <carousel
+          [noWrap]="true"
+          [interval]="0"
+          class="carousel carousel-dark slide"
+        >
+          <div class="carousel-inner">
+            <slide class="carousel-item active" data-bs-interval="10000">
+                <div class="card-body p-2">
+                    <ul class="d-flex align-items-center gap-2 flex-wrap list-unstyled">
+                      <li tooltip="" style="width: 100%">
+                        <div class="d-flex">
+                          <div style="width: 6%" *ngIf="false">
+                            <i
+                              class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                              style="font-size: 15px"
+                            ></i>
+                          </div>
+                          <div style="width: 47%">
+                            <span class="fieldLabel">Northstar Status</span>
+                            <p class="text-muted mb-0 fieldValue">
+                              {{ m.northStarStatus }}
+                            </p>
+                          </div>
+        
+                          <div style="width: 47%; text-align: right">
+                            <span class="fieldLabel">Strike Rate</span>
+                            <p class="text-muted mb-0 fieldValue">
+                              {{
+                                m?.interviewed
+                                  ? commonService.restrictToTwoDecimals(
+                                      (m?.interviewed / m?.sentToClient) * 100
+                                    ) + "%"
+                                  : "N/A"
+                              }}
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                      <li tooltip="" style="width: 100%">
+                        <div class="d-flex">
+                          <div style="width: 6%" *ngIf="false">
+                            <i
+                              class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                              style="font-size: 15px"
+                            ></i>
+                          </div>
+                          <div style="width: 47%">
+                            <span class="fieldLabel">Clubs</span>
+                            <div class="d-flex">
+                              <div *ngFor="let club of m.selectedClubArray">
+                                <i class="{{ club.icon }}" title="{{ club.name }}"></i
+                                >&nbsp;&nbsp;
+                              </div>
+                              <p
+                                class="text-muted mb-0 fieldValue"
+                                *ngIf="m.selectedClubArray?.length == 0"
+                              >
+                                N/A
+                              </p>
+                            </div>
+                          </div>
+                          <div style="width: 47%; text-align: right">
+                            <span class="fieldLabel">Job Families</span>
+                            <p class="text-muted mb-0 fieldValue">
+                              {{ m.jobFamilies ? m.jobFamilies : "N/A" }}
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                      <li tooltip="" style="width: 100%">
+                        <div class="d-flex">
+                          <div style="width: 6%" *ngIf="false">
+                            <i
+                              class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                              style="font-size: 15px"
+                            ></i>
+                          </div>
+                          <div style="width: 47%">
+                            <span class="fieldLabel" tooltip="s2c/Disc"
+                              >Active Pods</span
+                            >
+                            <p class="text-muted mb-0 fieldValue">
+                              {{ m.numOfActivePods }}
+                            </p>
+                          </div>
+                          <div style="width: 47%; text-align: right">
+                            <span class="fieldLabel" tooltip="Intrv/S2C"
+                              >Events Attended</span
+                            >
+                            <p class="text-muted mb-0 fieldValue">NA</p>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+            </slide>
+            <slide class="carousel-item active" data-bs-interval="10000">
+              <div class="card-body p-2">
+                <ul
+                  class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+                >
+                  <li tooltip="" style="width: 100%">
+                    <div class="d-flex">
+                      <div style="width: 6%" *ngIf="false">
+                        <i
+                          class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                          style="font-size: 15px"
+                        ></i>
+                      </div>
+                      <div style="width: 47%">
+                        <span class="text-muted">Joined talents</span>
+                        <p class="mb-0 text-dark">
+                          {{ m?.joinedTalents ? m?.joinedTalents : "N/A" }}
+                        </p>
+                      </div>
+                      <div style="width: 47%; text-align: right">
+                        <span class="text-muted">Median salary</span>
+                        <p class="mb-0 text-dark">
+                          {{ m?.medianSalary ? m?.medianSalary : "N/A" }}
+                        </p>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+                <ul
+                  class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+                >
+                  <li tooltip="" style="width: 100%">
+                    <div class="d-flex">
+                      <div style="width: 6%" *ngIf="false">
+                        <i
+                          class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                          style="font-size: 15px"
+                        ></i>
+                      </div>
+                      <div style="width: 47%" *ngIf='commonService.rbac["cm-mobile-no"]'>
+                        <span class="text-muted">Phone No.</span>
+                        <p class="mb-0 text-dark">
+                          {{ m?.user?.mobileno ? m?.user?.mobileno : "N/A" }}
+                        </p>
+                      </div>
+                      <!-- <div style="width: 47%; text-align: right">
+                                                  <span class="text-muted">Email</span>
+                                                  <p class=" mb-0 text-dark">
+                                                      {{ m?.user?.username }}
+                                                  </p>
+                                              </div> -->
+                      <!-- <div style="width: 47%; text-align: right">
+                        <span class="text-muted">Linkedin</span>
+                        <p class=" mb-0 text-dark">
+                          <a
+                            href="{{ m?.user?.linkedIn }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            >Profile</a
+                          >
+                        </p>
+                      </div> -->
+                    </div>
+                  </li>
+                </ul>
+                <ul
+                  class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+                >
+                  <li tooltip="" style="width: 100%" *ngIf='commonService.rbac["cm-email-id"]'>
+                    <div class="d-flex">
+                      <div style="width: 6%" *ngIf="false">
+                        <i
+                          class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                          style="font-size: 15px"
+                        ></i>
+                      </div>
+                      <div style="width: 100%">
+                        <span class="text-muted">Email</span>
+                        <p class="mb-0 text-dark">
+                          {{ m?.user?.username }}
+                        </p>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </slide>
+          </div>
+        </carousel>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--end row-->
+
+  <div id="elmLoader" *ngIf="false">
+    <div class="spinner-border text-primary avatar-sm" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div id="noresult" [ngClass]="members?.length != 0 ? 'd-none' : ''">
+    <div class="text-center py-4">
+      <div class="avatar-md mx-auto mb-4">
+        <div class="avatar-tooltip bg-light text-primary rounded-circle fs-4xl">
+          <i class="bi bi-search"></i>
+        </div>
+      </div>
+      <h5 class="mt-2">Sorry! No Result Found</h5>
+    </div>
+  </div>
+</div>
+
+<!-- for showing loading during data load -->
+<div
+  id="elmLoader"
+  [ngClass]="members?.length != 0 ? 'd-none' : ''"
+  *ngIf="false"
+>
+  <div class="spinner-border text-primary avatar-sm" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+<!-- for showing not loaded data -->

@@ -1,0 +1,398 @@
+<br />
+<div class="row mt-sm-0 mt-5">
+  <div class="col-lg-12 rightMost" style="text-align: right" *ngIf="!isOpenUrl">
+    <button
+      class="btn btn-primary rounded-pill"
+      (click)="printConfirmation('printarea')"
+    >
+      <i
+        tooltip="Click to download pdf"
+        class="ri-file-pdf-line clickable"
+      ></i></button
+    >&nbsp;
+    <button class="btn btn-primary rounded-pill" (click)="copyLink(false)">
+      <i tooltip="Click to copy link" class="ri-file-copy-fill clickable"></i
+      >&nbsp;For Candidate</button
+    >&nbsp;&nbsp;
+    <button class="btn btn-primary rounded-pill" (click)="copyLink(true)">
+      <i tooltip="Click to copy link" class="ri-file-copy-fill clickable"></i
+      >&nbsp;For Client
+    </button>
+  </div>
+</div>
+<br />
+
+<div
+  class="row justify-content-center"
+  id="printDiv"
+  style="width: 100%; height: 100%"
+>
+  <div [ngClass]="'col-lg-11'">
+    <div class="card">
+      <table
+        [ngClass]="
+          commonService.isMobileDevice
+            ? 'table overflow'
+            : 'table table-striped'
+        "
+        style="margin-bottom: 0"
+      >
+        <thead class="thead-dark">
+          <tr style="background-color: #162444">
+            <td scope="col" style="width: 30%">
+              <img
+                style="width: 70%; margin-bottom: 20px"
+                class="align-middle"
+                src="assets/images/Primary_logo_white.png"
+                *ngIf="true"
+              />
+            </td>
+            <th class="table-th text-white">
+              <h4 class="text-white">
+                RSPP Write Up (Role - Skill - Persona - Process)
+              </h4>
+            </th>
+            <td style="max-width: 120px" class="text-end">
+              <i
+                ><a
+                  style="color: #3fd6ad"
+                  href="https://www.pieworks.in/"
+                  target="_blank"
+                  >pieworks.in</a
+                ><br /><span style="color: rgb(163, 162, 162)"
+                  >Wework Galaxy, 43 Residency Rd, Ashok Nagar Bengaluru
+                  Karnataka</span
+                ></i
+              >
+            </td>
+          </tr>
+        </thead>
+      </table>
+
+      <div style="overflow: auto; white-space: break-spaces">
+        <table
+          [ngClass]="
+            commonService.isMobileDevice
+              ? 'table overflow'
+              : 'table table-striped'
+          "
+          style="
+            background-image: url('assets/img/logo-opcity.jpg');
+            background-repeat: no-repeat;
+            background-position: center;
+          "
+        >
+          <thead>
+            <tr>
+              <td
+                scope="col"
+                style="
+                  vertical-align: middle;
+                  text-align: left;
+                  font-weight: bold;
+                  background-color: rgb(215, 210, 210);
+                  opacity: 0.6;
+                "
+              >
+                Organization Name
+              </td>
+              <td style="text-align: left">
+                {{ rspp.client ? rspp.client.name : rspp.orgName }}
+              </td>
+            </tr>
+            <tr>
+              <td
+                scope="col"
+                style="
+                  vertical-align: middle;
+                  text-align: left;
+                  font-weight: bold;
+                  background-color: rgb(215, 210, 210);
+                  opacity: 0.6;
+                "
+              >
+                Sector
+              </td>
+              <td style="text-align: left">
+                {{ rspp.client?.sector ? rspp.client?.sector : "NA" }}
+              </td>
+            </tr>
+            <tr>
+              <td
+                scope="col"
+                style="
+                  vertical-align: middle;
+                  text-align: left;
+                  font-weight: bold;
+                  background-color: rgb(215, 210, 210);
+                  opacity: 0.6;
+                "
+              >
+                Company Write-up <br />
+                (Vision, Current News, Funding Status, Geography Presence)
+              </td>
+              <td scope="col" style="text-align: left">
+                {{ rspp.client.usp }}
+              </td>
+            </tr>
+            <tr *ngIf="showBudget">
+              <td
+                scope="col"
+                style="
+                  vertical-align: middle;
+                  text-align: left;
+                  font-weight: bold;
+                  background-color: rgb(215, 210, 210);
+                  opacity: 0.6;
+                "
+              >
+                Culture Values
+              </td>
+              <td scope="col" style="text-align: left">
+                {{ rspp.cultureValues.split(",").join(", ") }}
+              </td>
+            </tr>
+            <!-- <tr>
+              <td
+                scope="col"
+                style="
+                  vertical-align: middle;
+                  text-align: left;
+                  font-weight: bold;
+                  background-color: rgb(215, 210, 210);
+                  opacity: 0.6;
+                "
+              >
+                Role
+              </td>
+              <td style="text-align: left">
+                {{ rspp.jobFamily ? rspp.jobFamily.name : "NA" }}
+              </td>
+            </tr> -->
+            <tr>
+              <td
+                scope="col"
+                style="
+                  vertical-align: middle;
+                  text-align: left;
+                  font-weight: bold;
+                  background-color: rgb(215, 210, 210);
+                  opacity: 0.6;
+                "
+              >
+                Designation
+              </td>
+              <td style="text-align: left">{{ rspp.role?.name.trim() }}</td>
+            </tr>
+            <tr>
+              <td
+                style="
+                  vertical-align: middle;
+                  text-align: left;
+                  font-weight: bold;
+                  background-color: rgb(215, 210, 210);
+                  opacity: 0.6;
+                "
+              >
+                Location
+              </td>
+              <td style="text-align: left">{{ rspp.location }}</td>
+            </tr>
+            <tr *ngIf="showBudget">
+              <td
+                style="
+                  vertical-align: middle;
+                  text-align: left;
+                  font-weight: bold;
+                  background-color: rgb(215, 210, 210);
+                  opacity: 0.6;
+                "
+              >
+                Budget (LPA)
+              </td>
+              <td style="text-align: left">
+                <p>
+                  {{
+                    "Fixed : " +
+                      rspp.minFixedLpa +
+                      "LPA" +
+                      " - " +
+                      rspp.maxFixedLpa +
+                      "LPA"
+                  }}
+                </p>
+                <p>
+                  {{
+                    "Variable : " +
+                      rspp.minVariableLpa +
+                      "LPA" +
+                      " - " +
+                      rspp.maxVariableLpa +
+                      "LPA"
+                  }}
+                </p>
+                <!--                 
+                {{ rspp.minLpa + " to " + rspp.maxLpa }} -->
+              </td>
+            </tr>
+            <tr>
+              <td
+                scope="col"
+                style="
+                  vertical-align: middle;
+                  text-align: left;
+                  font-weight: bold;
+                  background-color: rgb(215, 210, 210);
+                  opacity: 0.6;
+                "
+              >
+                Define the Role (Areas of functioning)*
+              </td>
+              <td scope="col" style="text-align: left" [innerHTML]="rspp.roleDescr"></td>
+            </tr>
+            <tr>
+              <td
+                scope="col"
+                style="
+                  vertical-align: middle;
+                  text-align: left;
+                  font-weight: bold;
+                  background-color: rgb(215, 210, 210);
+                  opacity: 0.6;
+                "
+              >
+                Key output expected from the role in next 2-3 quarters (OKRs)
+              </td>
+              <td scope="col" style="text-align: left" [innerHTML]="rspp.okr"></td>
+            </tr>
+            <tr *ngIf="showBudget">
+              <td
+                scope="col"
+                style="
+                  vertical-align: middle;
+                  text-align: left;
+                  font-weight: bold;
+                  background-color: rgb(215, 210, 210);
+                  opacity: 0.6;
+                "
+              >
+                Persona (Success Profile)
+              </td>
+              <td scope="col" style="text-align: left">
+                {{ rspp.successProfile }}
+              </td>
+            </tr>
+            <tr>
+              <td
+                scope="col"
+                style="
+                  vertical-align: middle;
+                  text-align: left;
+                  font-weight: bold;
+                  background-color: rgb(215, 210, 210);
+                  opacity: 0.6;
+                "
+              >
+                Skills/Criteria (Mandatory & Optional)
+              </td>
+              <td
+                scope="col"
+                style="text-align: left"
+                [innerHTML]="rspp.mandatorySkill"
+              ></td>
+            </tr>
+            <tr>
+              <td
+                scope="col"
+                style="
+                  vertical-align: middle;
+                  text-align: left;
+                  font-weight: bold;
+                  background-color: rgb(215, 210, 210);
+                  opacity: 0.6;
+                "
+              >
+                Process (Interview rounds and what each round focuses on.)
+              </td>
+              <td scope="col" style="text-align: left">
+                {{ rspp.process }}
+                <ul class="list-unstyled">
+                  <li *ngFor="let p of processes">
+                    {{ p.process }}
+                  </li>
+                  <li *ngIf="processes.length == 0">NA</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td
+                scope="col"
+                style="
+                  vertical-align: middle;
+                  text-align: left;
+                  font-weight: bold;
+                  background-color: rgb(215, 210, 210);
+                  opacity: 0.6;
+                "
+              >
+                Additional Information (if any)
+              </td>
+              <td scope="col" style="text-align: left">{{ rspp.extra }}</td>
+            </tr>
+            <tr style="background-color: #162444">
+              <td colspan="2">
+                <div>
+                  <a
+                    href="https://www.linkedin.com/company/pieworks-in/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <i class="bi bi-linkedin text-primary fs-4xl"></i
+                  ></a>
+                  &nbsp; &nbsp;
+
+                  <a
+                    href="https://www.instagram.com/pieworks.in/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <i
+                      class="bi bi-instagram fs-4xl"
+                      style="color: rgb(227, 40, 217)"
+                    ></i
+                  ></a>
+                  &nbsp; &nbsp;
+                  <a
+                    href="https://www.pieworks.in/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    ><i
+                      class="bi bi-globe fs-4xl clickable"
+                      style="color: rgb(96, 222, 159)"
+                    ></i
+                  ></a>
+                </div>
+                <br />
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <small style="color: rgb(163, 162, 162)"
+                      ><i
+                        >If transparency, accountability & having fun are your
+                        values, you belong here</i
+                      ></small
+                    >
+                  </div>
+                  <div>
+                    <small style="color: rgb(163, 162, 162)"
+                      ><i>leveraging potential…</i></small
+                    >
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

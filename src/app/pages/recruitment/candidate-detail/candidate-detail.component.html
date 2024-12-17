@@ -1,0 +1,793 @@
+<section>
+  <div class="row" *ngIf="!candidate">
+    <div class="col-lg-4" style="margin-left: 39%">
+      <h5>Candidate not found</h5>
+    </div>
+  </div>
+
+  <div class="row align-items-center">
+    <div class="col-lg-12">
+      <div class="single-profile-item">
+        <div class="single-profile-left">
+          <div class="single-profile-contact">
+            <!-- <div class="row mt-3">
+              <div class="col-lg-6">
+                <h5 class="text-muted">Contact Info</h5>
+              </div>
+              <div class="col-lg-4" style="text-align: center">
+                <i
+                  *ngIf="
+                    candidate.createdBy == commonService.user.id ||
+                    commonService.rbac['edit-disc-contact']
+                  "
+                  (click)="editContactInfo = !editContactInfo"
+                  class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                  tooltip="Edit Contact"
+                ></i>
+              </div>
+            </div> -->
+            <div class="row mt-3">
+              <div class="col-xl-4">
+                <div class="card h-100 card-animate border">
+                  <div class="card-body">
+                    <!-- Phone no -->
+                    <div class="mb-1">
+                      <div [hidden]="editContactInfo">
+                        <div class="row">
+                          <div class="col-xl-1">
+                            <i class="bi bi-telephone-fill d-inline"></i>
+                          </div>
+                          <div class="col-xl-11 h6 text-muted">Call</div>
+                        </div>
+                        <div class="mt-1">
+                          <p class="mb-0">
+                            <a href="tel:{{ candidate.phoneNo }}">{{
+                              candidate.phoneNo ? candidate.phoneNo : "N/A"
+                            }}</a>
+                          </p>
+                        </div>
+                      </div>
+                      <div [hidden]="!editContactInfo">
+                        <i class="bi bi-telephone-fill d-inline"></i> Call:
+                        <input
+                          type="text"
+                          maxlengths="10"
+                          [(ngModel)]="candidate.phoneNo"
+                          class="from form-control"
+                          placeholder="Contact Number"
+                        />
+                      </div>
+                    </div>
+
+                    <!--Email  -->
+                    <div>
+                      <div [hidden]="editContactInfo">
+                        <div class="row">
+                          <div class="col-xl-1">
+                            <i class="bi bi-envelope-at-fill"></i>
+                          </div>
+                          <div class="col-xl-11 h6 text-muted">Email</div>
+                        </div>
+                        <div class="mt-1">
+                          <p class="mb-0">
+                            <a href="mailto:{{ candidate.emailId }}">{{
+                              candidate.emailId ? candidate.emailId : "N/A"
+                            }}</a>
+                          </p>
+                        </div>
+                      </div>
+                      <div [hidden]="!editContactInfo">
+                        <i class="bi bi-envelope-at-fill"></i> Email:
+                        <input
+                          type="text"
+                          maxlengths="100"
+                          [(ngModel)]="candidate.emailId"
+                          class="from form-control"
+                          placeholder="Email ID"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xl-4">
+                <div class="card h-100 card-animate border">
+                  <div class="card-body">
+                    <div [hidden]="editContactInfo">
+                      <div class="row">
+                        <div class="col-xl-1">
+                          <i class="bi bi-geo-alt-fill"></i>
+                        </div>
+                        <div class="col-xl-11 h6 text-mute">
+                          <div class="d-flex justify-content-between">
+                            <div>Location</div>
+
+                            <div>
+                              <i
+                                *ngIf="
+                                  candidate.createdBy ==
+                                    commonService.user.id ||
+                                  commonService.rbac['edit-disc-contact']
+                                "
+                                (click)="editContactInfo = !editContactInfo"
+                                class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                                tooltip="Edit Contact"
+                              ></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="mt-1">
+                        <p class="mb-0">
+                          {{
+                            candidate.currentLocation
+                              ? candidate.currentLocation
+                              : "N/A"
+                          }}
+                        </p>
+                      </div>
+                    </div>
+                    <div [hidden]="!editContactInfo">
+                      <i class="bi bi-geo-alt-fill"></i> Location:
+                      <input
+                        type="text"
+                        maxlengths="100"
+                        [(ngModel)]="candidate.currentLocation"
+                        class="from form-control"
+                        placeholder="Contact Number"
+                      />
+                    </div>
+
+                    <div [hidden]="editContactInfo">
+                      <div class="row">
+                        <div class="col-xl-1">
+                          <i class="bi bi-linkedin"></i>
+                        </div>
+                        <div class="col-xl-11 h6 text-mute">Social Links</div>
+                      </div>
+                      <div class="mt-1">
+                        <div
+                          *ngIf="candidate?.linkedInUrl"
+                          class="col-xxl-12 col-md-12 m-0"
+                          style="white-space: pre-wrap"
+                          [innerHTML]="candidate?.linkedInUrl | urlify"
+                        >
+                          {{ candidate.linkedInUrl ? "" : "N/A" }}
+                        </div>
+                      </div>
+                    </div>
+                    <div [hidden]="!editContactInfo">
+                      <i class="bi bi-linkedin"></i> Social Links:
+                      <textarea
+                        class="form-control mt-1 mb-1"
+                        [(ngModel)]="candidate.linkedInUrl"
+                        rows="5"
+                        placeholder="Enter new links as new line"
+                      ></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-4">
+                <!-- edit CV and Link to be send  -->
+                <div class="card h-100 card-animate border">
+                  <div class="card-body">
+                    <div class="text-end">
+                      <div class="row">
+                        <div class="col-lg-6"></div>
+                        <div class="col-lg-6" style="text-align: right">
+                          <i
+                            *ngIf="
+                              candidate.createdBy == commonService.user.id ||
+                              commonService.rbac['edit-disc-cv']
+                            "
+                            (click)="edit.cv = !edit.cv"
+                            class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                          ></i>
+                        </div>
+                      </div>
+
+                      <div class="row" *ngIf="!candidate.cv">
+                        <div class="col-lg-6">
+                          <a [hidden]="edit.cv" target="_blank"
+                            >CV Not Available<i class="icofont-ban"></i
+                          ></a>
+                        </div>
+                      </div>
+                      <div class="row" *ngIf="candidate.cv" [hidden]="edit.cv">
+                        <div class="col-lg-3"></div>
+                        <div class="col-lg-6">
+                          <div
+                            class="d-flex justify-content-end align-items-center"
+                          >
+                            <!-- Resume Download Btn -->
+                            <div class="me-4">
+                              <a
+                                class="btn btn-primary"
+                                href="{{
+                                  candidate.cv &&
+                                  candidate.cv.indexOf('upload') == 0
+                                    ? urlPrefix + candidate.cv
+                                    : candidate.cv
+                                }}"
+                                target="_blank"
+                                >CV</a
+                              >
+                            </div>
+                            <!-- whatsapp link share  -->
+                            <div class="me-3">
+                              <a
+                                [href]="
+                                  'https://api.whatsapp.com/send?text=' +
+                                  commonService.encode(
+                                    candidate.cv &&
+                                      candidate.cv.indexOf('upload') == 0
+                                      ? urlPrefix + candidate.cv
+                                      : candidate.cv
+                                  )
+                                "
+                                target="_blank"
+                              >
+                                <i
+                                  class="bi bi-whatsapp fs-5xl clickable"
+                                  style="color: rgb(60, 215, 60)"
+                                ></i>
+                              </a>
+                            </div>
+                            <!-- Link copy button -->
+                            <div class="me-4">
+                              <i
+                                class="bi bi-link-45deg fs-5xl clickable"
+                                style="font-size: xx-large"
+                                (click)="copyToClipboard()"
+                              ></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <br />
+
+                      <form
+                        [formGroup]="uploadForm"
+                        enctype="multipart/form-data"
+                        [hidden]="!edit.cv"
+                      >
+                        <div class="row single-profile-textarea">
+                          <div class="col-lg-2">
+                            <div>
+                              <span class="text-mute">CV</span>
+                            </div>
+                          </div>
+                          <div class="col-lg-2">
+                            <input
+                              class="form form-control"
+                              style="margin-top: 25px"
+                              type="file"
+                              (change)="onCvSelect($event)"
+                              name="cv"
+                              class="form-control-file"
+                              accept="application/pdf"
+                              id="cvInput"
+                              value="Choose CV"
+                            />
+                          </div>
+                        </div>
+                        <br />
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <input
+            [hidden]="!editContactInfo"
+            type="button"
+            class="btn rounded-pill btn-info text-center mb-2 mx-2 mt-1"
+            value="Save"
+            (click)="updateCandidate()"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <br />
+  <div class="row">
+    <!-- Sector of candidate -->
+    <div class="col-xl-4">
+      <div class="card h-100 card-animate border">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-9">
+              <h6><i class="bi bi-person-gear"></i> &nbsp; Sectors *</h6>
+            </div>
+            <div class="col-sm-3" style="text-align: right">
+              <i
+                *ngIf="
+                  candidate.createdBy == commonService.user.id ||
+                  commonService.rbac['edit-disc-sectors']
+                "
+                (click)="editSector = !editSector"
+                class="ri-edit-box-line clickable text-warning align-baseline me-1"
+              ></i>
+            </div>
+          </div>
+          <div class="row" [hidden]="!editSector">
+            <div class="col-lg-8">
+              <ng-select
+                [items]="availableSectors"
+                [multiple]="false"
+                bindLabel="name"
+                bindValue="name"
+                placeholder="Search"
+                class="form-control"
+                [(ngModel)]="newSector"
+                [clearable]="false"
+                style="padding: 0"
+              >
+              </ng-select>
+            </div>
+            <div class="col-lg-3" style="margin-top: 3px">
+              <div class="job-category-area">
+                <input
+                  type="button"
+                  class="btn rounded-pill btn-info text-center"
+                  value="+ Add"
+                  (click)="addSector(); updateSectors(); editSector = false"
+                />
+              </div>
+            </div>
+          </div>
+          <br />
+          <div>
+            <div *ngFor="let s of sectors">
+              <div class="row">
+                <div class="col-lg-10">
+                  <i class="icofont-hand-drawn-right"></i>{{ s.name }}
+                </div>
+                <div class="col-lg-2">
+                  <i
+                    class="ri-delete-bin-2-line text-primary clickable fs-4xl"
+                    [hidden]="!editSector"
+                    (click)="removeSector(s); updateSectors()"
+                  ></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br />
+          <div class="row" [hidden]="!editSector || true">
+            <div class="col-sm-3">
+              <input
+                type="button"
+                class="btn rounded-pill btn-info text-center"
+                value="Save"
+                (click)="updateSectors()"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Social Media Link (LinkedIn) -->
+    <!--
+    <div class="col-xl-4">
+      <div class="card h-100 card-animate border">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-9">
+              <h6><i class="ri-global-line"></i> &nbsp; Social Links</h6>
+            </div>
+            <div class="col-sm-3" style="text-align: right">
+              <i
+                *ngIf="candidate.createdBy==commonService.user.id || commonService.rbac['edit-disc-sociallinks']"
+                (click)="editSocial = !editSocial"
+                class="ri-edit-box-line clickable text-warning align-baseline me-1"
+              ></i>
+            </div>
+          </div>
+          <div>
+            <p
+              [hidden]="editSocial"
+              *ngIf="!candidate.linkedInUrl || candidate.linkedInUrl.length < 2"
+            >
+              <i class="icofont-linkedin"></i> Not Available
+            </p>
+            <p
+              [hidden]="editSocial"
+              *ngIf="
+                candidate.linkedInUrl &&
+                candidate.linkedInUrl.length > 2 &&
+                candidate.linkedInUrl.indexOf('http') == 0
+              "
+            >
+              <i class="icofont-linkedin"></i>
+              <a href="{{ candidate.linkedInUrl }}" target="_blank">{{
+                candidate.linkedInUrl
+              }}</a>
+            </p>
+            <p
+              [hidden]="editSocial"
+              *ngIf="
+                candidate.linkedInUrl &&
+                candidate.linkedInUrl.length > 2 &&
+                candidate.linkedInUrl.indexOf('http') == -1
+              "
+            >
+              <i class="icofont-linkedin"></i>
+              <a
+                href="{{ 'https://' + candidate.linkedInUrl }}"
+                target="_blank"
+                >{{ candidate.linkedInUrl }}</a
+              >
+            </p>
+            <p [hidden]="!editSocial">
+              <i class="icofont-linkedin"></i>
+              <input
+                type="text"
+                maxlengths="100"
+                [(ngModel)]="candidate.linkedInUrl"
+                class="from form-control"
+                placeholder="linkedin url"
+              />
+            </p>
+          </div>
+          <input
+            [hidden]="!editSocial"
+            type="button"
+            class="btn rounded-pill btn-info text-center"
+            value="Save"
+            (click)="updateCandidate()"
+          />
+        </div>
+      </div>
+    </div>
+    -->
+    <!-- Cultural Values -->
+    <div class="col-xl-4">
+      <div class="card h-100 card-animate border">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-9">
+              <h6>
+                <i class="bi bi-person-workspace"></i> &nbsp; Culture Values
+              </h6>
+            </div>
+            <div class="col-sm-3" style="text-align: right">
+              <i
+                *ngIf="
+                  candidate.createdBy == commonService.user.id ||
+                  commonService.rbac['edit-disc-cluturevalue']
+                "
+                (click)="edit.cultureValue = !edit.cultureValue"
+                class="ri-edit-box-line clickable text-warning align-baseline me-1"
+              ></i>
+            </div>
+          </div>
+
+          <div class="single-profile-paragraph" [hidden]="edit.cultureValue">
+            <div>
+              <p *ngIf="!candidate.cultureValues">
+                <i class="icofont-hand-drawn-right"></i>Details not available
+              </p>
+              <p *ngIf="candidate.cultureValues">
+                <i class="icofont-hand-drawn-right"></i
+                >{{ candidate.cultureValues ? candidate.cultureValues.split(',').join(', ') : "N/A" }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Discovered For -->
+    <div class="col-xl-4">
+      <div class="card h-100 card-animate border">
+        <div class="card-body">
+          <div class="single-profile-heading">
+            <span></span>
+            <h6 class="">Discovered For</h6>
+          </div>
+
+          <div class="single-profile-paragraph">
+            <div>
+              <p *ngIf="discoveries.length == 0">
+                <i class="icofont-hand-drawn-right"></i>Details not available
+              </p>
+              <div *ngFor="let disc of discoveries">
+                <i class="icofont-hand-drawn-right"></i
+                ><a
+                  [routerLink]="
+                    '/recr/wp/' +
+                    disc?.requirement?.id
+                  "
+                  style="color: blue"
+                  >{{
+                    disc.requirement?.role.name +
+                      " , " +
+                      disc.requirement?.client.name +
+                      " (" +
+                      disc.status?.name +
+                      ") : " +
+                      commonService.formatDate(disc.modifiedOn)+'-'+
+                      commonService.formatTimeToAMPM(disc.modifiedOn)
+                  }}</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit option of cultural value -->
+  <div class="row" [hidden]="!edit.cultureValue">
+    <div class="card h-100 card-animate border">
+      <div class="card-body">
+        <div class="single-profile-paragraph">
+          <div *ngFor="let valueSet of valueSets; let ind = index">
+            <h5>{{ valueSet.question }}</h5>
+            <br />
+            <div class="row">
+              <div
+                class="col-lg-3"
+                *ngFor="let value of valueSet?.values; let i = index"
+              >
+                <input
+                  type="button"
+                  value="{{ value.value }}"
+                  class="btn {{ value.selected ? 'btn-primary' : '' }}"
+                  (click)="
+                    value.selected = !value.selected; clickedValue(value, ind)
+                  "
+                />
+              </div>
+            </div>
+            <br />
+          </div>
+        </div>
+        <input
+          [hidden]="!edit.cultureValue"
+          type="button"
+          class="btn rounded-pill btn-info text-center"
+          value="Save"
+          (click)="updateCandidate()"
+        />
+      </div>
+    </div>
+  </div>
+  <br />
+  <div class="row">
+    <!-- candidate  info details-->
+    <!-- <div class="col-xl-6">
+      <div class="card h-100 card-animate border">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-9">
+              <h6><i class="bi bi-ticket-detailed"></i> &nbsp; Details</h6>
+            </div>
+            <div class="col-sm-3" style="text-align: right">
+              <i
+                *ngIf="candidate.createdBy==commonService.user.id || commonService.rbac['edit-disc-basicdetails']"
+                (click)="editBasicDetails = !editBasicDetails"
+                class="ri-edit-box-line clickable text-warning align-baseline me-1"
+              ></i>
+            </div>
+          </div>
+          <div class="single-profile-paragraph">
+            <div class="row">
+              <div class="col-xl-6">
+                <div [hidden]="editBasicDetails">
+                  <div>
+                    <p class="mb-1 text-muted">Current Company :</p>
+                    <p class="text-dark">{{ candidate.currentCompany }}</p>
+                  </div>
+                  <div>
+                    <p class="mb-1 text-muted">Expected Salary :</p>
+                    <p class="text-dark">
+                      {{
+                        candidate.expectedCtc == 0
+                          ? " Open"
+                          : candidate.expectedCtc + " (LPA)"
+                      }}
+                    </p>
+                  </div>
+                  <div>
+                    <p class="mb-1 text-muted">Current CTC Fixed :</p>
+                    <p class="text-dark">
+                      {{ candidate.currentCtcFixed + " (LPA)" }}
+                    </p>
+                  </div>
+                  <div>
+                    <p class="mb-1 text-muted">Current CTC Variable :</p>
+                    <p class="text-dark">
+                      {{ candidate.currentCtcVariable + " (LPA)" }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-6">
+                <div [hidden]="editBasicDetails">
+                  <div>
+                    <p class="mb-1 text-muted">Current CTC Total</p>
+                    <p class="text-dark">
+                      {{ candidate.currentCtcTotal + " (LPA)" }}
+                    </p>
+                  </div>
+                  <div>
+                    <p class="mb-1 text-muted">Exposure</p>
+                    <p class="text-dark">
+                      {{
+                        candidate.experience != undefined &&
+                        candidate.experience != "null" &&
+                        candidate.experience != null &&
+                        candidate.experience
+                          ? candidate.experience + " Years"
+                          : "Not Available"
+                      }}
+                    </p>
+                  </div>
+                  <div>
+                    <p class="mb-1 text-muted">Is Top 50</p>
+                    <p class="text-dark">
+                      {{
+                        candidate.isTop50
+                          ?.toString()
+                          .replace("true", "Yes")
+                          .replace("false", "No")
+                      }}
+                    </p>
+                  </div>
+                  <div>
+                    <p class="mb-1 text-muted">Remarks</p>
+                    <p class="text-dark">
+                      {{
+                        candidate.remarks ? candidate.remarks : "Not Available"
+                      }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <ul [hidden]="!editBasicDetails">
+              <li>
+                <i class="icofont-hand-drawn-right"></i>Current Company
+                <input
+                  type="text"
+                  class="form form-control mt-1 mb-1"
+                  [(ngModel)]="candidate.currentCompany"
+                />
+              </li>
+              <li>
+                <i class="icofont-hand-drawn-right"></i>Expected CTC
+                <input
+                  type="number"
+                  class="form form-control"
+                  [(ngModel)]="candidate.expectedCtc"
+                  (change)="
+                    candidate.expectedCtc < 0
+                      ? (candidate.expectedCtc = 0)
+                      : (candidate.expectedCtc = candidate.expectedCtc)
+                  "
+                />
+              </li>
+              <li>
+                <i class="icofont-hand-drawn-right"></i>Current CTC Fixed<input
+                  type="number"
+                  class="form form-control mt-1 mb-1"
+                  [(ngModel)]="candidate.currentCtcFixed"
+                  (change)="
+                    candidate.currentCtcFixed < 0
+                      ? (candidate.currentCtcFixed = 0)
+                      : (candidate.currentCtcFixed = candidate.currentCtcFixed);
+                    candidate.currentCtcTotal =
+                      candidate.currentCtcFixed + candidate.currentCtcVariable
+                  "
+                />
+              </li>
+              <li>
+                <i class="icofont-hand-drawn-right"></i>Current CTC
+                Variable<input
+                  type="number"
+                  class="form form-control mt-1 mb-1"
+                  [(ngModel)]="candidate.currentCtcVariable"
+                  (change)="
+                    candidate.currentCtcVariable < 0
+                      ? (candidate.currentCtcVariable = 0)
+                      : (candidate.currentCtcVariable =
+                          candidate.currentCtcVariable);
+                    candidate.currentCtcTotal =
+                      candidate.currentCtcFixed + candidate.currentCtcVariable
+                  "
+                />
+              </li>
+              <li>
+                <i class="icofont-hand-drawn-right"></i>Current CTC Total<input
+                  [disabled]="true"
+                  type="number"
+                  class="form form-control mt-1 mb-1"
+                  [(ngModel)]="candidate.currentCtcTotal"
+                />
+              </li>
+              <li>
+                <i class="icofont-hand-drawn-right"></i>Exposure (Years)<input
+                  type="number"
+                  class="form form-control mt-1 mb-1"
+                  [(ngModel)]="candidate.experience"
+                />
+              </li>
+              <li>
+                <i class="icofont-hand-drawn-right"></i>Is Top
+                50&nbsp;&nbsp;<input
+                  type="checkbox"
+                  [(ngModel)]="candidate.isTop50"
+                />
+              </li>
+              <li>
+                <i class="icofont-hand-drawn-right"></i>Remarks
+                <textarea
+                  class="form-control mt-1 mb-1"
+                  [(ngModel)]="candidate.remarks"
+                  rows="5"
+                ></textarea>
+              </li>
+            </ul>
+          </div>
+
+          <input
+            [hidden]="!editBasicDetails"
+            type="button"
+            class="btn rounded-pill btn-info text-center"
+            value="Save"
+            (click)="updateCandidate()"
+          />
+        </div>
+      </div>
+    </div> -->
+    <!-- Discovered For -->
+    <!-- <div class="col-xl-6">
+      <div class="card h-100 card-animate border">
+        <div class="card-body">
+          <div class="single-profile-heading">
+            <span></span>
+            <h6 class="">Discovered For</h6>
+          </div>
+
+          <div class="single-profile-paragraph">
+            <div>
+              <p *ngIf="discoveries.length == 0">
+                <i class="icofont-hand-drawn-right"></i>Details not available
+              </p>
+              <div *ngFor="let disc of discoveries">
+                <i class="icofont-hand-drawn-right"></i
+                ><a
+                  [routerLink]="
+                    '/community/' +
+                    disc.requirement?.communityId +
+                    '/domain/recruitment/requirements/' +
+                    disc.requirement?.id +
+                    '/shortlisting/' +
+                    disc?.id
+                  "
+                  style="color: blue"
+                  >{{
+                    disc.requirement?.role.name +
+                      " , " +
+                      disc.requirement?.client.name +
+                      " (" +
+                      disc.status?.name +
+                      ") : " +
+                      disc.modifiedOn
+                  }}</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+  </div>
+</section>

@@ -1,0 +1,158 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs
+  tooltip="Notificaitons"
+  [breadcrumbItems]="breadCrumbItems"
+  [title]="'Notifications'"
+></app-breadcrumbs>
+<br />
+<!-- <div class='card'>
+    <div class='card-body'>
+        <div class="row" [hidden]='false'>
+            <div class="col-lg-12" style="text-align: right">
+                <a (click)="showFilter=!showFilter" href="javascript:void(0)" title="Click to toggle view"><i class="icofont-filter" style="font-size: 20px;color: green"></i></a>&nbsp;&nbsp;
+            </div>
+        </div>
+        <div class="row" [hidden]='false'>
+            <div class="col-lg-3" *ngIf="showFilter">
+                <div class="job-details-item">
+                    <div class="job-overview">
+                        <h3><div class="col-lg-1">Filters</div><div class="col-lg-1 offset-10"><a href="javascript:void(0)" (click)="clearFilters()" style="right: 0px;"><i class="icofont-brush" style="top: 30px"></i></a></div></h3>
+
+                        <div class="row">
+                            <div class="col-lg-2" style="margin-top: 30px"><span class="icofont-binoculars pieworks-green" style="top: 60px;font-size: 32px;"></span></div>
+                            <div class="col-lg-10">
+                                <p style="margin-left: 5px;font-weight: bold">Search</p>   
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <div class="job-category-area">
+                                                <input type="text" class="form-control" maxlength="100" [(ngModel)]="searchText" (keyup)="filterChanged()">&nbsp;
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class='col-lg-2'></div>
+            <div  [ngClass]="showFilter?'col-lg-5':'col-lg-8'" [hidden]="!tableView">
+                <table [ngClass]="commonService.isMobileDevice?'table overflow':'table table-striped'">
+                    <thead  class="thead-dark" style="{{scrollY>=250?'position:sticky !important;top:70px !important':''}}">
+                        <tr>
+                            <th scope="col" class="table-th">Sl.No</th><th scope="col" class="table-th">Message</th><th scope="col" class="table-th">Date</th>
+                        </tr>
+                    </thead>
+                    <tr *ngFor="let req of rspps; let i = index">
+                        <th scope="row" class="table-td">{{i+1}}</th>
+                        <td scope="row" class="table-td" style='text-align: left'><a [routerLink]='req.link'>{{req.message}}</a></td><td scope="row" class="table-td">{{commonService.changeMysqlToNormalDate(req.logTime)}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="row" style="">
+            <div class="col-lg-12" style="text-align: center" >
+                <button class="btn btn-success" (click)="commonService.goTop()">Top</button>  &nbsp;
+            </div>
+        </div><br><br>
+    </div>
+</div> -->
+<div class="card shadow-sm border-0">
+  <div class="card-body">
+    <!-- Toggle Filter Button -->
+    <div class="row mb-3">
+      <div class="col-12 text-end">
+        <a
+          (click)="showFilter = !showFilter"
+          href="javascript:void(0)"
+          title="Toggle Filters"
+        >
+          <i class="icofont-filter" style="font-size: 20px; color: green"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="row">
+      <div class="col-lg-3 col-md-6" *ngIf="showFilter">
+        <div class="card border shadow-sm">
+          <div
+            class="card-header bg-light d-flex justify-content-between align-items-center"
+          >
+            <h5 class="mb-0">Filters</h5>
+            <a
+              href="javascript:void(0)"
+              (click)="clearFilters()"
+              title="Clear Filters"
+            >
+              <i class="icofont-brush" style="font-size: 18px"></i>
+            </a>
+          </div>
+          <div class="card-body">
+            <div class="d-flex align-items-start mb-3">
+              <i
+                class="icofont-binoculars pieworks-green"
+                style="font-size: 32px"
+              ></i>
+              <div class="ms-3">
+                <p class="mb-1 fw-bold">Search</p>
+                <input
+                  type="text"
+                  class="form-control"
+                  maxlength="100"
+                  [(ngModel)]="searchText"
+                  (keyup)="filterChanged()"
+                  placeholder="Type to search..."
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table Section -->
+      <div
+        [ngClass]="showFilter ? 'col-lg-9' : 'col-lg-12'"
+        [hidden]="!tableView"
+      >
+        <table
+          [ngClass]="
+            commonService.isMobileDevice
+              ? 'table overflow'
+              : 'table table-striped'
+          "
+          class="table-responsive"
+        >
+          <thead class="sticky-top">
+            <tr>
+              <th scope="col">Sl.No</th>
+              <th scope="col">Message</th>
+              <th scope="col">Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let req of rspps; let i = index">
+              <th scope="row">{{ i + 1 }}</th>
+              <td>
+                <a [routerLink]="req.link">{{ req.message }}</a>
+              </td>
+              <td>{{ commonService.changeMysqlToNormalDate(req.logTime) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <div class="row mt-4">
+      <div class="col-12 text-center">
+        <button class="btn btn-success" (click)="commonService.goTop()">
+          Top
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

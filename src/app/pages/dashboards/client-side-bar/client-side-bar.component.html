@@ -1,0 +1,151 @@
+<div class="card">
+  <div class="card-header"><h5>Needs Action</h5></div>
+  <div class="card-body">
+    <div class="card">
+      <div class="card-body">
+        <button
+          class="btn btn-subtle-danger rounded-pill w-100"
+          (click)="navigateToTracker('new', '6')"
+        >
+          <b>Review New</b>
+        </button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <button
+          class="btn btn-subtle-danger rounded-pill w-100 mt-2"
+          (click)="navigateToTracker('intrv', '8-9')"
+        >
+          <b> Interview Feedback </b>
+        </button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <button
+          class="btn btn-subtle-danger rounded-pill w-100 mt-2"
+          (click)="navigateToTracker('offers', '10-13-23-24')"
+        >
+          <b> Make an Offer </b>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- post offer followUp -->
+<div class="card">
+  <div class="card-header">
+    <h5>Offer Overview</h5>
+  </div>
+  <div class="card-body">
+    <carousel
+      [noWrap]="true"
+      [interval]="0"
+      (activeSlideChange)="changedCarouselPostOffer($event)"
+      class="carousel carousel-dark slide"
+    >
+      <div class="carousel-inner">
+        <div *ngFor="let i of postIndex">
+          <slide class="carousel-item active" data-bs-interval="10000">
+            <div class="card border" *ngFor="let data of tempDataPost">
+              <div class="card-body">
+                <div class="mb-1">
+                  <button class="btn btn-subtle-warning rounded-pill">
+                    {{ data?.candidate?.name }}
+                  </button>
+                </div>
+
+                <div class="d-flex justify-content-between gap-2 mb-0">
+                  <div>
+                    <p class="text-muted text-start mb-0 mt-0">Joining</p>
+                  </div>
+                  <div class="text-start">
+                    <p class="mb-0 mt-0">
+                      <span class="text-dark">
+                        {{ data.doj }}
+                      </span>
+                    </p>
+                  </div>
+                </div>
+
+                <div class="d-flex justify-content-between gap-2 flex-wrap">
+                  <div>
+                    <p class="text-muted text-start mb-0 mt-0">Position</p>
+                  </div>
+                  <div class="text-start">
+                    <p class="mb-0 mt-0">
+                      <span class="text-dark">
+                        <!-- {{commonService.getFormatedDate(data.nextCheck,'dd-MM-yyyy') }} -->
+                        {{ data.requirement.role.name }}
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br />
+          </slide>
+        </div>
+      </div>
+    </carousel>
+  </div>
+</div>
+
+<div
+  bsModal
+  #talentReport="bs-modal"
+  class="modal bs-example-modal-lg fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        *ngIf="true"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <h5 class="modal-title" id="myLargeModalLabel"></h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="talentReport.hide()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="table">
+          <thead>
+            <tr>
+              <th class="text-center"></th>
+              <th class="text-center">Date</th>
+              <th class="text-center">Status</th>
+              <th class="text-center">Account Manager Remarks</th>
+              <th class="text-center">Client Feedback</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let talentRep of talentPopUpDetails?.history">
+            <tr>
+              <th>{{ talentRep.shortlisting.candidate.name }}</th>
+              <td>
+                {{
+                  commonService.changeMysqlToNormalDate(talentRep?.modifiedOn)
+                }}
+              </td>
+              <td>{{ talentRep.status.name }}</td>
+              <td>{{ talentPopUpDetails.clientAnchorFeedback }}</td>
+              <td>{{ talentPopUpDetails.clientFeedback }}</td>
+            </tr>
+          </tbody>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- keep it for future don;t delete -->
+<!-- <div class="coin">
+    <div class="tails"></div>
+    <div class="heads"></div>
+  </div> -->

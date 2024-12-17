@@ -1,0 +1,483 @@
+<div class="container mt-5" @slideInOut>
+  <div class="card">
+    <div class="card-header" *ngIf="currentStep === 1">
+      <div class="d-flex justify-content-end">
+        <i class="bi bi-x-lg fs-2xl clickable" (click)="reloadPage()"></i>
+      </div>
+    </div>
+    <div class="card-body">
+      <!-- Congratulatory Message -->
+      <div *ngIf="formSubmitted" class="text-center">
+        <h4 class="text-success">Congratulations! 🎉</h4>
+        <p>Your application has been successfully submitted.</p>
+      </div>
+      <div *ngIf="!formSubmitted">
+        <div
+          class="step-indicator d-flex justify-content-between align-items-center mb-4"
+        >
+          <!-- Step 1 -->
+          <div
+            class="step"
+            [class.active]="currentStep === 1"
+            [class.completed]="currentStep > 1"
+          >
+            <div class="circle">1</div>
+          </div>
+          <!-- Connecting Line -->
+          <div class="line" [class.completed]="currentStep > 1"></div>
+
+          <!-- Step 2 -->
+          <div
+            class="step"
+            [class.active]="currentStep === 2"
+            [class.completed]="currentStep > 2"
+          >
+            <div class="circle">2</div>
+          </div>
+          <!-- Connecting Line -->
+          <div class="line" [class.completed]="currentStep > 2"></div>
+
+          <!-- Step 3 -->
+          <div
+            class="step"
+            [class.active]="currentStep === 3"
+            [class.completed]="currentStep > 3"
+          >
+            <div class="circle">3</div>
+          </div>
+        </div>
+
+        <!-- Form -->
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <!-- Step 1: Personal Information -->
+          <div *ngIf="currentStep === 1">
+            <h5>Personal Information</h5>
+            <!-- Show File Name and Trash Icon if File is Selected -->
+            <div
+              *ngIf="selectedFile"
+              class="d-flex justify-content-center align-items-center flex-column"
+            >
+              <p class="text-success mb-2">
+                File selected: {{ selectedFile.name }}
+              </p>
+
+              <!-- Bootstrap Trash Icon for removing the file -->
+              <i
+                class="bi bi-trash"
+                role="button"
+                (click)="removeFile()"
+                style="cursor: pointer; font-size: 24px; color: red"
+                aria-label="Remove File"
+              ></i>
+            </div>
+            <!-- Autofill Application Section -->
+            <div class="text-center mb-4" *ngIf="!selectedFile">
+              <h6 class="text-danger">Autofill Application</h6>
+              <p>Upload your resume/cv in seconds with the autofill option.</p>
+              <!-- Drag and Drop Area -->
+              <div
+                class="upload-box p-4 border mb-2 text-center rounded border-dotted"
+                style="border-color: #e5e5e5"
+                (dragover)="onDragOver($event)"
+                (dragleave)="onDragLeave($event)"
+                (drop)="onFileDrop($event)"
+                [class.dragover]="isDragging"
+                (click)="triggerFileInput()"
+              >
+                <p class="text-danger">Upload your resume</p>
+                <p>or drag and drop it here</p>
+                <p>Only .doc, .docx, .pdf, .odt, .rtf (Optional)</p>
+
+                <!-- Hidden File Input -->
+                <input
+                  type="file"
+                  id="fileInput"
+                  (change)="onFileSelected($event)"
+                  hidden
+                />
+              </div>
+            </div>
+
+            <!-- Full Name -->
+            <div class="form-group">
+              <label for="name"
+                >Full Name <span style="color: red">*</span></label
+              >
+              <input
+                id="name"
+                formControlName="name"
+                type="text"
+                class="form-control"
+                [ngClass]="{
+                  'is-invalid':
+                    form.get('name')?.invalid && form.get('name')?.touched
+                }"
+              />
+              <div
+                class="invalid-feedback"
+                *ngIf="form.get('name')?.invalid && form.get('name')?.touched"
+              >
+                <small *ngIf="form.get('name')?.errors?.['required']"
+                  >Full name is required.</small
+                >
+              </div>
+            </div>
+
+            <!-- Phone Number -->
+            <div class="form-group">
+              <label for="phoneNo"
+                >Phone Number <span class="text-danger">*</span></label
+              >
+              <input
+                id="phoneNo"
+                formControlName="phoneNo"
+                type="text"
+                class="form-control"
+                [ngClass]="{
+                  'is-invalid':
+                    form.get('phoneNo')?.invalid && form.get('phoneNo')?.touched
+                }"
+              />
+              <div
+                class="invalid-feedback"
+                *ngIf="
+                  form.get('phoneNo')?.invalid && form.get('phoneNo')?.touched
+                "
+              >
+                <small *ngIf="form.get('phoneNo')?.errors?.['required']"
+                  >Phone number is required.</small
+                >
+                <small *ngIf="form.get('phoneNo')?.errors?.['pattern']"
+                  >Phone number must be exactly 10 digits.</small
+                >
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+              <label for="emailId"
+                >Email Address <span style="color: red">*</span></label
+              >
+              <input
+                id="emailId"
+                formControlName="emailId"
+                type="email"
+                class="form-control"
+                [ngClass]="{
+                  'is-invalid':
+                    form.get('emailId')?.invalid && form.get('emailId')?.touched
+                }"
+              />
+              <div
+                class="invalid-feedback"
+                *ngIf="
+                  form.get('emailId')?.invalid && form.get('emailId')?.touched
+                "
+              >
+                <small *ngIf="form.get('emailId')?.errors?.['required']"
+                  >Email is required.</small
+                >
+                <small *ngIf="form.get('emailId')?.errors?.['emailId']"
+                  >Enter a valid email address.</small
+                >
+              </div>
+            </div>
+
+            <!-- LinkedIn -->
+            <div class="form-group">
+              <label for="linkedInUrl">LinkedIn Profile</label>
+              <input
+                id="linkedInUrl"
+                formControlName="linkedInUrl"
+                type="url"
+                class="form-control"
+                [ngClass]="{
+                  'is-invalid':
+                    form.get('linkedInUrl')?.invalid &&
+                    form.get('linkedInUrl')?.touched
+                }"
+              />
+              <div
+                class="invalid-feedback"
+                *ngIf="
+                  form.get('linkedInUrl')?.invalid &&
+                  form.get('linkedInUrl')?.touched
+                "
+              >
+                <small *ngIf="form.get('linkedInUrl')?.errors?.['pattern']"
+                  >Please enter a valid LinkedIn URL.</small
+                >
+              </div>
+            </div>
+
+            <!-- Current Company -->
+            <div class="form-group">
+              <label for="currentCompany">Current Company </label>
+              <input
+                id="currentCompany"
+                formControlName="currentCompany"
+                type="text"
+                class="form-control"
+              />
+            </div>
+
+            <!-- Current Location -->
+            <div class="form-group">
+              <label for="currentLocation"
+                >Current Location <span style="color: red">*</span></label
+              >
+              <input
+                id="currentLocation"
+                formControlName="currentLocation"
+                type="text"
+                class="form-control"
+                [ngClass]="{
+                  'is-invalid':
+                    form.get('currentLocation')?.invalid &&
+                    form.get('currentLocation')?.touched
+                }"
+              />
+              <div
+                class="invalid-feedback"
+                *ngIf="
+                  form.get('currentLocation')?.invalid &&
+                  form.get('currentLocation')?.touched
+                "
+              >
+                <small *ngIf="form.get('currentLocation')?.errors?.['required']"
+                  >Current location is required.</small
+                >
+              </div>
+            </div>
+            <div class="d-flex justify-content-end gap-2">
+              <button
+                class="btn btn-primary mt-3"
+                type="button"
+                [disabled]="!isStep1Valid()"
+                (click)="next()"
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 2: Additional Information -->
+          <div *ngIf="currentStep === 2">
+            <h5>Additional Information</h5>
+            <!-- Expected CTC -->
+            <div class="form-group">
+              <label for="expectedCtc"
+                >Expected CTC <span style="color: red">*</span></label
+              >
+              <input
+                id="expectedCtc"
+                formControlName="expectedCtc"
+                type="text"
+                class="form-control"
+                [ngClass]="{
+                  'is-invalid':
+                    form.get('expectedCtc')?.invalid &&
+                    form.get('expectedCtc')?.touched
+                }"
+              />
+              <div
+                class="invalid-feedback"
+                *ngIf="
+                  form.get('expectedCtc')?.invalid &&
+                  form.get('expectedCtc')?.touched
+                "
+              >
+                <small *ngIf="form.get('expectedCtc')?.errors?.['required']"
+                  >Expected CTC is required.</small
+                >
+              </div>
+            </div>
+
+            <!-- Current CTC -->
+            <div class="form-group">
+              <label for="currentCtcFixed"
+                >Current CTC <span style="color: red">*</span></label
+              >
+              <input
+                id="currentCtcFixed"
+                formControlName="currentCtcFixed"
+                type="text"
+                class="form-control"
+                [ngClass]="{
+                  'is-invalid':
+                    form.get('currentCtcFixed')?.invalid &&
+                    form.get('currentCtcFixed')?.touched
+                }"
+              />
+              <div
+                class="invalid-feedback"
+                *ngIf="
+                  form.get('currentCtcFixed')?.invalid &&
+                  form.get('currentCtcFixed')?.touched
+                "
+              >
+                <small *ngIf="form.get('currentCtcFixed')?.errors?.['required']"
+                  >Current CTC is required.</small
+                >
+              </div>
+            </div>
+
+            <!-- Notice Period -->
+            <div class="form-group">
+              <label for="noticePeriod"
+                >Notice Period <span style="color: red">*</span></label
+              >
+              <input
+                id="noticePeriod"
+                formControlName="noticePeriod"
+                type="text"
+                class="form-control"
+                [ngClass]="{
+                  'is-invalid':
+                    form.get('noticePeriod')?.invalid &&
+                    form.get('noticePeriod')?.touched
+                }"
+              />
+              <div
+                class="invalid-feedback"
+                *ngIf="
+                  form.get('noticePeriod')?.invalid &&
+                  form.get('noticePeriod')?.touched
+                "
+              >
+                <small *ngIf="form.get('noticePeriod')?.errors?.['required']"
+                  >Notice period is required.</small
+                >
+              </div>
+            </div>
+
+            <!-- Experience -->
+            <div class="form-group">
+              <label for="experience"
+                >Experience <span style="color: red">*</span></label
+              >
+              <input
+                id="experience"
+                formControlName="experience"
+                type="text"
+                class="form-control"
+                [ngClass]="{
+                  'is-invalid':
+                    form.get('experience')?.invalid &&
+                    form.get('experience')?.touched
+                }"
+              />
+              <div
+                class="invalid-feedback"
+                *ngIf="
+                  form.get('experience')?.invalid &&
+                  form.get('experience')?.touched
+                "
+              >
+                <small *ngIf="form.get('experience')?.errors?.['required']"
+                  >Experience is required.</small
+                >
+              </div>
+            </div>
+
+            <!-- Job Fitment -->
+            <div class="form-group">
+              <label for="jobFitment"
+                >Job Fitment <span style="color: red">*</span></label
+              >
+              <textarea
+                id="jobFitment"
+                formControlName="jobFitment"
+                class="form-control"
+                [ngClass]="{
+                  'is-invalid':
+                    form.get('jobFitment')?.invalid &&
+                    form.get('jobFitment')?.touched
+                }"
+              ></textarea>
+              <div
+                class="invalid-feedback"
+                *ngIf="
+                  form.get('jobFitment')?.invalid &&
+                  form.get('jobFitment')?.touched
+                "
+              >
+                <small *ngIf="form.get('jobFitment')?.errors?.['required']"
+                  >Job fitment details are required.</small
+                >
+              </div>
+            </div>
+
+            <!-- Sector -->
+            <div class="form-group">
+              <label for="sector"
+                >Sector <span class="text-danger">*</span></label
+              >
+              <ng-select
+                id="sector"
+                [items]="availableSectors"
+                bindLabel="name"
+                bindValue="name"
+                placeholder="Select Sector"
+                class="form-control"
+                formControlName="sector"
+                [ngClass]="{
+                  'is-invalid':
+                    form.get('sector')?.invalid && form.get('sector')?.touched
+                }"
+              ></ng-select>
+              <div
+                class="invalid-feedback"
+                *ngIf="
+                  form.get('sector')?.invalid && form.get('sector')?.touched
+                "
+              >
+                <small *ngIf="form.get('sector')?.errors?.['required']"
+                  >Sector is required.</small
+                >
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2">
+              <button
+                class="btn btn-dark mt-3"
+                type="button"
+                (click)="previous()"
+              >
+                Back
+              </button>
+              <button
+                class="btn btn-primary mt-3"
+                type="button"
+                [disabled]="!isStep2Valid()"
+                (click)="next()"
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 3: Review -->
+          <div *ngIf="currentStep === 3">
+            <h5>Review Your Application</h5>
+            <div *ngFor="let field of reviewFields">
+              <p>
+                <strong>{{ field.label }}:</strong> {{ field.value }}
+              </p>
+            </div>
+            <div class="d-flex justify-content-end gap-2">
+              <button
+                class="btn btn-dark mt-3"
+                type="button"
+                (click)="previous()"
+              >
+                Back
+              </button>
+              <button class="btn btn-primary mt-3" type="submit">Submit</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

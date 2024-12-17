@@ -1,0 +1,1040 @@
+<app-my-stepper-props>
+  <!-- Section 1 -->
+  <cdk-step cdkStep #step1="cdkStep">
+    <ng-template cdkStepLabel>Step1</ng-template>
+    <div class="col-lg-12 card border" style="text-align: left">
+      <div class="card-body">
+        <div>
+          <h5>
+            1. How were the onboarding materials and instructions provided to
+            you?
+          </h5>
+
+          <div class="d-flex gap-4 mt-3">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section1Q1Weightage"
+                value="1"
+                name="l1"
+                (ngModelChange)="validationForSection1Q1()"
+              />
+            </div>
+            <div>
+              The material provided was minimal and new hires are expected to
+              take a self guided learning approach
+            </div>
+          </div>
+          <div class="d-flex gap-4 mt-2">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section1Q1Weightage"
+                value="2"
+                name="l1"
+                (ngModelChange)="validationForSection1Q1()"
+              />
+            </div>
+            <div>
+              All the necessary information was provided but it was scattered
+              across different platforms/ portals, making it difficult to locate
+            </div>
+          </div>
+          <div class="d-flex gap-4 mt-2">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section1Q1Weightage"
+                value="3"
+                name="l1"
+                (ngModelChange)="validationForSection1Q1()"
+              />
+            </div>
+            <div>
+              The material provided was minimal, but it was explained to me in a
+              clear and concise manner
+            </div>
+          </div>
+          <div class="d-flex gap-4 mt-2">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section1Q1Weightage"
+                value="4"
+                name="l1"
+                (ngModelChange)="validationForSection1Q1()"
+              />
+            </div>
+            <div>
+              The material was detailed, and it was shared in an engaging and
+              interactive manner, making it easy to understand
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="">
+      <div class="text-end mb-2 p-2">
+        <button
+          class="btn btn-primary"
+          cdkStepperNext
+          [disabled]="!validationSection1Q1"
+        >
+          NEXT
+        </button>
+      </div>
+    </footer>
+  </cdk-step>
+
+  <cdk-step cdkStep #step2="cdkStep">
+    <ng-template cdkStepLabel>Step2</ng-template>
+    <div class="col-lg-12 card border" style="text-align: left">
+      <div class="card-body">
+        <div>
+          <h5>2. How effectively was your onboarding planned?</h5>
+
+          <div class="d-flex gap-4 mt-3">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section1Q2Weightage"
+                value="1"
+                name="l2"
+                (ngModelChange)="validationForSection1Q2()"
+              />
+            </div>
+            <div>
+              There was no formal onboarding as such. I was just introduced to
+              some people and then explained my work
+            </div>
+          </div>
+          <div class="d-flex gap-4 mt-2">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section1Q2Weightage"
+                value="2"
+                name="l2"
+                (ngModelChange)="validationForSection1Q2()"
+              />
+            </div>
+            <div>
+              There was an onboarding plan shared with me, however I had to
+              initiate most of those agenda items
+            </div>
+          </div>
+          <div class="d-flex gap-4 mt-2">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section1Q2Weightage"
+                value="3"
+                name="l2"
+                (ngModelChange)="validationForSection1Q2()"
+              />
+            </div>
+            <div>
+              There was no onboarding plan as such, but I had someone help me
+              navigate the initial days
+            </div>
+          </div>
+          <div class="d-flex gap-4 mt-2">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section1Q2Weightage"
+                value="4"
+                name="l2"
+                (ngModelChange)="validationForSection1Q2()"
+              />
+            </div>
+            <div>
+              It was well planned and the schedule was shared with me in advance
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="">
+      <div class="text-end mb-2 p-2">
+        <button class="btn btn-primary" cdkStepperPrevious>PREV</button
+        >&nbsp;&nbsp;<button
+          class="btn btn-primary"
+          cdkStepperNext
+          [disabled]="!validationSection1Q2"
+        >
+          NEXT
+        </button>
+      </div>
+    </footer>
+  </cdk-step>
+
+  <cdk-step cdkStep #step3="cdkStep">
+    <ng-template cdkStepLabel>Step3</ng-template>
+    <div class="col-lg-12 card border" style="text-align: left">
+      <div class="card-body">
+        <div>
+          <h5>
+            3. How well was the company's culture and values communicated to you
+            during the onboarding?
+          </h5>
+
+          <div class="d-flex gap-4 mt-3">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section1Q3Weightage"
+                value="1"
+                name="l3"
+                (ngModelChange)="validationForSection1Q3()"
+              />
+            </div>
+            <div>
+              There was no communication or emphasis on the culture and values,
+              during my onboarding process
+            </div>
+          </div>
+          <div class="d-flex gap-4 mt-2">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section1Q3Weightage"
+                value="2"
+                name="l3"
+                (ngModelChange)="validationForSection1Q3()"
+              />
+            </div>
+            <div>
+              The culture and values were mentioned in the onboarding material
+              provided, however I am yet to experience it first hand
+            </div>
+          </div>
+          <div class="d-flex gap-4 mt-2">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section1Q3Weightage"
+                value="3"
+                name="l3"
+                (ngModelChange)="validationForSection1Q3()"
+              />
+            </div>
+            <div>
+              There was no written document explaining the org values, however I
+              feel connected to the company's ethos through my ineractions with
+              everyone
+            </div>
+          </div>
+          <div class="d-flex gap-4 mt-2">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section1Q3Weightage"
+                value="4"
+                name="l3"
+                (ngModelChange)="validationForSection1Q3()"
+              />
+            </div>
+            <div>
+              Very effectively. I felt the company's ethos through the
+              consistent messaging in trainings, and my interactions with
+              colleagues
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="">
+      <div class="text-end mb-2 p-2">
+        <button class="btn btn-primary" cdkStepperPrevious>PREV</button
+        >&nbsp;&nbsp;<button
+          class="btn btn-primary"
+          cdkStepperNext
+          [disabled]="!validationSection1Q3"
+        >
+          NEXT
+        </button>
+      </div>
+    </footer>
+  </cdk-step>
+
+  <!-- Section 2 -->
+  <cdk-step cdkStep #step1="cdkStep">
+    <ng-template cdkStepLabel>Step1</ng-template>
+    <div class="col-lg-12 card border" style="text-align: left">
+      <div class="card-body">
+        <div>
+          <h5>1. How is your understanding of your role?</h5>
+
+          <div class="d-flex gap-4 mt-3">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section2Q1Weightage"
+                value="1"
+                name="l4"
+                (ngModelChange)="validationForSection2Q1()"
+              />
+            </div>
+            <div>
+              I am not clear about my role and it is not aligned to what I was
+              told at the time of hiring
+            </div>
+          </div>
+          <div class="d-flex gap-4 mt-2">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section2Q1Weightage"
+                value="2"
+                name="l4"
+                (ngModelChange)="validationForSection2Q1()"
+              />
+            </div>
+            <div>
+              My role in the org is still being formalized and I need guidance
+              and clarity on this
+            </div>
+          </div>
+          <div class="d-flex gap-4 mt-2">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section2Q1Weightage"
+                value="3"
+                name="l4"
+                (ngModelChange)="validationForSection2Q1()"
+              />
+            </div>
+            <div>
+              I am aware of my main responsibilities, however there might be
+              minor details that am still learning
+            </div>
+          </div>
+          <div class="d-flex gap-4 mt-2">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section2Q1Weightage"
+                value="4"
+                name="l4"
+                (ngModelChange)="validationForSection2Q1()"
+              />
+            </div>
+            <div>
+              I have a clear understanding and am aware of what is expected of
+              me
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="">
+      <div class="text-end mb-2 p-2">
+        <button class="btn btn-primary" cdkStepperPrevious>PREV</button
+        >&nbsp;&nbsp;<button
+          class="btn btn-primary"
+          cdkStepperNext
+          [disabled]="!validationSection2Q1"
+        >
+          NEXT
+        </button>
+      </div>
+    </footer>
+  </cdk-step>
+
+  <cdk-step cdkStep #step2="cdkStep">
+    <ng-template cdkStepLabel>Step2</ng-template>
+    <div class="col-lg-12 card border" style="text-align: left">
+      <div class="card-body">
+        <div>
+          <h5>
+            2. Have specific goals and objectives been set for you in your role?
+          </h5>
+
+          <div class="d-flex gap-4 mt-3">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section2Q2Weightage"
+                value="1"
+                name="l5"
+                (ngModelChange)="validationForSection2Q2()"
+              />
+            </div>
+            <div>
+              My goal setting is not done, neither has any discussion happened
+              in this regard
+            </div>
+          </div>
+          <div class="d-flex gap-4 mt-2">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section2Q2Weightage"
+                value="2"
+                name="l5"
+                (ngModelChange)="validationForSection2Q2()"
+              />
+            </div>
+            <div>
+              Some objectives have been shared with me, but not all aspects of
+              my role are covered
+            </div>
+          </div>
+          <div class="d-flex gap-4 mt-2">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section2Q2Weightage"
+                value="3"
+                name="l5"
+                (ngModelChange)="validationForSection2Q2()"
+              />
+            </div>
+            <div>
+              I have a broad idea of my goals, but nothing is documented yet
+            </div>
+          </div>
+          <div class="d-flex gap-4 mt-2">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section2Q2Weightage"
+                value="4"
+                name="l5"
+                (ngModelChange)="validationForSection2Q2()"
+              />
+            </div>
+            <div>
+              Yes my goals and objectives have been communicated to me and it is
+              also documented
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="">
+      <div class="text-end mb-2 p-2">
+        <button class="btn btn-primary" cdkStepperPrevious>PREV</button
+        >&nbsp;&nbsp;<button
+          class="btn btn-primary"
+          cdkStepperNext
+          [disabled]="!validationSection2Q2"
+        >
+          NEXT
+        </button>
+      </div>
+    </footer>
+  </cdk-step>
+
+  <cdk-step cdkStep #step3="cdkStep">
+    <ng-template cdkStepLabel>Step3</ng-template>
+    <div class="col-lg-12 card border" style="text-align: left">
+      <div class="card-body">
+        <div>
+          <h5>
+            3. What feedback have you received regarding the performance in your
+            role so far?
+          </h5>
+
+          <div class="d-flex gap-4 mt-3">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section2Q3Weightage"
+                value="1"
+                name="l6"
+                (ngModelChange)="validationForSection2Q3()"
+              />
+            </div>
+            <div>
+              I have not received any feedback around performance and the work
+              done till now
+            </div>
+          </div>
+          <div class="d-flex gap-4 mt-2">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section2Q3Weightage"
+                value="2"
+                name="l6"
+                (ngModelChange)="validationForSection2Q3()"
+              />
+            </div>
+            <div>
+              I am only told ok/ not ok when I complete some work, however no
+              clarity is given on what is expected
+            </div>
+          </div>
+          <div class="d-flex gap-4 mt-2">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section2Q3Weightage"
+                value="3"
+                name="l6"
+                (ngModelChange)="validationForSection2Q3()"
+              />
+            </div>
+            <div>
+              There was no formal discussion as such, however I have been given
+              feedback about my work and what is expected from me
+            </div>
+          </div>
+          <div class="d-flex gap-4 mt-2">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section2Q3Weightage"
+                value="4"
+                name="l6"
+                (ngModelChange)="validationForSection2Q3()"
+              />
+            </div>
+            <div>
+              I have had open discussions with the manager, about my
+              performance, challenges, support needed etc
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="">
+      <div class="text-end mb-2 p-2">
+        <button class="btn btn-primary" cdkStepperPrevious>PREV</button
+        >&nbsp;&nbsp;<button
+          class="btn btn-primary"
+          cdkStepperNext
+          [disabled]="!validationSection2Q3"
+        >
+          NEXT
+        </button>
+      </div>
+    </footer>
+  </cdk-step>
+
+  <!-- Section 3 -->
+  <cdk-step cdkStep #step1="cdkStep">
+    <ng-template cdkStepLabel>Step1</ng-template>
+    <div class="col-lg-12 card border" style="text-align: left">
+      <div class="card-body">
+        <div>
+          <h5>
+            1. Have you been able to build relations with key team members and
+            stakeholders in your team?
+          </h5>
+
+          <div class="d-flex gap-4 mt-3">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section3Q1Weightage"
+                value="1"
+                name="l7"
+                (ngModelChange)="validationForSection3Q1()"
+              />
+            </div>
+            <div>
+              I am aware of who the people are but I feel disconnected from the
+              teams' culture and am struggling to find my place here
+            </div>
+          </div>
+          <div class="d-flex gap-4 mt-2">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section3Q1Weightage"
+                value="2"
+                name="l7"
+                (ngModelChange)="validationForSection3Q1()"
+              />
+            </div>
+            <div>
+              No formal introductions were facilitated, I reached out and built
+              some initial connections on my own
+            </div>
+          </div>
+          <div class="d-flex gap-4 mt-2">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section3Q1Weightage"
+                value="3"
+                name="l7"
+                (ngModelChange)="validationForSection3Q1()"
+              />
+            </div>
+            <div>
+              I have been introduced to my team and stakeholders, and have built
+              some acquaintance with them
+            </div>
+          </div>
+          <div class="d-flex gap-4 mt-2">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section3Q1Weightage"
+                value="4"
+                name="l7"
+                (ngModelChange)="validationForSection3Q1()"
+              />
+            </div>
+            <div>
+              I have had many opportunities to interact, and I feel well
+              connected to the team
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="">
+      <div class="text-end mb-2 p-2">
+        <button class="btn btn-primary" cdkStepperPrevious>PREV</button
+        >&nbsp;&nbsp;<button
+          class="btn btn-primary"
+          cdkStepperNext
+          [disabled]="!validationSection3Q1"
+        >
+          NEXT
+        </button>
+      </div>
+    </footer>
+  </cdk-step>
+
+  <cdk-step cdkStep #step2="cdkStep">
+    <ng-template cdkStepLabel>Step2</ng-template>
+    <div class="col-lg-12 card border" style="text-align: left">
+      <div class="card-body">
+        <div>
+          <h5>
+            2. Do you feel comfortable asking questions and seeking help when
+            needed?
+          </h5>
+
+          <div class="d-flex gap-4 mt-3">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section3Q2Weightage"
+                value="1"
+                name="l8"
+                (ngModelChange)="validationForSection3Q2()"
+              />
+            </div>
+            <div>
+              I don't feel comfortable seeking help, as I feel everyone is
+              expected to figure it out on their own
+            </div>
+          </div>
+          <div class="d-flex gap-4 mt-2">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section3Q2Weightage"
+                value="2"
+                name="l8"
+                (ngModelChange)="validationForSection3Q2()"
+              />
+            </div>
+            <div>
+              Yes I do seek help but I feel it takes a lot of effort and time
+              for the team to respond to me
+            </div>
+          </div>
+          <div class="d-flex gap-4 mt-2">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section3Q2Weightage"
+                value="3"
+                name="l8"
+                (ngModelChange)="validationForSection3Q2()"
+              />
+            </div>
+            <div>
+              I am comfortable seeking help with few individuals in the team,
+              with whom I have built a rapport
+            </div>
+          </div>
+          <div class="d-flex gap-4 mt-2">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section3Q2Weightage"
+                value="4"
+                name="l8"
+                (ngModelChange)="validationForSection3Q2()"
+              />
+            </div>
+            <div>
+              Yes, everyone is very open and helpful and I am not hesitant to
+              seek help
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="">
+      <div class="text-end mb-2 p-2">
+        <button class="btn btn-primary" cdkStepperPrevious>PREV</button
+        >&nbsp;&nbsp;<button
+          class="btn btn-primary"
+          cdkStepperNext
+          [disabled]="!validationSection3Q2"
+        >
+          NEXT
+        </button>
+      </div>
+    </footer>
+  </cdk-step>
+
+  <cdk-step cdkStep #step3="cdkStep">
+    <ng-template cdkStepLabel>Step3</ng-template>
+    <div class="col-lg-12 card border" style="text-align: left">
+      <div class="card-body">
+        <div>
+          <h5>
+            3. How well aligned do you feel, to the goal that the company is
+            trying to achieve?
+          </h5>
+
+          <div class="d-flex gap-4 mt-3">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section3Q3Weightage"
+                value="1"
+                name="l9"
+                (ngModelChange)="validationForSection3Q3()"
+              />
+            </div>
+            <div>
+              I do not align with what the company is trying to achieve, and my
+              work does not reflect these goals
+            </div>
+          </div>
+          <div class="d-flex gap-4 mt-2">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section3Q3Weightage"
+                value="2"
+                name="l9"
+                (ngModelChange)="validationForSection3Q3()"
+              />
+            </div>
+            <div>
+              I have read about the company's goals in presentations, but I
+              struggle to connect myself and my work to it
+            </div>
+          </div>
+          <div class="d-flex gap-4 mt-2">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section3Q3Weightage"
+                value="3"
+                name="l9"
+                (ngModelChange)="validationForSection3Q3()"
+              />
+            </div>
+            <div>
+              The company goals were brought alive during my interactions, and I
+              align with it, however I need to understand how daily my work can
+              contribute to it
+            </div>
+          </div>
+          <div class="d-flex gap-4 mt-2">
+            <div class="align-self-center">
+              <input
+                type="radio"
+                [(ngModel)]="candidate.section3Q3Weightage"
+                value="4"
+                name="l9"
+                (ngModelChange)="validationForSection3Q3()"
+              />
+            </div>
+            <div>
+              I strongly align to the company's goal and I also have clarity on
+              how my work contributes to it
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="">
+      <div class="text-end mb-2 p-2">
+        <button class="btn btn-primary" cdkStepperPrevious>PREV</button
+        >&nbsp;&nbsp;<button
+          class="btn btn-primary"
+          cdkStepperNext
+          [disabled]="!validationSection3Q3"
+        >
+          NEXT
+        </button>
+      </div>
+    </footer>
+  </cdk-step>
+
+  <!-- Section 4 (Descriptive)-->
+  <cdk-step cdkStep #step1="cdkStep">
+    <ng-template cdkStepLabel>Step1</ng-template>
+    <div class="col-lg-12 card border" style="text-align: left">
+      <div class="card-body">
+        <div>
+          <h5>
+            1. Do you have access to tools and resources to do your job
+            effectively?
+          </h5>
+
+          <div>
+            <textarea
+              name=""
+              id=""
+              [(ngModel)]="candidate.descAns1"
+              class="p-2"
+              style="width: 100%; height: 200px; resize: none"
+              placeholder="Do you have access to tools and resources to do your job effectively?"
+              (ngModelChange)="validationForSection4Q1()"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="">
+      <div class="text-end mb-2 p-2">
+        <button class="btn btn-primary" cdkStepperPrevious>PREV</button
+        >&nbsp;&nbsp;<button
+          class="btn btn-primary"
+          cdkStepperNext
+          [disabled]="!validationSection4Q1"
+        >
+          NEXT
+        </button>
+      </div>
+    </footer>
+  </cdk-step>
+
+  <cdk-step cdkStep #step1="cdkStep">
+    <ng-template cdkStepLabel>Step1</ng-template>
+    <div class="col-lg-12 card border" style="text-align: left">
+      <div class="card-body">
+        <div>
+          <h5>
+            2. Is there any specific training or support needed, to help you
+            perform your role better?
+          </h5>
+
+          <div>
+            <textarea
+              name=""
+              id=""
+              [(ngModel)]="candidate.descAns2"
+              class="p-2"
+              style="width: 100%; height: 200px; resize: none"
+              placeholder="Is there any specific training or support needed, to help you perform your role better?"
+              (ngModelChange)="validationForSection4Q2()"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="">
+      <div class="text-end mb-2 p-2">
+        <button class="btn btn-primary" cdkStepperPrevious>PREV</button
+        >&nbsp;&nbsp;<button
+          class="btn btn-primary"
+          cdkStepperNext
+          [disabled]="!validationSection4Q2"
+        >
+          NEXT
+        </button>
+      </div>
+    </footer>
+  </cdk-step>
+
+  <!-- Section 5 (Descriptive)-->
+  <cdk-step cdkStep #step1="cdkStep">
+    <ng-template cdkStepLabel>Step1</ng-template>
+    <div class="col-lg-12 card border" style="text-align: left">
+      <div class="card-body">
+        <div>
+          <h5>
+            1. What has been the most positive aspect of your first month here?
+          </h5>
+
+          <div>
+            <textarea
+              name=""
+              id=""
+              [(ngModel)]="candidate.descAns3"
+              class="p-2"
+              style="width: 100%; height: 200px; resize: none"
+              placeholder="What has been the most positive aspect of your first month here?"
+              (ngModelChange)="validationForSection5Q1()"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="">
+      <div class="text-end mb-2 p-2">
+        <button class="btn btn-primary" cdkStepperPrevious>PREV</button
+        >&nbsp;&nbsp;<button
+          class="btn btn-primary"
+          cdkStepperNext
+          [disabled]="!validationSection5Q1"
+        >
+          NEXT
+        </button>
+      </div>
+    </footer>
+  </cdk-step>
+
+  <cdk-step cdkStep #step1="cdkStep">
+    <ng-template cdkStepLabel>Step1</ng-template>
+    <div class="col-lg-12 card border" style="text-align: left">
+      <div class="card-body">
+        <div>
+          <h5>
+            2. What has been the most challenging aspect of your first month
+            here?
+          </h5>
+
+          <div>
+            <textarea
+              name=""
+              id=""
+              [(ngModel)]="candidate.descAns4"
+              class="p-2"
+              style="width: 100%; height: 200px; resize: none"
+              placeholder="What has been the most challenging aspect of your first month here?"
+              (ngModelChange)="validationForSection5Q2()"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="">
+      <div class="text-end mb-2 p-2">
+        <button class="btn btn-primary" cdkStepperPrevious>PREV</button
+        >&nbsp;&nbsp;<button
+          class="btn btn-primary"
+          cdkStepperNext
+          [disabled]="!validationSection5Q2"
+        >
+          NEXT
+        </button>
+      </div>
+    </footer>
+  </cdk-step>
+
+  <!-- Section 6 (Descriptive)-->
+  <cdk-step cdkStep #step1="cdkStep">
+    <ng-template cdkStepLabel>Step1</ng-template>
+    <div class="col-lg-12 card border" style="text-align: left">
+      <div class="card-body">
+        <div>
+          <h5>
+            5. Are there any areas where you feel the need for additional
+            training or support?
+          </h5>
+
+          <div>
+            <textarea
+              name=""
+              id=""
+              [(ngModel)]="candidate.descAns5"
+              class="p-2"
+              style="width: 100%; height: 200px; resize: none"
+              placeholder="Are there any areas where you feel the need for additional training or support?"
+              (ngModelChange)="validationForSection6Q1()"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="">
+      <div class="text-end mb-2 p-2">
+        <button class="btn btn-primary" cdkStepperPrevious>PREV</button
+        >&nbsp;&nbsp;<button
+          class="btn btn-primary"
+          cdkStepperNext
+          [disabled]="!validationSection6Q1"
+        >
+          NEXT
+        </button>
+      </div>
+    </footer>
+  </cdk-step>
+
+  <cdk-step cdkStep #step1="cdkStep">
+    <ng-template cdkStepLabel>Step1</ng-template>
+    <div class="col-lg-12 card border" style="text-align: left">
+      <div class="card-body">
+        <div>
+          <h5>
+            6. Do you have any suggestions or feedback on improving the
+            onboarding experience?
+          </h5>
+
+          <div>
+            <textarea
+              name=""
+              id=""
+              [(ngModel)]="candidate.descAns6"
+              class="p-2"
+              style="width: 100%; height: 200px; resize: none"
+              placeholder="Do you have any suggestions or feedback on improving the onboarding experience?"
+              (ngModelChange)="validationForSection6Q2()"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="">
+      <div class="text-end mb-2 p-2">
+        <button class="btn btn-primary" cdkStepperPrevious>PREV</button
+        >&nbsp;&nbsp;<button
+          class="btn btn-success"
+          cdkStepperNext
+          [disabled]="!validationSection6Q2"
+          (click)="onSubmit()"
+        >
+          Submit
+        </button>
+      </div>
+    </footer>
+  </cdk-step>
+  <cdk-step cdkStep #step1="cdkStep">
+    <ng-template cdkStepLabel>Step1</ng-template>
+    <div class="col-lg-12 card border" style="text-align: left">
+      <div class="card-body">
+        <div>
+          <div class="text-center">
+            <img
+              src="assets/images/reaction-cool.gif"
+              alt="img-01.jpg"
+              class="rounded border"
+            />
+          </div>
+
+          <div class="mt-5 text-center">
+            <h2>Success</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </cdk-step>
+</app-my-stepper-props>

@@ -1,0 +1,351 @@
+
+<section class="job-area job-area-two pt-100">
+  <div
+    class="single-profile-area pt-100"
+    *ngIf="!started && message.length == 0"
+  >
+    <div class="row align-items-center">
+      <div class="col-lg-3">&nbsp;</div>
+      <div class="col-lg-9">
+        <ol>
+          <li>This form in no way will affect your compensation.</li>
+          <li>
+            This will be an anonymous exercise. Nobody will know what rating or
+            review you have given them.
+          </li>
+          <li>
+            Besides the ratings, you can also give some areas of improvement or
+            praise to your peers (Praises are most welcome).
+          </li>
+          <li>
+            You don't have to rate everyone. You can just rate people you have
+            worked with as you would have knowledge about their working style.
+          </li>
+          <li>This form can be filled only once.</li>
+          <li>This link will be active only till this month end.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="row align-items-center">
+      <div class="col-lg-5"></div>
+      <div class="col-lg-3" style="text-align: left">
+        <input
+          type="button"
+          (click)="started = true; commonService.goTop()"
+          value="Start"
+          class="btn btn-success"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="single-profile-area pt-100" *ngIf="started">
+    <div class="row align-items-center">
+      
+      <div class="col-lg-7" style="text-align: left; font-size: 40px">
+        <h5 class="text-start">Rate Your Peer - {{ member?.name }}</h5>
+      </div>
+      <div class="col-lg-2" style="text-align: center" *ngIf="false">
+        <input
+          type="button"
+          (click)="skip()"
+          value="Skip"
+          class="btn btn-success"
+        />
+      </div>
+    </div>
+    <ng-stepper #cdkStepper [linear]="true">
+      
+      <cdk-step [optional]="false">
+        <ng-template cdkStepLabel>
+          <button class="step-bullet border-0 " style="z-index: 10;">1</button>
+        </ng-template>
+        <hr class="w-2 absolute top-0" style=" margin-top: -60px;
+        width: 70%;
+        text-align: center;
+        margin-left: 18%;"/>
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-lg-12">
+              <div class="single-profile-item">
+                <div class="single-profile-left">
+                  <div class="single-profile-name">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <h5>
+                          What are the areas of improvement
+                          {{ member?.name }} can work on ?*
+                        </h5>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        {{ 300 - answers.a1.length }} chars left<br />
+                        <textarea
+                          maxlength="300"
+                          rows="5"
+                          cols="15"
+                          (ngModelChange)="validate1Completion()"
+                          [(ngModel)]="answers.a1"
+                          class="form-control"
+                        ></textarea>
+                      </div>
+                    </div>
+                    <br />
+                  </div>
+                  <br /><br />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex align-items-start gap-3 mt-4">
+            <button
+              type="button"
+              [disabled]="!completedStep1"
+              class="btn btn-success btn-label right ms-auto nexttab nexttab"
+              data-nexttab="pills-info-desc-tab"
+              cdkStepperNext
+              (mouseover)="validate1Completion()"
+            >
+              <i
+                class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
+              ></i
+              >Next
+            </button>
+          </div>
+        </div>
+      </cdk-step>
+
+      <cdk-step [optional]="false">
+        <ng-template cdkStepLabel>
+          <button class="step-bullet border-0" style="z-index: 10;" [disabled]="!completedStep1">
+            2
+          </button>
+        </ng-template>
+        <hr class="w-2 absolute top-0" style="    margin-top: -60px;
+        width: 70%;
+        text-align: center;
+        margin-left: 18%;"/>
+        <div class="container mt-4">
+          <div class="row align-items-center">
+            <div class="col-lg-12">
+              <div class="single-profile-item">
+                <div class="single-profile-left">
+                  <div class="single-profile-name">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <h5>
+                          What do you really appreciate about
+                          {{ member?.name }} ?*
+                        </h5>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        {{ 300 - answers.a2.length }} chars left<br />
+                        <textarea
+                          maxlength="300"
+                          rows="5"
+                          cols="15"
+                          (ngModelChange)="validate2Completion()"
+                          [(ngModel)]="answers.a2"
+                          class="form-control"
+                        ></textarea>
+                      </div>
+                    </div>
+                    <br />
+                  </div>
+                  <br /><br />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-start gap-3 mt-4">
+            <button
+              type="button"
+              [disabled]="!completedStep2"
+              class="btn btn-success btn-label right ms-auto nexttab nexttab"
+              data-nexttab="pills-info-desc-tab"
+              cdkStepperNext
+              (mouseover)="validate2Completion()"
+            >
+              <i
+                class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
+              ></i
+              >Next
+            </button>
+          </div>
+        </div>
+      </cdk-step>
+
+      <cdk-step [optional]="false">
+        <ng-template cdkStepLabel>
+          <button class="step-bullet border-0" style="z-index: 10;" [disabled]="!completedStep2">
+            3
+          </button>
+        </ng-template>
+        <hr class="w-2 absolute top-0" style="    margin-top: -60px;
+        width: 70%;
+        text-align: center;
+        margin-left: 18%;"/>
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-lg-12">
+              <div class="single-profile-item">
+                <div class="single-profile-left">
+                  <div class="single-profile-name">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <h5>
+                          How would you like to rate {{ member?.name }} ?*
+                        </h5>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="col-lg-12" style="text-align: start">
+                          <div>
+                            <div>
+                              <input
+                                type="radio"
+                                id="option1"
+                                name="answer_a3"
+                                value="1"
+                                (change)="answers.a3 = '1'"
+                                [checked]="answers.a3 === '1'"
+                              />
+                              <label for="option1">1</label>
+                              &nbsp;
+                              <input
+                                type="radio"
+                                id="option2"
+                                name="answer_a3"
+                                value="2"
+                                (ngModelChange)="validate3Completion()"
+                                (change)="answers.a3 = '2'"
+                                [checked]="answers.a3 === '2'"
+                              />
+                              <label for="option2">2</label>
+                              &nbsp;
+                              <input
+                                type="radio"
+                                id="option3"
+                                name="answer_a3"
+                                (ngModelChange)="validate3Completion()"
+                                value="3"
+                                (change)="answers.a3 = '3'"
+                                [checked]="answers.a3 === '3'"
+                              />
+                              <label for="option3">3</label>
+                              &nbsp;
+                              <input
+                                type="radio"
+                                id="option4"
+                                name="answer_a3"
+                                (keypress)="validate3Completion()"
+                                value="4"
+                                (change)="answers.a3 = '4'"
+                                [checked]="answers.a3 === '4'"
+                              />
+                              <label for="option4">4</label>
+                              &nbsp;
+                              <!-- <input
+                                type="radio"
+                                id="option5"
+                                name="answer_a3"
+                                (ngModelChange)="validate3Completion()"
+                                value="5"
+                                (change)="answers.a3 = '5'"
+                                [checked]="answers.a3 === '5'"
+                              />
+                              <label for="option5">5</label>
+                              &nbsp;
+                              <input
+                                type="radio"
+                                id="option6"
+                                name="answer_a3"
+                                (ngModelChange)="validate3Completion()"
+                                value="6"
+                                (change)="answers.a3 = '6'"
+                                [checked]="answers.a3 === '6'"
+                              />
+                              <label for="option6">6</label>
+                              &nbsp;
+                              <input
+                                type="radio"
+                                id="option7"
+                                name="answer_a3"
+                                (ngModelChange)="validate3Completion()"
+                                value="7"
+                                (change)="answers.a3 = '7'"
+                                [checked]="answers.a3 === '7'"
+                              />
+                              <label for="option7">7</label>
+                              &nbsp;
+                              <input
+                                type="radio"
+                                id="option8"
+                                name="answer_a3"
+                                (ngModelChange)="validate3Completion()"
+                                value="8"
+                                (change)="answers.a3 = '8'"
+                                [checked]="answers.a3 === '8'"
+                              />
+                              <label for="option8">8</label>
+                              &nbsp;
+                              <input
+                                type="radio"
+                                id="option9"
+                                name="answer_a3"
+                                (ngModelChange)="validate3Completion()"
+                                value="9"
+                                (change)="answers.a3 = '9'"
+                                [checked]="answers.a3 === '9'"
+                              />
+                              <label for="option9">9</label>
+                              &nbsp;
+                              <input
+                                type="radio"
+                                id="option19"
+                                name="answer_a3"
+                                (ngModelChange)="validate3Completion()"
+                                value="10"
+                                (change)="answers.a3 = '10'"
+                                [checked]="answers.a3 === '10'"
+                              />
+                              <label for="option10">10</label> -->
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br />
+                  </div>
+                  <br /><br />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row align-items-center">
+          <!--<div class="col-lg-5" ></div>-->
+          <div class="col-lg-12" style="text-align: center">
+            <input
+              type="button"
+              (mouseover)="validate3Completion()"
+              (click)="submit(); commonService.goTop()"
+              value="Submit"
+              class="btn btn-success"
+            />
+          </div>
+        </div>
+      </cdk-step>
+    </ng-stepper>
+  </div>
+  <div class="row align-items-center">
+    <!--<div class="col-lg-5" ></div>-->
+    <div class="col-lg-12" style="text-align: center">
+      <h5>{{ message }}</h5>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,376 @@
+<section>
+  <div class="row justify-content-evenly mx-0 mt-5">
+    <div class="col-md-5 text-left d-sm-block d-none">
+      <app-login-left></app-login-left>
+    </div>
+    <!--end col-->
+    <div class="col-md-4 align-self-center">
+      <div class="mb-0 border-0 shadow-none mb-0">
+        <div class="p-sm-5">
+          <div class="text-center">
+            <!-- mt-5 for padding top-->
+            <img
+              src="assets/images/pie-works.svg"
+              class="mb-2"
+              style="width: 80%"
+            />
+            <h4>Welcome Back!</h4>
+            <p class="text-muted">
+              Please enter your details to begin your journey.
+            </p>
+          </div>
+          <div class="p-1">
+            <!-- mt-5 for padding top-->
+            <div *ngIf="paramUrl">
+              <div class="d-flex justify-content-between gap-2">
+                <button
+                  class="btn"
+                  [ngClass]="{
+                    'btn-primary': selectedRole === 'COMMUNITY MEMBER',
+                    'btn-outline-dark': selectedRole !== 'COMMUNITY MEMBER'
+                  }"
+                  [class.active]="selectedRole === 'COMMUNITY MEMBER'"
+                  (click)="setRole('COMMUNITY MEMBER')"
+                  style="width: 33%"
+                >
+                  Recruiter Community
+                </button>
+                <button
+                  class="btn"
+                  [ngClass]="{
+                    'btn-primary': selectedRole === 'Talent',
+                    'btn-outline-dark': selectedRole !== 'Talent'
+                  }"
+                  [class.active]="selectedRole === 'Talent'"
+                  (click)="setRole('Talent')"
+                  style="width: 33%"
+                >
+                  Talent
+                </button>
+                <button
+                  class="btn"
+                  [ngClass]="{
+                    'btn-primary': selectedRole === 'Client',
+                    'btn-outline-dark': selectedRole !== 'Client'
+                  }"
+                  [class.active]="selectedRole === 'Client'"
+                  (click)="setRole('Client')"
+                  style="width: 33%"
+                >
+                  Client
+                </button>
+              </div>
+              <div class="text-center mt-1">
+                <small *ngIf="selectedRole == 'COMMUNITY MEMBER'"
+                  ><i>I want to join the Recruiter Community</i></small
+                >
+                <small *ngIf="selectedRole == 'Talent'"
+                  ><i
+                    >I want to be a Candidate for high Growth Startups</i
+                  ></small
+                >
+                <small *ngIf="selectedRole == 'Client'"
+                  ><i
+                    >I want to be your Client - solve my Hiring Challenges</i
+                  ></small
+                >
+                <small *ngIf="!selectedRole"
+                  ><i>Please select one of the above Options </i></small
+                >
+              </div>
+            </div>
+
+            <form [formGroup]="loginForm" action="index.html">
+              <div class="pt-2 text-center mb-2" *ngIf="selectedRole != 'Client'">
+                <!-- when nothing selected -->
+                <div
+                  class="pt-2 hstack gap-2 justify-content-center"
+                  *ngIf="selectedRole == '' ? true : false"
+                >
+                  <button
+                    *ngIf="false"
+                    type="button"
+                    class="btn btn-subtle-primary btn-icon"
+                    (click)="blockLogin = false"
+                  >
+                    <i class="ri-facebook-fill fs-lg"></i>
+                  </button>
+
+                  <!-- <asl-google-signin-button
+                    text="continue_with"
+                    type="icon"
+                    size="medium"
+                  ></asl-google-signin-button> -->
+                  <div
+                    type="button"
+                    class="  "
+                    style="background-color: #fefeff; border: 1px solid #dbdde1"
+                    tooltip="Plz.. Select Role Community or Talent or Client"
+                  >
+                    <img
+                      src="assets/images/google.png"
+                      alt=""
+                      style="width: 25px; padding: 3px"
+                    />
+                    <!-- &nbsp;&nbsp;
+                <span style="font-weight: 100; padding: 0;">Continue with LinkedIn </span> -->
+                  </div>
+                  <br />
+                  <div
+                    type="button"
+                    class="  "
+                    style="background-color: #fefeff"
+                    tooltip="Plz.. Select Role Community or Talent or Client"
+                  >
+                    <i
+                      class="ri-linkedin-box-fill rounded align-self-center"
+                      style="
+                        color: #0170AD;
+                        font-size: 23px;
+                        border: 1px solid #dbdde1;
+                        padding: 3px;
+                      "
+                    ></i>
+                    <!-- &nbsp;&nbsp;
+                  <span style="font-weight: 100; padding: 0;">Continue with LinkedIn </span> -->
+                  </div>
+
+                  <button
+                    *ngIf="false"
+                    type="button"
+                    class="btn btn-subtle-info btn-icon"
+                  >
+                    <i class="ri-twitter-fill fs-lg"></i>
+                  </button>
+                </div>
+
+                <div
+                  class="pt-2 hstack gap-2 justify-content-center"
+                  *ngIf="selectedRole == '' ? false : true"
+                >
+                  <button
+                    *ngIf="false"
+                    type="button"
+                    class="btn btn-subtle-primary btn-icon"
+                    (click)="blockLogin = false"
+                  >
+                    <i class="ri-facebook-fill fs-lg"></i>
+                  </button>
+
+                  <asl-google-signin-button
+                    text="continue_with"
+                    type="icon"
+                    size="medium"
+                  ></asl-google-signin-button>
+                  <br />
+                  <div
+                    type="button"
+                    class="  "
+                    (click)="loginViaLinkedin()"
+                    style="background-color: #fefeff"
+                  >
+                    <i
+                      class="ri-linkedin-box-fill rounded align-self-center"
+                      style="
+                        color: #0170AD;
+                        font-size: 23px;
+                        border: 1px solid #dbdde1;
+                        padding: 3px;
+                      "
+                    ></i>
+                    <!-- &nbsp;&nbsp;
+                  <span style="font-weight: 100; padding: 0;">Continue with LinkedIn </span> -->
+                  </div>
+
+                  <button
+                    *ngIf="false"
+                    type="button"
+                    class="btn btn-subtle-info btn-icon"
+                  >
+                    <i class="ri-twitter-fill fs-lg"></i>
+                  </button>
+                </div>
+
+                <div class="signin-other-title position-relative mt-3">
+                  <h5 class="fs-sm mb-4 title text-muted">or</h5>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="username" class="form-label"
+                  >Username <span class="text-danger">*</span></label
+                >
+                <div class="position-relative">
+                  <input
+                    [(ngModel)]="otpIdentifier"
+                    name="username"
+                    type="text"
+                    class="form-control password-input"
+                    formControlName="email"
+                    id="username"
+                    [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+                    placeholder="Enter username"
+                    required
+                  />
+                  <div
+                    *ngIf="submitted && f['email'].errors"
+                    class="invalid-feedback"
+                  >
+                    <div *ngIf="f['email'].errors['required']">
+                      Username is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <div class="float-end">
+                  <a routerLink="/auth/password-reset" class="text-muted"
+                    >Forgot password?</a
+                  >
+                </div>
+                <label class="form-label" for="password-input"
+                  >Password <span class="text-danger">*</span></label
+                >
+                <div class="position-relative auth-pass-inputgroup mb-3">
+                  <input
+                    [type]="fieldTextType ? 'text' : 'password'"
+                    formControlName="password"
+                    [ngClass]="{
+                      'is-invalid': submitted && f['password'].errors
+                    }"
+                    type="password"
+                    class="form-control pe-5 password-input"
+                    placeholder="Enter password"
+                    id="password-input"
+                    required
+                  />
+                  <button
+                    class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
+                    type="button"
+                    id="password-addon"
+                  >
+                    <i
+                      class="ri-eye-fill align-middle"
+                      [ngClass]="{
+                        'mdi-eye-off-outline': !fieldTextType,
+                        'mdi-eye-outline': fieldTextType
+                      }"
+                      (click)="toggleFieldTextType()"
+                    ></i>
+                  </button>
+                  <div
+                    *ngIf="submitted && f['password'].errors"
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="f['password'].errors['required']"
+                      >Password is required</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-check" *ngIf="false">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="auth-remember-check"
+                />
+                <label class="form-check-label" for="auth-remember-check"
+                  >Remember me</label
+                >
+              </div>
+
+              <div class="mt-4">
+                <div class="row">
+                  <div
+                    class="col-lg-6 mb-2"
+                    [tooltip]="
+                      selectedRole == ''
+                        ? 'Select Role(Community/Talent/Client)'
+                        : ''
+                    "
+                  >
+                    <button
+                      class="btn btn-primary w-100"
+                      type="submit"
+                      (click)="blockLogin = false; onSubmit()"
+                      [disabled]="selectedRole == '' ? true : false"
+                    >
+                      Sign In
+                    </button>
+                  </div>
+                  <div
+                    class="col-lg-6"
+                    [tooltip]="
+                      selectedRole == ''
+                        ? 'Select Role(Community/Talent/Client)'
+                        : ''
+                    "
+                  >
+                    <button
+                      class="btn btn-primary w-100"
+                      (click)="blockLogin = true; showModal(varying, '')"
+                      [disabled]="selectedRole == '' ? true : false"
+                    >
+                      OTP Sign In
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="text-center mt-5">
+                <p class="mb-0" style="color: red">{{ message }}</p>
+              </div>
+            </form>
+
+            <div class="text-center mt-5" *ngIf="selectedRole != 'Client'">
+              <p class="mb-0">
+                Don't have an account ?
+                <a
+                  routerLink="/auth/register"
+                  class="fw-semibold text-secondary text-decoration-underline"
+                >
+                  Register now</a
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- end card body -->
+      </div>
+      <!-- end card -->
+    </div>
+    <!--end col-->
+    <!--end row-->
+
+    <!--end col-->
+  </div>
+  <!--end row-->
+
+  <!--end container-->
+</section>
+<ng-template
+  #varying
+  class="modal fade bs-example-modal-lg"
+  id="varyingcontentModal"
+>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="varyingcontentModalLabel">
+        OTP verification
+      </h5>
+      <button
+        type="button"
+        class="btn-close"
+        (click)="modalRef?.hide()"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <!-- <form> -->
+      <div class="mb-12">
+        <app-twostep [parentObj]="parentObj"></app-twostep>
+      </div>
+    </div>
+  </div>
+</ng-template>

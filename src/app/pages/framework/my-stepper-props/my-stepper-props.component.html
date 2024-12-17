@@ -1,0 +1,72 @@
+<!-- <section class="container">
+  <div class="row justify-content-center">
+    <div class="col-xl-6">
+      <div class="card mt-5">
+        <div class="card-header">
+          <h5 *ngIf="selectedIndex >= 0 && selectedIndex <= 2">
+            Onboarding experience
+          </h5>
+          <h5 *ngIf="selectedIndex >= 3 && selectedIndex <= 6">Roles & Responsibilities</h5>
+          <h5 *ngIf="selectedIndex >= 7 && selectedIndex <= 10 ">Integration & Culture</h5>
+        </div>
+        <div class="card-body">
+          <div class="step" *ngIf="selected">
+            <ng-container [ngTemplateOutlet]="selected.content"></ng-container>
+          </div>
+        </div>
+        <footer class="">
+          <div class="text-end mb-2 p-2">
+            <button class="btn btn-primary" cdkStepperPrevious>PREV</button
+            >&nbsp;&nbsp;<button class="btn btn-primary" cdkStepperNext >
+              NEXT
+            </button>
+          </div>
+          <h5 class="text-white bg-success text-center card-footer mb-0">
+            {{ selectedIndex + 1 }} of {{ steps.length }} answered
+          </h5>
+        </footer>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+<div class="row justify-content-center">
+  <div class="col-xl-6">
+    <div class="card mt-5">
+      <div class="card-header">
+        <h5 *ngIf="selectedIndex >= 0 && selectedIndex <= 2">
+          Onboarding experience
+        </h5>
+        <h5 *ngIf="selectedIndex >= 3 && selectedIndex <= 5">
+          Roles & Responsibilities
+        </h5>
+        <h5 *ngIf="selectedIndex >= 6 && selectedIndex <= 8">
+          Integration & Culture
+        </h5>
+        <h5 *ngIf="selectedIndex >= 9 && selectedIndex <= 10">
+          Support & Resources 
+        </h5>
+        <h5 *ngIf="selectedIndex >= 11 && selectedIndex <= 12">
+          Overall Experience 
+        </h5>
+        <h5 *ngIf="selectedIndex >= 13 && selectedIndex <= 14">
+          Qualitative questions
+        </h5>
+      </div>
+      <div class="card-body">
+        <div *ngFor="let step of _steps; let i = index; let isLast = last">
+          <div [style.display]="selectedIndex === i ? 'block' : 'none'">
+            <ng-container [ngTemplateOutlet]="step.content"></ng-container>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <h5 class="text-white bg-success text-center card-footer mb-0">
+          {{ selectedIndex + 1 }} of {{ steps.length }} answered
+        </h5>
+      </footer>
+    </div>
+  </div>
+</div>
+
+

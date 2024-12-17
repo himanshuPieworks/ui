@@ -1,0 +1,116 @@
+.upload-box {
+    background-color: #f7f7f7;
+    border: 2px dashed #e5e5e5;
+    color: #000000;
+    cursor: pointer;
+  }
+  
+  .upload-box:hover {
+    background-color: #fff;
+  }
+  
+  .form-label {
+    font-weight: 500;
+  }
+  
+  .form-select, 
+  .form-control {
+    border-radius: 5px;
+  }
+  
+  input[type="file"] {
+    border: 1px solid #ced4da;
+  }
+  
+  button[type="submit"] {
+    background-color: #ff4d4d;
+    border-color: #ff4d4d;
+  }
+  
+  button[type="button"] {
+    background-color: #ced4da;
+  }
+  
+  button[type="submit"]:hover,
+  button[type="button"]:hover {
+    background-color: #000000;
+  }
+  
+  .text-danger {
+    color: #162444 !important;
+  }
+  
+  input[type="text"], 
+  input[type="email"], 
+  input[type="tel"] {
+    border: 1px solid #ced4da;
+  }
+  .border-dotted{
+    border-style: 1px dotted ;
+   }
+
+/* Step Indicator Container */
+.step-indicator {
+    width: 100%;
+  }
+  
+  /* Individual Step */
+  .step {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+  }
+  
+  /* Step Circle */
+  .circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .step.active .circle {
+    background-color: #007bff; /* Active step color */
+  }
+  
+  /* Step Label */
+  .step-label {
+    
+    font-size: 14px;
+    font-weight: 500;
+    color: #555;
+    align-self: center;
+  }
+  
+  .step.active .step-label {
+    color: #007bff; /* Active step label color */
+  }
+
+  /* Completed Step */
+.step.completed .circle {
+  background-color: #007bff; /* Completed step color */
+  color: #fff; /* Ensure text remains visible */
+}
+  
+  /* Connecting Line */
+  .line {
+    height: 2px;
+    flex: 1;
+    background-color: #ddd;
+    margin: 0 8px;
+  }
+  
+  .line.completed {
+    background-color: #007bff; /* Completed line color */
+  }
+  .text-danger{
+    color: #ff4d4d;
+  }
+  

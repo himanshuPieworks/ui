@@ -1,0 +1,224 @@
+<div class="mt-sm-0 mt-4"></div>
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs
+  tooltip="Manage"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs
+><br />
+<div class="row">
+    <div class="col-lg-2">
+         <div class="card">
+            <div class="card-body">
+                <accordion class="accordion" id="default-accordion-example">
+                    <accordion-group class="accordion-item" [isOpen]="section==1" (click)='section=1'>
+                        <h2 accordion-heading class="accordion-header" id="headingOne">
+                            <button class="accordion-button" type="button">
+                                Community
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show">
+                            <div class="accordion-body">
+                                <p class="clickable" (click)="loadBarGraph('community/activeRatio','Active Ratio')" 
+                                       title="(Interview WIP/ Sent to Client) for all those candidates who were discovered in the respective month" style='font-weight: {{selectedReportName=="community/activeRatio"?"bold":"inherit"}}'>Active Ratio</p>
+                                <p class="clickable" (click)="loadBarGraph('community/efficiencyRatio','Efficiency Ratio')"  
+                                   title="(Sent to client/ Interested Members) for all those candidates who were discovered in the respective month" style='font-weight: {{selectedReportName=="community/efficiencyRatio"?"bold":"inherit"}}'>Economy Ratio</p>
+                                <p class="clickable" (click)="loadBarGraph('community/monthlyAttrition','Attrition Ratio')" 
+                                   title="(Leavers/ Total members)" style='font-weight: {{selectedReportName=="community/monthlyAttrition"?"bold":"inherit"}}'>Attrition Ratio</p>
+                                <p class="clickable" (click)="loadBarGraph('community/wealthRatio','Wealth Ratio')" 
+                                       title="(Success Fee Distributed to Non Core Members v/s Total Success Fee Distributed ) in the respective month" style='font-weight: {{selectedReportName=="community/wealthRatio"?"bold":"inherit"}}'>Wealth</p>
+                                <p class="clickable" (click)="loadBarGraph('growth/members','Members')" style='font-weight: {{selectedReportName=="growth/members"?"bold":"inherit"}}'>Members</p>
+                            </div>
+                        </div>
+                    </accordion-group>
+                    <!-- <accordion-group class="accordion-item" [isOpen]="section==2" (click)='section=2'>
+                        <h2 accordion-heading class="accordion-header" id="headingOne">
+                            <button class="accordion-button" type="button">
+                                Growth
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show">
+                            <div class="accordion-body">
+                                <p class="clickable" (click)="loadBarGraph('growth/clients','Clients')" style='font-weight: {{selectedReportName=="growth/clients"?"bold":"inherit"}}'>Clients</p>
+                                <p class="clickable" (click)="loadBarGraph('growth/requirements','Mandates')" style='font-weight: {{selectedReportName=="growth/requirements"?"bold":"inherit"}}'>Mandates</p>
+                                <p class="clickable" (click)="loadBarGraph('growth/positions','Positions')" style='font-weight: {{selectedReportName=="growth/positions"?"bold":"inherit"}}'>Positions</p>
+                                
+                            </div>
+                        </div>
+                    </accordion-group> -->
+                </accordion>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <div class="job-details-item">
+                    <div class="job-overview">
+                        <div class="row">
+                            <div class="col-lg-10">
+                                <b>{{selectedDetails?"Details : "+selectedDetails:""}}</b>
+                                <app-generic-barchart #bargraph ></app-generic-barchart>
+                            </div>                    
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <div class="card">
+            <div class="card-body">
+                <div class="job-details-item" *ngIf="false">
+                    <div class="job-overview">
+                        <h3><div class="col-lg-1">Details</div><div class="col-lg-1 offset-10"></div></h3>
+                        <div class="row">
+                            <div class="col-lg-10">
+                                {{selectedDetails}}
+                            </div>                    
+                        </div>
+                    </div>
+                </div>
+                <div class="job-details-item">
+                    <div class="job-overview">
+                        <div class="row"><div class="col-lg-8"><h3>Filters</h3></div><div class="col-lg-1"><span class="bx bx-brush-alt" style="cursor:pointer;top: 60px;font-size: 20px;" (click)="clearFilter()"></span></div></div>
+                        <div class="row" *ngIf='filters.cm'>
+                            <div class="col-lg-2" style="margin-top: 30px"><span class="icofont-business-man pieworks-green" style="top: 60px;font-size: 32px;"></span></div>
+                            <div class="col-lg-10">
+                                <p style="margin-left: 10px">Member</p>
+                                <ng-select
+                                    [items]="members"
+                                    [multiple]="false"
+                                    bindLabel="user.name"
+                                    bindValue="user.id" 
+                                    class="form-control"
+                                    name="memberFilter"
+                                    placeholder="Select Member"
+                                    [(ngModel)]="userId"
+                                    [clearable]="true"
+                                    style="padding: 0"
+                                    (ngModelChange)="filterChanged();"
+                                  ></ng-select>
+                            </div>                    
+                        </div><br>
+                        <div class="row" *ngIf='filters.client'>
+                            <div class="col-lg-2" style="margin-top: 30px"><span class="icofont-business-man pieworks-green" style="top: 60px;font-size: 32px;"></span></div>
+                            <div class="col-lg-10">
+                                <p style="margin-left: 10px">Client</p>                                
+                                <ng-select
+                                    [items]="clients"
+                                    [multiple]="false"
+                                    bindLabel="name"
+                                    bindValue="id" 
+                                    class="form-control"
+                                    name="clientFilter"
+                                    placeholder="Select Client"
+                                    [(ngModel)]="clientId"
+                                    [clearable]="true"
+                                    style="padding: 0" [searchFn]="clientLocalSearch" (search)="onClientSearch($event)"
+                                    (ngModelChange)="filterChanged();"
+                                  ></ng-select>
+                            </div>                    
+                        </div><br>
+                        <div class="row" *ngIf='filters.sector'>
+                            <div class="col-lg-2" style="margin-top: 30px"><span class="icofont-user pieworks-green" style="top: 60px;font-size: 32px;"></span></div>
+                            <div class="col-lg-10">
+                                <p style="margin-left: 10px" title="">Sector</p>
+                                <div class="form-group">
+                                    <div class="job-category-area">
+                                        <ng-select
+                                        [items]="availableSectors"
+                                        [multiple]="false"
+                                        bindLabel="name"
+                                        bindValue="name" 
+                                        class="form-control"
+                                        name="sectFilter"
+                                        placeholder="Select Sector"
+                                        [(ngModel)]="sector"
+                                        [clearable]="true"
+                                        style="padding: 0"
+                                        (ngModelChange)="filterChanged();"
+                                      ></ng-select>
+                                    </div>
+                                </div>  
+                            </div>
+                        </div><br>
+                        <div class="row" *ngIf='filters.gender'>
+                            <div class="col-lg-2" style="margin-top: 30px"><span class="icofont-female pieworks-green" style="top: 60px;font-size: 32px;"></span></div>
+                            <div class="col-lg-10">
+                                <p style="margin-left: 10px" title="">Gender</p>
+                                <div class="form-group">
+                                    <div class="job-category-area">
+                                        <ng-select
+                                        [items]="genders"
+                                        [multiple]="false"
+                                        class="form-control"
+                                        name="genderFilter"
+                                        placeholder="Select Gender"
+                                        [(ngModel)]="gender"
+                                        [clearable]="true"
+                                        style="padding: 0"
+                                        (ngModelChange)="filterChanged();"
+                                      ></ng-select>
+                                    </div>
+                                </div>  
+                            </div>
+                        </div><br>
+                        <div class="row" *ngIf='filters.stage'>
+                            <div class="col-lg-2" style="margin-top: 30px"><span class="icofont-badge pieworks-green" style="top: 60px;font-size: 32px;"></span></div>
+                            <div class="col-lg-10">
+                                <p style="margin-left: 10px" title="">Grade</p>
+                                <div class="form-group">
+                                    <div class="job-category-area">
+                                        <ng-select
+                                        [items]="grades"
+                                        [multiple]="false"
+                                        bindLabel="name"
+                                        bindValue="id" 
+                                        class="form-control"
+                                        name="gradeFilter"
+                                        placeholder="Select Stage"
+                                        [(ngModel)]="gradeId"
+                                        [clearable]="true"
+                                        style="padding: 0"
+                                        (ngModelChange)="filterChanged();"
+                                      ></ng-select>
+                                        <!--                                <mat-form-field appearance="fill">
+                                                                            <mat-label>&nbsp;</mat-label>
+                                                                            <mat-select class='form form-control' [(ngModel)]="gradeId"> 
+                                                                                <mat-option [value]="s.id" *ngFor="let s of grades" (onSelectionChange)="filterChanged()"> {{s.name}} </mat-option>
+                                                                            </mat-select>
+                                                                        </mat-form-field>-->
+                                    </div>
+                                </div>  
+                            </div>
+                        </div>
+                        <div class="row" *ngIf='filters.countByJobFunction'>
+                            <div class="col-lg-2" style="margin-top: 30px"><span class="icofont-badge pieworks-green" style="top: 60px;font-size: 32px;"></span></div>
+                            <div class="col-lg-10">
+                                <p style="margin-left: 10px" title="">Client Growth</p>
+                                <!--                        <mat-radio-group aria-label="Select an option" name="a3">
+                                                            <mat-radio-button value="1" (click)="selectedCountTalentBy('Job Function Wise')">Job Function Wise</mat-radio-button>&nbsp;
+                                                            <mat-radio-button value="2" (click)="selectedCountTalentBy('Role Wise')">Role Wise</mat-radio-button>&nbsp;
+                                                            <mat-radio-button value="3" (click)="selectedCountTalentBy('Sector Wise')" [checked]='true'>Sector Wise</mat-radio-button>&nbsp;
+                                                            <mat-radio-button value="4" (click)="selectedCountTalentBy('CTC bucket Wise')"  *ngIf='filters.countByCtcBucket' selected>CTC bucket Wise</mat-radio-button>&nbsp;
+                                                        </mat-radio-group> -->
+                            </div>
+                        </div>
+                        <div class="row" *ngIf='filters.monthlyCreation'>
+                            <div class="col-lg-2" style="margin-top: 30px"><span class="icofont-badge pieworks-green" style="top: 60px;font-size: 32px;"></span></div>
+                            <div class="col-lg-10">
+                                <p style="margin-left: 10px" title=""> </p>
+                                <!--                        <mat-radio-group aria-label="Select an option" name="a4">
+                                                            <mat-radio-button value="1" (click)="monthlyCreation='true';filterChanged()" [checked]='true'>Monthly Addition</mat-radio-button>&nbsp;
+                                                            <mat-radio-button value="2" (click)="monthlyCreation='false';filterChanged()">Addition Till Date</mat-radio-button>&nbsp;
+                                                            <mat-radio-button *ngIf='filters.monthlyStrength' value="3" (click)="monthlyCreation='monthlyStrength';filterChanged()">Monthly Strength</mat-radio-button>&nbsp;
+                                                        </mat-radio-group> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+</div>

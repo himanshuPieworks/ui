@@ -1,0 +1,44 @@
+<!-- <div>
+    <apx-chart
+      #chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [xaxis]="chartOptions.xaxis"
+      [dataLabels]="chartOptions.dataLabels"
+      [stroke]="chartOptions.stroke"
+      [markers]="chartOptions.markers"
+      [tooltip]="chartOptions.tooltip"
+      [yaxis]="chartOptions.yaxis"
+      [grid]="chartOptions.grid"
+      [legend]="chartOptions.legend"
+      [title]="chartOptions.title"
+    ></apx-chart>
+  </div>
+  <div>
+    <button (click)="updateSeries(newSeriesData)">Update Series</button>
+    <button (click)="updateTitle('New Title')">Update Title</button>
+    <button (click)="updateCategories(newCategories)">Update Categories</button>
+  </div> -->
+
+<br />
+
+<div>
+  <div>
+    <div style="display: block">
+      <apx-chart
+        [series]="lineWithDataLabelsChart.series"
+        [chart]="lineWithDataLabelsChart.chart"
+        [xaxis]="lineWithDataLabelsChart.xaxis"
+        [stroke]="lineWithDataLabelsChart.stroke"
+        [colors]="lineWithDataLabelsChart.colors"
+        [dataLabels]="lineWithDataLabelsChart.dataLabels"
+        [legend]="lineWithDataLabelsChart.legend"
+        [markers]="lineWithDataLabelsChart.markers"
+        [grid]="lineWithDataLabelsChart.grid"
+        [yaxis]="lineWithDataLabelsChart.yaxis"
+        [title]="lineWithDataLabelsChart.title"
+        dir="ltr"
+      ></apx-chart>
+    </div>
+  </div>
+</div>

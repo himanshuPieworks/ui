@@ -1,0 +1,121 @@
+<div *ngIf="commonService.user.userrole == 'COMMUNITY MEMBER'">
+ <app-community-dashboard></app-community-dashboard>
+</div>
+
+<div *ngIf="commonService.user.userrole == 'Talent'">
+  <app-talent-dashboard></app-talent-dashboard>
+</div>
+
+<div *ngIf="commonService.user.userrole == 'Client'">
+  <app-client-dashboard></app-client-dashboard>
+</div>
+
+
+
+<!-- guidePopUp Form  -->
+<!-- <div
+  bsModal
+  #guidePopUp="bs-modal"
+  class="modal fade bs-example-modal-lg"
+  id="event-modal"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 rounded">
+      <div
+        class="modal-header p-3 bg-info-subtle"
+        style="
+          background-image: url('assets/images/event_dg_bg.png');
+          height: 50px;
+          border-top-left-radius: 10px !important;
+          border-top-right-radius: 10px !important;
+        "
+      >
+        <button
+          type="button"
+          class="btn-close"
+          (click)="guidePopUp.hide()"
+        ></button>
+      </div>
+      <div
+        class="modal-body"
+        style="
+          border: solid rgb(255, 255, 255) 8px;
+          border-radius: 10px;
+          border-top: 0px;
+        "
+      >
+        <div *ngFor="let g of guides">
+          <div class="card border">
+            <div class="card-body">
+              <div class="d-flex gap-3 mb-1">
+                <div class="align-self-center">
+                  <img
+                    src="{{
+                      commonService.getPicUrl(commonService.user?.profilepic)
+                    }}"
+                    alt=""
+                    style="width: 40px; height: 40px"
+                    class="rounded-circle"
+                  />
+                </div>
+                <div>
+                  <h6 class="mb-0">Q. {{ g.question }}</h6>
+                  <span>{{ g.seeker.name }}</span>
+                </div>
+              </div>
+              <div class="d-flex gap-3 mb-1">
+                <div class="align-self-center">
+                  <img
+                    src="{{ commonService.getPicUrl(g.expert?.profilePic) }}"
+                    alt=""
+                    style="width: 40px; height: 40px"
+                    class="rounded-circle"
+                  />
+                </div>
+                <div>
+                  <h6 class="mb-0">Ans. {{ g.answer }}</h6>
+                  <span>{{ g.expert.name }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-end">
+          
+          <button
+            style="
+              width: 30px;
+              height: 30px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+            [disabled]="pageNumForGuide == 1"
+            class="btn btn-outline-secondary"
+            (click)="previous()"
+          >
+            <i class="bi bi-caret-left-fill fs-3xl"></i>
+          </button>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <p class="mt-1">{{ paginationMessageForGuide }}</p>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <button
+            style="
+              width: 30px;
+              height: 30px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+            [disabled]="pageNumForGuide >= totalPagesForGuide"
+            class="btn btn-outline-secondary"
+            (click)="next()"
+          >
+            <i class="bi bi-caret-right-fill fs-3xl"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->

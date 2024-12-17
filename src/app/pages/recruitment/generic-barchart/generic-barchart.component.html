@@ -1,0 +1,19 @@
+<br>
+
+<div>
+  <div>
+    <div style="display: block;">
+<!--      <canvas baseChart
+        [data]="barChartData"
+        [options]="barChartOptions"
+        [plugins]="barChartPlugins"
+        [type]="barChartType"
+        (chartHover)="chartHovered($event)"
+        (chartClick)="chartClicked($event)">
+      </canvas>-->
+        <apx-chart [series]="basicBarChart.series" [chart]="basicBarChart.chart" #barChart  [tooltip]="basicBarChart.tooltip" 
+                    [dataLabels]="basicBarChart.dataLabels" [plotOptions]="basicBarChart.plotOptions"
+                    [xaxis]="basicBarChart.xaxis" [colors]="basicBarChart.colors" dir="ltr"></apx-chart>
+    </div>
+  </div>
+</div>

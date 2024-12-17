@@ -1,0 +1,439 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Importing Bootstrap SCSS file. */
+// @import "./node_modules/bootstrap/scss/bootstrap";
+
+/* Importing Datepicker SCSS file. */
+@import "node_modules/ngx-bootstrap/datepicker/bs-datepicker";
+
+/* Importing Select SCSS file. */
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
+body {
+  --sb-track-color: #232e33;
+  --sb-thumb-color: #1a9783;
+  --sb-size: 14px;
+  background-color: #FCF5EB;
+}
+
+body::-webkit-scrollbar {
+  width: var(--sb-size);
+}
+
+body::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 2px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 12px;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  body {
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+  }
+}
+
+.emoji-mart {
+  position: absolute;
+  bottom: 30px;
+  left: 0;
+}
+
+.emoji-mart-preview {
+  display: none;
+}
+
+.small-font {
+  .dz-text {
+    font-size: x-small;
+  }
+}
+
+.apex-charts {
+  div {
+    min-height: 0 !important;
+  }
+}
+.ngx-slider .ngx-slider-pointer.ngx-slider-active:after {
+  background-color: #f50b0b !important;
+}
+
+.ngx-slider .ngx-slider-pointer {
+  background-color: transparent !important;
+}
+
+.ngx-slider .ngx-slider-pointer:after {
+  background-color: #0099cc !important;
+}
+.ngx-slider.animate .ngx-slider-bubble.ngx-slider-limit {
+  display: none;
+}
+
+.card-body {
+  padding: 12px !important;
+}
+
+ngx-dropzone-image-preview {
+  max-width: none !important;
+  justify-content: normal !important;
+  height: 80px !important;
+  min-height: 80px !important;
+  background-image: none !important;
+
+  img {
+    opacity: 1 !important;
+  }
+
+  ngx-dropzone-label {
+    position: unset !important;
+  }
+}
+
+ngx-dropzone-preview {
+  max-width: none !important;
+  justify-content: normal !important;
+  height: 80px !important;
+  min-height: 80px !important;
+  background-image: none !important;
+
+  img {
+    opacity: 1 !important;
+  }
+
+  ngx-dropzone-label {
+    position: unset !important;
+  }
+}
+
+.progress-nav {
+  .stepper {
+    .stepper-body[_ngcontent-ng-c625643793] {
+      margin: 0;
+    }
+
+    .completed {
+      .nav-link {
+        color: #fff;
+        background-color: var(--tb-primary);
+      }
+    }
+
+    .step[_ngcontent-ng-c625643793] {
+      .nav-link {
+        z-index: 1;
+        position: relative;
+      }
+
+      &:after {
+        z-index: 0;
+        height: 1px;
+        background-color: var(--tb-border-color);
+        left: -100%;
+      }
+    }
+
+    .step.completed[_ngcontent-ng-c625643793]
+      + .step[_ngcontent-ng-c625643793]:after {
+      background-color: var(--tb-primary);
+    }
+  }
+}
+
+.step-arrow-nav {
+  .stepper {
+    .stepper-body[_ngcontent-ng-c625643793] {
+      margin: 0;
+    }
+
+    .completed {
+      .nav-link {
+        color: var(--tb-primary);
+      }
+
+      background-color: rgba(var(--tb-primary-rgb), 0.15);
+    }
+
+    .active {
+      .nav-link {
+        color: var(--tb-primary);
+      }
+    }
+
+    .step[_ngcontent-ng-c625643793] {
+      .nav-link {
+        z-index: 1;
+        position: relative;
+      }
+    }
+  }
+}
+
+.vertical-wizard {
+  .stepper {
+    .stepper-body[_ngcontent-ng-c625643793] {
+      margin: 0;
+      overflow: hidden;
+    }
+
+    .step-title {
+      // display: none;
+      position: relative !important;
+      bottom: 0 !important;
+
+      i {
+        color: var(--tb-danger);
+      }
+    }
+
+    .steps {
+      gap: 8px;
+
+      .step {
+        background-color: rgba(var(--tb-light-rgb), 0.4) !important;
+        border: 1px solid var(--tb-border-color);
+        border-radius: 0.25rem;
+
+        &.active {
+          .nav-link {
+            .step-title {
+              i {
+                color: var(--tb-primary);
+              }
+            }
+
+            color: var(--tb-primary);
+          }
+
+          border-color: rgba(var(--tb-primary-rgb), 1);
+        }
+
+        &.completed {
+          .nav-link {
+            .step-title {
+              i {
+                color: var(--tb-success);
+              }
+            }
+
+            color: var(--tb-success);
+          }
+
+          border-color: rgba(var(--tb-success-rgb), 1);
+        }
+      }
+    }
+  }
+}
+
+.clickable {
+  cursor: pointer;
+}
+.notClickable {
+  cursor: default !important;
+}
+.vertical-align {
+  align-items: center;
+  display: flex;
+}
+
+.align-horizontal {
+  display: inline-block;
+}
+
+.card {
+  border-radius: 10px !important;
+}
+.modal-content {
+  border-radius: 30px !important;
+}
+
+.modal-header {
+  background-color: #0099cc !important;
+  padding-bottom: 10px !important;
+  border-top-left-radius: 30px !important;
+  border-top-right-radius: 30px !important;
+}
+.navbar-nav {
+  justify-content: center;
+}
+.bg-orange {
+  background-color: rgb(255 78 46);
+}
+.toast-top-center {
+  position: fixed;
+}
+.text-muted {
+  --tb-text-opacity: 1;
+  color: #696361 !important;
+}
+.form-control:disabled {
+  --tb-text-opacity: 1;
+  color: #696361 !important;
+}
+.std-button {
+  min-width: 140px;
+}
+.default-btn-width {
+  min-width: inherit;
+}
+.datepicker,
+.table-condensed {
+  width: 500px;
+  height: 500px;
+}
+.pieworks-green {
+  color: #4fd6ad !important;
+}
+.pieworks-red {
+  color: #f50b0b !important;
+}
+
+.pieworks-green-background {
+  background-color: #4fd6ad !important;
+}
+.btn-primary {
+  background-color: #162444 !important;
+  border: #162444 !important;
+}
+.btn-primary:hover
+{
+  background-color: #19294e !important;
+  border: #19294d !important;
+}
+
+.btn-outline-primary:hover {
+  background-color: #162444 !important;
+  border: #162444 !important;
+}
+.btn-outline-primary {
+  color: #162444;
+  border: #162444 solid 1px !important;
+}
+
+.btn-outline-dark:hover {
+  background-color: #162444 !important;
+}
+.carousel-indicators {
+  margin-bottom: 0 !important;
+}
+
+.carousel-indicators button {
+  width: 5px !important;
+  height: 5px !important;
+  border-radius: 100% !important;
+}
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-item.show .nav-link {
+  border-top: 0 !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
+  border-bottom: 5px solid black !important;
+  font-weight: bold !important;
+  color: black !important;
+}
+.nav-tabs .nav-link,
+.nav-tabs .nav-item.show .nav-link {
+  border-top: 0 !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
+  border-bottom: 0 !important;
+  // font-weight: bold;
+  color: black !important;
+}
+
+.nav-tabs-custom .nav-item .nav-link::after {
+  background: none !important;
+}
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-item.show .nav-link :hover {
+  border-top: 0 !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
+  border-bottom: 5px solid black !important;
+  // font-weight: bold;
+  color: black !important;
+}
+.fieldLabel {
+  color: gray !important;
+}
+.fieldValue {
+  color: black !important;
+}
+@font-face {
+  font-family: "Public Sans";
+  font-style: normal;
+  font-weight: 400;
+  src: url("./assets/fonts/public-sans-develop/fonts/webfonts/PublicSans-Regular.woff")
+      format("woff2"),
+    url("./assets/fonts/public-sans-develop/fonts/webfonts/PublicSans-Regular.woff")
+      format("woff");
+}
+h6,
+.h6,
+h5,
+.h5,
+h4,
+.h4,
+h3,
+.h3,
+h2,
+.h2,
+h1,
+body,
+button {
+  font-family: "Public Sans", sans-serif !important;
+}
+
+.btn {
+  -tb-btn-border-radius: 0.5rem !important;
+}
+
+.dropdown-item {
+  font-size: 12px;
+}
+
+.tooltip-inner {
+  border-radius: 10px;
+  background-color: #e9e9ea; /* Change background color */
+  color: #4a4c46; /* Change text color */
+  font-style: italic;
+}
+
+.tooltip.top .tooltip-arrow {
+  border-top-color: #e9e9ea; /* Change arrow color */
+}
+
+// for search icon inside the search bar
+.has-search .form-control {
+  padding-left: 2.375rem;
+}
+
+.has-search .form-control-feedback {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  width: 2.375rem;
+  height: 2.375rem;
+  line-height: 2.375rem;
+  text-align: center;
+  pointer-events: none;
+  color: #aaa;
+}
+
+.modal-content {
+  border-radius: 8px !important;
+  border: 0px !important;
+}
+
+.modal-header {
+  background-color: #00cc47 !important;
+  background-image: url("assets/images/background.png");
+  padding-bottom: 10px !important;
+  border-top-left-radius: 8px !important;
+  border-top-right-radius: 8px !important;
+}

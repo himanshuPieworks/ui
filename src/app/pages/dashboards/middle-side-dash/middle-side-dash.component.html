@@ -1,0 +1,957 @@
+<div class="card">
+  <div class="card-body">
+    <div
+      class="d-flex gap-1 justify-content-between"
+      (click)="post = { postType: 'generic' }; showPostWindow(postWindow)"
+    >
+      <div>
+        <img
+          src="{{ commonService.getPicUrl(userImg) }}"
+          alt="img-01.jpg"
+          class="rounded-circle avatar-sm"
+        />
+      </div>
+
+      <!-- <img src="{{commonService.getPicUrl(userImg)}}" alt="" class="avatar-lg rounded-circle p-1 mt-n3" style="width: 50px;height: 50px;"> -->
+      <div
+        type="text"
+        class="form-control align-self-center rounded-pill"
+        id="basiInput"
+        placeholder="start a post"
+        style="width: 90%; cursor: text"
+      >
+        What's on your mind ?
+      </div>
+    </div>
+
+    <hr />
+    <div class="row justify-content-center">
+      <div
+        class="col-xxl-3 col-md-3 col-3"
+        (click)="post = { postType: 'generic' }; showPostWindow(postWindow)"
+      >
+        <div class="d-flex gap-2 clickable justify-content-center flex-wrap">
+          <!-- icon of post -->
+          <div>
+            <i class="bi bi-images text-muted fs-2xl"></i>
+          </div>
+          <!-- name -->
+          <div class="align-self-center d-none d-sm-block">Image</div>
+        </div>
+      </div>
+      <div
+        class="col-xxl-3 col-md-3 col-3"
+        (click)="post = { postType: 'generic' }; showPostWindow(postWindow)"
+      >
+        <div class="d-flex gap-2 clickable justify-content-center flex-wrap">
+          <!-- icon of post -->
+          <div>
+            <i class="bi bi-camera-reels text-muted fs-2xl"></i>
+          </div>
+          <!-- name -->
+          <div class="align-self-center d-none d-sm-block">Video</div>
+        </div>
+      </div>
+      <div
+        class="col-xxl-3 col-md-3 col-3"
+        (click)="post = { postType: 'poll' }; showPostWindow(postWindow)"
+      >
+        <div class="d-flex gap-2 clickable justify-content-center flex-wrap">
+          <!-- icon of post -->
+          <div>
+            <i class="bi bi-bar-chart-line text-muted fs-2xl"></i>
+          </div>
+          <!-- name -->
+          <div class="align-self-center d-none d-sm-block">Poll</div>
+        </div>
+      </div>
+      <div
+        class="col-xxl-3 col-md-3 col-3"
+        (click)="post = { postType: 'generic' }; showPostWindow(postWindow)"
+      >
+        <div class="d-flex gap-2 clickable justify-content-center flex-wrap">
+          <!-- icon of post -->
+          <div>
+            <i class="bi bi-paperclip text-muted fs-2xl"></i>
+          </div>
+          <!-- name -->
+          <div class="align-self-center d-none d-sm-block">Document/Link</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card" *ngFor="let post1 of posts; index as i">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-xl-10 col-8">
+        <div class="d-flex gap-1 flex-wrap">
+          <!-- icon of company -->
+          <div>
+            <img
+              src="{{ commonService.getPicUrl(post1.createdBy.profilepic) }}"
+              alt="img-01.jpg"
+              loading="lazy"
+              class="rounded-circle border avatar-sm"
+            />
+          </div>
+          <!-- role and company name -->
+          <div class="align-self-center">
+            <span class="text-dark h6">{{
+              post1.createdBy.name ? post1.createdBy.name : "NA"
+            }}</span>
+            <p class="text-muted m-0">
+              {{
+                commonService.getTimeElapsed(
+                  commonService.getJsDateObject(post1?.logTime),
+                  undefined
+                )
+              }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col-xl-2 col-4 text-end"
+        *ngIf="
+          post1.createdBy.id == commonService.user.id &&
+          post1.postType == 'generic'
+        "
+      >
+        <div class="relative">
+          <div
+            class="dropdown dropdown-real-estate absolute top-0 right-0"
+            dropdown
+          >
+            <i
+              dropdownToggle
+              class="bi bi-three-dots-vertical text-dark fs-2xl"
+            ></i>
+
+            <ul *bsDropdownMenu
+            class="dropdown-menu dropdown-menu-end mb-0"  >
+              <li>
+                <a
+                  class="dropdown-item edit-list"
+                  href="javascript:void(0);"
+                  style="font-size: 12px"
+                  (click)="post = post1; showPostWindow(postWindow)"
+                  >Edit</a
+                >
+              </li>
+              <li>
+                <a
+                  class="dropdown-item edit-list"
+                  href="javascript:void(0);"
+                  style="font-size: 12px"
+                  (click)="post = post1; confirmDelete()"
+                  >Delete</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr />
+    <div *ngIf="post1.postType == 'generic'">
+      <div class="row gy-4" style="margin-top: 4px; margin-bottom: 4px">
+        <div
+          style="white-space: pre-wrap"
+          class="col-xxl-12 col-md-12 m-0"
+          [innerHTML]="post1.message | urlify"
+        ></div>
+      </div>
+      <div class="row gy-4" *ngIf="post1.image">
+        <div class="col-xxl-12 col-md-12">
+          <!--<div class="card-body rounded profile-basic" style="background-image: url('assets/images/small/img-10.jpg');background-size: cover;"></div>-->
+          <img
+            src="{{ post1.image ? commonService.getPicUrl(post1.image) : '' }}"
+            loading="lazy"
+            class="rounded"
+          />
+        </div>
+      </div>
+      <div class="row gy-4" *ngIf="post1.video" style="height: 300px">
+        <div class="col-xxl-12 col-md-12">
+          <iframe
+            [src]="post1.video | safe"
+            title="YouTube video player"
+            style="height: 100%; width: 100%"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            class="rounded"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="post1.postType == 'mandate'">
+      <div class="row gy-1" style="margin-top: 4px; margin-bottom: 4px">
+        <div class="col-xl-12">
+          <div class="d-flex gap-1 flex-wrap">
+            <!-- icon of company -->
+            <div>
+              <img
+                src="{{
+                  post1.image ? commonService.getPicUrl(post1.image) : ''
+                }}"
+                alt="image"
+                loading="lazy"
+                class="rounded-circle border avatar-sm"
+              />
+            </div>
+            <!-- role and company name -->
+            <div class="align-self-center" style="max-width: 500px">
+              <div class="col-xxl-12 col-md-12 m-0 vertical-align">
+                <h6>Mandate update</h6>
+              </div>
+              <div
+                class="col-xxl-12 col-md-12 m-0"
+                [innerHTML]="post1.message | urlify"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="post1.postType == 'poll'" class="card border p-2">
+      <div class="row">
+        <div class="col-lg-12 text-dark h6">{{ post1.message }}</div>
+      </div>
+      <br />
+      <div class="d-flex gap-1">
+        <div class="w-1"></div>
+        <div class="w-1 text-muted">
+          <input
+            name="{{ post1.id }}"
+            type="radio"
+            [(ngModel)]="post1.temp2"
+            value="1"
+            (click)="post1.temp2 = '1'; savePostResponse(post1, 'poll', i)"
+          />
+        </div>
+        <div class="w-100 text-muted">{{ post1.answer1 }}</div>
+        <div class="w-1 text-muted">{{ post1.answer1Count }}</div>
+      </div>
+      <br />
+      <div class="d-flex gap-1">
+        <div class="w-1 w-1"></div>
+        <div class="w-1 text-muted">
+          <input
+            name="{{ post1.id }}"
+            type="radio"
+            [(ngModel)]="post1.temp2"
+            value="2"
+            (click)="post1.temp2 = '2'; savePostResponse(post1, 'poll', i)"
+          />
+        </div>
+        <div class="w-100 text-muted">{{ post1.answer2 }}</div>
+        <div class="w-1 text-muted">{{ post1.answer2Count }}</div>
+      </div>
+      <br />
+      <div class="d-flex gap-1" *ngIf="post1.answer3 != 'undefined'">
+        <div class="w-1"></div>
+        <div class="w-1 text-muted">
+          <input
+            name="{{ post1.id }}"
+            type="radio"
+            [(ngModel)]="post1.temp2"
+            value="3"
+            (click)="post1.temp2 = '3'; savePostResponse(post1, 'poll', i)"
+          />
+        </div>
+        <div class="w-100 text-muted">{{ post1.answer3 }}</div>
+        <div class="w-1 text-muted">{{ post1.answer3Count }}</div>
+      </div>
+      <br />
+      <div class="d-flex gap-1" *ngIf="post1.answer4 != 'undefined'">
+        <div class="w-1"></div>
+        <div class="w-1 text-muted">
+          <input
+            name="{{ post1.id }}"
+            type="radio"
+            [(ngModel)]="post1.temp2"
+            value="4"
+            (click)="post1.temp2 = '4'; savePostResponse(post1, 'poll', i)"
+          />
+        </div>
+        <div class="w-100 text-muted">{{ post1.answer4 }}</div>
+        <div class="w-1 text-muted">{{ post1.answer4Count }}</div>
+      </div>
+    </div>
+    <!-- this div show how many likes and comment-->
+    <div class="row gy-4" *ngIf="post1.postType == 'generic'">
+      <div
+        class="d-flex align-items-center justify-content-between gap-3 vertical-align"
+      >
+        <div class="col-xxl-2 col-md-2 clickable">
+          <div class="d-flex flex-wrap">
+            <!-- icon of company -->
+            <div>
+              <span
+                class="ri-thumb-up-fill text-info"
+                (click)="post = post1; action = 'Likes'; commentsWindow.show()"
+              ></span>
+            </div>
+            <!-- role and company name -->
+            <div class="align-self-center">
+              <span> {{ post1.likes }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-xxl-10 col-md-10 text-sm-end">
+          <button
+            type="button"
+            class="btn btn-link"
+            style="font-size: 13px"
+            (click)="
+              post = post1;
+              action = 'Comments';
+              clickComment = !clickComment;
+              showMore = !showMore
+            "
+          >
+            {{ post1.comments }} Comments
+          </button>
+        </div>
+      </div>
+    </div>
+    <hr class="mb-0" *ngIf="post1.postType == 'generic'" />
+    <!-- like and comment button -->
+    <div class="row mb-1" *ngIf="post1.postType == 'generic'">
+      <div class="col-xxl-12 col-md-12 col-12">
+        <div class="d-flex align-items-center justify-content-evenly gap-5">
+          <div>
+            <div
+              class="d-flex gap-2 clickable flex-wrap"
+              (click)="savePostResponse(post1, 'like', i)"
+            >
+              <!-- icon of company -->
+              <div class="align-self-center">
+                <span
+                  class="{{
+                    post1.alreadyLiked == 1
+                      ? 'ri-thumb-up-fill clickable fs-4xl'
+                      : 'ri-thumb-up-line clickable fs-4xl'
+                  }}"
+                ></span>
+              </div>
+              <!-- role and company name -->
+              <div class="align-self-center"></div>
+            </div>
+          </div>
+          <div>
+            <div
+              class="d-flex gap-2 clickable flex-wrap"
+              (click)="focusOnCommentBox(i)"
+            >
+              <!-- icon of company -->
+              <div class="align-self-center">
+                <span
+                  class="ri-message-line clickable fs-4xl"
+                  (click)="
+                    selectedIndex = i;
+                    clickComment = !clickComment;
+                    showMore = false
+                  "
+                ></span>
+              </div>
+              <!-- role and company name -->
+              <div class="align-self-center"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xxl-3 col-md-3"></div>
+    </div>
+    <div *ngIf="clickComment && selectedIndex == i">
+      <!-- comment box for top comment -->
+      <div class="row align-items-center" *ngIf="post1.postType == 'generic'">
+        <div
+          class="col-xxl-12 col-md-12 col-12"
+          *ngIf="!post1.latestResp?.edit || showMore"
+        >
+          <div class="d-flex gap-2">
+            <!-- icon of company -->
+            <div class="align-self-center">
+              <img
+                src="{{
+                  commonService.getPicUrl(commonService.user?.profilepic)
+                }}"
+                alt="img-01.jpg"
+                class="rounded-circle"
+                loading="lazy"
+                style="height: 30px; width: 30px"
+              />
+            </div>
+            <!-- role and company name -->
+            <div class="position-relative" style="width: 100%">
+              <div>
+                <input
+                  type="text"
+                  class="form-control rounded-pill"
+                  id="{{ 'commentInput' + i }}"
+                  placeholder="Write a comment"
+                  autofill="false"
+                  [(ngModel)]="post1.temp"
+                  maxlength="300"
+                  style="width: 100%"
+                  (keypress)="onInput($event, i, 'new')"
+                />
+                <div
+                  class="z-3 position-absolute"
+                  style="height: 300px; overflow: auto"
+                  *ngIf="!post1.latestResp?.edit && selectedIndex == i"
+                >
+                  <div *ngIf="showMentions">
+                    <ul class="list-group">
+                      <li
+                        class="list-group-item list-group-item-primary clickable"
+                        *ngFor="let user of users"
+                        (click)="selectUser(user.name, i, user.id, 'new')"
+                      >
+                        @{{ user.name }}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="position-absolute" style="top: 2px; right: 2px">
+                <i
+                  class="ri-send-plane-2-fill fs-4xl clickable"
+                  (click)="
+                    selectedResponseId = undefined;
+                    selectPostCreatedBy = post1.createdBy;
+                    savePostResponse(post1, 'comment', i)
+                  "
+                ></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- comment to edit -->
+      <div class="row mt-2" *ngIf="post1.latestResp && !showMore">
+        <div class="col-xxl-12 col-md-12 col-12">
+          <div class="d-flex gap-2">
+            <!-- icon of company -->
+            <div class="align-self-center">
+              <img
+                src="{{
+                  commonService.getPicUrl(post1.latestResp?.user.profilepic)
+                }}"
+                alt="img-01.jpg"
+                class="rounded-circle"
+                loading="lazy"
+                style="height: 30px; width: 30px"
+              />
+            </div>
+
+            <div
+              class="bg-light align-self-center"
+              *ngIf="!post1.latestResp?.edit"
+              style="
+                height: 100%;
+                padding: 10px;
+                width: 100%;
+                border-radius: 10px;
+              "
+            >
+              <div class="relative">
+                <div [innerHTML]="post1.latestResp?.comment | urlify"></div>
+                <!-- Dropdown to edit the comment -->
+                <ul
+                  class="dropdown dropdown-real-estate absolute top-0 right-0"
+                  dropdown
+                  *ngIf="
+                    post1.latestResp.user.id == commonService.user.id &&
+                    !post1.latestResp.edit
+                  "
+                  style="width: 5%"
+                >
+                  <a
+                    class="clickable"
+                    dropdownToggle
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <span class="ri-more-2-line clickable"></span>
+                  </a>
+
+                  <div
+                    class="dropdown-menu"
+                    *dropdownMenu
+                    class="dropdown-menu dropdown-menu-end mb-0"
+                  >
+                    <a
+                      class="dropdown-item clickable"
+                      (click)="
+                        selectedResponseId = post1.latestResp?.id;
+                        selectPostCreatedBy = post1.createdBy;
+                        post1.latestResp.edit = true;
+                        post1.temp2 = post1.latestResp?.comment;
+                        editComment(i)
+                      "
+                      >Edit</a
+                    >
+                    <a
+                      class="dropdown-item clickable"
+                      (click)="
+                        selectedResponseId = post1.latestResp?.id;
+                        selectPostCreatedBy = post1.createdBy;
+                        savePostResponse(post1, 'comment', i)
+                      "
+                      >Delete</a
+                    >
+                  </div>
+                </ul>
+              </div>
+            </div>
+
+            <div
+              class="position-relative"
+              style="width: 100%"
+              *ngIf="post1.latestResp?.edit"
+            >
+              <div>
+                <input
+                  type="text"
+                  class="form-control rounded-pill"
+                  id="{{ 'commentInput' + i }}"
+                  placeholder="Write a comment"
+                  [(ngModel)]="post1.temp2"
+                  maxlength="300"
+                  style="width: 100%"
+                  (keypress)="onInput($event, i, 'edit')"
+                />
+                <div
+                  class="z-3 position-absolute"
+                  style="height: 300px; overflow: auto"
+                  *ngIf="post1.latestResp?.edit && selectedIndex == i"
+                >
+                  <div *ngIf="showMentions">
+                    <ul class="list-group">
+                      <li
+                        class="list-group-item list-group-item-primary clickable"
+                        *ngFor="let user of users"
+                        (click)="selectUser(user.name, i, user.id, 'edit')"
+                      >
+                        @{{ user.name }}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="position-absolute" style="top: 2px; right: 2px">
+                <i
+                  class="ri-send-plane-2-fill fs-4xl clickable"
+                  (click)="savePostResponse(post1, 'comment', i)"
+                ></i>
+              </div>
+            </div>
+            <!-- <div
+              class="rounded-pill"
+              *ngIf="post1.latestResp?.edit"
+              style="height: 100%; padding: 10px; width: 80%"
+            >
+              <input
+                type="text"
+                class="form-control rounded-pill"
+                placeholder="Write a comment"
+                [(ngModel)]="post1.temp2"
+                maxlength="300"
+              />
+            </div>
+            <div *ngIf="post1.latestResp?.edit" class="align-self-center">
+              <i
+                class="ri-send-plane-2-fill fs-4xl"
+                (click)="savePostResponse(post1, 'comment', i)"
+              ></i>
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <div *ngIf="showMore" class="mt-2">
+        <div *ngFor="let resp of post.responses">
+          <div
+            class="d-flex gap-2 mb-2"
+            *ngIf="action == 'Comments' && resp.type == 'comment'"
+          >
+            <div class="align-self-center">
+              <img
+                src="{{ commonService.getPicUrl(resp.user.profilepic) }}"
+                alt="img-01.jpg"
+                class="rounded-circle border"
+                loading="lazy"
+                style="height: 30px; width: 30px"
+              />
+            </div>
+            <div
+              class="bg-light align-self-center"
+              style="width: 100%; padding: 10px; border-radius: 10px"
+            >
+              <p class="text-muted mb-0">
+                {{ resp.user.name }}
+              </p>
+              <div [innerHTML]="resp.comment | urlify"></div>
+            </div>
+          </div>
+
+          <div
+            class="d-flex gap-4 flex-wrap"
+            *ngIf="action == 'Likes' && resp.type == 'like'"
+          >
+            <div class="align-self-center">
+              <img
+                src="{{ commonService.getPicUrl(resp.user.profilepic) }}"
+                alt="img-01.jpg"
+                class="rounded-circle border"
+                loading="lazy"
+                style="height: 50px; width: 50px"
+              />
+            </div>
+            <div class="align-self-center">
+              <p class="text-muted mb-0">{{ resp.user.name }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <a
+        *ngIf="post1.postType == 'generic'"
+        class="clickable text-dark"
+        (click)="post = post1; action = 'Comments'; showMore = !showMore"
+        >{{ showMore ? "View less comments" : "View more comments" }}</a
+      >
+    </div>
+  </div>
+</div>
+
+<!-- this is posts and poll -->
+<ng-template
+  #postWindow
+  class="modal fade bs-example-modal-lg"
+  id="varyingcontentModal"
+>
+  <div class="modal-content">
+    <div
+      class="modal-header"
+      style="background-image: url('assets/images/background.png')"
+    >
+      <h5 class="modal-title" id="varyingcontentModalLabel">Create post</h5>
+      <button
+        type="button"
+        class="btn-close"
+        (click)="modalRef?.hide()"
+      ></button>
+    </div>
+    <div class="modal-body" *ngIf="post.postType == 'generic'">
+      <!-- <form> -->
+      <div class="d-flex gap-4 flex-wrap">
+        <!-- icon of user -->
+        <div>
+          <img
+            src="{{ commonService.getPicUrl(userImg) }}"
+            alt="img-01.jpg"
+            class="rounded-circle border"
+            loading="lazy"
+            style="height: 40px; width: 40px"
+          />
+        </div>
+        <!-- role and company name -->
+        <div class="align-self-center">
+          <p class="text-dark m-0">
+            {{ commonService.user.name }}
+          </p>
+        </div>
+      </div>
+      <br />
+      <div class="row gy-4">
+        <div class="col-xxl-12 col-md-12">
+          <textarea
+            placeholder="what's on your mind ?"
+            class="form-control"
+            rows="3"
+            id="postmessage"
+            name="postmessage"
+            [(ngModel)]="post.message"
+          ></textarea>
+        </div>
+      </div>
+      <div class="row gy-4">
+        <div class="col-xxl-12 col-md-12">
+          <p class="text-muted">
+            Max allowed size : 10 MB, allowed types : pdf, jpg, jpeg, png
+          </p>
+          <ngx-dropzone
+            (change)="onFileSelecet($event)"
+            [accept]="'application/pdf,image/*'"
+            [multiple]="false"
+          >
+            <ngx-dropzone-label>
+              <div class="mb-3">
+                <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
+              </div>
+
+              <h5>Drop files here or click to upload.</h5>
+            </ngx-dropzone-label>
+          </ngx-dropzone>
+          <ngx-dropzone-preview
+            class="border rounded"
+            [removable]="true"
+            (removed)="onRemove()"
+            *ngIf="file"
+          >
+            <ngx-dropzone-label *ngIf="imageURL">
+              <div class="d-flex p-2">
+                <div class="flex-shrink-0 me-3">
+                  <div class="avatar-sm bg-light rounded">
+                    <img
+                      *ngIf="file.type != 'application/pdf'"
+                      class="img-fluid rounded d-block"
+                      loading="lazy"
+                      src="{{ imageURL }}"
+                      alt="Dropzone-Image"
+                    />
+                    <i
+                      *ngIf="file.type == 'application/pdf'"
+                      class="bi bi-filetype-pdf fs-4 text-danger-emphasis"
+                    ></i>
+                  </div>
+                </div>
+                <div class="flex-grow-1">
+                  <div class="pt-1">
+                    <h5 class="fs-md mb-1">{{ file.name }}&nbsp;</h5>
+                    <p class="fs-sm text-muted mb-0">{{ file.type }}</p>
+                    <strong class="error text-danger"></strong>
+                  </div>
+                </div>
+              </div>
+            </ngx-dropzone-label>
+          </ngx-dropzone-preview>
+        </div>
+      </div>
+      <div class="row gy-4">
+        <div class="col-xxl-12 col-md-12">
+          <button
+            type="button"
+            class="btn btn-primary from-control"
+            (click)="postMessage()"
+            [disabled]="!post.message && !post.image && !post.video"
+            style="width: 100%"
+          >
+            Post
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-body" *ngIf="post.postType == 'poll'">
+      <div class="row">
+        <div class="col-lg-12">
+          Question
+          <input
+            name="q"
+            type="text"
+            placeholder="What would you like to ask to the users?"
+            [(ngModel)]="post.message"
+            class="form form-control"
+          />
+        </div>
+      </div>
+      <br />
+      <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-11">
+          Option 1
+          <input
+            name="ans1"
+            type="text"
+            placeholder="Enter option 1"
+            [(ngModel)]="post.answer1"
+            class="form form-control"
+          />
+        </div>
+      </div>
+      <br />
+      <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-11">
+          Option 2
+          <input
+            name="ans2"
+            type="text"
+            placeholder="Enter option 2"
+            [(ngModel)]="post.answer2"
+            class="form form-control"
+          />
+        </div>
+      </div>
+      <br />
+      <div *ngIf="showOption3">
+        <div class="row">
+          <div class="col-lg-1"></div>
+          <div class="col-lg-11">
+            Option 3
+            <input
+              name="ans3"
+              type="text"
+              placeholder="Enter option 3"
+              [(ngModel)]="post.answer3"
+              class="form form-control"
+            />
+          </div>
+        </div>
+        <br />
+      </div>
+      <div *ngIf="showOption4">
+        <div class="row">
+          <div class="col-lg-1"></div>
+          <div class="col-lg-11">
+            Option 4
+            <input
+              name="ans4"
+              type="text"
+              placeholder="Enter option 4"
+              [(ngModel)]="post.answer4"
+              class="form form-control"
+            />
+          </div>
+        </div>
+        <br />
+      </div>
+      <div class="row">
+        <div class="col-lg-12 text-end">
+          <button
+            type="button"
+            class="btn btn-link"
+            *ngIf="!showOption4"
+            (click)="showNextOption()"
+          >
+            Show More
+          </button>
+          <button
+            type="button"
+            class="btn btn-link"
+            *ngIf="showOption4"
+            (click)="showLessOptions()"
+          >
+            Show Less
+          </button>
+        </div>
+      </div>
+      <br />
+      <div class="row gy-4">
+        <div class="col-xxl-12 col-md-12">
+          <button
+            type="button"
+            class="btn btn-primary from-control"
+            (click)="postMessage()"
+            [disabled]="!post.message && !post.image && !post.video"
+            style="width: 100%"
+          >
+            Post
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- this is for view more comment -->
+<div
+  bsModal
+  #commentsWindow="bs-modal"
+  class="modal fade"
+  id="exampleModalScrollable"
+>
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <h5 class="modal-title" id="exampleModalScrollableTitle">
+          {{ action }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="commentsWindow.hide()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <h6 class="fs-lg my-3"></h6>
+        <div *ngFor="let resp of post.responses">
+          <div
+            class="d-flex gap-4 flex-wrap mb-1"
+            *ngIf="action == 'Comments' && resp.type == 'comment'"
+          >
+            <div class="align-self-center">
+              <img
+                src="{{ commonService.getPicUrl(resp.user.profilepic) }}"
+                alt="img-01.jpg"
+                class="rounded-circle border"
+                loading="lazy"
+                style="height: 50px; width: 50px"
+              />
+            </div>
+            <div class="align-self-center" style="width: 400px">
+              <p class="text-muted mb-0">
+                {{ resp.user.name }}
+              </p>
+              <p [innerHTML]="resp.comment | urlify"></p>
+            </div>
+          </div>
+
+          <div
+            class="d-flex gap-4 flex-wrap"
+            *ngIf="action == 'Likes' && resp.type == 'like'"
+          >
+            <div class="align-self-center">
+              <img
+                src="{{ commonService.getPicUrl(resp.user.profilepic) }}"
+                alt="img-01.jpg"
+                class="rounded-circle border"
+                loading="lazy"
+                style="height: 50px; width: 50px"
+              />
+            </div>
+            <div class="align-self-center">
+              <p class="text-muted mb-0">{{ resp.user.name }}</p>
+            </div>
+          </div>
+
+          <!-- <div
+            class="d-flex mt-2"
+            *ngIf="action == 'Likes' && resp.type == 'like'"
+          >
+            <div class="flex-shrink-0">
+              <img
+                src="{{ resp.user.profilepic }}"
+                alt=""
+                class="avatar-lg rounded-circle p-1 mt-n3"
+              />
+            </div>
+            <div class="flex-grow-1 ms-2">
+              <p class="text-muted mb-0">{{ resp.user.name }}</p>
+            </div>
+          </div> -->
+        </div>
+      </div>
+      <div class="modal-footer" *ngIf="false">
+        <button
+          type="button"
+          class="btn btn-light"
+          (click)="commentsWindow.hide()"
+        >
+          Default Placeholder Close
+        </button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

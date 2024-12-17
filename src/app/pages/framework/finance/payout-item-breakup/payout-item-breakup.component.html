@@ -1,0 +1,95 @@
+<br>
+<div style="color:black">
+    <div class="row">
+        <div class="col-lg-4">Joined at CTC {{data?.discovery.joinedAtCtc}}/- on {{data?.discovery.doj}}</div>
+        <div class="col-lg-4" *ngIf="commonService.rbac['client-contracts']"><a href="{{data?.contract.contractDoc}}" target="_blank">View Contract ({{data.contract.logTime}})</a></div> 
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <table [ngClass]="commonService.isMobileDevice?'table overflow':'table table-striped'" >
+                <thead  class="thead-dark">
+                    <tr>
+                        <th>CTC (LPA)</th><th>Success Fee </th>
+                    </tr>
+                    <tr *ngFor="let slab of data?.contract.slabs">
+                        <th>{{slab.slabName}}</th><td class="table-td">{{slab.successFeePerc}}%</td>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <hr>
+    <div class="row" *ngIf="data?.candidateInteractionShare" title="{{data?.candidateInteractionShareCalculation}}">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-4"><label>Candidate Interaction</label></div>
+        <div class="col-lg-4" style="text-align: right">:{{data?.candidateInteractionShare}}/-</div>
+    </div>
+    <div class="row" *ngIf="data?.clientAnchorShare" title="{{data?.clientAnchorShareCalculation}}">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-4"><label>Account Manager Share</label></div>
+        <div class="col-lg-4" style="text-align: right">:{{data?.clientAnchorShare}}/-</div>
+    </div>
+    <div class="row" *ngIf="data?.clientRefererShare" title="{{data?.clientRefererShareCalculation}}">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-4"><label>Mandate Share</label></div>
+        <div class="col-lg-4" style="text-align: right">:{{data?.clientRefererShare}}/-</div>
+    </div>
+    <div class="row" *ngIf="data?.communityLeaderShare" title="{{data?.communityLeaderShareCalculation}}">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-4"><label>Community Leader Share</label></div>
+        <div class="col-lg-4" style="text-align: right">: {{data?.communityLeaderShare}}/-</div>
+    </div>
+    <div class="row" *ngIf="data?.discovererShare" title="{{data?.discovererShareCalculation}}">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-4"><label>Discoverer Share</label></div>
+        <div class="col-lg-4" style="text-align: right">: {{data?.discovererShare}}/-</div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-4"><label>Total</label></div>
+        <div class="col-lg-4" style="text-align: right">: 
+            {{ getTotal(data) }}/-</div>
+    </div>
+    <div class="row" title="{{data?.totalCalculation}}">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-4"><label>{{data?.gradeName}} Share ({{data?.memberShareCorrection+"% of Total" }})</label></div>
+        <div class="col-lg-4" style="text-align: right">: {{this.total*data?.memberShareCorrection/100}}/-</div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12"><hr></div>
+    </div>
+    <div class="row" *ngIf="correctionDueToPenalty!=100">
+        <div class="col-lg-2"></div>
+        <!-- if there is a deduction due to misssing northstar then it should come 20% and 80% -->
+        <div class="col-lg-4"><label>Eligible payout due to missing northstar {{correctionDueToPenalty}}%</label></div>
+        <div class="col-lg-4" style="text-align: right">: {{(total*data?.memberShareCorrection/100)*correctionDueToPenalty/100}}/-</div>
+    </div>
+    <div class="row" *ngIf="data?.discovery && data?.discovererShare && data?.discovery.commitChocolates">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-4"><label>Piecoin correction (Commit)</label></div>
+        <div class="col-lg-4" style="text-align: right">: -{{data?.discovery.commitChocolates*500}}/-</div>
+    </div>
+    <div class="row" *ngIf="data?.discovery && data.discovererShare && data.discovery.chocolatesEligible">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-4"><label>Piecoin correction (Discovery)</label></div>
+        <div class="col-lg-4" style="text-align: right">: -{{data?.chocolatesWorthRedeemedPreviously}}/-</div>
+    </div>
+    <div class="row" *ngIf="data?.discovery && data?.discovererShare && data?.discovery.chocolatesEligible">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-4"><label>Net Payout</label></div>
+        <div class="col-lg-4" style="text-align: right">: {{data?.total}}/-</div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-4"><label>Previous Payment if any</label></div>
+        <div class="col-lg-4" style="text-align: right">: -{{data?.total - data?.escrowAmount - data?.maturedAmount}}/-</div>
+    </div><br>
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-4"><label>Ready to payout</label></div>
+        <div class="col-lg-4" style="text-align: right">: {{data?.maturedAmount}}/-</div>
+    </div><br>
+    <hr>
+    * 10% TDS will be deducted on the matured amount.
+</div><br>

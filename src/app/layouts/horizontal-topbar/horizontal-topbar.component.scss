@@ -1,0 +1,48 @@
+.page-content{
+    margin-top: 2%;
+}
+a:hover{
+    background-color:#3BC49B !important;
+}
+.navbar-menu .navbar-nav .nav-link.active {
+   background-color:#3BC49B !important;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Lato:300&display=swap');
+
+$from-r:  55;
+$from-g: 98;
+$from-b: 234;
+$to-r: 255;
+$to-g: 78;
+$to-b: 46;
+$from: rgba($from-r, $from-g,$from-b, 1);
+$to: rgba($to-r, $to-g,$to-b, 1);
+$number: 5;
+
+@function calcRgbaColor($index,$leftSide) {
+  $add : $index + 1;
+  @if $leftSide == true {
+    $add : $index - 1;
+  }
+  @return rgba($from-r + $add*($to-r - $from-r)/$number,$from-g + $add*($to-g - $from-g)/$number,$from-b + $add*($to-b - $from-b)/$number, 1);
+}
+@for $i from 1 through $number {
+    .parent > li > a:nth-child(#{$i}) {
+        background: -webkit-linear-gradient(to bottom right,calcRgbaColor($i,true),calcRgbaColor($i,false));
+        background: linear-gradient(to bottom right,calcRgbaColor($i,true),calcRgbaColor($i,false));
+  }
+}
+.parent{
+  display: flex;
+  justify-content: center;
+}
+.parent > li > a {
+ 
+  transition: background 500ms ease 0s; 
+}
+
+
+
+
+

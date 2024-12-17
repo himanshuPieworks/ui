@@ -1,0 +1,145 @@
+<div class="mt-sm-2 mt-4"></div>
+<div class="card  mx-auto">
+  <div class="card-header">
+    <h4 class="card-title mb-0"></h4>
+  </div>
+  <!-- end card header -->
+  <div class="card-body form-steps ">
+    <form action="#">
+      <div class="text-center mb-0">
+        <h5>Create Prospect</h5>
+      </div>
+      <div>
+
+        <div class="mb-3" *ngIf="showExtra">
+          <label for="prospectName" class="form-label">Your Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="prospectName"
+            id="prospectName"
+            placeholder="Your Name"
+            [(ngModel)]="payload.userName"
+          />
+        </div>
+        <div class="mb-3" *ngIf="showExtra">
+          <label for="prospectEmailId" class="form-label">Your Email</label>
+          <input
+            type="email"
+            class="form-control"
+            name="prospectEmailId"
+            id="prospectEmailId"
+            aria-describedby="emailHelp"
+            placeholder="Email"
+            [(ngModel)]="payload.userEmailId"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="prospectName" class="form-label">Prospect Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="prospectName"
+            id="prospectName"
+            placeholder="Prospect Name"
+            [(ngModel)]="payload.prospectName"
+          />
+          <div id="prospectName" class="form-text">
+            We'll never share your data with anyone else.
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="companyName" class="form-label">Company Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="companyName"
+            id="companyName"
+            placeholder="Company Name"
+            [(ngModel)]="payload.companyName"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="companyName" class="form-label">Contact Type</label>
+          <div class="col-xl-4">
+            <ng-select
+              [items]="prospectContactType"
+              [multiple]="false"
+              bindLabel="name"
+              bindValue="name"
+              placeholder="Contact Type"
+              class="form-control"
+              [(ngModel)]="payload.contactType"
+              [clearable]="false"
+              style="padding: 0"
+            >
+            </ng-select>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="prospectEmailId" class="form-label">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            name="prospectEmailId"
+            id="prospectEmailId"
+            aria-describedby="emailHelp"
+            placeholder="Email"
+            [(ngModel)]="payload.prospectEmailId"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="prospect_phone_no" class="form-label">Phone</label>
+          <input
+            type="tel"
+            class="form-control"
+            name="prospectPhoneNo"
+            id="prospectPhoneNo"
+            placeholder="Phone"
+            [(ngModel)]="payload.prospectPhoneNo"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="prospect_phone_no" class="form-label">LinkedIn</label>
+          <input
+            type="text"
+            class="form-control"
+            name="prospectLinkedIn"
+            id="prospectLinkedIn"
+            placeholder="LinkedIn"
+            [(ngModel)]="payload.prospectLinkedIn"
+          />
+        </div>
+        <div class="mb-3 form-check">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            (change)="checkValue($event)"
+            name="communicationEmailSent"
+            id="communicationEmailSent"
+            [(ngModel)]="payload.communicationEmailSent"
+          />
+          <label class="form-check-label" for="exampleCheck1"
+            >Please confirm if an intro email is written to the pieworks BD
+            team.</label
+          >
+        </div>
+        <button
+          type="submit"
+          class="btn btn-success"
+          
+          (click)="saveProspectData()"
+        >
+          Submit
+        </button>
+
+        <div class="mb-4">
+          <div>
+            <h5 class="mb-1">{{ message }}</h5>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

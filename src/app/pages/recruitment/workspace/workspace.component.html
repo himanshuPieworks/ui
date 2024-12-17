@@ -1,0 +1,693 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs
+  tooltip="Workspace"
+  [breadcrumbItems]="breadCrumbItems"
+  [title]="rssppMandateLabel"
+></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+<br />
+<!-- start of card -->
+<div class="row">
+  <div class="col-lg">
+    <div
+      class="card"
+      style="background-image: url('assets/images/background.png')"
+    >
+      <div class="card-body">
+        <div class="row align-items-center gy-3">
+          <!-- style="filter: blur(8px); -webkit-filter: blur(4px)" -->
+          <div
+            class="col-6"
+            
+          >
+            <h6 class="card-tooltip fs-2xl mb-0">
+              Open {{ rssppMandateLabel }}&nbsp;
+              <span class="fs-2xl text-secondary align-baseline">{{
+                analysis.arg4
+              }}</span>
+
+              <span
+                class="fs-2xl text-secondary align-baseline"
+                *ngIf="commonService.rbac['manage-client']"
+                >, Clients &nbsp;&nbsp;{{ analysis.arg5 }}</span
+              >
+            </h6>
+          </div>
+          <!--end col-->
+          <div class="col-auto ms-auto">
+            <button
+              class="btn btn-primary me-1 rounded-pill default-btn-width"
+              (click)="exportToXls()"
+              tooltip="export to xls"
+              *ngIf="!isRspp && commonService.rbac['export-xls']"
+            >
+              <i class="bi bi-file-excel align-baseline fs-2xl"></i>
+            </button>
+            <button
+              *ngIf="
+                (rssppMandateLabel == 'Mandates' &&
+                  commonService.rbac['add-new-mandate']) ||
+                (rssppMandateLabel == 'Rspp' &&
+                  commonService.rbac['add-new-rspp'])
+              "
+              class="btn btn-primary me-1 rounded-pill default-btn-width"
+              tooltip="add new {{ rssppMandateLabel }}"
+              (click)="menuAction = 'Create RSPP'; initRspp(); addModal.show()"
+            >
+              <i class="bi bi-plus align-baseline fs-2xl"></i>
+            </button>
+            <button
+              *ngIf="isRspp && commonService.rbac['copy-rspp-form']"
+              class="btn btn-primary rounded-pill"
+              (click)="copyLink()"
+            >
+              <i
+                tooltip="Click to copy link for RSPP form."
+                class="ri-file-copy-line fs-2xl clickable"
+              ></i></button
+            >&nbsp;
+            <button
+              *ngIf="!isRspp"
+              class="btn btn-primary myButton rounded-pill default-btn-width"
+              (click)="filterWindow.show()"
+            >
+              <i
+                class="bi bi-funnel align-baseline fs-2xl"
+                tooltip="show filters"
+              ></i></button
+            >&nbsp;
+            <button
+              *ngIf="
+                (!isRspp && commonService.rbac['earn-filter']) ||
+                (isRspp && commonService.rbac['rspp-filter'])
+              "
+              class="btn btn-primary myButton rounded-pill default-btn-width"
+              (click)="clearFilters()"
+            >
+              <i
+                class="ri-filter-off-line align-baseline fs-2xl"
+                tooltip="clear filters"
+              ></i>
+            </button>
+          </div>
+          <!--end col-->
+
+          <!--Search Input-->
+          <div
+            class="col-xl-3"
+            *ngIf="
+              (!isRspp && commonService.rbac['search-text']) ||
+              (isRspp && commonService.rbac['rspp-search-text'])
+            "
+          >
+            <div class="form-group has-search">
+              <span class="bi bi-search fs-2xl form-control-feedback"></span>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Search"
+                maxlength="100"
+                [(ngModel)]="searchText"
+                (keyup)="filterChanged()"
+              />
+            </div>
+          </div>
+        </div>
+        <!--end row-->
+      </div>
+    </div>
+
+    <div class="row" id="property-list">
+      <div
+        *ngFor="let req of mandates; let i = index"
+        class="col-xxl-4 col-lg-4 col-md-6 p-2"
+      >
+        <div
+          class="card real-estate-grid-widgets card-animate p-3"
+          style="height: 100%"
+          [ngStyle]="{
+            'box-shadow':
+              req.status.name === 'Hot'
+                ? '0px 0px 10px #1A9783'
+                : req.status.name === 'Cold'
+                ? '0px 0px 10px #EB3D4D'
+                : req.status.name === 'Warm'
+                ? '0px 0px 10px #2BB2FE'
+                : req.status.name === 'Hold'
+                ? '0px 0px 10px #1D1F2C'
+                : req.status.name === 'Success'
+                ? '0px 0px 10px #F9C80E'
+                : '',
+            'background-image':
+              req.offeredCandidates != null && req.noOfVaccancyPending == 0
+                ? 'url(assets/images/stampForSuccess.png)'
+                : '',
+            'background-position':
+              req.offeredCandidates != null ? 'center center' : '',
+            'background-size': 
+              req.offeredCandidates != null ? '150px 150px' : '',
+            'background-repeat': 
+              req.offeredCandidates != null ? 'no-repeat' : '',
+          }"
+        >
+       
+          <!--  style="background-color: {{getRandomColor()}}" -->
+          <div class="card-body p-2" (click)="clickedOnMandate(req)">
+            <!-- logo and roles  -->
+              <!-- Label for Projected Earning -->
+        <div
+        *ngIf="req.projectedPayoutDiscoverer || req.projectedPayoutDiscoverer == 0"
+        class="projected-earning-label z-2"
+        style="
+          position: absolute;
+          top: 80px;
+          right: 10px;
+          background-color: #3FD6AD;
+          padding: 5px 10px;
+          border-radius: 5px;
+          
+          color: black;
+          font-size: 10px;
+          font-style: italic;
+        "
+      >
+        <p class="mb-0 mt-0 text-center">earn upto</p>
+        <p class="mb-0 mt-0">
+          <i class="bi bi-currency-rupee" ></i>{{ req.projectedPayoutDiscoverer ? (formatToIndianCurrency(req.projectedPayoutDiscoverer)) : ""  }}
+        </p>
+      </div>
+            <div class="row">
+              <div class="col-xl-10 col-8">
+                <div [ngClass]="!isRspp ? 'd-flex gap-4' : 'd-flex '">
+                  <!-- icon of company -->
+                  <div class="align-self-center">
+                    <img
+                      src="{{ commonService.getPicUrl(req.client.icon) }}"
+                      alt="img-01.jpg"
+                      *ngIf="!isRspp"
+                      class="rounded-circle border"
+                      style="height: 70px; width: 70px"
+                    />
+                  </div>
+                  <!-- role and company name -->
+                  <div class="align-self-center">
+                    <span class="text-dark fw-bold">{{
+                      req.role?.name ? req?.role?.name : "NA"
+                    }}</span>
+                    <p class="text-muted m-0">
+                      <!-- {{ req.orgName }} -->
+                      {{
+                        req.client.name == "common"
+                          ? req.orgName
+                          : req.client.name
+                      }}
+                      <i *ngIf="req.client.name != 'common' && req.pilotBatch"
+                        >(Pilot batch)</i
+                      >
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="col-xl-2 col-4"
+                *ngIf="
+                  (!isRspp && commonService.rbac['tile-menu']) ||
+                  (isRspp && commonService.rbac['rspp-tile-menu'])
+                "
+              >
+                <div class="relative">
+                  <div
+                    dropdown
+                    class="dropdown dropdown-real-estate absolute top-0 right-0"
+                  >
+                    <i
+                      (click)="selectedReq = req; loadMenuItems()"
+                      (mouseover)="loadAcesResponsible(req, $event)"
+                      dropdownToggle
+                      class="bi bi-three-dots-vertical text-dark fs-2xl"
+                    ></i>
+
+                    <ul
+                      *bsDropdownMenu
+                      class="dropdown-menu dropdown-menu-end mb-0"
+                    >
+                      <li *ngFor="let item of menuOptions">
+                        <a
+                          (click)="handleMenu(item)"
+                          class="dropdown-item edit-list"
+                          href="javascript:void(0);"
+                          style="font-size: 12px"
+                          >{{ item }}</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr class="mt-2 mb-0 z-0" />
+          </div>
+          <div class="card-body p-2" (click)="clickedOnMandate(req)">
+            <ul
+              class="d-flex justify-content-between gap-2 flex-wrap list-unstyled mb-1"
+            >
+              <li>
+                <p class="text-muted text-start mb-0 mt-0">
+                  Budget
+                  <br />
+                  <span class="text-dark">
+                    {{ req.minFixedLpa + req.minVariableLpa }} -
+                    {{ req.maxFixedLpa + req.maxVariableLpa
+                    }}{{ req.esops ? " LPA - " + req.esops : " LPA" }}
+                  </span>
+                </p>
+              </li>
+              <li style="width: 50%">
+                <p
+                  [ngClass]="
+                    !isRspp
+                      ? 'text-muted text-end mb-0'
+                      : 'text-muted text-end mb-0'
+                  "
+                >
+                  Designation
+                  <br />
+                  <span class="text-dark">
+                    {{ req.role?.name ? req?.role?.name : "NA" }}
+                  </span>
+                </p>
+              </li>
+            </ul>
+            <ul
+              class="d-flex justify-content-between gap-2 flex-wrap list-unstyled mb-1"
+            >
+              <li style="width: 50%">
+                <p class="text-muted mb-0 mt-0">
+                  Experience
+                  <br />
+                  <span class="text-dark">
+                    {{ req?.experience ? req?.experience : "NA" }} -
+                  </span>
+                  <span class="text-dark">
+                    {{ req?.experienceLimit ? req?.experienceLimit : "NA" }} yrs
+                  </span>
+                </p>
+              </li>
+              <li style="width: 40%">
+                <p class="text-muted text-end mb-0 mt-0">
+                  Location
+                  <br />
+                  <span class="text-dark">
+                    {{
+                      req.location ? req?.location?.split(",").join(", ") : "NA"
+                    }}
+                  </span>
+                </p>
+              </li>
+            </ul>
+            <ul
+              class="d-flex justify-content-between gap-2 flex-wrap list-unstyled mb-1"
+            >
+              <li style="max-width: 40%" *ngIf="!isRspp">
+                <p class="text-muted mb-0">
+                  Job Family
+                  <br />
+                  <span class="text-dark">
+                    {{ req?.jobFamily?.name ? req?.jobFamily?.name : "NA" }}
+                  </span>
+                </p>
+              </li>
+              <li *ngIf="!isRspp">
+                <p class="text-muted text-end mb-0 mt-0">
+                  Status
+                  <br />
+                  <span class="text-dark">
+                    {{ req.status.name }}
+                  </span>
+                </p>
+              </li>
+            </ul>
+            <div
+              *ngIf="!this.isRspp"
+              class="mt-0 pt-3 d-flex justify-content-between justify-content-between gap-3"
+            >
+              <span class="mb-0 text-muted"
+                >intv/s2c
+                <span class="text-dark">{{
+                  req.interviews + "/" + req.sentToClients
+                }}</span>
+              </span>
+              <span class="mb-0 text-muted"
+                >Total Discovery
+                <span class="text-dark">
+                  {{ req.totalDiscoveries ? req.totalDiscoveries : "0" }}
+                </span>
+              </span>
+              <span class="mb-0 text-dark">{{ req.daysOld }}</span>
+            </div>
+          </div>
+
+          <div class="d-flex gap-2 justify-content-around" *ngIf="!isRspp">
+            <button
+              *ngIf="commonService.rbac['discover-candidate']"
+              [disabled]="
+                !(
+                  req.status.id === 2 ||
+                  req.status.id === 3 ||
+                  req.status.id === 8
+                )
+              "
+              (click)="selectedReq = req; disWin()"
+              class="btn btn-outline-primary w-100"
+              style="height: 50px"
+            >
+              <p class="mb-0">
+                <i class="bi bi-search fs-2xl"></i>
+                <span class="align-middle"> Discover </span>
+              </p>
+            </button>
+            <button
+              *ngIf="commonService.rbac['join-pod']"
+              (click)="selectedReq = req; joinPod()"
+              class="btn btn-primary w-100"
+              style="height: 50px"
+            >
+              + Join Pod
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--end row-->
+
+    <div id="noresult" [ngClass]="mandates?.length != 0 ? 'd-none' : ''">
+      <div class="text-center py-4" >
+        <div class="avatar-md mx-auto mb-4" *ngIf="loadingMessage == 'Sorry there is no data for your search...'">
+          <div
+            class="avatar-tooltip bg-light text-primary rounded-circle fs-4xl"
+          >
+            <i class="bi bi-search"></i>
+          </div>
+        </div>
+        <div *ngIf="loadingMessage != 'Sorry there is no data for your search...'">
+
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 200 200"><circle fill="#00FFC0" stroke="#00FFC0" stroke-width="2" r="15" cx="35" cy="100"><animate attributeName="cx" calcMode="spline" dur="2" values="35;165;165;35;35" keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1" repeatCount="indefinite" begin="0"></animate></circle><circle fill="#00FFC0" stroke="#00FFC0" stroke-width="2" opacity=".8" r="15" cx="35" cy="100"><animate attributeName="cx" calcMode="spline" dur="2" values="35;165;165;35;35" keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1" repeatCount="indefinite" begin="0.05"></animate></circle><circle fill="#00FFC0" stroke="#00FFC0" stroke-width="2" opacity=".6" r="15" cx="35" cy="100"><animate attributeName="cx" calcMode="spline" dur="2" values="35;165;165;35;35" keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1" repeatCount="indefinite" begin=".1"></animate></circle><circle fill="#00FFC0" stroke="#00FFC0" stroke-width="2" opacity=".4" r="15" cx="35" cy="100"><animate attributeName="cx" calcMode="spline" dur="2" values="35;165;165;35;35" keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1" repeatCount="indefinite" begin=".15"></animate></circle><circle fill="#00FFC0" stroke="#00FFC0" stroke-width="2" opacity=".2" r="15" cx="35" cy="100"><animate attributeName="cx" calcMode="spline" dur="2" values="35;165;165;35;35" keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1" repeatCount="indefinite" begin=".2"></animate></circle></svg>
+        </div>
+        <!-- <h5 class="mt-2">just a minute, getting it for you...</h5> -->
+        <h5 class="mt-2">{{loadingMessage}}.</h5>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end of card -->
+
+<!-- start of filter  -->
+<div
+  bsModal
+  #filterWindow="bs-modal"
+  class="modal fade bs-example-modal-lg"
+  id="exampleModalScrollable"
+>
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <h5
+          class="modal-tooltip"
+          id="exampleModalScrollableTitle"
+          style="width: 90%"
+        >
+          Filter
+        </h5>
+        <i
+          class="mdi mdi-broom clickable text-white-75"
+          style="font-size: 20px"
+          (click)="clearFilters()"
+        ></i>
+        <button
+          type="button"
+          class="btn-close rightMost btn-close-white"
+          (click)="filterWindow.hide()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row gy-4">
+          <div
+            *ngIf="!isRspp && commonService.rbac['client']"
+            class="col-xxl-6 col-md-6 col-sm-6"
+          >
+            <div class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3">
+              <i class="ri-user-2-line"></i>Client
+            </div>
+            <ng-select
+              [items]="clients"
+              [multiple]="false"
+              bindLabel="name"
+              bindValue="name"
+              class="form-control"
+              [searchFn]="clientLocalSearch"
+              (search)="onClientSearch($event)"
+              placeholder="Select client"
+              [(ngModel)]="client"
+              [clearable]="false"
+              style="padding: 0"
+              (ngModelChange)="filterChanged()"
+            ></ng-select>
+          </div>
+        </div>
+        <br />
+        <div
+          class="row gy-4"
+          *ngIf="!isRspp && commonService.rbac['wp-filter-status']"
+        >
+          <div class="col-xxl-6 col-md-6 col-sm-6">
+            <div class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3">
+              <i class="mdi mdi-timer-sand-complete"></i>Status
+            </div>
+            <ng-select
+              [items]="statusArray"
+              [multiple]="true"
+              bindLabel="name"
+              bindValue="id"
+              class="form-control"
+              placeholder="Select status"
+              [(ngModel)]="status"
+              [clearable]="false"
+              style="padding: 0"
+              (ngModelChange)="filterChanged()"
+            ></ng-select>
+          </div>
+          <div
+            class="col-xxl-6 col-md-6 col-sm-6"
+            *ngIf="commonService.rbac['client-anchor']"
+          >
+            <div class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3">
+              <i class="ri-user-line"></i>Account Manager
+            </div>
+            <ng-select
+              [items]="users"
+              [multiple]="true"
+              bindLabel="name"
+              bindValue="id"
+              class="form-control"
+              placeholder="Select CA"
+              [(ngModel)]="clientAnchors"
+              [clearable]="false"
+              style="padding: 0"
+              (ngModelChange)="filterChanged()"
+              [searchFn]="memberLocalSearch"
+              (search)="onMemberSearch($event)"
+            ></ng-select>
+          </div>
+        </div>
+        <div class="row">
+          <div
+            class="col-xxl-6 col-md-6 col-sm-6"
+            *ngIf="commonService.rbac['client-anchor']"
+          >
+            <div class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3">
+              <i class="bi bi-house-gear"></i>Sectors
+            </div>
+            <ng-select
+              [items]="availableSectors"
+              [multiple]="true"
+              bindLabel="name"
+              bindValue="name"
+              class="form-control"
+              placeholder="Select client"
+              [(ngModel)]="selectedSectors"
+              [clearable]="false"
+              style="padding: 0; width: 100%"
+              (ngModelChange)="filterChanged()"
+            ></ng-select>
+          </div>
+          <div class="col-xxl-6 col-md-6 col-sm-6">
+            <div class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3">
+              <i class="bi bi-briefcase"></i>Job Families
+            </div>
+            <div class="input-group">
+              <ng-select
+                [items]="jobFamiliesL1"
+                [multiple]="true"
+                bindLabel="name"
+                bindValue="id"
+                placeholder="Job family *"
+                class="form-control"
+                labelForId="jobFamilyId1"
+                name="client"
+                name="jobeFamily1"
+                [(ngModel)]="selectedJobFamilyIds"
+                [clearable]="false"
+                style="padding: 0"
+                (ngModelChange)="filterChanged()"
+              >
+              </ng-select>
+            </div>
+          </div>
+        </div>
+        <div class="row gy-4" *ngIf="!isRspp && commonService.rbac['budget']">
+          <div
+            class="col-xxl-12 col-md-12 col-sm-12"
+            *ngIf="commonService.rbac['budget']"
+          >
+            <div class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3">
+              Budget
+            </div>
+            <ngx-slider
+              [(value)]="minLpa"
+              [(highValue)]="maxLpa"
+              [options]="sliderOptions"
+              (mouseup)="filterChanged()"
+            ></ngx-slider>
+          </div>
+        </div>
+        <div class="row gy-4">
+          <div
+            class="col-xxl-6 col-md-6 col-sm-6"
+            *ngIf="!isRspp && commonService.rbac['creation-month']"
+          >
+            <div class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3">
+              <i class="mdi mdi-calendar"></i>Creation Month
+            </div>
+            <input
+              type="month"
+              (change)="filterChanged()"
+              [(ngModel)]="creationMonth"
+              id="creationMonth"
+              month="creationMonth"
+              class="form form-control"
+            />
+          </div>
+          <div
+            class="col-xxl-6 col-md-6 col-sm-6"
+            *ngIf="!isRspp && commonService.rbac['current-focus']"
+          >
+            <div class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3">
+              <i class="ri-fire-line"></i>Current Week's Focus
+            </div>
+            <ui-switch
+              [checked]="onlyWithFeeds"
+              class="me-2"
+              (change)="onlyWithFeeds = !onlyWithFeeds; loadReqsWithFeeds()"
+            ></ui-switch>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- end of filter -->
+
+<!-- for showing loading during data load -->
+<div id="elmLoader" *ngIf="false">
+  <div class="spinner-border text-primary avatar-sm" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+<!-- for showing not loaded data -->
+
+<!-- start of Discovered -->
+<div
+  bsModal
+  #discoveryWindow="bs-modal"
+  class="modal fade bs-example-modal-lg"
+  data-bs-target="#staticBackdrop"
+  id="exampleModalScrollable"
+>
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <h5
+          class="modal-tooltip"
+          id="exampleModalScrollableTitle"
+          style="width: 90%"
+        >
+          Discover Candidate
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white rightMost"
+          (click)="discoveryWindow.hide()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <app-discover-talent
+          #discoverTalent
+          [reqId]="selectedReq?.id"
+        ></app-discover-talent>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+</div>
+<!-- end of Discovered-->
+
+<!-- from here you get the rspp component called  -->
+<div
+  bsModal
+  #addModal="bs-modal"
+  class="modal bs-example-modal-lg fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" *ngIf="true">
+        <h5 class="modal-title" id="myLargeModalLabel"></h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="addModal.hide()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <app-rspp
+          #apprspp
+          *ngIf="rssppMandateLabel == 'Rspp' && menuAction != 'Create Mandate'"
+          [parentObj]="thisObj"
+        ></app-rspp>
+        <app-create-mandate
+          #createMandate
+          *ngIf="
+            rssppMandateLabel == 'Mandates' || menuAction == 'Create Mandate'
+          "
+          [parentObj]="thisObj"
+          [rspp]="selectedReq"
+        ></app-create-mandate>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<!-- rspp module calling closed here -->

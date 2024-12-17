@@ -1,0 +1,35 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs tooltip="Workspace" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs><br>
+<!-- End Breadcrumbs -->
+<div class="row">
+    <div class="col-lg">
+        <div class="row" id="property-list">
+            <div class="col-xxl-2 col-lg-2 col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row" id="property-list">
+                            <div class="col-xxl-12 col-lg-12 col-md-12">
+                                <a class='clickable' (click)='report="liabilities"'>Liabilities</a>
+                            </div>
+                            <div class="col-xxl-12 col-lg-12 col-md-12">
+                                <a class='clickable' (click)='report="piecos-analaysis"'>Piecoins Analysis</a>
+                            </div>
+                            <div class="col-xxl-12 col-lg-12 col-md-12">
+                                <a class='clickable' (click)='report="success-fee-analaysis"'>Success Fee Analysis</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-10 col-lg-10 col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <app-liability-report *ngIf="report=='liabilities'"></app-liability-report>
+                        <app-piecos-analysis *ngIf="report=='piecos-analaysis'"></app-piecos-analysis>
+                        <app-success-fee-analysis *ngIf="report=='success-fee-analaysis'"></app-success-fee-analysis>
+                    </div>
+                </div>
+            </div>
+        </div><!--end row-->
+    </div>
+</div>

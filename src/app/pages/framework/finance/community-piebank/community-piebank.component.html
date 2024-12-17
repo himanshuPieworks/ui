@@ -1,0 +1,36 @@
+<div class="row justify-content-end mt-4">
+  <div class="col-xl-4">
+    <div class="d-flex gap-4">
+      <ng-select
+        [items]="users"
+        [multiple]="false"
+        [searchFn]="memberLocalSearch"
+        (search)="onMemberSearch($event)"
+        bindLabel="name"
+        bindValue="id"
+        [(ngModel)]="selectedCommunityMemberId"
+        class="form-control"
+        [clearable]="true"
+        placeholder="Select community member"
+        style="padding: 0"
+      >
+      </ng-select>
+ 
+      <div class="text-center">
+        <button
+          type="button"
+          class="btn rounded btn-primary text-center"
+          (click)="viewPieBankDetails()"
+        >
+          View
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="viewPiebankCommunity">
+  <!-- parent.component.html -->
+  <app-pie-bank [userIdFormFinance]="communityId"></app-pie-bank>
+</div>

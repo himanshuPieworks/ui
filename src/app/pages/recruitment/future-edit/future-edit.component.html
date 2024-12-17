@@ -1,0 +1,1894 @@
+<app-breadcrumbs [breadcrumbItems]="breadCrumbItems"> </app-breadcrumbs><br />
+<div class="row justify-content-center">
+  <div class="col-sm-6 col-lg-6">
+    <div class="row">
+      <div class="col-lg-12 card" style="text-align: center">
+        <div class="card-body">
+          <div class="justify-content-center">
+            <h3>The future</h3>
+            define your career progression and how you would like to lead your
+            life professionally
+          </div>
+        </div>
+      </div>
+      <!-- <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div>
+            <h6>Email *</h6>
+            <input
+              type="text"
+              class="form form-control"
+              placeholder="Your email"
+              [(ngModel)]="candidate.emailId"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div>
+            <h6>Name *</h6>
+            <input
+              type="text"
+              class="form form-control"
+              placeholder="Your name"
+              [(ngModel)]="candidate.name"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div>
+            <h6>Phone No. *</h6>
+            <input
+              type="text"
+              class="form form-control"
+              placeholder="Your mobile no."
+              [(ngModel)]="candidate.phoneNo"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div>
+            <h6>LinkedIn Profile URL *</h6>
+            <input
+              type="text"
+              class="form form-control"
+              placeholder="Your linkedIn profile url."
+              [(ngModel)]="candidate.linkedInUrl"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div>
+            <h6>
+              How will you qualify yourself in no. of years of working exposure
+              ( work experience) *
+            </h6>
+            <input
+              type="number"
+              class="form form-control"
+              [(ngModel)]="candidate.experience"
+              style="width: 100px"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div>
+            <h6>Where would you like to live your life ? *</h6>
+            <div class="row">
+              <div class="col-lg-4">
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.preferredLocation"
+                  value="North India"
+                  name="l1"
+                />
+                <label>&nbsp;North India</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.preferredLocation"
+                  value="South India"
+                  name="l2"
+                />
+                <label>&nbsp;South India</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.preferredLocation"
+                  value="Mumbai"
+                  name="l3"
+                />
+                <label>&nbsp;Mumbai</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.preferredLocation"
+                  value="Bangalore"
+                  name="l4"
+                />
+                <label>&nbsp;Bangalore</label><br /><br />
+              </div>
+              <div class="col-lg-4">
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.preferredLocation"
+                  value="NCR"
+                  name="l5"
+                />
+                <label>&nbsp;NCR</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.preferredLocation"
+                  value="Chennai"
+                  name="l6"
+                />
+                <label>&nbsp;Chennai</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.preferredLocation"
+                  value="Delhi"
+                  name="l7"
+                />
+                <label>&nbsp;Delhi</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.preferredLocation"
+                  value="Hyderabad"
+                  name="l8"
+                />
+                <label>&nbsp;Hyderabad</label><br /><br />
+              </div>
+              <div class="col-lg-4">
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.preferredLocation"
+                  value="Remote India"
+                  name="l91"
+                />
+                <label>&nbsp;Remote</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.preferredLocation"
+                  value="Anywhere in India"
+                  name="l10"
+                />
+                <label>&nbsp;Anywhere in India</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.preferredLocation"
+                  value="Dubai"
+                  name="l11"
+                />
+                <label>&nbsp;Dubai</label><br /><br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div>
+            <h6>How do people know you? Your Designation? *</h6>
+            <input
+              type="text"
+              class="form form-control"
+              placeholder="designation"
+              [(ngModel)]="candidate.designation"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div>
+            <h6>What job function would you like to be in ? *</h6>
+            <div class="row">
+              <div class="col-lg-4">
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.nextJobFunction"
+                  value="Growth"
+                  name="jf11"
+                />
+                <label>&nbsp;Growth</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.nextJobFunction"
+                  value="Product"
+                  name="jf12"
+                />
+                <label>&nbsp;Product</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.nextJobFunction"
+                  value="Enterprise Sales"
+                  name="jf13"
+                />
+                <label>&nbsp;Enterprise Sales</label><br /><br />
+              </div>
+              <div class="col-lg-4">
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.nextJobFunction"
+                  value="Marketing & related"
+                  name="jf14"
+                />
+                <label>&nbsp;Marketing & related</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.nextJobFunction"
+                  value="Engineering"
+                  name="jf15"
+                />
+                <label>&nbsp;Engineering</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.nextJobFunction"
+                  value="AI & ML"
+                  name="jf16"
+                />
+                <label>&nbsp;AI & ML</label><br /><br />
+              </div>
+              <div class="col-lg-4">
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.nextJobFunction"
+                  value="Finance & HR"
+                  name="jf17"
+                />
+                <label>&nbsp;Finance & HR</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.nextJobFunction"
+                  value="Operations & Customer Success"
+                  name="jf18"
+                />
+                <label>&nbsp;Operations & Customer Success</label><br /><br />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12 card">
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.nextJobFunction"
+                  value="other"
+                  name="jf19"
+                />
+                <label>&nbsp;Other : </label>
+                <br />
+                <input
+                  type="text"
+                  placeholder="mention other job function here."
+                  class="form form-control"
+                  [(ngModel)]="nextOtherJobFunction"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div>
+            <h6>Which job function do you relate to right now ? *</h6>
+            <div class="row">
+              <div class="col-lg-4">
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.currentJobFunction"
+                  value="Growth"
+                  name="jf21"
+                />
+                <label>&nbsp;Growth</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.currentJobFunction"
+                  value="Product"
+                  name="jf22"
+                />
+                <label>&nbsp;Product</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.currentJobFunction"
+                  value="Enterprise Sales"
+                  name="jf23"
+                />
+                <label>&nbsp;Enterprise Sales</label><br /><br />
+              </div>
+              <div class="col-lg-4">
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.currentJobFunction"
+                  value="Marketing & related"
+                  name="jf24"
+                />
+                <label>&nbsp;Marketing & related</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.currentJobFunction"
+                  value="Engineering"
+                  name="jf25"
+                />
+                <label>&nbsp;Engineering</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.currentJobFunction"
+                  value="AI & ML"
+                  name="jf26"
+                />
+                <label>&nbsp;AI & ML</label><br /><br />
+              </div>
+              <div class="col-lg-4">
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.currentJobFunction"
+                  value="Finance & HR"
+                  name="jf27"
+                />
+                <label>&nbsp;Finance & HR</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.currentJobFunction"
+                  value="Operations & Customer Success"
+                  name="jf28"
+                />
+                <label>&nbsp;Operations & Customer Success</label><br /><br />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12 card">
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.currentJobFunction"
+                  value="other"
+                  name="jf29"
+                />
+                <label>&nbsp;Other : </label
+                ><input
+                  type="text"
+                  placeholder="mention other job function here."
+                  class="form form-control"
+                  [(ngModel)]="currentOtherJobFunction"
+                  name="jf210"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div>
+            <h6>Current Sector ? *</h6>
+            <div class="row">
+              <div class="col-lg-3">
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.sector"
+                  value="Fintech"
+                  name="sector1"
+                />
+                <label>&nbsp;Fintech</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.sector"
+                  value="Deeptech"
+                  name="sector21"
+                />
+                <label>&nbsp;Deeptech</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.sector"
+                  value="Logistics Tech"
+                  name="sector3"
+                />
+                <label>&nbsp;Logistics Tech</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.sector"
+                  value="Manufacturing"
+                  name="sector4"
+                />
+                <label>&nbsp;Manufacturing</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.sector"
+                  value="Big Data"
+                  name="sector5"
+                />
+                <label>&nbsp;Big Data</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.sector"
+                  value="Cloud Crypto"
+                  name="sector61"
+                />
+                <label>&nbsp;Cloud Crypto</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.sector"
+                  value="SaaS"
+                  name="sector7"
+                />
+                <label>&nbsp;SaaS</label><br /><br />
+              </div>
+              <div class="col-lg-3">
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.sector"
+                  value="Healthtech"
+                  name="sector81"
+                />
+                <label>&nbsp;Healthtech</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.sector"
+                  value="Agritech"
+                  name="sector9"
+                />
+                <label>&nbsp;Agritech</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.sector"
+                  value="Edtech"
+                  name="sector13"
+                />
+                <label>&nbsp;Edtech</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.sector"
+                  value="Retail"
+                  name="sector14"
+                />
+                <label>&nbsp;Retail</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.sector"
+                  value="IT Services"
+                  name="sector15"
+                />
+                <label>&nbsp;IT Services</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.sector"
+                  value="Product based"
+                  name="sector16"
+                />
+                <label>&nbsp;Product based</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.sector"
+                  value="Services based"
+                  name="sector17"
+                />
+                <label>&nbsp;Services based</label><br /><br />
+              </div>
+              <div class="col-lg-4">
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.sector"
+                  value="Spacetech"
+                  name="sector18"
+                />
+                <label>&nbsp;Spacetech</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.sector"
+                  value="Traveltech"
+                  name="sector19"
+                />
+                <label>&nbsp;Traveltech</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.sector"
+                  value="Ecommerce"
+                  name="sector10"
+                />
+                <label>&nbsp;Ecommerce</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.sector"
+                  value="Management Consulting"
+                  name="sector11"
+                />
+                <label>&nbsp;Management Consulting</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.sector"
+                  value="Banking & Financial Services"
+                  name="sector12"
+                />
+                <label>&nbsp;Banking & Financial Services</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.sector"
+                  value="Investment Banking"
+                  name="sector20"
+                />
+                <label>&nbsp;Investment Banking</label><br /><br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div>
+            <h6>
+              What is your driving force/ motivation for exploring new
+              opportunities? *
+            </h6>
+            <div class="row">
+              <div class="col-lg-3">
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.reasonToSwitch"
+                  value="Higher Compensation"
+                  name="d1"
+                />
+                <label>&nbsp;Higher Compensation</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.reasonToSwitch"
+                  value="Growth"
+                  name="d2"
+                />
+                <label>&nbsp;Growth</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.reasonToSwitch"
+                  value="Better Learning Curve"
+                  name="d3"
+                />
+                <label>&nbsp;Better Learning Curve</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.reasonToSwitch"
+                  value="Value Mismatch"
+                  name="d4"
+                />
+                <label>&nbsp;Value Mismatch</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.reasonToSwitch"
+                  value="Better Team"
+                  name="d5"
+                />
+                <label>&nbsp;Better Team</label><br /><br />
+              </div>
+              <div class="col-lg-6">
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.reasonToSwitch"
+                  value="Better Location & Life Ecosystem"
+                  name="d6"
+                />
+                <label>&nbsp;Better Location & Life Ecosystem</label
+                ><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.reasonToSwitch"
+                  value="Manager & Management"
+                  name="d7"
+                />
+                <label>&nbsp;Manager & Management</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.reasonToSwitch"
+                  value="Lateral shift in Career Path"
+                  name="d8"
+                />
+                <label>&nbsp;Lateral shift in Career Path</label><br /><br />
+              </div>
+              <div class="col-lg-4"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div>
+            <h6>
+              What kind of org. culture would you associate yourself with? *
+            </h6>
+            {{ 255 - candidate.orgCulture?.length }} chars left
+            <input
+              type="text"
+              class="form form-control"
+              placeholder="Your answer"
+              [(ngModel)]="candidate.orgCulture"
+              maxlength="255"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div>
+            <h6>Ideal Company according to you? And Why? *</h6>
+            {{ 255 - candidate.idealCompany?.length }} chars left
+            <input
+              type="text"
+              class="form form-control"
+              placeholder="Your answer"
+              [(ngModel)]="candidate.idealCompany"
+              maxlength="255"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div>
+            <h6>
+              Whats your expectation from a Fixed Salary standpoint (INR Lakhs)
+              ? *
+            </h6>
+            <div class="row">
+              <div class="col-lg-2">
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.expectation"
+                  value="Below 25"
+                  name="expected1"
+                />
+                <label>&nbsp;Below 25</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.expectation"
+                  value="25-50"
+                  name="expected3"
+                />
+                <label>&nbsp;25-50</label><br /><br />
+              </div>
+              <div class="col-lg-2">
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.expectation"
+                  value="51-100"
+                  name="expected3"
+                />
+                <label>&nbsp;51-100</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.expectation"
+                  value="101-200"
+                  name="expected4"
+                />
+                <label>&nbsp;101-200</label><br /><br />
+              </div>
+              <div class="col-lg-2">
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.expectation"
+                  value="above 200"
+                  name="expected5"
+                />
+                <label>&nbsp;above 200</label><br /><br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div>
+            <h6>Hybrid/Work from Office/ Remote only ? *</h6>
+            <div class="row">
+              <div class="col-lg-3">
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.workModel"
+                  value="Hybrid only"
+                  name="Hybrid-only"
+                />
+                <label>&nbsp;Hybrid only</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.workModel"
+                  value="Work from office"
+                  name="Work-from-office"
+                />
+                <label>&nbsp;Work from office</label><br /><br />
+              </div>
+              <div class="col-lg-4">
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.workModel"
+                  value="Remote"
+                  name="Remote"
+                />
+                <label>&nbsp;Remote</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.workModel"
+                  value="Any mode is ok"
+                  name="Any-mode-is-ok"
+                />
+                <label>&nbsp;Any mode is ok</label><br /><br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div>
+            <h6>How soon are you likely to make the next career move ? *</h6>
+            <div class="row">
+              <div class="col-lg-3">
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.nextCareerMove"
+                  value="In 3 months"
+                  name="move1"
+                />
+                <label>&nbsp;In 3 months</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.nextCareerMove"
+                  value="In 6 months"
+                  name="move2"
+                />
+                <label>&nbsp;In 6 months</label><br /><br />
+              </div>
+              <div class="col-lg-4">
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.nextCareerMove"
+                  value="In a year"
+                  name="move3"
+                />
+                <label>&nbsp;In a year</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.nextCareerMove"
+                  value="After a year"
+                  name="move4"
+                />
+                <label>&nbsp;After a year</label><br /><br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div>
+            <div class="row">
+              <div class="col-lg-10">
+                <h6>
+                  Would you like to be considered for our Leadership Talent
+                  Program? *
+                </h6>
+              </div>
+              <div class="col-lg-1" style="text-align: left">
+                <i
+                  class="icofont-info-circle"
+                  style="
+                    font-size: 20px;
+                    color: green;
+                    z-index: 500;
+                    cursor: pointer;
+                  "
+                  (click)="showLtProgramDetails()"
+                  (mouseover)="
+                    commonService.showToolTip(
+                      'click to know more about our Leadership Talent Program.',
+                      $event
+                    )
+                  "
+                ></i>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12 card">
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.leadershipProgram"
+                  value="true"
+                  name="l1"
+                />
+                <label>&nbsp;Yes</label><br /><br />
+                <input
+                  type="radio"
+                  [(ngModel)]="candidate.leadershipProgram"
+                  value="false"
+                  name="l2"
+                />
+                <label>&nbsp;No</label><br /><br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col-lg-12 card"
+        style="text-align: left"
+        *ngIf="candidate.leadershipProgram == 'true'"
+      >
+        <div class="card-body">
+          <div>
+            <h6>Your CV plz *</h6>
+            <div class="row">
+              <div class="col-lg-3">
+                <input type="file" (change)="onFileSelecet($event)" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col-lg-12 card"
+        style="text-align: left"
+        *ngIf="candidate.leadershipProgram == 'true'"
+      >
+        <div class="card-body">
+          <div>
+            <h6>Your 60 Sec Video Intro *</h6>
+            <div class="row">
+              <div class="col-lg-12 card">
+                <input
+                  type="text"
+                  [(ngModel)]="candidate.videoLink"
+                  class="form form-control"
+                  placeholder="Enter the url to your video introduction."
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12" style="text-align: center">
+        <div class="">
+          <div>
+            <div class="row">
+              <div class="col-lg-2">
+                <input
+                  type="button"
+                  value="Submit"
+                  (click)="submit()"
+                  class="btn btn-success"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    </div>
+    <br />
+  </div>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-xl-8">
+    <div class="card">
+      <div class="card-body">
+        <ng-stepper
+          #cdkStepper
+          [linear]="true"
+          class="cdksteppercontent nav nav-pills progress-bar-tab custom-nav"
+        >
+          <cdk-step [optional]="false">
+            <ng-template cdkStepLabel>
+              <button class="step-bullet border-0" style="z-index: 10">
+                1
+              </button>
+            </ng-template>
+            <hr
+              class="w-2 absolute top-0"
+              style="
+                margin-top: -60px;
+                width: 75%;
+                text-align: center;
+                margin-left: 17%;
+              "
+            />
+            <br />
+            <div class="row">
+              <!-- email and name -->
+              <div class="row mb-2">
+                <div class="col-xl-6">
+                  <div>
+                    <div>
+                      <h6>Email *</h6>
+                      <input
+                        type="text"
+                        class="form form-control"
+                        placeholder="Your email"
+                        [(ngModel)]="candidate.emailId"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xl-6">
+                  <div>
+                    <h6>Name *</h6>
+                    <input
+                      type="text"
+                      class="form form-control"
+                      placeholder="Your name"
+                      [(ngModel)]="candidate.name"
+                    />
+                  </div>
+                </div>
+              </div>
+              <!-- phone and linkedin -->
+              <div class="row mb-2">
+                <div class="col-xl-6">
+                  <div>
+                    <h6>Phone No. *</h6>
+                    <input
+                      type="text"
+                      class="form form-control"
+                      placeholder="Your mobile no."
+                      [(ngModel)]="candidate.phoneNo"
+                    />
+                  </div>
+                </div>
+                <div class="col-xl-6">
+                  <div>
+                    <h6>LinkedIn Profile URL *</h6>
+                    <input
+                      type="text"
+                      class="form form-control"
+                      placeholder="Your linkedIn profile url."
+                      [(ngModel)]="candidate.linkedInUrl"
+                    />
+                  </div>
+                </div>
+              </div>
+              <!-- work experience -->
+              <div class="row mb-2">
+                <div class="col-xl-6">
+                  <div>
+                    <h6>
+                      How will you qualify yourself in no. of years of working
+                      exposure ( work experience) *
+                    </h6>
+                    <input
+                      type="number"
+                      class="form form-control"
+                      [(ngModel)]="candidate.experience"
+                      style="width: 100px"
+                    />
+                  </div>
+                </div>
+                <div class="col-xl-6">
+                  <div>
+                    <h6>How do people know you? Your Designation? *</h6>
+                    <input
+                      type="text"
+                      class="form form-control"
+                      placeholder="designation"
+                      [(ngModel)]="candidate.designation"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-12 card border" style="text-align: left">
+                <div class="card-body">
+                  <div>
+                    <h6>Where would you like to live your life ? *</h6>
+                    <div class="row">
+                      <div class="col-lg-4">
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.preferredLocation"
+                          value="North India"
+                          name="l1"
+                        />
+                        <label>&nbsp;North India</label><br /><br />
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.preferredLocation"
+                          value="South India"
+                          name="l2"
+                        />
+                        <label>&nbsp;South India</label><br /><br />
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.preferredLocation"
+                          value="Mumbai"
+                          name="l3"
+                        />
+                        <label>&nbsp;Mumbai</label><br /><br />
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.preferredLocation"
+                          value="Bangalore"
+                          name="l4"
+                        />
+                        <label>&nbsp;Bangalore</label><br /><br />
+                      </div>
+                      <div class="col-lg-4">
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.preferredLocation"
+                          value="NCR"
+                          name="l5"
+                        />
+                        <label>&nbsp;NCR</label><br /><br />
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.preferredLocation"
+                          value="Chennai"
+                          name="l6"
+                        />
+                        <label>&nbsp;Chennai</label><br /><br />
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.preferredLocation"
+                          value="Delhi"
+                          name="l7"
+                        />
+                        <label>&nbsp;Delhi</label><br /><br />
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.preferredLocation"
+                          value="Hyderabad"
+                          name="l8"
+                        />
+                        <label>&nbsp;Hyderabad</label><br /><br />
+                      </div>
+                      <div class="col-lg-4">
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.preferredLocation"
+                          value="Remote India"
+                          name="l91"
+                        />
+                        <label>&nbsp;Remote</label><br /><br />
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.preferredLocation"
+                          value="Anywhere in India"
+                          name="l10"
+                        />
+                        <label>&nbsp;Anywhere in India</label><br /><br />
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.preferredLocation"
+                          value="Dubai"
+                          name="l11"
+                        />
+                        <label>&nbsp;Dubai</label><br /><br />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-12 card border" style="text-align: left">
+                <div class="card-body">
+                  <div>
+                    <h6>What job function would you like to be in ? *</h6>
+                    <div class="row">
+                      <div class="col-lg-4">
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.nextJobFunction"
+                          value="Growth"
+                          name="jf11"
+                        />
+                        <label>&nbsp;Growth</label><br /><br />
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.nextJobFunction"
+                          value="Product"
+                          name="jf12"
+                        />
+                        <label>&nbsp;Product</label><br /><br />
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.nextJobFunction"
+                          value="Enterprise Sales"
+                          name="jf13"
+                        />
+                        <label>&nbsp;Enterprise Sales</label><br /><br />
+                      </div>
+                      <div class="col-lg-4">
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.nextJobFunction"
+                          value="Marketing & related"
+                          name="jf14"
+                        />
+                        <label>&nbsp;Marketing & related</label><br /><br />
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.nextJobFunction"
+                          value="Engineering"
+                          name="jf15"
+                        />
+                        <label>&nbsp;Engineering</label><br /><br />
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.nextJobFunction"
+                          value="AI & ML"
+                          name="jf16"
+                        />
+                        <label>&nbsp;AI & ML</label><br /><br />
+                      </div>
+                      <div class="col-lg-4">
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.nextJobFunction"
+                          value="Finance & HR"
+                          name="jf17"
+                        />
+                        <label>&nbsp;Finance & HR</label><br /><br />
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.nextJobFunction"
+                          value="Operations & Customer Success"
+                          name="jf18"
+                        />
+                        <label>&nbsp;Operations & Customer Success</label
+                        ><br /><br />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12 card">
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.nextJobFunction"
+                          value="other"
+                          name="jf19"
+                        />
+                        <label>&nbsp;Other : </label>
+                        <br />
+                        <input
+                          type="text"
+                          placeholder="mention other job function here."
+                          class="form form-control"
+                          [(ngModel)]="nextOtherJobFunction"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <br />
+            <div class="text-end">
+              <button
+                type="button"
+                class="btn btn-success btn-label right ms-auto nexttab nexttab"
+                data-nexttab="pills-info-desc-tab"
+                cdkStepperNext
+              >
+                <i
+                  class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
+                ></i
+                >Next
+              </button>
+            </div>
+          </cdk-step>
+
+          <cdk-step [optional]="false">
+            <ng-template cdkStepLabel>
+              <button class="step-bullet border-0" style="z-index: 10">
+                2
+              </button>
+            </ng-template>
+            <hr
+              class="w-2 absolute top-0"
+              style="
+                margin-top: -60px;
+                width: 75%;
+                text-align: center;
+                margin-left: 17%;
+              "
+            />
+            <br />
+            <div class="col-lg-12 card border" style="text-align: left">
+              <div class="card-body">
+                <div>
+                  <h6>Which job function do you relate to right now ? *</h6>
+                  <div class="row">
+                    <div class="col-lg-4">
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.currentJobFunction"
+                        value="Growth"
+                        name="jf21"
+                      />
+                      <label>&nbsp;Growth</label><br /><br />
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.currentJobFunction"
+                        value="Product"
+                        name="jf22"
+                      />
+                      <label>&nbsp;Product</label><br /><br />
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.currentJobFunction"
+                        value="Enterprise Sales"
+                        name="jf23"
+                      />
+                      <label>&nbsp;Enterprise Sales</label><br /><br />
+                    </div>
+                    <div class="col-lg-4">
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.currentJobFunction"
+                        value="Marketing & related"
+                        name="jf24"
+                      />
+                      <label>&nbsp;Marketing & related</label><br /><br />
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.currentJobFunction"
+                        value="Engineering"
+                        name="jf25"
+                      />
+                      <label>&nbsp;Engineering</label><br /><br />
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.currentJobFunction"
+                        value="AI & ML"
+                        name="jf26"
+                      />
+                      <label>&nbsp;AI & ML</label><br /><br />
+                    </div>
+                    <div class="col-lg-4">
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.currentJobFunction"
+                        value="Finance & HR"
+                        name="jf27"
+                      />
+                      <label>&nbsp;Finance & HR</label><br /><br />
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.currentJobFunction"
+                        value="Operations & Customer Success"
+                        name="jf28"
+                      />
+                      <label>&nbsp;Operations & Customer Success</label
+                      ><br /><br />
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12 card">
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.currentJobFunction"
+                        value="other"
+                        name="jf29"
+                      />
+                      <label>&nbsp;Other : </label
+                      ><input
+                        type="text"
+                        placeholder="mention other job function here."
+                        class="form form-control"
+                        [(ngModel)]="currentOtherJobFunction"
+                        name="jf210"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12 card border" style="text-align: left">
+              <div class="card-body">
+                <div>
+                  <h6>Current Sector ? *</h6>
+                  <div class="row">
+                    <div class="col-lg-3">
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.sector"
+                        value="Fintech"
+                        name="sector1"
+                      />
+                      <label>&nbsp;Fintech</label><br /><br />
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.sector"
+                        value="Deeptech"
+                        name="sector21"
+                      />
+                      <label>&nbsp;Deeptech</label><br /><br />
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.sector"
+                        value="Logistics Tech"
+                        name="sector3"
+                      />
+                      <label>&nbsp;Logistics Tech</label><br /><br />
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.sector"
+                        value="Manufacturing"
+                        name="sector4"
+                      />
+                      <label>&nbsp;Manufacturing</label><br /><br />
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.sector"
+                        value="Big Data"
+                        name="sector5"
+                      />
+                      <label>&nbsp;Big Data</label><br /><br />
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.sector"
+                        value="Cloud Crypto"
+                        name="sector61"
+                      />
+                      <label>&nbsp;Cloud Crypto</label><br /><br />
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.sector"
+                        value="SaaS"
+                        name="sector7"
+                      />
+                      <label>&nbsp;SaaS</label><br /><br />
+                    </div>
+                    <div class="col-lg-3">
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.sector"
+                        value="Healthtech"
+                        name="sector81"
+                      />
+                      <label>&nbsp;Healthtech</label><br /><br />
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.sector"
+                        value="Agritech"
+                        name="sector9"
+                      />
+                      <label>&nbsp;Agritech</label><br /><br />
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.sector"
+                        value="Edtech"
+                        name="sector13"
+                      />
+                      <label>&nbsp;Edtech</label><br /><br />
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.sector"
+                        value="Retail"
+                        name="sector14"
+                      />
+                      <label>&nbsp;Retail</label><br /><br />
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.sector"
+                        value="IT Services"
+                        name="sector15"
+                      />
+                      <label>&nbsp;IT Services</label><br /><br />
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.sector"
+                        value="Product based"
+                        name="sector16"
+                      />
+                      <label>&nbsp;Product based</label><br /><br />
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.sector"
+                        value="Services based"
+                        name="sector17"
+                      />
+                      <label>&nbsp;Services based</label><br /><br />
+                    </div>
+                    <div class="col-lg-4">
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.sector"
+                        value="Spacetech"
+                        name="sector18"
+                      />
+                      <label>&nbsp;Spacetech</label><br /><br />
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.sector"
+                        value="Traveltech"
+                        name="sector19"
+                      />
+                      <label>&nbsp;Traveltech</label><br /><br />
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.sector"
+                        value="Ecommerce"
+                        name="sector10"
+                      />
+                      <label>&nbsp;Ecommerce</label><br /><br />
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.sector"
+                        value="Management Consulting"
+                        name="sector11"
+                      />
+                      <label>&nbsp;Management Consulting</label><br /><br />
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.sector"
+                        value="Banking & Financial Services"
+                        name="sector12"
+                      />
+                      <label>&nbsp;Banking & Financial Services</label
+                      ><br /><br />
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.sector"
+                        value="Investment Banking"
+                        name="sector20"
+                      />
+                      <label>&nbsp;Investment Banking</label><br /><br />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12 card border" style="text-align: left">
+              <div class="card-body">
+                <div>
+                  <h6>
+                    What is your driving force/ motivation for exploring new
+                    opportunities? *
+                  </h6>
+                  <div class="row">
+                    <div class="col-lg-3">
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.reasonToSwitch"
+                        value="Higher Compensation"
+                        name="d1"
+                      />
+                      <label>&nbsp;Higher Compensation</label><br /><br />
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.reasonToSwitch"
+                        value="Growth"
+                        name="d2"
+                      />
+                      <label>&nbsp;Growth</label><br /><br />
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.reasonToSwitch"
+                        value="Better Learning Curve"
+                        name="d3"
+                      />
+                      <label>&nbsp;Better Learning Curve</label><br /><br />
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.reasonToSwitch"
+                        value="Value Mismatch"
+                        name="d4"
+                      />
+                      <label>&nbsp;Value Mismatch</label><br /><br />
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.reasonToSwitch"
+                        value="Better Team"
+                        name="d5"
+                      />
+                      <label>&nbsp;Better Team</label><br /><br />
+                    </div>
+                    <div class="col-lg-6">
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.reasonToSwitch"
+                        value="Better Location & Life Ecosystem"
+                        name="d6"
+                      />
+                      <label>&nbsp;Better Location & Life Ecosystem</label
+                      ><br /><br />
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.reasonToSwitch"
+                        value="Manager & Management"
+                        name="d7"
+                      />
+                      <label>&nbsp;Manager & Management</label><br /><br />
+                      <input
+                        type="radio"
+                        [(ngModel)]="candidate.reasonToSwitch"
+                        value="Lateral shift in Career Path"
+                        name="d8"
+                      />
+                      <label>&nbsp;Lateral shift in Career Path</label
+                      ><br /><br />
+                    </div>
+                    <div class="col-lg-4"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <br />
+            <div class="text-end">
+              <button
+                type="button"
+                class="btn btn-success btn-label right ms-auto nexttab nexttab"
+                data-nexttab="pills-info-desc-tab"
+                cdkStepperNext
+              >
+                <i
+                  class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
+                ></i
+                >Next
+              </button>
+            </div>
+          </cdk-step>
+
+          <cdk-step [optional]="false">
+            <ng-template cdkStepLabel>
+              <button class="step-bullet border-0" style="z-index: 10">
+                3
+              </button>
+            </ng-template>
+            <hr
+              class="w-2 absolute top-0"
+              style="
+                margin-top: -60px;
+                width: 75%;
+                text-align: center;
+                margin-left: 17%;
+              "
+            />
+            <br />
+            <div>
+              <div class="col-lg-12 card border" style="text-align: left">
+                <div class="card-body">
+                  <div>
+                    <h6>
+                      What kind of org. culture would you associate yourself
+                      with? *
+                    </h6>
+                    {{ 255 - candidate.orgCulture?.length }} chars left
+                    <input
+                      type="text"
+                      class="form form-control"
+                      placeholder="Your answer"
+                      [(ngModel)]="candidate.orgCulture"
+                      maxlength="255"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12 card border" style="text-align: left">
+                <div class="card-body">
+                  <div>
+                    <h6>Ideal Company according to you? And Why? *</h6>
+                    {{ 255 - candidate.idealCompany?.length }} chars left
+                    <input
+                      type="text"
+                      class="form form-control"
+                      placeholder="Your answer"
+                      [(ngModel)]="candidate.idealCompany"
+                      maxlength="255"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12 card border" style="text-align: left">
+                <div class="card-body">
+                  <div>
+                    <h6>
+                      Whats your expectation from a Fixed Salary standpoint (INR
+                      Lakhs) ? *
+                    </h6>
+                    <div class="row">
+                      <div class="col-lg-2">
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.expectation"
+                          value="Below 25"
+                          name="expected1"
+                        />
+                        <label>&nbsp;Below 25</label><br /><br />
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.expectation"
+                          value="25-50"
+                          name="expected3"
+                        />
+                        <label>&nbsp;25-50</label><br /><br />
+                      </div>
+                      <div class="col-lg-2">
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.expectation"
+                          value="51-100"
+                          name="expected3"
+                        />
+                        <label>&nbsp;51-100</label><br /><br />
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.expectation"
+                          value="101-200"
+                          name="expected4"
+                        />
+                        <label>&nbsp;101-200</label><br /><br />
+                      </div>
+                      <div class="col-lg-2">
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.expectation"
+                          value="above 200"
+                          name="expected5"
+                        />
+                        <label>&nbsp;above 200</label><br /><br />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br />
+            <div>
+              <div class="row">
+                <div class="col-xl-6">
+                  <div class="text-start">
+                    <button
+                      type="button"
+                      class="btn btn-success text-decoration-none btn-label previestab"
+                      data-previous="pills-gen-info-tab"
+                      cdkStepperPrevious
+                    >
+                      <i
+                        class="ri-arrow-left-line label-icon align-middle fs-16 me-2"
+                      ></i>
+                      Previous
+                    </button>
+                  </div>
+                </div>
+                <div class="col-xl-6">
+                  <div class="text-end">
+                    <button
+                      type="button"
+                      class="btn btn-success btn-label right ms-auto nexttab nexttab"
+                      data-nexttab="pills-info-desc-tab"
+                      cdkStepperNext
+                    >
+                      <i
+                        class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
+                      ></i
+                      >Next
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </cdk-step>
+
+          <cdk-step [optional]="false">
+            <ng-template cdkStepLabel>
+              <button class="step-bullet border-0" style="z-index: 10">
+                4
+              </button>
+            </ng-template>
+            <hr
+              class="w-2 absolute top-0"
+              style="
+                margin-top: -60px;
+                width: 75%;
+                text-align: center;
+                margin-left: 17%;
+              "
+            />
+            <br />
+            <div>
+              <div class="col-lg-12 card border" style="text-align: left">
+                <div class="card-body">
+                  <div>
+                    <h6>Hybrid/Work from Office/ Remote only ? *</h6>
+                    <div class="row">
+                      <div class="col-lg-3">
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.workModel"
+                          value="Hybrid only"
+                          name="Hybrid-only"
+                        />
+                        <label>&nbsp;Hybrid only</label><br /><br />
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.workModel"
+                          value="Work from office"
+                          name="Work-from-office"
+                        />
+                        <label>&nbsp;Work from office</label><br /><br />
+                      </div>
+                      <div class="col-lg-4">
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.workModel"
+                          value="Remote"
+                          name="Remote"
+                        />
+                        <label>&nbsp;Remote</label><br /><br />
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.workModel"
+                          value="Any mode is ok"
+                          name="Any-mode-is-ok"
+                        />
+                        <label>&nbsp;Any mode is ok</label><br /><br />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12 card border" style="text-align: left">
+                <div class="card-body">
+                  <div>
+                    <h6>
+                      How soon are you likely to make the next career move ? *
+                    </h6>
+                    <div class="row">
+                      <div class="col-lg-3">
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.nextCareerMove"
+                          value="In 3 months"
+                          name="move1"
+                        />
+                        <label>&nbsp;In 3 months</label><br /><br />
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.nextCareerMove"
+                          value="In 6 months"
+                          name="move2"
+                        />
+                        <label>&nbsp;In 6 months</label><br /><br />
+                      </div>
+                      <div class="col-lg-4">
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.nextCareerMove"
+                          value="In a year"
+                          name="move3"
+                        />
+                        <label>&nbsp;In a year</label><br /><br />
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.nextCareerMove"
+                          value="After a year"
+                          name="move4"
+                        />
+                        <label>&nbsp;After a year</label><br /><br />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12 card border" style="text-align: left">
+                <div class="card-body">
+                  <div>
+                    <div class="row">
+                      <div class="col-lg-10">
+                        <h6>
+                          Would you like to be considered for our Leadership
+                          Talent Program? *
+                        </h6>
+                      </div>
+                      <div class="col-lg-1" style="text-align: left">
+                        <i
+                          class="icofont-info-circle"
+                          style="
+                            font-size: 20px;
+                            color: green;
+                            z-index: 500;
+                            cursor: pointer;
+                          "
+                          (click)="showLtProgramDetails()"
+                          (mouseover)="
+                            commonService.showToolTip(
+                              'click to know more about our Leadership Talent Program.',
+                              $event
+                            )
+                          "
+                        ></i>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12 card">
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.leadershipProgram"
+                          value="true"
+                          name="l1"
+                        />
+                        <label>&nbsp;Yes</label>
+                        <input
+                          type="radio"
+                          [(ngModel)]="candidate.leadershipProgram"
+                          value="false"
+                          name="l2"
+                        />
+                        <s>&nbsp;No</s>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- cv / Video intro -->
+              <div class="row">
+                <div class="col-xl-6">
+                  <div class="card-body">
+                    <div>
+                      <h6>Your CV plz *</h6>
+                      <div class="row">
+                        <div class="col-lg-3">
+                          <input type="file" (change)="onFileSelecet($event)" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xl-6">
+                  <div>
+                    <h6>Your 60 Sec Video Intro *</h6>
+                    <div class="row">
+                      <div class="col-lg-12 card">
+                        <input
+                          type="text"
+                          [(ngModel)]="candidate.videoLink"
+                          class="form form-control"
+                          placeholder="Enter the url to your video introduction."
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br />
+            <div>
+              <div class="row">
+                <div class="col-xl-6">
+                  <div class="text-start">
+                    <button
+                      type="button"
+                      class="btn btn-success text-decoration-none btn-label previestab"
+                      data-previous="pills-gen-info-tab"
+                      cdkStepperPrevious
+                    >
+                      <i
+                        class="ri-arrow-left-line label-icon align-middle fs-16 me-2"
+                      ></i>
+                      Previous
+                    </button>
+                  </div>
+                </div>
+                <div class="col-xl-6">
+                  <div class="text-end">
+                    <button
+                      type="button"
+                      class="btn btn-primary btn-label right ms-auto nexttab nexttab"
+                      data-nexttab="pills-info-desc-tab"
+                      (click)="submit()"
+                    >
+                      <i
+                        class="ri-check-double-line label-icon align-middle fs-16 ms-2"
+                      ></i
+                      >Submit
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </cdk-step>
+        </ng-stepper>
+      </div>
+    </div>
+  </div>
+</div>

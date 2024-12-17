@@ -1,0 +1,229 @@
+<section>
+  <div>
+    <div class="row justify-content-evenly mx-0 mt-0">
+      <div class="col-lg-11">
+        <div class="mb-0">
+          <div class="row justify-content-evenly mx-0 mt-5">
+            <div class="col-md-5 d-sm-block d-none">
+              <app-login-left></app-login-left>
+            </div>
+            <!--end col-->
+            <div class="col-md-5 align-self-center">
+              <div class="mb-0 border-0 shadow-none mb-0">
+                <div class="p-sm-4 m-lg-2">
+                  <div class="text-center mt-2">
+                    <img
+                      src="assets/images/pie-works.svg"
+                      class="mb-2"
+                      style="width: 80%"
+                    />
+                    <h5 class="fs-3xl">Forgot Password?</h5>
+                    <p class="text-muted mb-4" *ngIf="!emailVerified">
+                      Enter the email address you used when you joined and we’ll
+                      send an OTP to reset your password.
+                    </p>
+                  </div>
+
+                  <div class="p-2">
+                    <form
+                      [formGroup]="signupForm"
+                      class="needs-validation"
+                      novalidate
+                    >
+                      <div class="mb-3" *ngIf="!emailVerified">
+                        <label for="useremail" class="form-label"
+                          >Email <span class="text-danger">*</span></label
+                        >
+                        <input
+                          [(ngModel)]="otpIdentifier"
+                          name="emailId"
+                          (change)="emailVerified = false"
+                          type="email"
+                          class="form-control"
+                          id="useremail"
+                          placeholder="Enter email address"
+                          required
+                          formControlName="email"
+                          [ngClass]="{
+                            'is-invalid':
+                              (submitted && f['email'].errors) || !emailVerified
+                          }"
+                        />
+                      </div>
+                      <div class="mb-3" *ngIf="emailVerified">
+                        <label class="form-label" for="password-input"
+                          >New Password
+                          <span class="text-danger">*</span></label
+                        >
+                        <div class="position-relative auth-pass-inputgroup">
+                          <input
+                            (click)="passwordNotMatching = false"
+                            [type]="fieldTextType ? 'text' : 'password'"
+                            class="form-control password-input pe-5"
+                            placeholder="Enter password"
+                            id="password-input"
+                            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                            required
+                            formControlName="password"
+                            [ngClass]="{
+                              'is-invalid': submitted && f['password'].errors
+                            }"
+                          />
+                          <button
+                            class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
+                            type="button"
+                            id="password-addon"
+                          >
+                            <i
+                              class="ri-eye-fill align-middle"
+                              [ngClass]="{
+                                'mdi-eye-off-outline': !fieldTextType,
+                                'mdi-eye-outline': fieldTextType
+                              }"
+                              (click)="toggleFieldTextType()"
+                            ></i>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="mb-3" *ngIf="emailVerified">
+                        <label class="form-label" for="cpassword-input"
+                          >Confirm Password<span class="text-danger"
+                            >*</span
+                          ></label
+                        >
+                        <div class="position-relative auth-pass-inputgroup">
+                          <input
+                            (click)="passwordNotMatching = false"
+                            [type]="fieldTextType1 ? 'text' : 'password'"
+                            class="form-control password-input pe-5"
+                            placeholder="Enter password"
+                            id="cpassword-input"
+                            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                            required
+                            formControlName="cpassword"
+                            [ngClass]="{
+                              'is-invalid': submitted && f['cpassword'].errors
+                            }"
+                          />
+                          <button
+                            class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
+                            type="button"
+                            id="cpassword-addon"
+                          >
+                            <i
+                              class="ri-eye-fill align-middle"
+                              [ngClass]="{
+                                'mdi-eye-off-outline': !fieldTextType,
+                                'mdi-eye-outline': fieldTextType
+                              }"
+                              (click)="toggleFieldTextType1()"
+                            ></i>
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="mb-4" *ngIf="false">
+                        <p class="mb-0 fs-xs text-muted fst-italic">
+                          By registering you agree to the Steex
+                          <a
+                            routerLink="/pages/term-conditions"
+                            class="text-primary text-decoration-underline fst-normal fw-medium"
+                            >Terms of Use</a
+                          >
+                        </p>
+                      </div>
+                      <div
+                        *ngIf="submitted && passwordNotMatching"
+                        id="password-contain1"
+                      >
+                        <h5 class="fs-sm">Passwords not matching</h5>
+                      </div>
+                      <div
+                        id="password-contain1"
+                        *ngIf="submitted && f['cpassword'].errors"
+                      >
+                        <h5 class="fs-sm">Password must contain:</h5>
+                        <p id="pass-length" class="invalid fs-xs mb-2">
+                          Minimum <b>8 characters</b>
+                        </p>
+                        <p id="pass-lower" class="invalid fs-xs mb-2">
+                          At least <b>lowercase</b> letter (a-z)
+                        </p>
+                        <p id="pass-upper" class="invalid fs-xs mb-2">
+                          At least <b>uppercase</b> letter (A-Z)
+                        </p>
+                        <p id="pass-number" class="invalid fs-xs mb-0">
+                          A least <b>number</b> (0-9)
+                        </p>
+                      </div>
+                      <div class="text-center mt-4">
+                        <button
+                          class="btn btn-primary border-0 w-100"
+                          style="background-color: #162444"
+                          (click)="showOtpWindow()"
+                          *ngIf="!emailVerified"
+                        >
+                          Send OTP
+                        </button>
+                        <button
+                          class="btn btn-primary w-100"
+                          (click)="onSubmit()"
+                          *ngIf="emailVerified"
+                        >
+                          Set Password
+                        </button>
+                      </div>
+                    </form>
+                    <!-- end form -->
+                  </div>
+                  <div class="mt-4 text-center">
+                    <p class="mb-0">
+                      Wait, I remember my password...
+                      <a
+                        routerLink="/auth/login"
+                        class="fw-semibold text-primary text-decoration-underline text-dark"
+                      >
+                        Click here
+                      </a>
+                    </p>
+                  </div>
+                </div>
+                <!-- end card body -->
+              </div>
+              <!-- end card -->
+            </div>
+            <!--end col-->
+          </div>
+          <!--end row-->
+        </div>
+      </div>
+      <!--end col-->
+    </div>
+    <!--end row-->
+  </div>
+  <!--end container-->
+</section>
+<ng-template
+  #varying
+  class="modal fade bs-example-modal-lg"
+  id="varyingcontentModal"
+>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="varyingcontentModalLabel">
+        OTP verification
+      </h5>
+      <button
+        type="button"
+        class="btn-close"
+        (click)="modalRef?.hide()"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <!-- <form> -->
+      <div class="mb-12">
+        <app-twostep [parentObj]="parentObj"></app-twostep>
+      </div>
+    </div>
+  </div>
+</ng-template>

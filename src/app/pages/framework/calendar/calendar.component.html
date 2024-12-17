@@ -1,0 +1,652 @@
+<div class="mt-sm-0 mt-4"></div>
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs
+  tooltip="Manage"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs
+><br />
+<!-- End Breadcrumbs -->
+<div class="row">
+  <div class="col-lg">
+    <div
+      class="card"
+      style="background-image: url('assets/images/background.png')"
+    >
+      <div class="card-body">
+        <div class="row align-items-center gy-3">
+          <div class="col-6">
+            <h6 class="card-tooltip fs-2xl mb-0">
+              Events 
+            </h6>
+          </div>
+          <!--end col
+          <div class="col-auto ms-auto">
+            <button
+              class="btn btn-primary me-1 rounded-pill default-btn-width"
+              (click)="exportToXls()"
+              tooltip="export to xls"
+              *ngIf="!isRspp && commonService.rbac['export-xls']"
+            >
+              <i class="bi bi-file-excel align-baseline fs-2xl"></i>
+            </button>
+            <button
+              *ngIf="
+                (rssppMandateLabel == 'Mandates' &&
+                  commonService.rbac['add-new-mandate']) ||
+                (rssppMandateLabel == 'Rspp' &&
+                  commonService.rbac['add-new-rspp'])
+              "
+              class="btn btn-primary me-1 rounded-pill default-btn-width"
+              tooltip="add new {{ rssppMandateLabel }}"
+              (click)="menuAction = 'Create RSPP'; initRspp(); addModal.show()"
+            >
+              <i class="bi bi-plus align-baseline fs-2xl"></i>
+            </button>
+            <button
+              *ngIf="isRspp && commonService.rbac['copy-rspp-form']"
+              class="btn btn-primary rounded-pill"
+              (click)="copyLink()"
+            >
+              <i
+                tooltip="Click to copy link for RSPP form."
+                class="ri-file-copy-line fs-2xl clickable"
+              ></i></button
+            >&nbsp;
+            <button
+              *ngIf="!isRspp"
+              class="btn btn-primary myButton rounded-pill default-btn-width"
+              (click)="filterWindow.show()"
+            >
+              <i
+                class="bi bi-funnel align-baseline fs-2xl"
+                tooltip="show filters"
+              ></i></button
+            >&nbsp;
+            <button
+              *ngIf="
+                (!isRspp && commonService.rbac['earn-filter']) ||
+                (isRspp && commonService.rbac['rspp-filter'])
+              "
+              class="btn btn-primary myButton rounded-pill default-btn-width"
+              (click)="clearFilters()"
+            >
+              <i
+                class="ri-filter-off-line align-baseline fs-2xl"
+                tooltip="clear filters"
+              ></i>
+            </button>
+          </div>
+          
+          <div
+            class="col-xl-3"
+            *ngIf="
+              (!isRspp && commonService.rbac['search-text']) ||
+              (isRspp && commonService.rbac['rspp-search-text'])
+            "
+          >
+            <div class="form-group has-search">
+              <span class="bi bi-search fs-2xl form-control-feedback"></span>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Search"
+                maxlength="100"
+                [(ngModel)]="searchText"
+                (keyup)="filterChanged()"
+              />
+            </div>
+          </div>
+        </div>
+        end row-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="calendar-wrapper d-lg-flex gap-4">
+  <div class="w-100">
+    <div class="card card-h-100">
+      <div class="">
+        <div id="calendar">
+          <full-calendar [options]="calendarOptions"></full-calendar>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end col -->
+</div>
+<!--end row-->
+
+<div style="clear: both"></div>
+
+<!-- Add New Event MODAL -->
+<div
+  bsModal
+  #eventModal="bs-modal"
+  class="modal fade"
+  id="event-modal"
+  tabindex="-1"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0">
+      <div
+        class="modal-header p-3 bg-info-subtle"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <h5 class="modal-title" id="modal-title">Event</h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="eventModal.hide()"
+        ></button>
+      </div>
+      <div class="modal-body p-4">
+        <form
+          class="needs-validation"
+          name="event-form"
+          id="form-event"
+          novalidate
+        >
+          <div class="row event-form">
+            <div class="col-12">
+              <div class="mb-3">
+                <label class="form-label">Event Name</label>
+                <input
+                  class="form-control"
+                  placeholder="Enter event name"
+                  type="text"
+                  name="title"
+                  id="event-title"
+                  [(ngModel)]="event.title"
+                  required
+                  value=""
+                />
+                <div class="invalid-feedback">
+                  Please provide a valid event name
+                </div>
+              </div>
+            </div>
+            <!--end col-->
+            <div class="col-12">
+              <div class="mb-3">
+                <label class="form-label">Event Date</label>
+                <div class="input-group">
+                  <input
+                    type="text"
+                    id="event-start-date"
+                    class="form-control flatpickr flatpickr-input"
+                    placeholder="Select date"
+                    bsDatepicker
+                    [bsConfig]="{
+                      containerClass: 'theme-blue',
+                      showWeekNumbers: false
+                    }"
+                    name="eventDate"
+                    [(ngModel)]="event.date"
+                    readonly
+                    required
+                  />
+                  <span class="input-group-text"
+                    ><i class="ri-calendar-event-line"></i
+                  ></span>
+                </div>
+              </div>
+            </div>
+            <!--end col-->
+            <div class="col-12" id="event-time">
+              <div class="row">
+                <div class="col-6">
+                  <div class="mb-3">
+                    <label class="form-label">Start Time</label>
+                    <div class="input-group">
+                      <timepicker
+                        id="editStartTime"
+                        name="start"
+                        [(ngModel)]="event.startDuration"
+                      ></timepicker>
+                      <!-- <input id="timepicker1" type="text" class="form-control flatpickr flatpickr-input" placeholder="Select start time"> -->
+                      <span class="input-group-text"
+                        ><i class="ri-time-line"></i
+                      ></span>
+                    </div>
+                  </div>
+                </div>
+                <!--end col-->
+                <div class="col-6">
+                  <div class="mb-3">
+                    <label class="form-label">End Time</label>
+                    <div class="input-group">
+                      <timepicker
+                        id="editEndTime"
+                        name="end"
+                        [(ngModel)]="event.endDuration"
+                      ></timepicker>
+                      <!-- <input id="timepicker2" [(ngModel)]="event.endDuration" type="text" class="form-control flatpickr flatpickr-input" placeholder="Select end time" readonly> -->
+                      <span class="input-group-text"
+                        ><i class="ri-time-line"></i
+                      ></span>
+                    </div>
+                  </div>
+                </div>
+                <!--END col-->
+              </div>
+              <!--end row-->
+            </div>
+            <!--end col-->
+            <div class="col-12">
+              <div class="mb-3">
+                <label for="event-location" class="form-label">Location</label>
+                <div>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="event-location"
+                    id="event-location"
+                    [(ngModel)]="event.location"
+                    placeholder="Event location"
+                  />
+                </div>
+              </div>
+            </div>
+            <!--end col-->
+            <input type="hidden" id="eventid" name="eventid" value="" />
+            <div class="col-12">
+              <div class="mb-3">
+                <label class="form-label">Description</label>
+                <textarea
+                  class="form-control"
+                  id="event-description"
+                  placeholder="Enter a description"
+                  rows="3"
+                  name="description"
+                  [(ngModel)]="event.description"
+                  spellcheck="false"
+                ></textarea>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="mb-3">
+                <label for="event-limk" class="form-label">Whatsapp Group Link</label>
+                <div>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="event-link"
+                    id="event-link"
+                    [(ngModel)]="event.link"
+                    placeholder="Event location"
+                  />
+                </div>
+              </div>
+            </div>
+            <!--end col-->
+            <div class="col-12">
+              <div class="mb-3">
+                <label class="form-label">Club</label>
+
+                <ng-select
+                  #Selecter1
+                  [items]="clubs"
+                  [multiple]="false"
+                  bindLabel="name"
+                  bindValue="name"
+                  placeholder="Club "
+                  class="form-control"
+                  labelForId="ngSelectId"
+                  [(ngModel)]="event.club"
+                  name="club"
+                  id="club"
+                  [clearable]="false"
+                  style="padding: 0"
+                >
+                </ng-select>
+                <div class="invalid-feedback">
+                  Please select a valid event category
+                </div>
+              </div>
+            </div>
+            <!--end col-->
+          </div>
+          <!--end row-->
+          <div class="hstack gap-2 justify-content-end">
+            <!-- <button
+              type="button"
+              class="btn btn-subtle-danger"
+              id="btn-delete-event"
+              (click)="removeEvent()"
+            >
+              <i class="ri-close-line align-bottom"></i> Delete
+            </button> -->
+            <!-- <button class="btn btn-primary" (click)="showAddCm()">
+              <i class="bi bi-person-plus fs-md clickable"></i>
+            </button> -->
+            <button
+              type="submit"
+              class="btn btn-success"
+              id="btn-save-event"
+              (click)="saveEvent()"
+            >
+              Add Event
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- end modal-content-->
+  </div>
+  <!-- end modal dialog-->
+</div>
+<!-- end modal-->
+
+<!-- Model box for assigning  -->
+<!-- <div
+  bsModal
+  #addCM="bs-modal"
+  class="modal bs-example-modal-sm fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        *ngIf="true"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <h5 class="modal-title" id="myLargeModalLabel"></h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="addCM.hide()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <ng-select
+            [items]="users"
+            [multiple]="true"
+            [searchFn]="memberLocalSearch"
+            (search)="onMemberSearch($event)"
+            bindLabel="name"
+            [(ngModel)]="userAssigned"
+            class="form-control"
+            [clearable]="true"
+            placeholder="Select community member"
+            style="padding: 0"
+          >
+          </ng-select>
+          <br />
+          <div class="text-center">
+            <button
+              type="button"
+              class="btn rounded-pill btn-info text-center"
+              (click)="saveEvent()"
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div> -->
+
+<div
+  bsModal
+  #eventDetails="bs-modal"
+  class="modal fade bs-example-modal-lg"
+  id="event-modal"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 rounded">
+      <div
+        class="modal-header p-3 bg-info-subtle"
+        style="
+          background-image: url('assets/images/event_dg_bg.png');
+          height: 70px;
+          border-top-left-radius: 10px !important;
+          border-top-right-radius: 10px !important;
+        "
+      >
+        <div class="relative">
+          <div class="absolute">
+            <img
+              src="assets/images/book 1.png"
+              alt=""
+              width="100px"
+              height="100px"
+            />
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="btn-close"
+          (click)="eventDetails.hide()"
+        ></button>
+      </div>
+      <div
+        class="modal-body"
+        style="
+          border: solid rgb(255, 255, 255) 8px;
+          border-radius: 10px;
+          border-top: 0px;
+          padding-left: 80px;
+        "
+      >
+        <div class="text-end">
+          <a
+            href="javascript:void(0);"
+            class="btn btn-sm btn-subtle-info"
+            (click)="getMembers(); eventMembers.show(); eventDetails.hide()"
+            *ngIf="event?.createdBy?.id == commonService.user.id"
+            role="button"
+            >View Members</a
+          >
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <a
+            href="javascript:void(0);"
+            class="btn btn-sm btn-subtle-primary"
+            id="edit-event-btn"
+            (click)="showeditEvent()"
+            *ngIf="event?.createdBy?.id == commonService.user.id"
+            role="button"
+            >Edit</a
+          >
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <i class="bi bi-whatsapp fs-5xl clickable" style="color:#25D366;" (click)="whatsappGroup()" *ngIf="event?.createdBy?.id != commonService.user.id && selectedOption == 'Yes'" ></i>
+        </div>
+        <div class="event-details">
+          <h4 class="event-title my-3" id="event-title">Event</h4>
+
+          <!-- RSVP -->
+          <div
+            class="d-flex mb-2"
+            *ngIf="event?.createdBy?.id != commonService.user.id"
+          >
+            <div class="flex-grow-1 d-flex align-items-center">
+              <div class="flex-shrink-0 me-3">
+                <!-- <i class="ri-calendar-event-line text-muted fs-lg"></i> -->
+                RSVP
+              </div>
+              <div class="flex-grow-1 " style="margin-left: 40px;">
+                <div>
+                  <select
+                    [(ngModel)]="selectedOption"
+                    (change)="onSelectChange($event)"
+                    [ngClass]="{'bg-success-subtle': selectedOption === 'Yes', 'bg-danger-subtle': selectedOption === 'No'}"
+                    class=" border-0 p-1 text-center outline-0"
+                    style="appearance: none; border-radius: 8px; width: 50px;"
+                    [ngStyle]="
+                      selectedOption === 'Yes'
+                        ? { 'background-color': 'green' }
+                        : { 'background-color': 'red' }
+                    "
+                  >
+                    <!-- <option value="">Select an option</option> -->
+                    <option value="Yes" >
+                      Yes
+                    </option>
+                    <option value="No">No</option>
+                  </select>
+                </div>
+                <!-- <button class="btn btn-success" (click)="onButtonClick()">Yes</button> -->
+              </div>
+            </div>
+          </div>
+          <!-- Date of Event -->
+          <div class="d-flex mb-2">
+            <div class="flex-grow-1 d-flex align-items-center">
+              <div class="flex-shrink-0 me-3">
+                <!-- <i class="ri-calendar-event-line text-muted fs-lg"></i> -->
+                Date
+              </div>
+              <div class="flex-grow-1 ms-5">
+                <div
+                  class="d-block text-muted fw-semibold mb-0"
+                  id="event-start-date-tag"
+                ></div>
+              </div>
+            </div>
+          </div>
+          <!-- Start and end time -->
+          <div class="d-flex align-items-center mb-2">
+            <div class="flex-shrink-0 me-3">
+              <!-- <i class="ri-time-line text-muted fs-lg"></i> -->
+              Time
+            </div>
+            <div class="flex-grow-1 ms-5">
+              <div class="d-block text-muted fw-semibold mb-0">
+                <span id="event-timepicker1-tag"></span> -
+                <span id="event-timepicker2-tag"></span>
+              </div>
+            </div>
+          </div>
+          <!-- Location of event -->
+          <div class="d-flex align-items-center mb-2">
+            <div class="flex-shrink-0 me-3">
+              <!-- <i class="ri-map-pin-line text-muted fs-lg"></i> -->
+              Location
+            </div>
+            <div class="flex-grow-1 ms-4">
+              <div class="d-block text-muted fw-semibold mb-0">
+                <span id="event-location-tag"></span>
+              </div>
+            </div>
+          </div>
+          <!-- Club  -->
+          <div class="d-flex mb-3">
+            <div class="flex-shrink-0 me-3">
+              <!-- <i class="bi bi-suit-club text-muted fs-lg" *ngIf="event?.club != null"></i> -->
+              <span *ngIf="event?.club != null">Club</span>
+            </div>
+            <div class="flex-grow-1 ms-5">
+              <p class="d-block text-muted fw-semibold mb-0" id="event-club-tag"></p>
+            </div>
+          </div>
+
+          <hr />
+
+          <!-- Description -->
+          <div class="d-flex">
+            <div class="flex-shrink-0">
+              <!-- <i class="ri-discuss-line text-muted fs-lg"></i> -->
+            </div>
+            <div class="flex-grow-1">
+              <p class="d-block text-muted mb-0" id="event-description-tag"></p>
+            </div>
+          </div>
+          <!-- buttons -->
+          <div class="hstack gap-2 justify-content-end">
+            <div *ngIf="event?.createdBy?.id == commonService.user.id">
+              <button
+                type="button"
+                class="btn btn-subtle-danger"
+                id="btn-delete-event"
+                (click)="removeEvent()"
+              >
+                <i class="ri-close-line align-bottom"></i> Delete
+              </button>
+            </div>
+            <!-- <div *ngIf="event?.createdBy?.id != commonService.user.id">
+              <button class="btn btn-primary" (click)="removeMyJoining()">
+                No
+              </button>
+            </div>
+            <div *ngIf="event?.createdBy?.id != commonService.user.id">
+              <button class="btn btn-success" (click)="joiningEvent()">
+                Yes
+              </button>
+            </div> -->
+            <!-- <button class="btn btn-primary" (click)="showAddCm()">
+            <i class="bi bi-person-plus fs-md clickable"></i>
+          </button> -->
+            <!-- <button
+            type="submit"
+            class="btn btn-success"
+            id="btn-save-event"
+            (click)="saveEvent()"
+          >
+            Add Event
+          </button> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Model for showing the members -->
+<div
+  bsModal
+  #eventMembers="bs-modal"
+  class="modal fade bs-example-modal-sm"
+  id="event-modal"
+>
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content border-0 rounded">
+      <div
+        class="modal-header p-3 bg-info-subtle"
+        style="
+          background-image: url('assets/images/event_dg_bg.png');
+          height: 50px;
+          border-top-left-radius: 10px !important;
+          border-top-right-radius: 10px !important;
+        "
+      >
+
+        <button
+          type="button"
+          class="btn-close"
+          (click)="eventMembers.hide()"
+        ></button>
+      </div>
+      <div
+        class="modal-body"
+        style="
+          border: solid rgb(255, 255, 255) 8px;
+          border-radius: 10px;
+          border-top: 0px;
+          
+        "
+      >
+       <div *ngFor="let m of joinedMembers;">
+
+        <div class="d-flex gap-3 mb-1">
+          <div class="align-self-center">
+            <img src="{{ commonService.getPicUrl(m?.userId?.profilepic) }}" alt="" style="width: 40px; height:40px;" class="rounded-circle">
+          </div>
+          <div>
+            <h6 class="mb-0">{{ m?.userId?.name }}</h6>
+            <span>{{commonService.convertToTitleCase(m?.userId?.userrole)}}</span>
+          </div>
+        </div>
+
+       </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,52 @@
+
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs
+  tooltip="Reports"
+  [breadcrumbItems]="breadCrumbItems"
+  [title]="'Reports'"
+></app-breadcrumbs>
+<br />
+<!-- End Breadcrumbs -->
+<div class="row">
+    <div class="col-lg-2">
+        <div class="card">
+            <div class="card-body">
+                <accordion class="accordion" id="default-accordion-example">
+                    <accordion-group class="accordion-item" [isOpen]="section==1" (click)='section=1'>
+                        <h2 accordion-heading class="accordion-header" id="headingOne">
+                            <button class="accordion-button" type="button">
+                               Discovery Reports
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show">
+                            <div class="accordion-body">
+                                <p class="clickable" (click)="selectedReportName='monthlyReport'" style='font-weight: {{selectedReportName=="monthlyReport"?"bold":"inherit"}}'>Monthly Report</p>
+                                <p class="clickable" (click)="selectedReportName='weeklyReport'"  style='font-weight: {{selectedReportName=="weeklyReport"?"bold":"inherit"}}'>Weekly Report</p>
+                                <p class="clickable" (click)="selectedReportName='myWip'" style='font-weight: {{selectedReportName=="openMandateAging"?"bold":"inherit"}}'>My WIP</p>
+                            </div>
+                        </div>
+                    </accordion-group>
+                </accordion>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-10">
+        <div class="card">
+            <div class="card-body">
+                <div class="job-details-item">
+                    <div class="job-overview">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <app-my-wip *ngIf="selectedReportName=='myWip'"></app-my-wip>
+                                <app-discovery-dashboard-report name='Monthly Leadership Board - Weighted(Actual)' *ngIf="selectedReportName=='monthlyReport'"></app-discovery-dashboard-report>
+                                <app-discovery-dashboard-report name='Weekly Leadership Board - Weighted(Actual)' *ngIf="selectedReportName=='weeklyReport'"></app-discovery-dashboard-report>
+                            </div>                    
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>

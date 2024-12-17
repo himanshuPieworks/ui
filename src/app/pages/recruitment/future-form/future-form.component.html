@@ -1,0 +1,432 @@
+<app-breadcrumbs
+  [breadcrumbItems]="breadCrumbItems"
+  *ngIf="userType == 'communitymember'"
+>
+</app-breadcrumbs>
+
+<!-- new UI -->
+<div class="container mt-5">
+  <div class="card shadow">
+    <div class="card-body">
+      <!-- Congratulatory Message -->
+      <div *ngIf="formSubmitted" class="text-center">
+        <h4 class="text-success">Congratulations! 🎉</h4>
+        <p>Your application has been successfully submitted.</p>
+        <button type="button" class="btn btn-primary" (click)="resetForm()">
+          Submit Another Application
+        </button>
+      </div>
+
+      <div *ngIf="!formSubmitted">
+        <!-- Show File Name and Trash Icon if File is Selected -->
+        <div
+          *ngIf="selectedFile"
+          class="d-flex justify-content-center align-items-center flex-column"
+        >
+          <p class="text-success mb-2">
+            File selected: {{ selectedFile.name }}
+          </p>
+
+          <!-- Bootstrap Trash Icon for removing the file -->
+          <i
+            class="bi bi-trash text-danger"
+            role="button"
+            (click)="removeFile()"
+            style="cursor: pointer; font-size: 24px"
+            aria-label="Remove File"
+          ></i>
+        </div>
+
+        <!-- Autofill Application Section -->
+        <div class="text-center mb-4" *ngIf="!selectedFile">
+          <h6 class="text-danger">Autofill Application</h6>
+          <p>Upload your resume/cv in seconds with the autofill option.</p>
+          <!-- Drag and Drop Area -->
+          <div
+            class="upload-box p-4 border mb-2 text-center rounded border-dotted"
+            style="border-color: #e5e5e5"
+            (dragover)="onDragOver($event)"
+            (dragleave)="onDragLeave($event)"
+            (drop)="onFileDrop($event)"
+            [class.dragover]="isDragging"
+            (click)="triggerFileInput()"
+          >
+            <p class="text-danger">Upload your resume</p>
+            <p>or drag and drop it here</p>
+            <p>Only .doc, .docx, .pdf, .odt, .rtf (Optional)</p>
+
+            <!-- Hidden File Input -->
+            <input
+              type="file"
+              id="fileInput"
+              (change)="onFileSelected($event)"
+              hidden
+            />
+          </div>
+        </div>
+
+        <!-- Personal Details Section -->
+        <h6 class="text-danger">
+          Personal Details - <a href="#" class="text-danger">Clear</a>
+        </h6>
+        <form>
+          <!-- First Name -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="firstName" class="form-label"
+                >Name <span class="text-danger">*</span></label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                name="name"
+                placeholder="Your name"
+                [(ngModel)]="candidate.name"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label for="lastName" class="form-label"
+                >Linkedin <span class="text-danger">*</span></label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="linkedInUrl"
+                name="linkedInUrl"
+                placeholder="Linkedin"
+                [(ngModel)]="candidate.linkedInUrl"
+              />
+            </div>
+          </div>
+
+          <!-- Email & Contact -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="email" class="form-label"
+                >Email <span class="text-danger">*</span></label
+              >
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                placeholder="Your email"
+                [(ngModel)]="candidate.emailId"
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="contact" class="form-label"
+                >Contact <span class="text-danger">*</span></label
+              >
+              <div class="input-group">
+                <span class="input-group-text">+91</span>
+                <input
+                  type="tel"
+                  class="form-control"
+                  id="contact"
+                  name="contact"
+                  placeholder="Your mobile no."
+                  [(ngModel)]="candidate.phoneNo"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Year of Graduation & Gender -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="graduationYear" class="form-label"
+                >Years of Experience <span class="text-danger">*</span></label
+              >
+              <input
+                type="number"
+                class="form-control"
+                id="noticePeriod"
+                name="noticePeriod"
+                placeholder="years of Exp..."
+                [(ngModel)]="candidate.experience"
+              />
+            </div>
+            <div class="col-md-6" *ngIf="false">
+              <label for="gender" class="form-label"
+                >Gender <span class="text-danger">*</span></label
+              >
+              <ng-select
+                [items]="gender"
+                [multiple]="false"
+                bindLabel="name"
+                placeholder="Gender"
+                class="form-control z-1"
+                [(ngModel)]="candidate.gender"
+                [clearable]="false"
+                style="padding: 0"
+                name="gender"
+              >
+                <ng-template ng-optgroup-tmp let-item="item">
+                  {{ item }}
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+
+          <!-- Notice Period & job family -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="noticePeriod" class="form-label"
+                >Notice Period <span class="text-danger">*</span></label
+              >
+              <input
+                type="number"
+                class="form-control"
+                id="noticePeriod"
+                name="noticePeriod"
+                placeholder="Notice Period in days"
+                [(ngModel)]="candidate.noticePeriod"
+              />
+            </div>
+            <div class="col-md-6">
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="mb-3">
+                    <label for="skillSet" class="form-label"
+                      >Job family <span class="text-danger">*</span></label
+                    >
+                    <div class="input-group">
+                      <ng-select
+                        [items]="jobFamiliesL1"
+                        [multiple]="false"
+                        bindLabel="name"
+                        placeholder="Job family *"
+                        class="form-control"
+                        labelForId="jobFamilyId1"
+                        name="client"
+                        (change)="loadJobFamilyForDropdown(2)"
+                        name="jobeFamily1"
+                        [(ngModel)]="selectedJobFamilyL1"
+                        [clearable]="true"
+                        style="padding: 0"
+                      >
+                      </ng-select>
+                    </div>
+                    <br />
+                    <input
+                      type="checkbox"
+                      (click)="otherJobFamily = !otherJobFamily"
+                      name="otherJobFamily"
+                      id="otherJobFamily"
+                    />
+                    &nbsp;
+                    <label class="form-label" for="otherJobFamily"
+                      >Other Job family</label
+                    >
+                    <input
+                      *ngIf="otherJobFamily && !selectedJobFamilyL1"
+                      type="text"
+                      name="otherJobFamily1"
+                      placeholder="Job family "
+                      class="form-control"
+                      id="otherJobFamily1"
+                      (change)="checkNewJobFamilyName('l1')"
+                      [(ngModel)]="otherJobFamilyL1"
+                    />
+                  </div>
+                </div>
+                <div class="col-lg-6 align-self-center">
+                  <div class="mb-5">
+                    <label class="form-label" for="jobFamilyId2"
+                      >Job sub family <span class="text-danger">*</span></label
+                    >
+                    <div class="input-group">
+                      <ng-select
+                        [items]="jobFamiliesL2"
+                        [multiple]="false"
+                        bindLabel="name"
+                        placeholder="Job sub family *"
+                        class="form-control "
+                        labelForId="jobFamilyId2"
+                        (change)="loadJobFamilyForDropdown(3)"
+                        name="jobeFamily2"
+                        [(ngModel)]="selectedJobFamilyL2"
+                        [clearable]="false"
+                        style="padding: 0"
+                      >
+                      </ng-select>
+                    </div>
+                    <br />
+
+                    <input
+                      *ngIf="otherJobFamily"
+                      type="text"
+                      name="otherSubJobFamily"
+                      placeholder="Job sub family "
+                      class="form-control mt-4"
+                      id="otherSubJobFamily"
+                      (change)="checkNewJobFamilyName('l2')"
+                      [(ngModel)]="otherJobFamilyL2"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Current CTC (In Lakhs Per Annum) * Expected CTC (In Lakhs Per Annum) * -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="noticePeriod" class="form-label"
+                >Current CTC (In Lakhs Per Annum)
+                <span class="text-danger">*</span></label
+              >
+              <input
+                type="number"
+                class="form-control"
+                id="currentCtcFixed"
+                name="currentCtcFixed"
+                placeholder="Current CTC (in LPA)"
+                [(ngModel)]="candidate.currentCtcFixed"
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="skillSet" class="form-label"
+                >Expected CTC (In Lakhs Per Annum)
+                <span class="text-danger">*</span></label
+              >
+              <input
+                type="number"
+                class="form-control"
+                id="expectedCtc"
+                name="expectedCtc"
+                placeholder="Expected CTC (in LPA)"
+                [(ngModel)]="candidate.expectedCtc"
+              />
+            </div>
+          </div>
+          <!-- Current Location * Current Employer * -->
+          <div class="row mb-3 ">
+            <div class="col-md-6">
+              <label for="noticePeriod" class="form-label"
+                >Current Location <span class="text-danger">*</span></label
+              >
+              <ng-select
+                [items]="locations"
+                [multiple]="false"
+                bindLabel="name"
+                placeholder="Search location"
+                class="form-control z-1"
+                
+                [(ngModel)]="candidate.currentLocation"
+                [clearable]="false"
+                style="padding: 0"
+                name="selectedLocations"
+              >
+                <ng-template ng-optgroup-tmp let-item="item">
+                  {{ item }}
+                </ng-template>
+              </ng-select>
+            </div>
+            <div class="col-md-6">
+              <label for="currentCompany" class="form-label"
+                >Current Employer <span class="text-danger">*</span></label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="currentCompany"
+                name="currentCompany"
+                placeholder="Current Employer"
+                [(ngModel)]="candidate.currentCompany"
+              />
+            </div>
+          </div>
+
+          <!-- Vacancy Source & Locations -->
+          <div class="row mb-3 ">
+            <div class="col-md-6" *ngIf="false">
+              <label for="vacancySource" class="form-label"
+                >How did you come across this Form?
+                <span class="text-danger">*</span></label
+              >
+              <ng-select
+                [items]="socialMediaPlatforms"
+                [multiple]="false"
+                bindLabel="name"
+                placeholder="How did you come across this Form?"
+                class="form-control"
+                [(ngModel)]="candidate.source"
+                [clearable]="false"
+                style="padding: 0"
+                name="source"
+              >
+                <ng-template ng-optgroup-tmp let-item="item">
+                  {{ item }}
+                </ng-template>
+              </ng-select>
+            </div>
+            <div class="col-md-6">
+              <label for="preferredLocation" class="form-label"
+                >Preferred Location <span class="text-danger">*</span></label
+              >
+              <ng-select
+                [items]="locations"
+                [multiple]="false"
+                bindLabel="name"
+                placeholder="Search location"
+                class="form-control z-0"
+                [(ngModel)]="candidate.preferredLocation"
+                [clearable]="false"
+                style="padding: 0"
+                name="selectedLocations"
+              >
+                <ng-template ng-optgroup-tmp let-item="item">
+                  {{ item }}
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+
+          <!-- Submit & Cancel Buttons & sector -->
+          <div class="row">
+            <div class="col-xl-6 align-self-center">
+              <label for="preferredLocation" class="form-label"
+                >Sector <span class="text-danger">*</span></label
+              >
+              <div class="row">
+                <div class="col-lg-10">
+                  <div class="form-group">
+                    <div class="job-category-area">
+                      <ng-select
+                        [items]="availableSectors"
+                        [multiple]="false"
+                        bindLabel="name"
+                        bindValue="name"
+                        class="form-control"
+                        name="roleSelect"
+                        placeholder="Select Sector"
+                        [(ngModel)]="newSector"
+                        style="padding: 0"
+                      >
+                      </ng-select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-6 text-end align-self-center">
+              <button type="button" class="btn btn-dark me-2"(click)="resetForm()" >
+                <i class="bi bi-x-lg fs-xl"></i>
+              </button>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                (click)="saveCandidate()"
+              >
+              <i class="bi bi-check2 fs-xl"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

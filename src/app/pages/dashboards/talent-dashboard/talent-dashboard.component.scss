@@ -1,0 +1,17 @@
+::ng-deep .carousel-control-next {
+    display: none !important;
+}
+::ng-deep .carousel-control-prev {
+    display: none !important;
+}
+::ng-deep .mat-menu-panel {
+  max-height: none !important;
+}
+
+.accordion-button:not(.collapsed)::after
+{
+  display: none !important;
+}
+
+
+

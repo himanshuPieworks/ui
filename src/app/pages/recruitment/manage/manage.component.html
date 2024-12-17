@@ -1,0 +1,64 @@
+<div class="mt-sm-0 mt-4"></div>
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs
+  tooltip="Manage"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs
+><br />
+<!-- End Breadcrumbs -->
+<div class="row">
+  <div class="col-lg">
+    <div class="row" id="property-list">
+      <div
+        class="col-xxl-4 col-lg-4 col-md-6 clickable"
+        *ngFor="let link of links"
+      >
+        <a [routerLink]="link.link" *ngIf="commonService.rbac[link.rbacName]">
+          <div
+            class="card real-estate-grid-widgets card-animate"
+            style="
+              background-image: url('assets/images/greenbg.jpg');
+              background-repeat: repeat;
+              background-attachment: fixed;
+              background-position: top right;
+              min-height: 160px;
+            "
+          >
+            <!--  style="background-color: {{getRandomColor()}}" -->
+            <div class="card-body p-2 rounded">
+              <div class="row gy-4 d-flex">
+                <div style="width: 100%" class="d-flex align-items-center">
+                  <i
+                    class="{{ link.image }}"
+                    alt="img-01.jpg"
+                    class="rounded w-100 object-fit-cover"
+                    style="
+                      object-fit: contain !important;
+                      padding-left: 45%;
+                      font-size: 30px;
+                    "
+                  >
+                  </i>
+                </div>
+              </div>
+              <div class="row gy-4 d-flex">
+                <div class="col-xxl-10 col-md-10" style="text-align: left">
+                  <h2>
+                    {{ link.title
+                    }}<sup *ngIf="link.sup">&nbsp;( {{ link.sup }} )</sup>
+                  </h2>
+                </div>
+              </div>
+              <div class="row gy-4">
+                <div class="col-xxl-12 col-md-12 text-white">
+                  {{ link.description }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <!--end row-->
+  </div>
+</div>

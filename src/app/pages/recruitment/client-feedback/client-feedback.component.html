@@ -1,0 +1,69 @@
+<br>
+<div class="row" style='height: 50px;margin-top: 10px'>
+    <div class="col-lg-9"style="text-align: left;">
+
+    </div>
+    <div class="col-lg-2"style="text-align: right;">
+        {{welcome}}
+    </div>
+</div>
+<div class="card">
+    <br><br>
+    <h3 class="text-center">Feedback Time</h3>  
+    <div [hidden]="message || message.length>0" style="padding-left: 20%">
+        <br>
+        <form>
+            <div class="row" >
+                <div class="col-lg-9" style="text-align: left;font-size: 20px">
+                    1) What are the areas of improvement Pieworks can work on ? *
+                </div>
+            </div>
+            <div class="row" >
+                <div class="col-lg-9" style="text-align: left">
+                    {{300-answers.a1.length}} chars left<br>
+                    <textarea maxlength="300" rows="5" cols="15"  [(ngModel)]='answers.a1' class='form-control' name="a1"></textarea>
+                </div>
+            </div><br><br>
+            <div class="row" >
+                <div class="col-lg-9" style="text-align: left;font-size: 20px">
+                    2) What do you really appreciate about Pieworks ? *
+                </div>
+            </div>
+            <div class="row" >
+                <div class="col-lg-9" style="text-align: left">
+                    {{300-answers.a2.length}} chars left<br>
+                    <textarea maxlength="300" rows="5" cols="15"  [(ngModel)]='answers.a2' class='form-control' name="a2"></textarea>
+                </div>
+            </div><br><br>
+            <div class="row" >
+                <div class="col-lg-12"style="text-align: left;font-size: 20px">
+                    3) How likely are you to refer Pieworks to your family, friends, acquaintances? *<br>
+                </div><br><br>
+                <div class="col-lg-12"style="text-align: left;">
+                    <input type="radio" name="radio"  value="1" (click)="answers.a3='1'">1&nbsp;
+                    <input type="radio" name="radio"  value="2" (click)="answers.a3='2'">2&nbsp;
+                    <input type="radio" name="radio"  value="3" (click)="answers.a3='3'">3&nbsp;
+                    <input type="radio" name="radio"  value="4" (click)="answers.a3='4'">4&nbsp;
+                    <input type="radio" name="radio"  value="5" (click)="answers.a3='5'">5&nbsp;
+                    <input type="radio" name="radio"  value="6" (click)="answers.a3='6'">6&nbsp;
+                    <input type="radio" name="radio"  value="7" (click)="answers.a3='7'">7&nbsp;
+                    <input type="radio" name="radio"  value="8" (click)="answers.a3='8'">8&nbsp;
+                    <input type="radio" name="radio"  value="9" (click)="answers.a3='9'">9&nbsp;
+                    <input type="radio" name="radio"  value="10" (click)="answers.a3='10'">10&nbsp;
+                </div>
+            </div><br>
+            <div class="row" >
+                <div class="col-lg-9" style="text-align: center">
+                    <button [hidden]="message || message.length>0" type="submit" class="btn btn-info" (click)="submit()" style="right: 1px;top: 10%;">Submit</button>	
+                </div>
+            </div><br><br>
+        </form>                            
+    </div>
+    <br>
+    <br>
+    <div class="row" >
+        <div class="col-lg-9" style="text-align: center">
+            <h2 [hidden]="!message || message.length===0">{{message}}</h2>
+        </div>
+    </div>
+</div>       

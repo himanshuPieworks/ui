@@ -1,0 +1,487 @@
+<div class="card">
+  <div class="card-header">
+    <div class="d-flex justify-content-between gap-2">
+      <div class="align-self-center flex-grow-1 bd-highlight">
+        <h4>Hiring Overview</h4>
+      </div>
+      <div class="d-flex gap-2">
+        <input
+          type="checkbox"
+          [(ngModel)]="allCaData"
+          value="true"
+          name="l1"
+          class="align-self-center"
+          (ngModelChange)="loadHiringOverview()"
+        />
+        <p class="text-dark align-self-center mb-0">&nbsp;All CA Data</p>
+      </div>
+      <div class="align-self-center">
+        <button
+          class="btn btn-primary rounded-pill"
+          (click)="clientReportFilter.show()"
+        >
+          Client report
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-borderless table-fixed" id="StoreData">
+        <thead style="border: 0 !important">
+          <tr>
+            <th class="text-center"></th>
+            <th class="text-center">Interested</th>
+            <th class="text-center">Sent to Client</th>
+            <th class="text-center">Exploratory Call</th>
+            <th class="text-center">Interview</th>
+          </tr>
+        </thead>
+        <tbody
+          style="border: 0 !important"
+          *ngFor="let hiring of hiringOverview"
+        >
+          <tr>
+            <th style="max-width: 100px" class="border-0 p-1">
+              <p
+                class="m-0 clickable"
+                tooltip="{{ hiring.roleName }}, {{hiring.location}}, {{hiring?.status}}"
+                [routerLink]="['/recr/wp/' + hiring.reqId]"
+              >
+                {{ truncateString(hiring.roleName, 16) }}
+              </p>
+              <p class="text-muted m-0">
+                {{ hiring.clientName }}
+              </p>
+              <p class="text-muted m-0">Batches - {{ hiring.batchesSent }}</p>
+            </th>
+            <!-- Interested -->
+            <td
+              [ngStyle]="{
+                'background-color':
+                  hiring.interviewCount > 0 ||
+                  hiring.exploratoryCall > 0 ||
+                  hiring.s2cCount > 0 ||
+                  hiring.interestedCount > 0
+                    ? hiring.bgColor
+                    : 'initial'
+              }"
+              class="border-0 align-middle rounded-start-pill text-center mb-0 mt-o py-0 px-2"
+              style="height: 30px"
+              [ngClass]="{
+                'rounded-end-pill': !(
+                  hiring.interviewCount > 0 ||
+                  hiring.exploratoryCall > 0 ||
+                  hiring.s2cCount > 0
+                )
+              }"
+            >
+              <div
+                (click)="navigateToDiscoveries(hiring.reqId, 'interested')"
+                *ngIf="hiring.interestedCount > 0"
+                [ngStyle]="{
+                  'background-color': !(
+                    hiring.interviewCount > 0 ||
+                    hiring.exploratoryCall > 0 ||
+                    hiring.s2cCount > 0
+                  )
+                    ? hiring.color
+                    : 'initial',
+                  color: !(
+                    hiring.interviewCount > 0 ||
+                    hiring.exploratoryCall > 0 ||
+                    hiring.s2cCount > 0
+                  )
+                    ? 'white'
+                    : hiring.color
+                }"
+                class="rounded-pill p-2 mb-0 align-middle text-center clickable"
+              >
+                {{ hiring.interestedCount === 1 ? hiring.interestedCount+' Candidate' : hiring.interestedCount+' Candidates'}}
+              </div>
+            </td>
+            <!-- s2c -->
+            <td
+              [ngStyle]="{
+                'background-color':
+                  hiring.interviewCount > 0 ||
+                  hiring.exploratoryCall > 0 ||
+                  hiring.s2cCount > 0
+                    ? hiring.bgColor
+                    : 'initial'
+              }"
+              class="border-0 align-middle text-center py-0 px-2"
+              [ngClass]="{
+                'rounded-end-pill': !(
+                  hiring.interviewCount > 0 || hiring.exploratoryCall > 0
+                )
+              }"
+            >
+              <div
+                (click)="navigateToDiscoveries(hiring.reqId, 's2c')"
+                *ngIf="hiring.s2cCount > 0"
+                class="rounded-pill p-2 mb-0 align-middle text-center clickable"
+                [ngStyle]="{
+                  'background-color': !(
+                    hiring.interviewCount > 0 || hiring.exploratoryCall > 0
+                  )
+                    ? hiring.color
+                    : 'initial',
+                  color: !(
+                    hiring.interviewCount > 0 || hiring.exploratoryCall > 0
+                  )
+                    ? 'white'
+                    : hiring.color
+                }"
+              >
+                {{ hiring.s2cCount === 1 ? hiring.s2cCount+' Candidate' : hiring.s2cCount+' Candidates' }} 
+              </div>
+            </td>
+            <!-- exploratory -->
+            <td
+              [ngStyle]="{
+                'background-color':
+                  hiring.interviewCount > 0 || hiring.exploratoryCall > 0
+                    ? hiring.bgColor
+                    : 'initial'
+              }"
+              class="border-0 align-middle text-center py-0 px-2"
+              [ngClass]="{ 'rounded-end-pill': !(hiring.interviewCount > 0) }"
+            >
+              <div
+                (click)="navigateToDiscoveries(hiring.reqId, 'exploratoryCall')"
+                *ngIf="hiring.exploratoryCall > 0"
+                [ngStyle]="{
+                  'background-color': !(hiring.interviewCount > 0)
+                    ? hiring.color
+                    : 'initial',
+                  color: !(hiring.interviewCount > 0) ? 'white' : hiring.color
+                }"
+                class="rounded-pill p-2 mb-0 align-middle text-center clickable"
+              >
+                {{ hiring.exploratoryCall === 1 ? hiring.exploratoryCall+' Candidate' : hiring.exploratoryCall+' Candidates'}}
+              </div>
+            </td>
+            <!-- interview -->
+            <td
+              [ngStyle]="{
+                'background-color':
+                  hiring.interviewCount > 0 ? hiring.bgColor : 'initial'
+              }"
+              class="border-0 align-middle text-center rounded-end-pill py-0 px-2"
+            >
+              <div
+                (click)="navigateToDiscoveries(hiring.reqId, 'intrv')"
+                *ngIf="hiring.interviewCount > 0"
+                [ngStyle]="{
+                  'background-color':
+                    hiring.interviewCount > 0 ? hiring.color : 'initial',
+                  color: hiring.interviewCount > 0 ? 'white' : hiring.color
+                }"
+                class="rounded-pill p-2 mb-0 align-middle text-center clickable"
+              >
+                {{ hiring.interviewCount === 1 ? hiring.interviewCount+' Candidate' : hiring.interviewCount+' Candidates'}}
+              </div>
+            </td>
+          </tr>
+          <br />
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Model box for Client report Filter -->
+<div
+  bsModal
+  #clientReportFilter="bs-modal"
+  class="modal bs-example-modal-lg fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        *ngIf="true"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <h5 class="modal-title" id="myLargeModalLabel" style="width: 90%">
+          Filters
+        </h5>
+        <i
+          class="mdi mdi-broom clickable text-dark"
+          style="font-size: 20px"
+          (click)="clearFilter()"
+        ></i>
+
+        <button
+          type="button"
+          class="btn-close"
+          (click)="clientReportFilter.hide()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <div class="card-body">
+            <!-- <h3>
+              <div class="col-lg-12">
+                Filters
+              </div>
+            </h3> -->
+            <div class="row">
+              <div class="col-lg-6">
+                <p style="margin-left: 10px">From</p>
+                <input
+                  class="form form-control"
+                  type="date"
+                  name="from"
+                  id="from"
+                  [(ngModel)]="startDate"
+                />
+              </div>
+              <div class="col-lg-6">
+                <p style="margin-left: 10px">To</p>
+                <input
+                  class="form form-control"
+                  type="date"
+                  name="to"
+                  id="to"
+                  [(ngModel)]="endDate"
+                />
+              </div>
+            </div>
+            <br />
+            <div class="row">
+              <div class="col-lg-6">
+                <ng-select
+                  #Selecter1
+                  [items]="months"
+                  [multiple]="false"
+                  bindLabel="name"
+                  placeholder="Quarter"
+                  class="form-control"
+                  labelForId="ngSelectId"
+                  name="months"
+                  id="months"
+                  (change)="loadQuarterReport()"
+                  [(ngModel)]="selectedMonth"
+                  [clearable]="false"
+                  style="padding: 0"
+                >
+                </ng-select>
+              </div>
+              <div class="col-lg-6">
+                <ng-select
+                  #Selecter2
+                  [items]="years"
+                  [multiple]="false"
+                  placeholder="Year"
+                  class="form-control"
+                  labelForId="ngSelectId"
+                  name="years"
+                  id="years"
+                  (change)="loadQuarterReport()"
+                  [(ngModel)]="selectedYear"
+                  [clearable]="false"
+                  style="padding: 0"
+                >
+                </ng-select>
+              </div>
+            </div>
+            <br />
+            <div class="row">
+              <div class="col-lg-6 align-self-center">
+                <p class="mb-0">Client</p>
+                <ng-select
+                  [items]="clientHiring"
+                  [multiple]="true"
+                  bindLabel="name"
+                  bindValue="id"
+                  class="form-control"
+                  name="clientFilter"
+                  placeholder="Select Client"
+                  [(ngModel)]="clientId"
+                  [clearable]="true"
+                  style="padding: 0"
+                  (ngModelChange)="filterChanged()"
+                  [searchFn]="clientLocalSearch"
+                  (search)="onClientSearch($event)"
+                ></ng-select>
+              </div>
+
+              <!-- <div class="col-lg-6 align-self-end">
+                <button class="btn btn-primary">Filter</button>
+              </div> -->
+            </div>
+            <br />
+          </div>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+</div>
+
+<!-- Model for client report  -->
+
+<div
+  bsModal
+  #clientReport="bs-modal"
+  class="modal bs-example-modal-lg fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        *ngIf="true"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <h5 class="modal-title" id="myLargeModalLabel"></h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="clientReport.hide()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="card border">
+          <div class="card-body">
+            <div class="d-flex justify-content-between">
+              <div class="d-flex gap-4">
+                <div class="align-self-center">
+                  <i class="bi bi-envelope-at fs-4xl"></i>
+                </div>
+                <div class="align-self-center">
+                  <input
+                    type="email"
+                    placeholder="Client Email *"
+                    name="Client"
+                    id="clientMail"
+                    class="form-control"
+                    style="border-top: 0; border-left: 0; border-right: 0"
+                    [(ngModel)]="clientEmailId"
+                  />
+                </div>
+              </div>
+
+              <div class="d-flex gap-4">
+                <div class="align-self-center">
+                  <i class="bi bi-envelope-plus fs-4xl"></i>
+                </div>
+                <div class="align-self-center">
+                  <input
+                    type="email"
+                    placeholder="CC *"
+                    name="cc"
+                    id="cc"
+                    class="form-control"
+                    [(ngModel)]="ccEmailId"
+                    style="border-top: 0; border-left: 0; border-right: 0"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between">
+              <div class="d-flex gap-4">
+                <div class="align-self-center">
+                  <i class="bi bi-box-arrow-in-right fs-4xl"></i>
+                </div>
+                <div class="align-self-center">
+                  <input
+                    type="email"
+                    placeholder="Subject *"
+                    [(ngModel)]="subject"
+                    name="Client"
+                    id="clientMail"
+                    class="form-control"
+                    style="border-top: 0; border-left: 0; border-right: 0"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card border">
+          <div class="card-body">
+            <h6>
+              Hi,
+              <input
+                type="text"
+                placeholder="Name Of client *"
+                name="Client"
+                id="clientMail"
+                class="form-control"
+                style="
+                  border-top: 0;
+                  border-left: 0;
+                  border-right: 0;
+                  width: 50%;
+                "
+                [(ngModel)]="recepientName"
+              />
+            </h6>
+
+            <input
+              type="text"
+              placeholder="Account Manager Comment *"
+              name="Client"
+              id="clientMail"
+              class="form-control"
+              [(ngModel)]="clientAnchorRemarks"
+              style="border-top: 0; border-left: 0; border-right: 0"
+            />
+
+            <div class="table">
+              <thead>
+                <tr>
+                  <th class="text-center"></th>
+                  <th class="text-center">Resumes Shared</th>
+                  <th class="text-center">Interview WIP</th>
+                  <th class="text-center">Feedback Pending</th>
+                  <th class="text-center">
+                    {{ getFirstName(commonService.user.name) }}'s Remarks
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody *ngFor="let clientReportMail of loadedClientReport">
+                <tr>
+                  <th class="text-start align-middle">
+                    {{ clientReportMail.roleName+', '+ clientReportMail.location }}
+                  </th>
+                  <td class="text-center align-middle">
+                    {{ clientReportMail.resumesShared }}
+                  </td>
+                  <td class="text-center align-middle">
+                    {{ clientReportMail.interviewWip }}
+                  </td>
+                  <td class="text-center align-middle">
+                    {{ clientReportMail.awaitingFeedback }}
+                  </td>
+                  <td class="text-center align-middle">
+                    <textarea
+                      type="text"
+                      class="form-control w-100"
+                      [(ngModel)]="clientReportMail.sendersFeedback"
+                    ></textarea>
+                  </td>
+                </tr>
+              </tbody>
+            </div>
+
+            <div class="btn btn-primary p-1" (click)="postMailToclient()">
+              Send
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+</div>

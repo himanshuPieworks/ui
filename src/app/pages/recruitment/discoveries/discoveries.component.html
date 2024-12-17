@@ -1,0 +1,1694 @@
+<div class="mt-sm-0 mt-4"></div>
+<app-breadcrumbs [breadcrumbItems]="breadCrumbItems"> </app-breadcrumbs>
+<br />
+<div class="row">
+  <div class="col-lg">
+    <div
+      class="card"
+      style="background-image: url('assets/images/background.png')"
+    >
+      <div class="card-body">
+        <div class="row align-items-center gy-3">
+          <div class="col-auto">
+            <div class="card-tooltip fs-2xl fw-bold mb-0">
+              Total
+              <span *ngIf="requirementId && requirementId > 0">
+                <!-- {{ requirementId== 1 ? "Discovery" : "Discoveries" }} -->
+                Discoveries
+              </span>
+              <span class="badge fs-2xl text-secondary align-baseline ms-1"
+                >{{ totalCandidates }}
+              </span>
+            </div>
+            <div *ngIf="commonService.rbac['disc-total-splitup']">
+              <span> <i class="bi bi-suit-diamond-fill fs-4" style="color:#AAE0FF" tooltip="Candidate from Discovery"></i> {{discoveryTotal}} </span>
+              <span> <i class="bi bi-infinity fs-4 fw-bolder" style="color:#F9C80E" tooltip="Candidate from Future Form"></i> {{candidateTotal}} </span>
+              <span> <i class="bi bi-triangle-fill fs-4" style="color:#3FD6AD" tooltip="Candidate from Pieworks Talent"></i> {{talentTotal}} </span>
+            </div>
+          </div>
+          <!--end col-->
+          <div class="col-auto ms-auto" *ngIf="!loadSuggestionsOnly">
+            <button
+              *ngIf="commonService.rbac['disc-xls-client']"
+              class="btn btn-primary me-1 rounded-pill default-btn-width"
+              (click)="exportToXls('client')"
+              tooltip="Download xls report for client"
+            >
+              <i class="ri-table-line fs-2xl"></i>
+            </button>
+            <button
+              *ngIf="commonService.rbac['disc-xls-team']"
+              class="btn btn-primary me-1 rounded-pill default-btn-width"
+              (click)="exportToXls('team')"
+              tooltip="Export xls report for team"
+            >
+              <i class="ri-grid-line fs-2xl"></i>
+            </button>
+            <button
+              [ngClass]="
+                filterActive
+                  ? 'btn btn-success me-1 myButton rounded-pill default-btn-width'
+                  : 'btn btn-primary me-1   myButton rounded-pill default-btn-width'
+              "
+              (click)="filterWindow.show()"
+            >
+              <i
+                class="bi bi-funnel align-baseline fs-2xl"
+                tooltip="show filters"
+              ></i>
+            </button>
+            <button
+              *ngIf="false"
+              [ngClass]="
+                specialFilterActive
+                  ? 'btn btn-success me-1 myButton rounded-pill default-btn-width'
+                  : 'btn btn-danger me-1   myButton rounded-pill default-btn-width'
+              "
+              (click)="toggleFilter()"
+            >
+              <i
+                class="bi bi-funnel align-baseline fs-2xl"
+                tooltip="show filters"
+              ></i>
+            </button>
+
+            <button
+              class="btn btn-primary myButton rounded-pill default-btn-width"
+              (click)="clearFilters()"
+            >
+              <i
+                class="ri-filter-off-line align-baseline fs-2xl"
+                tooltip="clear filters"
+              ></i>
+            </button>
+
+            <button
+              *ngIf="commonService.rbac['disc-mail-client']"
+              [ngClass]="'btn btn-primary me-1 rounded-pill default-btn-width'"
+              (click)="emailToClient()"
+            >
+              <i
+                class="ri-mail-send-line fs-2xl"
+                tooltip="Send Mail to client"
+              ></i>
+            </button>
+          </div>
+
+          <!--Search Input-->
+          <div class="col-xl-3">
+            <div class="form-group has-search">
+              <span class="bi bi-search fs-2xl form-control-feedback"></span>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Search by name/role/company"
+                maxlength="100"
+                [(ngModel)]="searchText"
+                (keyup)="filterChanged()"
+              />
+            </div>
+          </div>
+          <!--end col-->
+        </div>
+        <!--end row-->
+      </div>
+    </div>
+
+    <div class="row" id="property-list">
+      <div
+        *ngFor="let s of shortlisting; let i = index"
+        class="col-xxl-3 col-lg-3 col-md-4 p-2 clickable"
+      >
+        <div
+        *ngIf="s.source == null || s.source == 'future'"
+          class="card real-estate-grid-widgets border card-animate p-2"
+          style="height: 100%"
+          (click)="selectedCandidate = s; clickedOnCandidate(s)"
+        >
+          <div class="p-2">
+            <div class="row gy-4 d-flex">
+              <div class="card-body p-2">
+                <div class="row align-items-center">
+                  <!-- Candidate Name and Info -->
+                  <div class="col-8 col-md-8">
+                    <div class="d-flex gap-4 align-items-center">
+                      <h5
+                        class="text-truncate"
+                        tooltip="{{ s.candidate.name }}"
+                      >
+                        {{
+                          s.candidate.name
+                            ? truncateString(s.candidate.name, 16)
+                            : "N/A"
+                        }}
+                      </h5>
+                    </div>
+                  </div>
+
+                  <!-- Icons and Menu (Right Side) -->
+                  <div
+                    class="col-4 col-md-4 text-md-end mt-2 mt-md-0"
+                    *ngIf="
+                      amIAceMaker ||
+                      amIClientAnchor ||
+                      commonService.rbac['disc-tile-menu']
+                    "
+                  >
+                    <div class="d-flex justify-content-end align-items-center">
+                      <!-- Discovery Icon -->
+                      <i
+                        [ngClass]="{
+                          'bi bi-suit-diamond-fill fs-4': s.source == null
+                        }"
+                        [ngStyle]="{
+                          color: s.source == null ? '#AAE0FF' : 'inherit'
+                        }"
+                        tooltip="Candidate from Discovery"
+                      ></i>
+
+                      <!-- Future Form Icon -->
+                      <i
+                        [ngClass]="{
+                          'bi bi-infinity fs-4 fw-bolder': s.source == 'future'
+                        }"
+                        [ngStyle]="{
+                          color: s.source == 'future' ? '#F9C80E' : 'inherit'
+                        }"
+                        tooltip="Candidate from Future Form"
+                      ></i>
+
+                      <!-- Talent Icon -->
+                      <i
+                        [ngClass]="{
+                          'bi bi-triangle-fill fs-4': s.source == 'talent'
+                        }"
+                        [ngStyle]="{
+                          color: s.source == 'talent' ? '#3FD6AD' : 'inherit'
+                        }"
+                        tooltip="Candidate from Pieworks Talent"
+                      ></i>
+
+                      <!-- Betting Window Icon -->
+                      <div class="position-relative">
+                        <i
+                          class="bx bx-medal clickable fs-2xl"
+                          (click)="betOnTalent(s)"
+                          title="{{
+                            s.isBettingWindowOpen
+                              ? 'Click to bet on this talent'
+                              : 'Betting window closed'
+                          }}"
+                          [style.color]="s.isBettingWindowOpen ? 'gold' : ''"
+                        ></i>
+                        <sup
+                          class="position-absolute rounded-circle clickable"
+                          style="top: -10px; left: 10px; font-size: 12px"
+                          [style.color]="s.isBettingWindowOpen ? 'gold' : ''"
+                          (click)="loadBetters(s)"
+                          >{{ s.numOfBetters ? s.numOfBetters : 0 }}</sup
+                        >
+                      </div>
+
+                      <!-- Dropdown Menu -->
+                      <div dropdown class="dropdown">
+                        <i
+                          (click)="selectedCandidate = s; fillMenuOptions(s)"
+                          dropdownToggle
+                          class="bi bi-three-dots-vertical fs-5"
+                        ></i>
+                        <ul
+                          *bsDropdownMenu
+                          class="dropdown-menu dropdown-menu-end"
+                        >
+                          <li
+                            *ngFor="let item of menuOptions"
+                            (click)="handleMenuClick(item)"
+                          >
+                            <a
+                              class="dropdown-item edit-list"
+                              style="font-size: 12px"
+                              href="javascript:void(0);"
+                              >{{ item }}</a
+                            >
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr class="mt-2 mb-0" />
+              </div>
+            </div>
+            <carousel
+              [noWrap]="true"
+              [interval]="0"
+              class="carousel carousel-dark slide"
+            >
+              <div class="carousel-inner">
+                <slide class="carousel-item active" data-bs-interval="10000">
+                  <ul
+                    class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+                  >
+                    <li tooltip="" style="width: 100%">
+                      <div class="d-flex justify-content-between">
+                        <div style="width: 6%" *ngIf="false">
+                          <i
+                            class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                            style="font-size: 15px"
+                          ></i>
+                        </div>
+                        <div style="width: 47%">
+                          <span class="text-muted">Status</span>
+                          <p class="mb-0 text-dark">
+                            {{ s.status?.name ? s.status?.name : "N/A" }}
+                          </p>
+                        </div>
+                        <div style="width: 47%; text-align: right">
+                          <span class="text-muted">Current Company</span>
+                          <p
+                            class="mb-0 text-dark"
+                            tooltip="{{ s.candidate.currentCompany }}"
+                          >
+                            {{
+                              s.candidate.currentCompany
+                                ? truncateString(s.candidate.currentCompany, 15)
+                                : "N/A"
+                            }}
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                    <li tooltip="" style="width: 100%">
+                      <div class="d-flex justify-content-between">
+                        <div style="width: 6%" *ngIf="false">
+                          <i
+                            class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                            style="font-size: 15px"
+                          ></i>
+                        </div>
+                        <div style="width: 47%">
+                          <span class="text-muted">Location</span>
+                          <p class="mb-0 text-dark">
+                            {{
+                              s.candidate.currentLocation
+                                ? s.candidate.currentLocation
+                                : "N/A"
+                            }}
+                          </p>
+                        </div>
+                        <div style="width: 47%; text-align: right">
+                          <span class="text-muted">Expected CTC</span>
+                          <p class="mb-0 text-dark">
+                            {{ s.candidate.expectedCtc + " (LPA)" }}
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                    <li tooltip="" style="width: 100%">
+                      <div class="d-flex justify-content-between">
+                        <div style="width: 6%" *ngIf="false">
+                          <i
+                            class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                            style="font-size: 15px"
+                          ></i>
+                        </div>
+                        <div style="width: 47%">
+                          <span class="text-muted">Current CTC</span>
+                          <p class="mb-0 text-dark">
+                            {{
+                              s.candidate.currentCtcTotal
+                                ? s.candidate.currentCtcTotal
+                                : "N/A"
+                            }}
+                          </p>
+                        </div>
+                        <div style="width: 47%; text-align: right">
+                          <span class="text-muted">Notice Period</span>
+                          <p class="mb-0 text-dark">
+                            {{ s.noticePeriod ? s.noticePeriod : "0" }}
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                    <li tooltip="" style="width: 100%">
+                      <div class="d-flex justify-content-between">
+                        <div style="width: 6%" *ngIf="false">
+                          <i
+                            class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                            style="font-size: 15px"
+                          ></i>
+                        </div>
+                        <div style="width: 100%">
+                          <span class="text-muted">Role</span>
+                          <p class="mb-0 text-dark">
+                            {{
+                              s.requirement?.client?.name
+                                ? s.requirement?.client?.name +
+                                  "-" +
+                                  s.requirement.role.name
+                                : "N/A"
+                            }}
+                          </p>
+                        </div>
+                        <!-- <div style="width: 47%; text-align: right">
+                          <span class="text-muted">Notice Period</span>
+                          <p class="mb-0 text-dark">
+                            {{ s.noticePeriod ? s.noticePeriod : "0" }}
+                          </p>
+                        </div> -->
+                      </div>
+                    </li>
+                  </ul>
+                </slide>
+              </div>
+            </carousel>
+          </div>
+        </div>
+        <div
+        *ngIf="s.source == 'talent'"
+          class="card real-estate-grid-widgets border card-animate p-2"
+          style="height: 100%"
+          (click)="selectedCandidate = s; clickedOnCandidateTalent(s)"
+        >
+          <div class="p-2">
+            <div class="row gy-4 d-flex">
+              <div class="card-body p-2">
+                <div class="row align-items-center">
+                  <!-- Candidate Name and Info -->
+                  <div class="col-8 col-md-8">
+                    <div class="d-flex gap-4 align-items-center">
+                      <h5
+                        class="text-truncate"
+                        tooltip="{{ s.candidate.name }}"
+                      >
+                        {{
+                          s.candidate.name
+                            ? truncateString(s.candidate.name, 16)
+                            : "N/A"
+                        }}
+                      </h5>
+                    </div>
+                  </div>
+
+                  <!-- Icons and Menu (Right Side) -->
+                  <div
+                    class="col-4 col-md-4 text-md-end mt-2 mt-md-0"
+                    *ngIf="
+                      amIAceMaker ||
+                      amIClientAnchor ||
+                      commonService.rbac['disc-tile-menu']
+                    "
+                  >
+                    <div class="d-flex justify-content-end align-items-center">
+                      <!-- Discovery Icon -->
+                      <i
+                        [ngClass]="{
+                          'bi bi-suit-diamond-fill fs-4': s.source == null
+                        }"
+                        [ngStyle]="{
+                          color: s.source == null ? '#AAE0FF' : 'inherit'
+                        }"
+                        tooltip="Candidate from Discovery"
+                      ></i>
+
+                      <!-- Future Form Icon -->
+                      <i
+                        [ngClass]="{
+                          'bi bi-infinity fs-4 fw-bolder': s.source == 'future'
+                        }"
+                        [ngStyle]="{
+                          color: s.source == 'future' ? '#F9C80E' : 'inherit'
+                        }"
+                        tooltip="Candidate from Future Form"
+                      ></i>
+
+                      <!-- Talent Icon -->
+                      <i
+                        [ngClass]="{
+                          'bi bi-triangle-fill fs-4': s.source == 'talent'
+                        }"
+                        [ngStyle]="{
+                          color: s.source == 'talent' ? '#3FD6AD' : 'inherit'
+                        }"
+                        tooltip="Candidate from Pieworks Talent"
+                      ></i>
+
+                      <!-- Betting Window Icon -->
+                      <div class="position-relative">
+                        <i
+                          class="bx bx-medal clickable fs-2xl"
+                          (click)="betOnTalent(s)"
+                          title="{{
+                            s.isBettingWindowOpen
+                              ? 'Click to bet on this talent'
+                              : 'Betting window closed'
+                          }}"
+                          [style.color]="s.isBettingWindowOpen ? 'gold' : ''"
+                        ></i>
+                        <sup
+                          class="position-absolute rounded-circle clickable"
+                          style="top: -10px; left: 10px; font-size: 12px"
+                          [style.color]="s.isBettingWindowOpen ? 'gold' : ''"
+                          (click)="loadBetters(s)"
+                          >{{ s.numOfBetters ? s.numOfBetters : 0 }}</sup
+                        >
+                      </div>
+
+                      <!-- Dropdown Menu -->
+                      <div dropdown class="dropdown">
+                        <i
+                          (click)="selectedCandidate = s; fillMenuOptions(s)"
+                          dropdownToggle
+                          class="bi bi-three-dots-vertical fs-5"
+                        ></i>
+                        <ul
+                          *bsDropdownMenu
+                          class="dropdown-menu dropdown-menu-end"
+                        >
+                          <li
+                            *ngFor="let item of menuOptions"
+                            (click)="handleMenuClick(item)"
+                          >
+                            <a
+                              class="dropdown-item edit-list"
+                              style="font-size: 12px"
+                              href="javascript:void(0);"
+                              >{{ item }}</a
+                            >
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr class="mt-2 mb-0" />
+              </div>
+            </div>
+            <carousel
+              [noWrap]="true"
+              [interval]="0"
+              class="carousel carousel-dark slide"
+            >
+              <div class="carousel-inner">
+                <slide class="carousel-item active" data-bs-interval="10000">
+                  <ul
+                    class="d-flex align-items-center gap-2 flex-wrap list-unstyled"
+                  >
+                    <li tooltip="" style="width: 100%">
+                      <div class="d-flex justify-content-between">
+                        <div style="width: 6%" *ngIf="false">
+                          <i
+                            class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                            style="font-size: 15px"
+                          ></i>
+                        </div>
+                        <div style="width: 47%">
+                          <span class="text-muted">LinkedIn</span>
+                          <p class="mb-0 text-dark">
+                            <a
+                              href="{{ s?.candidate?.linkedInUrl }}"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              >Profile</a
+                            >
+                          </p>
+                        </div>
+                        <div style="width: 47%; text-align: right">
+                          <span class="text-muted">Current Company</span>
+                          <p
+                            class="mb-0 text-dark"
+                            tooltip="{{ s.candidate.currentJob }}"
+                          >
+                            {{
+                              s.candidate.currentJob
+                                ? truncateString(s.candidate.currentJob, 15)
+                                : "N/A"
+                            }}
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                    <li tooltip="" style="width: 100%">
+                      <div class="d-flex justify-content-between">
+                        <div style="width: 6%" *ngIf="false">
+                          <i
+                            class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                            style="font-size: 15px"
+                          ></i>
+                        </div>
+                        <div style="width: 47%">
+                          <span class="text-muted">Location</span>
+                          <p class="mb-0 text-dark">
+                            {{
+                              s.candidate.preferredLocation
+                                ? s.candidate.preferredLocation
+                                : "N/A"
+                            }}
+                          </p>
+                        </div>
+                        <div style="width: 47%; text-align: right">
+                          <span class="text-muted">Expected CTC</span>
+                          <p class="mb-0 text-dark">
+                            {{ s.candidate.expectation + " (LPA)" }}
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                    <li tooltip="" style="width: 100%" *ngIf="false">
+                      <div class="d-flex justify-content-between">
+                        <div style="width: 6%" *ngIf="false">
+                          <i
+                            class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                            style="font-size: 15px"
+                          ></i>
+                        </div>
+                        <div style="width: 47%">
+                          <span class="text-muted">Current CTC</span>
+                          <p class="mb-0 text-dark">
+                            {{
+                              s.candidate.currentCtcTotal
+                                ? s.candidate.currentCtcTotal
+                                : "N/A"
+                            }}
+                          </p>
+                        </div>
+                        <div style="width: 47%; text-align: right">
+                          <span class="text-muted">Notice Period</span>
+                          <p class="mb-0 text-dark">
+                            {{ s.noticePeriod ? s.noticePeriod : "0" }}
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                    <li tooltip="" style="width: 100%">
+                      <div class="d-flex justify-content-between">
+                        <div style="width: 6%" *ngIf="false">
+                          <i
+                            class="ri ri-arrow-right-line align-baseline text-primary me-1"
+                            style="font-size: 15px"
+                          ></i>
+                        </div>
+                        <div style="width: 100%">
+                          <span class="text-muted">Role</span>
+                           <p class="mb-0 text-dark">
+                           {{
+                              s?.candidate?.designation
+                                ? s?.candidate?.designation
+                                : "N/A"
+                            }}
+                                
+                          </p>
+                        </div>
+                        <!-- <div style="width: 47%; text-align: right">
+                          <span class="text-muted">Notice Period</span>
+                          <p class="mb-0 text-dark">
+                            {{ s.noticePeriod ? s.noticePeriod : "0" }}
+                          </p>
+                        </div> -->
+                      </div>
+                    </li>
+                  </ul>
+                </slide>
+              </div>
+            </carousel>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--end row-->
+    <!-- This shown during the data load -->
+    <div id="elmLoader" *ngIf="false">
+      <div class="spinner-border text-primary avatar-sm" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    <!-- If there is no data then it will be shown -->
+    <div id="noresult" [ngClass]="shortlisting?.length != 0 ? 'd-none' : ''">
+      <div class="text-center py-4">
+        <div
+          class="avatar-md mx-auto mb-4"
+          *ngIf="loadingMessage == 'Sorry there is no data for your search...'"
+        >
+          <div
+            class="avatar-tooltip bg-light text-primary rounded-circle fs-4xl"
+          >
+            <i class="bi bi-search"></i>
+          </div>
+        </div>
+        <div
+          *ngIf="loadingMessage != 'Sorry there is no data for your search...'"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="100"
+            height="100"
+            viewBox="0 0 200 200"
+          >
+            <circle
+              fill="#00FFC0"
+              stroke="#00FFC0"
+              stroke-width="2"
+              r="15"
+              cx="35"
+              cy="100"
+            >
+              <animate
+                attributeName="cx"
+                calcMode="spline"
+                dur="2"
+                values="35;165;165;35;35"
+                keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+                repeatCount="indefinite"
+                begin="0"
+              ></animate>
+            </circle>
+            <circle
+              fill="#00FFC0"
+              stroke="#00FFC0"
+              stroke-width="2"
+              opacity=".8"
+              r="15"
+              cx="35"
+              cy="100"
+            >
+              <animate
+                attributeName="cx"
+                calcMode="spline"
+                dur="2"
+                values="35;165;165;35;35"
+                keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+                repeatCount="indefinite"
+                begin="0.05"
+              ></animate>
+            </circle>
+            <circle
+              fill="#00FFC0"
+              stroke="#00FFC0"
+              stroke-width="2"
+              opacity=".6"
+              r="15"
+              cx="35"
+              cy="100"
+            >
+              <animate
+                attributeName="cx"
+                calcMode="spline"
+                dur="2"
+                values="35;165;165;35;35"
+                keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+                repeatCount="indefinite"
+                begin=".1"
+              ></animate>
+            </circle>
+            <circle
+              fill="#00FFC0"
+              stroke="#00FFC0"
+              stroke-width="2"
+              opacity=".4"
+              r="15"
+              cx="35"
+              cy="100"
+            >
+              <animate
+                attributeName="cx"
+                calcMode="spline"
+                dur="2"
+                values="35;165;165;35;35"
+                keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+                repeatCount="indefinite"
+                begin=".15"
+              ></animate>
+            </circle>
+            <circle
+              fill="#00FFC0"
+              stroke="#00FFC0"
+              stroke-width="2"
+              opacity=".2"
+              r="15"
+              cx="35"
+              cy="100"
+            >
+              <animate
+                attributeName="cx"
+                calcMode="spline"
+                dur="2"
+                values="35;165;165;35;35"
+                keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+                repeatCount="indefinite"
+                begin=".2"
+              ></animate>
+            </circle>
+          </svg>
+        </div>
+        <!-- <h5 class="mt-2">just a minute, getting it for you...</h5> -->
+        <h5 class="mt-2">{{ loadingMessage }}.</h5>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- filter model start -->
+<div
+  bsModal
+  #filterWindow="bs-modal"
+  class="modal fade bs-example-modal-lg"
+  id="exampleModalScrollable"
+>
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <h5
+          class="modal-tooltip"
+          id="exampleModalScrollableTitle"
+          style="width: 90%"
+        >
+          Filter
+        </h5>
+        <i
+          class="mdi mdi-broom clickable text-white-75"
+          style="font-size: 20px"
+          (click)="clearFilters()"
+        ></i>
+        <button
+          type="button"
+          class="btn-close btn-close-white rightMost"
+          (click)="filterWindow.hide()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row justify-content-center">
+          <div class="search-box container mt-4">
+            <div class="input-group mb-3">
+              <div
+                class="search-input form-control d-flex flex-wrap align-items-center"
+              >
+                <ng-container *ngFor="let item of keywordsArray; let i = index">
+                  <span
+                    class="keyword-badge badge bg-light text-dark me-2 d-flex align-items-center"
+                  >
+                    <span>{{ item.keyword }}</span>
+                    <button
+                      class="btn btn-link text-decoration-none"
+                      (click)="toggleMandatory(i)"
+                    >
+                      <i
+                        [ngClass]="{
+                          'bi bi-star-fill text-warning': item.isMandatory,
+                          'bi bi-star': !item.isMandatory
+                        }"
+                      ></i>
+                    </button>
+                    <button
+                      class="btn btn-link text-decoration-none text-danger"
+                      (click)="removeKeyword(i)"
+                    >
+                      <i class="bi bi-x"></i>
+                    </button>
+                  </span>
+                </ng-container>
+                <input
+                  type="text"
+                  class="border-0 flex-grow-1"
+                  [(ngModel)]="keyword"
+                  (keyup)="onKeyup($event)"
+                  placeholder="Type a keyword and enter"
+                />
+              </div>
+              <button
+                class="btn btn-primary"
+                type="button"
+                (click)="addKeyword(keyword)"
+              >
+                Add
+              </button>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-check form-switch mb-3">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="toggleMandatory"
+                    (change)="toggleAllMandatory($event)"
+                  />
+                  <label class="form-check-label" for="toggleMandatory"
+                    >Mark all keywords as mandatory</label
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row justify-content-center">
+            <div class="col-xxl-6 col-md-6 col-sm-6">
+              <p class="mb-1">
+                <i class="bi bi-currency-rupee"></i> Total Current CTC (LPA)
+              </p>
+              <div class="row justify-content-between">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label>Min</label>
+                    <div class="job-category-area">
+                      <input
+                        type="number"
+                        min="0"
+                        max="500"
+                        class="form-control"
+                        name="minCTC"
+                        [(ngModel)]="minCtc"
+                      />&nbsp;
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label>Max</label>
+                    <div class="job-category-area">
+                      <input
+                        type="number"
+                        min="{{ minCtc + 5 }}"
+                        max="500"
+                        class="form-control"
+                        name="maxCTC"
+                        [(ngModel)]="maxCtc"
+                      />&nbsp;
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xxl-6 col-md-6 col-sm-6">
+              <p class="mb-1">
+                <i class="bi bi-graph-up-arrow"></i> &nbsp;Exposure (Yrs)
+              </p>
+              <div class="row justify-content-between">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label>Min</label>
+                    <div class="job-category-area">
+                      <input
+                        type="number"
+                        min="0"
+                        max="40"
+                        class="form-control"
+                        name="minExp"
+                        [(ngModel)]="minExp"
+                      />&nbsp;
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label>Max</label>
+                    <div class="job-category-area">
+                      <input
+                        type="number"
+                        min="{{ minExp + 5 }}"
+                        max="40"
+                        class="form-control"
+                        name="maxExp"
+                        [(ngModel)]="maxExp"
+                      />&nbsp;
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row gy-4">
+          <div class="col-xxl-6 col-md-6 col-sm-6" *ngIf="commonService.rbac['disc-client-filter']">
+            <div class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3">
+              <i class="bi bi-person-circle"></i>Client
+            </div>
+            <ng-select
+              [items]="clients"
+              [multiple]="true"
+              bindLabel="name"
+              bindValue="id"
+              class="form-control"
+              name="clientsSelect"
+              placeholder="Select Clients"
+              [(ngModel)]="selectedClients"
+              [clearable]="true"
+              style="padding: 0"
+              [searchFn]="clientLocalSearch"
+              (search)="onClientSearch($event)"
+              (ngModelChange)="filterChanged(); loadRoles(); loadClients()"
+            >
+              <ng-template ng-label-tmp let-item="item">
+                {{ item.name }}
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item">
+                {{ item.name }}
+              </ng-template>
+            </ng-select>
+          </div>
+          <div class="col-xxl-6 col-md-6 col-sm-6">
+            <div class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3">
+              <i class="bi bi-geo-alt"></i>Location
+            </div>
+            <ng-select
+              [items]="locations"
+              [multiple]="false"
+              bindLabel="name"
+              placeholder="Search location"
+              class="form-control z-1"
+              [(ngModel)]="selectedLocations"
+              [clearable]="true"
+              style="padding: 0"
+              name="selectedLocations"
+            >
+              <ng-template ng-optgroup-tmp let-item="item">
+                {{ item }}
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+        <br />
+        <div class="row gy-4">
+          <div class="col-xxl-6 col-md-6 col-sm-6">
+            <div class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3">
+              <i class="ri-user-fill"></i>Role
+            </div>
+            <ng-select
+              [items]="roles"
+              [multiple]="true"
+              bindLabel="name"
+              bindValue="id"
+              class="form-control"
+              name="roleSelect"
+              placeholder="Select Role"
+              [(ngModel)]="selectedRoles"
+              [clearable]="true"
+              style="padding: 0"
+              [searchFn]="roleLocalSearch"
+              (search)="onRoleSearch($event)"
+              (ngModelChange)="loadRoles()"
+            >
+              <ng-template ng-label-tmp let-item="item">
+                {{ item.name }}
+              </ng-template>
+              <ng-template
+                ng-option-tmp
+                let-item="item"
+                [(ngModel)]="roleSearchText"
+                (ngModelChange)="loadRoles()"
+              >
+                {{ item.name }}
+              </ng-template>
+            </ng-select>
+          </div>
+          <div class="col-xxl-6 col-md-6 col-sm-6">
+            <div class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3">
+              <i class="bi bi-speedometer2"></i>Status
+            </div>
+            <ng-select
+              [items]="statusArray"
+              [multiple]="true"
+              bindLabel="name"
+              bindValue="id"
+              class="form-control"
+              name="statusArrayName"
+              placeholder="Select Status"
+              [(ngModel)]="status"
+              [clearable]="true"
+              style="padding: 0"
+            >
+              <ng-template ng-label-tmp let-item="item">
+                {{ item.name }}
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item">
+                {{ item.name }}
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+        <br />
+        <div class="row gy-4">
+          <div class="col-xxl-6 col-md-6 col-sm-6">
+            <div class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3">
+              <i class="bi bi-globe2"></i>Discoverer
+            </div>
+            <ng-select
+              [items]="membersArray"
+              [multiple]="true"
+              bindLabel="user.name"
+              bindValue="user.id"
+              class="form-control"
+              name="discs"
+              placeholder="Select Discoverer"
+              [(ngModel)]="discoverers"
+              [clearable]="true"
+              style="padding: 0"
+            >
+              <!--              <ng-template ng-label-tmp let-item="item">
+                {{ item?.name }}
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item">
+                {{ item?.name }}
+              </ng-template>-->
+            </ng-select>
+          </div>
+          <div class="col-xxl-6 col-md-6 col-sm-6">
+            <div class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3">
+              <i class="ri-anchor-fill"></i>Account Manager
+            </div>
+            <ng-select
+              [items]="membersArray"
+              [multiple]="true"
+              bindLabel="user.name"
+              bindValue="user.id"
+              class="form-control"
+              name="calist"
+              placeholder="Select CA"
+              [(ngModel)]="clientAnchors"
+              [clearable]="true"
+              style="padding: 0"
+            >
+              <!--              <ng-template ng-label-tmp let-item="item">
+                {{ item?.user?.name }}
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item">
+                {{ item?.user?.name }}
+              </ng-template>-->
+            </ng-select>
+          </div>
+        </div>
+        <br />
+        <div class="row gy-4" *ngIf="false">
+          <div class="col-xxl-6 col-md-6 col-sm-6">
+            <p style="margin-left: 5px">Total CTC (LPA)</p>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label>Min</label>
+                  <div class="job-category-area">
+                    <input
+                      type="number"
+                      min="0"
+                      max="500"
+                      class="form-control"
+                      name="minCTC"
+                      [(ngModel)]="minCtc"
+                      (change)="filterChanged()"
+                    />&nbsp;
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label>Max</label>
+                  <div class="job-category-area">
+                    <input
+                      type="number"
+                      min="{{ minCtc + 5 }}"
+                      max="500"
+                      class="form-control"
+                      name="maxCTC"
+                      [(ngModel)]="maxCtc"
+                      (change)="filterChanged()"
+                    />&nbsp;
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xxl-6 col-md-6 col-sm-6">
+            <p style="margin-left: 5px">Exposure (Yrs)</p>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label>Min</label>
+                  <div class="job-category-area">
+                    <input
+                      type="number"
+                      min="0"
+                      max="40"
+                      class="form-control"
+                      name="minExp"
+                      [(ngModel)]="minExp"
+                      (change)="filterChanged()"
+                    />&nbsp;
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label>Max</label>
+                  <div class="job-category-area">
+                    <input
+                      type="number"
+                      min="{{ minExp + 5 }}"
+                      max="40"
+                      class="form-control"
+                      name="maxExp"
+                      [(ngModel)]="maxExp"
+                      (change)="filterChanged()"
+                    />&nbsp;
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div class="row gy-4">
+          <div class="col-xxl-6 col-md-6 col-sm-6">
+            <p style="margin-left: 10px" title="">Discovered From</p>
+            <input
+              style="margin-left: 10px"
+              type="date"
+              class="form-control"
+              name="discovered From"
+              maxlength="100"
+              [(ngModel)]="startDate"
+            />&nbsp;
+          </div>
+          <div class="col-xxl-6 col-md-6 col-sm-6">
+            <p style="margin-left: 10px" title="">Discovered Till</p>
+            <input
+              style="margin-left: 10px"
+              type="date"
+              class="form-control"
+              maxlength="100"
+              [(ngModel)]="endDate"
+            />&nbsp;
+          </div>
+        </div>
+        <br />
+        <div class="row gy-4">
+          <div class="col-xxl-6 col-md-6 col-sm-6 align-middle" *ngIf="false">
+            <span style="margin-left: 10px">Top 50</span>
+            <input
+              style="margin-left: 10px"
+              type="checkbox"
+              maxlength="100"
+              [(ngModel)]="top50"
+              (change)="filterChanged()"
+            />
+            <br />
+            <span style="margin-left: 10px">Nurture candidates only</span>
+            <input
+              style="margin-left: 10px"
+              type="checkbox"
+              maxlength="100"
+              [(ngModel)]="nurtureCandidates"
+              (change)="filterChanged()"
+            />&nbsp;
+          </div>
+          <div class="col-xxl-6 col-md-6 col-sm-6">
+            <div class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3">
+              <i class="bi bi-gear-wide-connected"></i>Sector
+            </div>
+            <ng-select
+              [items]="availableSectors"
+              [multiple]="true"
+              bindLabel="name"
+              bindValue="id"
+              class="form-control"
+              name="availableSectors"
+              placeholder="Select Clients"
+              [(ngModel)]="searchText"
+              [clearable]="true"
+              style="padding: 0"
+            >
+              <ng-template ng-label-tmp let-item="item">
+                {{ item.name }}
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item">
+                {{ item.name }}
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-light"
+          (click)="filterWindow.hide()"
+        >
+          Close
+        </button>
+        <button class="btn btn-primary" type="button" (click)="filterChanged()">
+          Apply
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- filter Model End -->
+
+<!-- Mail to Client model start -->
+<div
+  bsModal
+  #mailToClient="bs-modal"
+  class="modal fade bs-example-modal-lg"
+  id="exampleModalScrollable"
+>
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <h5
+          class="modal-tooltip"
+          id="exampleModalScrollableTitle"
+          style="width: 90%"
+        >
+          Mail Discovery Report
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white rightMost"
+          (click)="mailToClient.hide()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <app-mail-to-client
+          #mailToClientComponent
+          [shortlist]="shortlisting"
+          [parentObj]="this"
+          [aceMakersEmailId]="aceMakersEmailIds"
+        ></app-mail-to-client>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-light"
+          (click)="mailToClient.hide()"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Mail to client  Model End -->
+
+<!-- Discover Talent  -->
+<div
+  bsModal
+  #reDiscover="bs-modal"
+  class="modal fade bs-example-modal-lg"
+  id="exampleModalScrollable"
+>
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <h5
+          class="modal-tooltip"
+          id="exampleModalScrollableTitle"
+          style="width: 90%"
+        >
+          Discover Talent
+        </h5>
+
+        <button
+          type="button"
+          class="btn-close btn-close-white rightMost"
+          (click)="reDiscover.hide()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="card border">
+          <div class="card-body">
+            <div>
+              <app-discover-talent
+                #discover
+                [parentObj]="this"
+              ></app-discover-talent>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="reDiscover.hide()">
+          Close
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- Betters listing window  -->
+<div
+  bsModal
+  #bettersModal="bs-modal"
+  class="modal fade bs-example-modal-lg"
+  id="exampleModalScrollable"
+>
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <h5
+          class="modal-tooltip"
+          id="exampleModalScrollableTitle"
+          style="width: 90%"
+        >
+          People who have bet on {{ selectedDiscovery?.candidate.name }}
+        </h5>
+
+        <button
+          type="button"
+          class="btn-close btn-close-white rightMost"
+          (click)="bettersModal.hide()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="card border">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-3" *ngFor="let b of betters">
+                <img
+                  src="{{ commonService.getPicUrl(b.user.profilepic) }}"
+                  alt="img-01.jpg"
+                  class="rounded-circle border avatar-sm"
+                />{{ b.user.name }}
+              </div>
+              <div class="col-lg-3" *ngIf="betters.length == 0">
+                No bettors available
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-light"
+          (click)="bettersModal.hide()"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- Update Status  -->
+<div
+  bsModal
+  #updateStatusModal="bs-modal"
+  class="modal fade bs-example-modal-lg"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <h5
+          class="modal-tooltip"
+          id="exampleModalScrollableTitle"
+          style="width: 90%"
+        >
+          Update status of {{ selectedDiscovery?.candidate.name }}
+        </h5>
+
+        <button
+          type="button"
+          class="btn-close btn-close-white rightMost"
+          (click)="updateStatusModal.hide()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <!-- status -->
+          <div class="col-xl-6">
+            <label for="">Status</label>
+            <ng-select
+              [items]="updateStatus"
+              [multiple]="false"
+              bindLabel="name"
+              placeholder="Select status"
+              class="form-control"
+              [(ngModel)]="shortlist.status"
+              [clearable]="false"
+              style="padding: 0"
+            >
+            </ng-select>
+            <div
+              class="mt-3"
+              *ngIf="shortlist?.status?.id == 8 || shortlist?.status?.id == 11"
+            >
+              <label for=""> In which round of Interview</label>
+              <ng-select
+                [items]="processes"
+                [multiple]="false"
+                bindLabel="process"
+                placeholder="Select selection round"
+                class="form-control"
+                [(ngModel)]="shortlist.intvRound"
+                [clearable]="false"
+                style="padding: 0"
+              >
+              </ng-select>
+            </div>
+          </div>
+          <!-- Date of Joining -->
+          <div class="col-xl-6" *ngIf="shortlist?.status?.displayOrder >= 15">
+            <label for="">Date of Joining</label>
+            <input
+              type="date"
+              [(ngModel)]="shortlist.doj"
+              class="form form-control"
+            />
+          </div>
+        </div>
+        <div class="row mt-3" *ngIf="shortlist?.status?.displayOrder >= 15">
+          <!-- Joined At CTC -->
+          <div class="col-xl-6">
+            <label for=""> Joining at CTC</label>
+            <input
+              type="number"
+              [(ngModel)]="shortlist.joinedAtCtc"
+              class="form form-control"
+            />
+          </div>
+          <!-- Candidate Interaction -->
+          <div class="col-xl-6">
+            <label for="">Candidate Interactor</label>
+            <ng-select
+              [items]="users"
+              [multiple]="false"
+              bindLabel="name"
+              bindValue="id"
+              placeholder="Search"
+              class="form-control"
+              [(ngModel)]="shortlist.candidateInteractorId"
+              [clearable]="false"
+              style="padding: 0"
+              [searchFn]="memberLocalSearch"
+              (search)="onMemberSearch($event)"
+            >
+            </ng-select>
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <!-- Remarks -->
+          <div class="col-xl-6" *ngIf="shortlist?.status?.displayOrder >= 3">
+            <div class="card h-100 card-animate border">
+              <div class="card-body">
+                <div class="single-profile-heading">
+                  <span></span>
+                  <div class="row">
+                    <div class="col-lg-10">
+                      <h6 class="text-muted">Account Manager Remarks</h6>
+                    </div>
+                    <div
+                      class="col-lg-2"
+                      *ngIf="
+                        amIAceMaker ||
+                        commonService.isTesting ||
+                        amIClientAnchor ||
+                        commonService.rbac['edit-disc-remarks'] ||
+                        (shortlist.createdBy && myId == shortlist.createdBy.id)
+                      "
+                    >
+                      <i
+                        (click)="editRemark = !editRemark"
+                        class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="single-profile-paragraph">
+                  <div class="row" [hidden]="!editRemark">
+                    <div class="col-lg-9">
+                      chars left
+                      {{ remarkTemp ? 300 - remarkTemp.length : 300 }}
+                      <input
+                        type="text"
+                        maxlength="300"
+                        [(ngModel)]="remarkTemp"
+                        class="from form-control"
+                        placeholder="remarks"
+                      />
+                    </div>
+                    <div class="col-lg-2">
+                      <div class="job-category-area">
+                        &nbsp;
+                        <input
+                          type="button"
+                          class="btn rounded-pill btn-info text-center"
+                          value="+ Add"
+                          (click)="addRemark()"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <ul *ngIf="remarks?.length > 0" class="px-0">
+                    <li *ngFor="let j of remarks">
+                      {{
+                        this.commonService.changeMysqlToNormalDate(
+                          j.createdOn
+                        ) +
+                        " : " +
+                        j.remark
+                          ? this.commonService.changeMysqlToNormalDate(
+                              j.createdOn
+                            ) +
+                            " : " +
+                            j.remark
+                          : "N/A"
+                      }}
+                      &nbsp;&nbsp;&nbsp;<i
+                        class="ri-delete-bin-2-line text-primary clickable fs-4xl"
+                        (click)="removeRemark(j)"
+                        [hidden]="!editRemark"
+                      ></i>
+                    </li>
+                  </ul>
+                  <span *ngIf="remarks?.length == 0">NA</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Client Feedback -->
+          <div class="col-xl-6" *ngIf="shortlist?.status?.displayOrder >= 6">
+            <div class="card h-100 card-animate border">
+              <div class="card-body">
+                <div class="single-profile-textarea">
+                  <div class="single-profile-heading">
+                    <span></span>
+                    <div class="row">
+                      <div class="col-lg-10">
+                        <h6 class="text-muted">Client Feedback</h6>
+                      </div>
+                      <div
+                        class="col-lg-2"
+                        *ngIf="
+                          amIAceMaker ||
+                          commonService.isTesting ||
+                          amIClientAnchor ||
+                          commonService.rbac['edit-client-feedback'] ||
+                          (shortlist.createdBy &&
+                            myId == shortlist.createdBy.id)
+                        "
+                      >
+                        <i
+                          (click)="editClientFeedBack = !editClientFeedBack"
+                          class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                        ></i>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="single-profile-paragraph">
+                    <div class="row" [hidden]="!editClientFeedBack">
+                      <div class="col-lg-9">
+                        chars left
+
+                        <input
+                          type="text"
+                          [(ngModel)]="feedback"
+                          class="from form-control"
+                          placeholder="Feedback"
+                        />
+                      </div>
+                      <div class="col-lg-2">
+                        <div class="job-category-area">
+                          &nbsp;
+                          <input
+                            type="button"
+                            class="btn rounded-pill btn-info text-center"
+                            value="+ Add"
+                            (click)="addFeedback(); updateFeedbacks()"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <ul class="px-0">
+                      <li *ngFor="let f of feedbacks">
+                        {{ f.feedback ? f.feedback : "N/A" }}
+                        {{
+                          "" +
+                            this.commonService.changeMysqlToNormalDate(f.date) +
+                            " : " +
+                            f.feedback
+                        }}
+                        &nbsp;&nbsp;&nbsp;<i
+                          class="ri-delete-bin-2-line text-primary clickable fs-4xl"
+                          (click)="removeFeedback(f); updateFeedbacks()"
+                          [hidden]="!editClientFeedBack"
+                        ></i>
+                      </li>
+                    </ul>
+                  </div>
+                  <span *ngIf="feedbacks?.length == 0">NA</span>
+
+                  <input
+                    [hidden]="!editClientFeedBack || true"
+                    type="button"
+                    class="btn rounded-pill btn-info text-center"
+                    value="Save"
+                    (click)="updateFeedbacks()"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-info"
+          (click)="confirmStatusChange()"
+        >
+          Update
+        </button>
+        <button
+          type="button"
+          class="btn btn-light"
+          (click)="updateStatusModal.hide()"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

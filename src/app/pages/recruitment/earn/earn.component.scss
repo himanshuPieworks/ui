@@ -1,0 +1,93 @@
+.btn-light{
+    background-color: white !important;
+}
+
+.btn-outline-dark:hover{
+    color: white !important;
+}
+
+
+.blur-image img {
+    filter: blur(2px);  /* Adjust the blur level as needed */
+    user-select: none;  /* Prevent selection */
+    pointer-events: none; /* Disable interaction (copying, drag-drop, etc.) */
+    cursor: not-allowed; /* Optional: Shows a disabled cursor */
+  }
+
+  .blur-text {
+    filter: blur(2px);  /* Adjust the blur level as needed */
+    user-select: none;   /* Prevent text selection */
+    pointer-events: none; /* Disable text interactions like copying */
+    cursor: not-allowed;  /* Optional: Show a disabled cursor */
+    color: transparent;   /* Hides the actual text */
+    text-shadow: 0 0 5px rgba(0,0,0,0.5); /* Fake blurring using shadows */
+  }
+  
+
+  .badge-label:before {
+    content: "";
+    position: absolute;
+    border: 8px solid transparent;
+    left: -18px;
+    top: 0;
+  }
+  
+  .badge-label.hot:before {
+    border-right-color: #EF6471; /* Color for Hot status */
+  }
+  
+  .badge-label.cold:before {
+    border-right-color: #A5A5AB; /* Color for Cold status */
+  }
+  
+  .badge-label.warm:before {
+    border-right-color: #F98550; /* Color for Warm status */
+  }
+  
+  .badge-label.hold:before {
+    border-right-color: #393A4A; /* Color for Hold status */
+  }
+  
+  .badge-label.success:before {
+    border-right-color: #FFF4E9; /* Color for Success status */
+  }
+ .bg-primary
+ {
+  background-color: #162444 !important;
+  color: white;
+ }
+
+ ::ng-deep .ng-select .ng-select-container {
+  color: #333;
+  background-color: #162444 !important; 
+  /* border-radius: 4px; */
+  /* border: 1px solid #ccc; */ 
+  color: white;
+  border: none !important;
+  min-height: 36px;
+  border-bottom: 2px solid rgb(255, 255, 255) !important;
+  align-items: center;
+}
+::ng-deep .ng-select .ng-select-container .ng-placeholder {
+  color: white !important; /* Placeholder text color */
+  opacity: 0.7; /* Optional: make placeholder text slightly transparent */
+}
+.search-style{
+  color: #ffffff;
+  background-color: #162444 !important; 
+  border-radius: 4px; 
+  /* border: 1px solid #ccc; */ 
+  border: none !important;
+
+  min-height: 36px;
+  border-bottom: 2px solid rgb(255, 255, 255) !important;
+  align-items: center;
+}
+.search-style:focus {
+  outline: none;
+  border: none;
+}
+#creationMonth::-webkit-calendar-picker-indicator {
+  background-color: white;  /* Set background to white */
+  color: rgb(255, 255, 255);  
+}

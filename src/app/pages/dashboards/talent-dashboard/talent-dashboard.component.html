@@ -1,0 +1,1253 @@
+<!-- talent -->
+<div class="card" style="margin-top: -130px">
+  <!-- <h4 class="card-title mx-3 mt-2">Monthly Stats</h4> -->
+  <div class="card-body">
+    <div class="d-sm-block d-none">
+      <div class="d-flex gap-3 justify-content-between">
+        <div class="" style="width: 20%">
+          <div class="card h-100 border" tooltip="Roles you've applied for ">
+            <div class="card-body pb-0">
+              <div class="d-flex gap-4 flex-wrap">
+                <!-- icon -->
+                <div>
+                  <i class="bi bi-person fs-4xl"></i>
+                </div>
+                <!--  Roles Referral -->
+                <div class="align-self-center">Roles Referral</div>
+              </div>
+              <h3 class="text-center mb-0">
+                {{
+                  talentTopBarData?.rolesReferral
+                    ? talentTopBarData?.rolesReferral
+                    : 0
+                }}
+              </h3>
+            </div>
+          </div>
+        </div>
+        <div
+          class="clickable"
+          style="width: 20%"
+          tooltip="Interviews you've attended"
+        >
+          <div class="card h-100 border">
+            <div class="card-body pb-0">
+              <div class="d-flex gap-4 flex-wrap">
+                <!-- icon -->
+                <div>
+                  <i class="bi bi-cup-hot-fill fs-4xl"></i>
+                </div>
+                <!--  name -->
+                <div class="align-self-center">Interviews</div>
+              </div>
+              <h3 class="text-center mb-0">
+                {{
+                  talentTopBarData?.interviews
+                    ? talentTopBarData?.interviews
+                    : 0
+                }}
+              </h3>
+            </div>
+          </div>
+        </div>
+        <div
+          class="clickable"
+          (click)="clickOnGuide()"
+          style="width: 20%"
+          tooltip="Talent you've interacted with on the platform"
+        >
+          <div class="card h-100 border">
+            <div class="card-body pb-0">
+              <div class="d-flex gap-4 flex-wrap">
+                <!-- icon -->
+                <div>
+                  <i class="bi bi-people-fill fs-4xl"></i>
+                </div>
+                <!--  name -->
+                <div class="align-self-center">Connects</div>
+              </div>
+              <h3 class="text-center mb-0">
+                {{
+                  talentTopBarData?.connections
+                    ? talentTopBarData?.connections
+                    : 0
+                }}
+              </h3>
+            </div>
+          </div>
+        </div>
+        <!-- <div
+          class="clickable"
+          (click)="clickOnSeekers()"
+          style="width: 20%"
+        >
+          <div class="card h-100 border">
+            <div class="card-body pb-0">
+              <div class="d-flex gap-4 flex-wrap">
+              
+                <div>
+                  <i class="bi bi-bookmark fs-4xl"></i>
+                </div>
+                
+                <div class="align-self-center">Q&A</div>
+              </div>
+              <h3 class="text-center mb-0">
+                {{
+                  talentTopBarData?.seekers ? talentTopBarData?.seekers : 0
+                }}
+              </h3>
+            </div>
+          </div>
+        </div> -->
+        <div class="clickable" style="width: 20%">
+          <div class="card h-100 border">
+            <div class="card-body pb-0">
+              <div class="d-flex gap-4 flex-wrap">
+                <!-- icon -->
+                <div>
+                  <i class="ri-hand-heart-line fs-4xl"></i>
+                </div>
+                <!--  name -->
+                <div class="align-self-center">Upcoming Events</div>
+              </div>
+              <h3 class="text-center mb-0">
+                {{
+                  talentTopBarData?.upcomingEvents
+                    ? talentTopBarData?.upcomingEvents
+                    : 0
+                }}
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- mobile screen -->
+    <div class="d-sm-none d-block">
+      <div class="row justify-content-between">
+        <div class="col-xl-2 mb-1">
+          <div class="card h-100 border" tooltip="Roles you've applied for ">
+            <div class="card-body pb-0">
+              <div class="d-flex gap-4 flex-wrap">
+                <!-- icon -->
+                <div>
+                  <i class="bi bi-person fs-4xl"></i>
+                </div>
+                <!--  name -->
+                <div class="align-self-center">Roles Referral</div>
+              </div>
+              <h3 class="text-center mb-0">
+                {{
+                  talentTopBarData?.rolesReferral
+                    ? talentTopBarData?.rolesReferral
+                    : 0
+                }}
+              </h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-2 mb-1" tooltip="Interviews you've attended">
+          <div class="card h-100 border">
+            <div class="card-body pb-0">
+              <div class="d-flex gap-4 flex-wrap">
+                <!-- icon -->
+                <div>
+                  <i class="bi bi-cup-hot-fill fs-4xl"></i>
+                </div>
+                <!--  name -->
+                <div class="align-self-center">Interviews</div>
+              </div>
+              <h3 class="text-center mb-0">
+                {{
+                  talentTopBarData?.interviews
+                    ? talentTopBarData?.interviews
+                    : 0
+                }}
+              </h3>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-xl-2 mb-1 clickable"
+          (click)="clickOnGuide()"
+          tooltip="Talent you've interacted with on the platform"
+        >
+          <div class="card h-100 border">
+            <div class="card-body pb-0">
+              <div class="d-flex gap-4 flex-wrap">
+                <!-- icon -->
+                <div>
+                  <i class="bi bi-people-fill fs-4xl"></i>
+                </div>
+                <!--  name -->
+                <div class="align-self-center">Connects</div>
+              </div>
+              <h3 class="text-center mb-0">
+                {{
+                  talentTopBarData?.Connects ? talentTopBarData?.Connects : 0
+                }}
+              </h3>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-xl-2 mb-1 clickable" (click)="clickOnSeekers()">
+          <div class="card h-100 border">
+            <div class="card-body pb-0">
+              <div class="d-flex gap-4 flex-wrap">
+                
+                <div>
+                  <i class="bi bi-bookmark fs-4xl"></i>
+                </div>
+                
+                <div class="align-self-center">Q&A</div>
+              </div>
+              <h3 class="text-center mb-0">
+                {{
+                  talentTopBarData?.seekers ? talentTopBarData?.seekers : 0
+                }}
+              </h3>
+            </div>
+          </div>
+        </div> -->
+        <div class="col-xl-2 mb-1 clickable">
+          <div class="card h-100 border">
+            <div class="card-body pb-0">
+              <div class="d-flex gap-4 flex-wrap">
+                <!-- icon -->
+                <div>
+                  <i class="ri-hand-heart-line fs-4xl"></i>
+                </div>
+                <!--  name -->
+                <div class="align-self-center">Upcoming Events</div>
+              </div>
+              <h3 class="text-center mb-0">
+                {{
+                  talentTopBarData?.upcomingEvents
+                    ? talentTopBarData?.upcomingEvents
+                    : 0
+                }}
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Roles -->
+  <div class="col-xl-3">
+    <div class="card">
+      <h5 class="card-header">Roles</h5>
+      <div class="card-body">
+        <!-- <hr class="mt-0" /> -->
+        <div *ngIf="tempData.length == 0">
+          No roles now? More will pop up soon, so keep an eye out!
+        </div>
+        <carousel
+          [noWrap]="true"
+          [interval]="0"
+          (activeSlideChange)="changedCarosel($event)"
+          class="carousel carousel-dark slide"
+        >
+          <div class="carousel-inner">
+            <div *ngFor="let i of indexes">
+              <slide class="carousel-item active" data-bs-interval="10000">
+                <div *ngFor="let req of tempData">
+                  <div
+                    class="card border real-estate-grid-widgets"
+                    style="height: 100%"
+                  >
+                    <div class="card-body p-1">
+                      <!-- logo and roles  -->
+                      <div class="row">
+                        <div class="col-xl-10 col-8">
+                          <div [ngClass]="true ? 'd-flex gap-2' : 'd-flex '">
+                            <!-- icon of company -->
+                            <div class="align-self-center">
+                              <img
+                                src="{{
+                                  commonService.getPicUrl(req.client.icon)
+                                }}"
+                                alt="client_icon"
+                                loading="lazy"
+                                class="rounded-circle border"
+                                style="height: 50px; width: 50px"
+                              />
+                            </div>
+                            <!-- role and company name -->
+                            <div class="align-self-center">
+                              <span class="text-dark fw-bold">{{
+                                req.role ? req?.role?.name : "NA"
+                              }}</span>
+                              <p class="text-muted m-0">
+                                {{ req.orgName }}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="border-top mt-1"
+                        style="
+                          border-style: dashed;
+                          opacity: 0.4;
+                          border-width: thin;
+                        "
+                      ></div>
+                    </div>
+                    <div class="card-body p-2">
+                      <div class="d-flex justify-content-between mb-2 mt-3">
+                        <div class="text-muted">Experience</div>
+                        <div>
+                          <span class="text-dark">
+                            {{ req?.experience ? req?.experience : "NA" }} -
+                          </span>
+                          <span class="text-dark">
+                            {{
+                              req?.experienceLimit ? req?.experienceLimit : "NA"
+                            }}
+                            yrs
+                          </span>
+                        </div>
+                      </div>
+                      <div class="d-flex justify-content-between mb-2">
+                        <div class="text-muted">Posted On</div>
+                        <div>
+                          <span class="text-dark">
+                            {{
+                              commonService.changeMysqlToNormalDate(
+                                req.createdOn
+                              )
+                            }}
+                          </span>
+                        </div>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <div class="text-muted">Location</div>
+                        <div>
+                          <span class="text-dark">
+                            {{
+                              req.location
+                                ? truncateString(
+                                    req?.location?.split(",").join(", "),
+                                    22
+                                  )
+                                : "NA"
+                            }}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Buttons -->
+                    <div class="card-body">
+                      <div class="">
+                        <a
+                          class="btn w-100 mb-1"
+                          style="
+                            height: 40px;
+                            background-color: #fff0ea;
+                            color: #ba4d1b;
+                          "
+                          target="_blank"
+                          href="{{ '/recr/open/rspp-view/' + req.id }}"
+                        >
+                          <b>View RSPP</b>
+                        </a>
+                        <button
+                          class="btn w-100 border-0"
+                          style="height: 40px"
+                          [ngStyle]="
+                            req.haveIApplied
+                              ? {
+                                  'background-color': '#E9E9EA',
+                                  color: 'black'
+                                }
+                              : {
+                                  'background-color': '#EAF8FF',
+                                  color: '#2086BF'
+                                }
+                          "
+                          (click)="selectedMandate = req; applyMandate()"
+                          [disabled]="req.haveIApplied ? true : false"
+                        >
+                          <b>{{
+                            req.haveIApplied
+                              ? "Applied"
+                              : "Apply through Referral"
+                          }}</b>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <br />
+              </slide>
+            </div>
+          </div>
+        </carousel>
+      </div>
+    </div>
+  </div>
+
+  <!--  event  / seeker message-->
+  <div class="col-xl-6">
+    <!-- Seeker -->
+    <div class="card" *ngIf="questionsAskedBySeekers?.length > 0">
+      <div class="card-header"><h5>Seeker</h5></div>
+      <div class="card-body">
+        <div *ngFor="let q of questionsAskedBySeekers">
+          <div class="card border">
+            <div class="card-body">
+              <div class="d-flex gap-4">
+                <div>
+                  <img
+                    src="{{ commonService.getPicUrl(q?.seeker?.profilePic) }}"
+                    alt="profile_pic_for_seek"
+                    loading="lazy"
+                    style="width: 60px; height: 60px"
+                    class="rounded-circle mb-2"
+                  />
+                  <div class="text-center">
+                    <p class="mb-0">{{ q?.seeker?.name }}</p>
+                    <p class="mb-0">{{ q?.seeker?.designation }}</p>
+                    <!-- <p class="mt-1">Nuvama</p> -->
+                  </div>
+                </div>
+                <div style="width: 90%">
+                  <div>
+                    {{ q?.question }}
+                  </div>
+                  <p class="text-end">
+                    {{
+                      commonService.getTimeElapsed(
+                        commonService.getJsDateObject(q?.createdOn),
+                        undefined
+                      )
+                    }}
+                  </p>
+                  <div>
+                    <div
+                      class="d-flex gap-2 justify-content-around"
+                      style="width: 70%"
+                    >
+                      <button
+                        class="btn btn-outline-success w-100"
+                        style="height: 40px"
+                        target="_blank"
+                        (click)="selectedQuestion = q; replyQuestion.show()"
+                      >
+                        Answer
+                      </button>
+                      <button
+                        (click)="selectedQuestion = q; rejectByExpert()"
+                        class="btn btn-outline-danger w-100"
+                        style="height: 40px"
+                      >
+                        Ignore
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Events  -->
+    <div class="card">
+      <div class="card-header"><h5>Events</h5></div>
+      <div class="card-body">
+        <div style="background-color: #f4ecfb" class="mb-2">
+          <table class="table mb-0">
+            <tbody>
+              <tr>
+                <td style="width: 150px" class="border-0">
+                  <div>
+                    <h5>Clubs</h5>
+                  </div>
+                </td>
+                <td style="width: 200px" class="border-0">
+                  <div>
+                    <div>
+                      <h5>Events</h5>
+                    </div>
+                  </div>
+                </td>
+                <td class="text-start" class="border-0">
+                  <div>
+                    <h5>Members</h5>
+                  </div>
+                </td>
+                <td class="border-0 text-end">
+                  <div>
+                    <h5>RSVP</h5>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div *ngFor="let event of allEvents" class="mb-2">
+          <accordion class="accordion" id="default-accordion-example">
+            <accordion-group class="accordion-item">
+              <div accordion-heading class="accordion-header" id="headingOne">
+                <div class="accordion-button p-1">
+                  <div class="table-responsive w-100">
+                    <table class="table mb-0">
+                      <tbody>
+                        <tr>
+                          <td style="width: 150px" class="border-0">
+                            <div class="d-flex gap-2">
+                              <div class="align-self-center">
+                                <i
+                                  class="fs-5xl fw-bolder"
+                                  [ngClass]="commonService.clubIcon(event.club)"
+                                  [ngStyle]="getEventStyle(event.club)"
+                                ></i>
+                              </div>
+                              <div>
+                                <h6>{{ event?.club }}</h6>
+                                <p class="mb-0 text-muted">
+                                  Led by
+                                  {{ event?.createdBy?.name.split(" ")[0] }}
+                                </p>
+                              </div>
+                            </div>
+                          </td>
+                          <td style="width: 200px" class="border-0">
+                            <div>
+                              <div>
+                                <h6>{{ event?.title }}</h6>
+                                <p class="mb-0 text-muted">
+                                  {{ commonService.formatDate(event?.date) }}
+                                </p>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="text-start" class="border-0">
+                            <div class="d-flex">
+                              <div
+                                *ngFor="let users of event.users; let i = index"
+                              >
+                                <div class="absolute" *ngIf="i < 4">
+                                  <img
+                                    src="{{
+                                      commonService.getPicUrl(users.profilepic)
+                                    }}"
+                                    alt="profile"
+                                    loading="lazy"
+                                    class="rounded-circle"
+                                    style="
+                                      width: 32px;
+                                      height: 32px;
+                                      margin-left: -12px;
+                                    "
+                                  />
+                                </div>
+                              </div>
+                              <div
+                                style="
+                                  width: 32px;
+                                  height: 32px;
+                                  margin-left: -12px;
+                                  background-color: #f0f1f3;
+                                  display: flex;
+                                  justify-content: center;
+                                  align-items: center;
+                                "
+                                *ngIf="event.users.length > 4"
+                                class="rounded-circle"
+                              >
+                                <div>+{{ event.users.length - 4 }}</div>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="border-0 text-end">
+                            <div>
+                              <div class="form-check form-switch text-end">
+                                <input
+                                  [ngClass]="{
+                                  'bg-success':
+                                    event.selectedOption === true,
+                                  'border-0': event.selectedOption === true,
+                                }"
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  role="switch"
+                                  [(ngModel)]="event.selectedOption"
+                                  (change)="
+                                    selectedEvent = event; onSelectChange(event)
+                                  "
+                                  id="flexSwitchCheckDefault"
+                                  style="width: 50px; height: 30px"
+                                />
+                                <!-- <label
+                                  class="form-check-label"
+                                  for="flexSwitchCheckDefault"
+                                >
+                                  
+                                  {{
+                                    event.selectedOption === true
+                                      ? "Yes"
+                                      : "No"
+                                  }}
+                                  
+                                </label> -->
+                              </div>
+                              <!-- <select
+                                [(ngModel)]="event.selectedOption"
+                                (change)="onSelectChange(event)"
+                                [ngClass]="{
+                                  'bg-success-subtle':
+                                    event.selectedOption === 'Yes',
+                                  'bg-danger-subtle':
+                                    event.selectedOption === 'No'
+                                }"
+                                class="border-0 p-1 text-center outline-0"
+                                style="
+                                  appearance: none;
+                                  border-radius: 8px;
+                                  width: 50px;
+                                "
+                                (click)="selectedEvent = event"
+                              >
+                                <option value="">Select an option</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                              </select> -->
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <!-- <div class="d-flex gap-2">
+                    <div class="align-self-center">
+                      <i
+                        class="fs-5xl fw-bolder"
+                        [ngClass]="commonService.clubIcon(event.club)"
+                      ></i>
+                    </div>
+                    <div>
+                      <h5>{{ event?.club }}</h5>
+                      <p class="mb-0">
+                        Led by {{ event?.createdBy?.name.split(" ")[0] }}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div>
+                      <h5>{{ event?.title }}</h5>
+                      <p class="mb-0">
+                        {{ commonService.formatDate(event?.date) }}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="d-flex">
+                    <div *ngFor="let users of event.users; let i = index">
+                      <div class="absolute" *ngIf="i < 4">
+                        <img
+                          src="{{ commonService.getPicUrl(users.profilepic) }}"
+                          alt="profile"
+                          class="rounded-circle"
+                          style="width: 32px; height: 32px; margin-left: -12px"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style="
+                        width: 32px;
+                        height: 32px;
+                        margin-left: -12px;
+                        background-color: #f0f1f3;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                      "
+                      *ngIf="event.users.length > 4"
+                      class="rounded-circle"
+                    >
+                      <div>+{{ event.users.length - 4 }}</div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <select
+                      [(ngModel)]="event.selectedOption"
+                      (change)="onSelectChange(event)"
+                      [ngClass]="{
+                        'bg-success-subtle': event.selectedOption === 'Yes',
+                        'bg-danger-subtle': event.selectedOption === 'No'
+                      }"
+                      class="border-0 p-1 text-center outline-0"
+                      style="appearance: none; border-radius: 8px; width: 50px"
+                      (click)="selectedEvent = event"
+                    >
+                     
+                      <option value="Yes">Yes</option>
+                      <option value="No">No</option>
+                    </select>
+                  </div> -->
+                </div>
+              </div>
+              <div id="collapseOne" class="accordion-collapse collapse show">
+                <div class="accordion-body">
+                  <div class="d-flex justify-content-between gap-2">
+                    <p class="text-dark" style="width: 444px">
+                      {{ event.description }}
+                    </p>
+                    <p>{{ event?.users.length }} Attending</p>
+                  </div>
+                  <div>
+                    <p>
+                      Meetup Location- &nbsp;&nbsp;&nbsp; {{ event?.location }}
+                    </p>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <p>
+                      Time- &nbsp;&nbsp;&nbsp;
+                      {{ commonService.convertToAmPm(event?.startDuration) }}
+                      &nbsp; - &nbsp;
+                      {{ commonService.convertToAmPm(event?.endDuration) }}
+                    </p>
+                    <i
+                      class="bi bi-whatsapp fs-5xl clickable"
+                      style="color: #25d366"
+                      (click)="selectedEvent = event; whatsappGroup()"
+                      *ngIf="
+                        event?.createdBy?.id != commonService.user.id &&
+                        event.selectedOption
+                      "
+                    ></i>
+                  </div>
+                </div>
+              </div>
+            </accordion-group>
+          </accordion>
+        </div>
+        <div class="d-flex justify-content-end">
+          <!-- <pagination [totalItems]="totalItems" [(ngModel)]="currentPage">
+          </pagination> -->
+          <button
+            style="
+              width: 30px;
+              height: 30px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+            [disabled]="pageNum == 1"
+            class="btn border-0"
+            (click)="previous()"
+          >
+            <i class="bi bi-caret-left-fill fs-2xl" tooltip="previous"></i>
+          </button>
+
+          <button
+            style="
+              width: 30px;
+              height: 30px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+            [disabled]="pageNum >= totalPages"
+            class="btn border-0"
+            (click)="next()"
+          >
+            <i class="bi bi-caret-right-fill fs-2xl" tooltip="next"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Q & A  -->
+    <div class="card">
+      <div class="card-header"><h5>Experts - Seekers</h5></div>
+      <div class="card-body">
+        <div *ngFor="let g of guides">
+          <div class="card border">
+            <div class="card-body">
+              <div class="d-flex gap-3 mb-1">
+                <div class="align-self-center">
+                  <img
+                    src="{{ commonService.getPicUrl(g.seeker?.profilePic) }}"
+                    alt="seeker_profile_pic"
+                    loading="lazy"
+                    style="width: 40px; height: 40px"
+                    class="rounded-circle"
+                  />
+                </div>
+                <div>
+                  <h6 class="mb-0">{{ g.question }}</h6>
+                  <span
+                    ><small
+                      ><i class="text-muted">{{ g.seeker.name }}</i></small
+                    ></span
+                  >
+                </div>
+              </div>
+              <div class="d-flex gap-3 mb-1">
+                <div class="align-self-center">
+                  <img
+                    src="{{
+                      commonService.getPicUrl(commonService.user?.profilepic)
+                    }}"
+                    alt="profile_pic"
+                    loading="lazy"
+                    style="width: 40px; height: 40px"
+                    class="rounded-circle"
+                  />
+                </div>
+                <div>
+                  <h6 class="mb-0">{{ g.answer }}</h6>
+                  <span
+                    ><small
+                      ><i class="text-muted">{{ g.expert.name }}</i></small
+                    ></span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end">
+          <!-- <pagination [totalItems]="totalItems" [(ngModel)]="currentPage">
+        </pagination> -->
+          <button
+            style="
+              width: 30px;
+              height: 30px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+            [disabled]="pageNumForGuide == 1"
+            class="btn border-0"
+            (click)="previousForGuide()"
+          >
+            <i class="bi bi-caret-left-fill fs-2xl" tooltip="previous"></i>
+          </button>
+          <!-- &nbsp;&nbsp;&nbsp;&nbsp;
+          <p class="mt-1">{{ paginationMessageForGuide }}</p>
+          &nbsp;&nbsp;&nbsp;&nbsp; -->
+          <button
+            style="
+              width: 30px;
+              height: 30px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+            [disabled]="pageNumForGuide >= totalPagesForGuide"
+            class="btn border-0"
+            (click)="nextForGuide()"
+          >
+            <i class="bi bi-caret-right-fill fs-2xl" tooltip="next"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ask the Experts -->
+  <div class="col-xl-3">
+    <div class="card">
+      <div class="card-header"><h5>Ask the Experts</h5></div>
+      <div class="card-body">
+        <div *ngIf="experts?.length == 0">
+          We have experts here—ask them anything!
+        </div>
+        <div *ngFor="let e of experts">
+          <div class="card border">
+            <div class="card-body">
+              <div class="text-center">
+                <img
+                  src="{{ commonService.getPicUrl(e.profilePic) }}"
+                  alt=""
+                  loading="lazy"
+                  style="width: 80px; height: 80px"
+                  class="rounded-circle mb-2"
+                />
+              </div>
+              <div class="text-center">
+                <h5>{{ e?.name }}</h5>
+                <p class="mb-0">{{ e.designation }}</p>
+                <!-- <p class="mt-1">Nuvama</p> -->
+              </div>
+
+              <div
+                class="border-top"
+                style="border-style: dashed; opacity: 0.4; border-width: thin"
+              ></div>
+              <div class="d-flex justify-content-between mb-2 mt-3">
+                <div class="text-muted">Job Function</div>
+                <div>{{ e?.currentJobFunction }}</div>
+              </div>
+              <div class="d-flex justify-content-between">
+                <div class="text-muted">Experience</div>
+                <div>{{ e?.experience }} Years</div>
+              </div>
+              <div class="text-center mt-2">
+                <button
+                  type="button"
+                  class="btn"
+                  style="background-color: #e9faf7; color: #1a9882"
+                  (click)="selectedExpert = e; askQuestion.show()"
+                >
+                  <b>Seek Guidance</b>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-center">
+          <!-- <pagination [totalItems]="totalItems" [(ngModel)]="currentPage">
+                  </pagination> -->
+          <button
+            style="
+              width: 30px;
+              height: 30px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+            [disabled]="expertPagination.pageNum == 1"
+            class="btn border-0"
+            (click)="expertPagination.previous()"
+          >
+            <i class="bi bi-caret-left-fill fs-2xl" tooltip="previous"></i>
+          </button>
+          <!-- &nbsp;&nbsp;&nbsp;&nbsp;
+          <p class="mt-1">{{ expertPagination.message }}</p>
+          &nbsp;&nbsp;&nbsp;&nbsp; -->
+          <button
+            style="
+              width: 30px;
+              height: 30px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+            [disabled]="expertPagination.pageNum >= expertPagination.totalPages"
+            class="btn border-0"
+            (click)="expertPagination.next()"
+          >
+            <i class="bi bi-caret-right-fill fs-2xl" tooltip="next"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Model askQuestion -->
+<div
+  bsModal
+  #askQuestion="bs-modal"
+  class="modal fade bs-example-modal-lg"
+  id="event-modal"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 rounded">
+      <div
+        class="modal-header p-3 bg-info-subtle"
+        style="
+          background-image: url('assets/images/event_dg_bg.png');
+          height: 50px;
+          border-top-left-radius: 10px !important;
+          border-top-right-radius: 10px !important;
+        "
+      >
+        <button
+          type="button"
+          class="btn-close"
+          (click)="askQuestion.hide()"
+        ></button>
+      </div>
+      <div
+        class="modal-body px-5 py-2"
+        style="
+          border: solid rgb(255, 255, 255) 8px;
+          border-radius: 10px;
+          border-top: 0px;
+        "
+      >
+        <h5>What would you like to ask the industry expert?</h5>
+        <div class="relative">
+          <textarea
+            name=""
+            id=""
+            [(ngModel)]="questionToExpert"
+            class="p-2"
+            style="width: 100%; height: 200px; resize: none"
+            placeholder="Pls keep your questions short and informative. It helps the expert to guide you better."
+          ></textarea>
+          <div class="absolute">
+            <button
+              class="btn btn-success rounded-circle"
+              [ngStyle]="
+                commonService.isMobileDevice
+                  ? { 'left.%': '87' }
+                  : { 'left.%': '94' }
+              "
+              style="
+                bottom: 49px;
+                left: 94%;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding-left: 7px;
+              "
+              (click)="askToExpert()"
+            >
+              <!-- <i class="ri-send-plane-2-fill fs-5xl"></i> -->
+              <i class="bi bi-send fs-3xl" style="rotate: 43deg"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Model replyQuestion -->
+<div
+  bsModal
+  #replyQuestion="bs-modal"
+  class="modal fade bs-example-modal-lg"
+  id="event-modal"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 rounded">
+      <div
+        class="modal-header p-3 bg-info-subtle"
+        style="
+          background-image: url('assets/images/event_dg_bg.png');
+          height: 50px;
+          border-top-left-radius: 10px !important;
+          border-top-right-radius: 10px !important;
+        "
+      >
+        <!-- <div class="relative">
+          <div class="absolute">
+            <img
+              src="assets/images/book 1.png"
+              alt=""
+              width="100px"
+              height="100px"
+            />
+          </div>
+        </div> -->
+
+        <button
+          type="button"
+          class="btn-close"
+          (click)="replyQuestion.hide()"
+        ></button>
+      </div>
+      <div
+        class="modal-body px-5 py-2"
+        style="
+          border: solid rgb(255, 255, 255) 8px;
+          border-radius: 10px;
+          border-top: 0px;
+        "
+      >
+        <h5>{{ selectedQuestion?.question }}</h5>
+        <div class="relative">
+          <textarea
+            name=""
+            id=""
+            [(ngModel)]="answerToExpertQuestion"
+            class="p-2"
+            style="width: 100%; height: 200px; resize: none"
+            placeholder="Pls keep your answer short and informative. It helps the seeker to understand you better."
+          ></textarea>
+          <div class="absolute">
+            <button
+              class="btn btn-success rounded-circle"
+              [ngStyle]="
+                commonService.isMobileDevice
+                  ? { 'left.%': '87' }
+                  : { 'left.%': '94' }
+              "
+              style="
+                bottom: 49px;
+                left: 94%;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding-left: 7px;
+              "
+              (click)="answerToExpert()"
+            >
+              <!-- <i class="ri-send-plane-2-fill fs-5xl"></i> -->
+              <i class="bi bi-send fs-3xl" style="rotate: 43deg"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Model for futureFormPopup -->
+<div
+  bsModal
+  #futureFormPopup="bs-modal"
+  class="modal fade bs-example-modal-lg"
+  id="event-modal"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 rounded">
+      <div
+        class="modal-header p-3 bg-info-subtle"
+        style="
+          background-image: url('assets/images/event_dg_bg.png');
+          height: 50px;
+          border-top-left-radius: 10px !important;
+          border-top-right-radius: 10px !important;
+        "
+      >
+        <button
+          type="button"
+          class="btn-close"
+          (click)="futureFormPopup.hide()"
+        ></button>
+      </div>
+      <div
+        class="modal-body"
+        style="
+          border: solid rgb(255, 255, 255) 8px;
+          border-radius: 10px;
+          border-top: 0px;
+        "
+      >
+        <!-- <app-future-form #futureForm></app-future-form> -->
+        <app-community-open-form></app-community-open-form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- seekersPopUp Form  -->
+<div
+  bsModal
+  #seekersPopUp="bs-modal"
+  class="modal fade bs-example-modal-lg"
+  id="event-modal"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 rounded">
+      <div
+        class="modal-header p-3 bg-info-subtle"
+        style="
+          background-image: url('assets/images/event_dg_bg.png');
+          height: 50px;
+          border-top-left-radius: 10px !important;
+          border-top-right-radius: 10px !important;
+        "
+      >
+        <button
+          type="button"
+          class="btn-close"
+          (click)="seekersPopUp.hide()"
+        ></button>
+      </div>
+      <div
+        class="modal-body"
+        style="
+          border: solid rgb(255, 255, 255) 8px;
+          border-radius: 10px;
+          border-top: 0px;
+        "
+      >
+        <div *ngFor="let g of seekers">
+          <div class="card border">
+            <div class="card-body">
+              <div class="d-flex gap-3 mb-1">
+                <div class="align-self-center">
+                  <img
+                    src="{{ commonService.getPicUrl(g.seeker?.profilePic) }}"
+                    alt=""
+                    style="width: 40px; height: 40px"
+                    class="rounded-circle"
+                  />
+                </div>
+                <div>
+                  <h6 class="mb-0">Q. {{ g.question }}</h6>
+                  <span>{{ g.seeker.name }}</span>
+                </div>
+              </div>
+              <div class="d-flex gap-3 mb-1">
+                <div class="align-self-center">
+                  <img
+                    src="{{
+                      commonService.getPicUrl(commonService.user?.profilepic)
+                    }}"
+                    alt=""
+                    style="width: 40px; height: 40px"
+                    class="rounded-circle"
+                  />
+                </div>
+                <div>
+                  <h6 class="mb-0">Ans. {{ g.answer }}</h6>
+                  <span>{{ g.expert.name }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end">
+          <button
+            style="
+              width: 30px;
+              height: 30px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+            [disabled]="pageNumForSeeker == 1"
+            class="btn btn-outline-secondary"
+            (click)="previousSeeker()"
+          >
+            <i class="bi bi-caret-left-fill fs-3xl"></i>
+          </button>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <p class="mt-1">{{ paginationMessageForSeeker }}</p>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <button
+            style="
+              width: 30px;
+              height: 30px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+            [disabled]="pageNumForSeeker >= totalPagesForSeeker"
+            class="btn btn-outline-secondary"
+            (click)="nextSeeker()"
+          >
+            <i class="bi bi-caret-right-fill fs-3xl"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

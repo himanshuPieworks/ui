@@ -1,0 +1,313 @@
+<!-- BreadCrumbs for links -->
+<app-breadcrumbs
+  tooltip="Client-Contract"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs
+><br />
+
+<!-- Domain/Client Select and upload button -->
+<div class="card mx-auto" style="width: 50%">
+  <div class="card-body">
+    <h4>Client Contract</h4>
+    <div class="col-xl-12 col-md-6 col-sm-6">
+      <div class="p-3 border border-dashed rounded">
+        <div class="row justify-content-md-center">
+          <div class="col-xl-6">
+            <ng-select
+              [items]="domains"
+              [multiple]="false"
+              class="form-control"
+              [clearable]="false"
+              style="padding: 0"
+              [(ngModel)]="domain"
+            >
+            </ng-select>
+          </div>
+          <div class="col-xl-6 mb-3">
+            <!-- <ng-select [(ngModel)]="clientSearch" placeholder="Select Client">
+              <ng-option *ngFor="let client of clients" [value]="client.id" >{{client.name ? client.name: "Select One"}}</ng-option>
+           </ng-select> -->
+            <ng-select
+          [items]="clients"
+          [(ngModel)]="client"
+          [multiple]="false"
+          placeholder="Select Client"
+          class="form-control"
+          [clearable]="false"
+          (change)="filterChanged()"
+          style="padding: 0"
+          [searchFn]="clientLocalSearch"
+          (search)="onClientSearch($event)"
+        >
+          <ng-template ng-label-tmp let-item="item">
+            {{ item.name ? item.name : "Search" }}
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item">
+            {{ item.name }}
+          </ng-template>
+        </ng-select>
+          </div>
+          <br />
+          <div class="text-center">
+            <button
+              type="button"
+              class="btn rounded-pill btn-info text-center"
+              (click)="showContractWindow()"
+            >
+              Upload New Contract
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Domain/Client Select and upload button -->
+
+<!-- show tables of contract is already uploaded -->
+<div class="card" *ngIf="showPreviousContract">
+  <div class="card-body">
+    <div *ngFor="let contract of contracts">
+      <div class="row">
+        <div class="col-lg-6">{{ "Uploaded on " + contract.logTime }}</div>
+        <div class="col-lg-1">
+          <span
+            class="icofont-edit"
+            style="cursor: pointer; color: blue"
+            (click)="showNewContractWindow(contract)"
+            >&nbsp;Details</span
+          >
+        </div>
+      </div>
+
+      <table class="table table-striped">
+        <tr>
+          <th class="col">Classification basis Fixed Annual CTC in INR LPA</th>
+          <th class="col">
+            Success Fee in % of Fixed Annual CTC in INR LPA per position
+          </th>
+          <th class="col">
+            Monthly Advance Fees to be adjusted with Success Fee on payout in
+            INR per position
+          </th>
+        </tr>
+        <tr *ngFor="let s of contract.slabs">
+          <td class="table-td p-3">{{ s.slabName }}</td>
+          <td class="table-td p-3">{{ s.successFeePerc }}</td>
+          <td class="table-td p-3">{{ s.retainerFee }}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- show contact that is already uploaded  -->
+
+<!-- open form for update contract -->
+<div
+  bsModal
+  #addContract="bs-modal"
+  class="modal bs-example-modal-lg fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+  id="exampleModalScrollable"
+>
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        style="background-image: url('assets/images/background.png')"
+        *ngIf="true"
+      >
+        <p class="modal-title" id="myLargeModalLabel"></p>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          (click)="addContract.hide()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title mb-0 text-center">Update Contract</h4>
+          </div>
+          <!-- end card header -->
+          <div class="card-body form-steps">
+            <form action="#">
+              <div>
+                <div class="row">
+                  <div class="col-lg-12 text-center">
+                    <div class="card">
+                      <div class="card-body" style="transform: scale(0.5)">
+                        <div class="form-group">
+                          <label class="fs-1 mb-1">Upload Contract *</label>
+                          <div class="job-category-area">
+                            <form
+                              [formGroup]="uploadForm"
+                              enctype="multipart/form-data"
+                            >
+                              <svg
+                                tooltip="Upload PDF"
+                                (click)="clickedImage()"
+                                class="clickable"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                width="120"
+                                height="120"
+                              >
+                                <path
+                                  d="M15 4H5V20H19V8H15V4ZM3 2.9918C3 2.44405 3.44749 2 3.9985 2H16L20.9997 7L21 20.9925C21 21.5489 20.5551 22 20.0066 22H3.9934C3.44476 22 3 21.5447 3 21.0082V2.9918ZM11 11V8H13V11H16V13H13V16H11V13H8V11H11Z"
+                                ></path>
+                              </svg>
+                              <input
+                                id="fileinput"
+                                [hidden]="true"
+                                class="form form-control"
+                                style="margin-top: 25px"
+                                type="file"
+                                name="profile"
+                                class="form-control-file"
+                                accept="pdf"
+                                (change)="onContractSelect($event)"
+                                value="Choose Document"
+                              />
+                            </form>
+                          </div>
+                          <div class="col-lg-2">
+                            <label>{{
+                              contractToUpload ? contractToUpload.name : ""
+                            }}</label>
+                          </div>
+                          <div class="col-lg-2" *ngIf="contract.contractDoc">
+                            <a
+                              href="{{
+                                contract.contractDoc
+                                  ? '/' + contract.contractDoc
+                                  : ''
+                              }}"
+                              target="_blank"
+                              class="fs-3"
+                              >View Document</a
+                            >
+                          </div>
+                        </div>
+                      </div>
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">
+                              Classification basis Fixed Annual CTC in INR LPA
+                            </th>
+                            <th scope="col">
+                              Success Fee in % of Fixed Annual CTC in INR LPA
+                              per position
+                            </th>
+                            <th scope="col">
+                              Monthly Advance Fees to be adjusted with Success
+                              Fee on payout in INR per position
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let s of contract.slabs">
+                            <td>{{ s.slabName }}</td>
+                            <td>
+                              <input
+                                type="text"
+                                [(ngModel)]="s.successFeePerc"
+                                [ngModelOptions]="{ standalone: true }"
+                                class="form form-control"
+                              />
+                            </td>
+                            <td>
+                              <input
+                                type="text"
+                                [(ngModel)]="s.retainerFee"
+                                [ngModelOptions]="{ standalone: true }"
+                                class="form form-control"
+                              />
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <br />
+                      <div class="row">
+                        <div class="col-xl-4">Client GST Number *</div>
+                        <div class="col-xl-8">
+                          <input
+                            type="text"
+                            class="form-control"
+                            [ngModelOptions]="{ standalone: true }"
+                            [(ngModel)]="contract.clientGstNo"
+                          />
+                        </div>
+                      </div>
+                      <br />
+                      <div class="row">
+                        <div class="col-xl-4">CV Validity (months) *</div>
+                        <div class="col-xl-8">
+                          <input
+                            type="text"
+                            class="form-control"
+                            [ngModelOptions]="{ standalone: true }"
+                            [(ngModel)]="contract.cvValidity"
+                          />
+                        </div>
+                      </div>
+                      <br />
+                      <div class="row">
+                        <div class="col-xl-4">Billing Address *</div>
+                        <div class="col-xl-8">
+                          <textarea
+                            name=""
+                            id=""
+                            cols="30"
+                            rows="10"
+                            class="form-control"
+                            [ngModelOptions]="{ standalone: true }"
+                            [(ngModel)]="contract.billingAddress"
+                          ></textarea>
+                        </div>
+                      </div>
+                      <br />
+                      <div class="row">
+                        <div class="col-xl-4">Place of Supply *</div>
+                        <div class="col-xl-8">
+                          <input
+                            type="text"
+                            class="form-control"
+                            [ngModelOptions]="{ standalone: true }"
+                            [(ngModel)]="contract.placeOfSupply"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--end col-->
+                </div>
+                <button
+                  type="submit"
+                  class="btn btn-success"
+                  (click)="updateContract()"
+                >
+                  Apply Change
+                </button>
+                &nbsp;
+                <button type="submit" class="btn btn-danger" id="cancelButton">
+                  Cancel
+                </button>
+
+                <div class="mb-4">
+                  <div>
+                    <h5 class="mb-1"></h5>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- open form for update contract -->

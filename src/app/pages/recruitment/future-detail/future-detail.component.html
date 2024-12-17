@@ -1,0 +1,332 @@
+<app-breadcrumbs [breadcrumbItems]="breadCrumbItems"> </app-breadcrumbs><br />
+<div
+  class="row"
+  style="height: {{ commonService.isMobileDevice ? '7000px' : '5500px' }}"
+>
+  <div class="col-sm-3 col-lg-3" *ngIf="!commonService.isMobileDevice"></div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="row" style="height: 50px; margin-top: 10px">
+      <div class="col-lg-12 card" style="text-align: center">
+        <div class="card-body">
+          <div class="justify-content-center gap-2">
+            <h5>The Future</h5>
+            define your career progression and how you would like to lead your
+            life professionally
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div class="job-overview">
+              <h6 class="text-muted">Name</h6>
+              <div class="row">
+                <div class="col-lg-4">
+                  <label>{{ candidate.name }}</label
+                  ><br /><br />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="card-body">
+                <a
+                  class="btn btn-primary"
+                  href="{{
+                    candidate.cv && candidate.cv.indexOf('upload') == 0
+                      ? urlPrefix + candidate.cv
+                      : candidate.cv
+                  }}"
+                  target="_blank"
+                  >CV <i class="bi bi-arrow-down-short"></i
+                ></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div class="job-overview">
+            <h6 class="text-muted">Email</h6>
+            <div class="row">
+              <div class="col-lg-4">
+                <label>{{ candidate.emailId }}</label
+                ><br /><br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div class="job-overview">
+            <h6 class="text-muted">Phone No.</h6>
+            <div class="row">
+              <div class="col-lg-4">
+                <label>{{ candidate.phoneNo }}</label
+                ><br /><br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div class="job-overview">
+            <h6 class="text-muted">LinkedIn Profile URL</h6>
+            <div class="row">
+              <div class="col-lg-4">
+                <a href="{{ candidate.linkedInUrl }}" target="_new"
+                  >Click here</a
+                ><br /><br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div class="job-overview">
+            <h6 class="text-muted">
+              How will you qualify yourself in no. of years of working exposure
+              ( work experience)
+            </h6>
+            <div class="row">
+              <div class="col-lg-4">
+                <label>{{ candidate.experience }} years</label><br /><br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div class="job-overview">
+            <h6 class="text-muted">Where would you like to live your life ?</h6>
+            <div class="row">
+              <div class="col-lg-4">
+                <label>{{ candidate.preferredLocation }}</label
+                ><br /><br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div class="job-overview">
+            <h6 class="text-muted">
+              How do people know you? Your Designation?
+            </h6>
+            {{ candidate.designation }}
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div class="job-overview">
+            <h6 class="text-muted">
+              What job function would you like to be in ?
+            </h6>
+            <div class="row">
+              <div class="col-lg-4">
+                <label>{{ candidate.nextJobFunction }}</label
+                ><br /><br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div class="job-overview">
+            <h6 class="text-muted">
+              Which job function do you relate to right now ?
+            </h6>
+            <div class="row">
+              <div class="col-lg-4">
+                <label>{{ candidate.currentJobFunction }}</label
+                ><br /><br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div class="job-overview">
+            <h6 class="text-muted">Current Sector ?</h6>
+            <div class="row">
+              <div class="col-lg-3">
+                <label>{{ candidate.sector }}</label
+                ><br /><br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div class="job-overview">
+            <h6 class="text-muted">
+              What is your driving force/ motivation for exploring new
+              opportunities?
+            </h6>
+            <div class="row">
+              <div class="col-lg-3">
+                <label>{{ candidate.reasonToSwitch }}</label
+                ><br /><br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div class="job-overview">
+            <h6 class="text-muted">
+              What kind of org. culture would you associate yourself with?
+            </h6>
+            {{ 255 - candidate.orgCulture?.length }} chars left
+            <input
+              type="text"
+              class="form form-control"
+              placeholder="Your answer"
+              [(ngModel)]="candidate.orgCulture"
+              maxlength="255"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div class="job-overview">
+            <h6 class="text-muted">Ideal Company according to you? And Why?</h6>
+            <div class="row">
+              <div class="col-lg-3">
+                <label>{{ candidate.idealCompany }}</label
+                ><br /><br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div class="job-overview">
+            <h6 class="text-muted">
+              Whats your expectation from a Fixed Salary standpoint (INR Lakhs)
+              ?
+            </h6>
+            <div class="row">
+              <div class="col-lg-2">
+                <label>{{ candidate.expectation }}</label
+                ><br /><br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div class="job-overview">
+            <h6 class="text-muted">Hybrid/Work from Office/ Remote only ?</h6>
+            <div class="row">
+              <div class="col-lg-3">
+                <label>{{ candidate.workModel }}</label
+                ><br /><br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div class="job-overview">
+            <h6 class="text-muted">
+              How soon are you likely to make the next career move ?
+            </h6>
+            <div class="row">
+              <div class="col-lg-4">
+                <label>{{ candidate.nextCareerMove }}</label
+                ><br /><br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div class="job-overview">
+            <h6 class="text-muted">Your 60 Sec Video Intro</h6>
+            <div class="row">
+              <div class="col-lg-12 card">
+                <a
+                  *ngIf="
+                    candidate?.videoLink ||
+                    candidate?.videoLink?.indexOf('http') != -1
+                  "
+                  href="{{ candidate.videoLink }}"
+                  target="new"
+                  >Click Here</a
+                ><br /><br />
+                <label
+                  *ngIf="
+                    !candidate.videoLink ||
+                    candidate.videoLink.indexOf('http') == -1
+                  "
+                  >Not Available</label
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: left">
+        <div class="card-body">
+          <div class="job-overview">
+            <div class="row">
+              <div class="col-lg-10">
+                <h6 class="text-muted">
+                  Would you like to be considered for our Leadership Talent
+                  Program?
+                </h6>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12 card">
+                <label>{{ candidate.leadershipProgram ? "yes" : "no" }}</label
+                ><br /><br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 card" style="text-align: center">
+        <div class="job-overview">
+          <div class="row">
+            <div class="col-lg-2 offset-4">
+              <input
+                type="button"
+                value="Mark as validated"
+                (click)="markAsValidated(false)"
+                class="btn btn-success"
+                *ngIf="candidate.validated != 1"
+              />&nbsp;&nbsp;
+              <input
+                type="button"
+                value="Back"
+                (click)="commonService.goBack()"
+                class="btn btn-success"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+    </div>
+  </div>
+</div>

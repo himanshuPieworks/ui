@@ -1,0 +1,540 @@
+<app-breadcrumbs [breadcrumbItems]="breadCrumbItems" [title]="label + 's'">
+</app-breadcrumbs>
+<br />
+<!-- tab for adding and copy link and filter start -->
+<div class="row">
+  <div class="col-lg">
+    <div
+      class="card"
+      style="background-image: url('assets/images/background.png')"
+    >
+      <div class="card-body">
+        <div class="row align-items-center gy-3">
+          <div class="col-xl-5">
+            <h6 class="card-tooltip fs-2xl mb-0">
+              Open {{ isClient ? "Client" : "Prospect"
+              }}<span class="badge text-secondary align-baseline ms-1"></span>
+            </h6>
+          </div>
+          <!-- Another variation with a button -->
+
+          <!--end col-->
+          <div class="col-auto ms-auto">
+            <!-- button for popup  -->
+            <button
+              *ngIf="
+                (isClient && commonService.rbac['create-client']) ||
+                (!isClient && commonService.rbac['create-prospect'])
+              "
+              class="btn btn-primary me-1 rounded-pill default-btn-width"
+              (click)="
+                loadProspectsForMakingClient();
+                handleMenu(isClient ? 'Create Client' : 'Create Prospect')
+              "
+            >
+              <i class="bi bi-plus align-baseline fs-2xl"></i></button
+            >&nbsp;
+            <!-- button for copy link for outer world -->
+            <button
+              *ngIf="!isClient && commonService.rbac['copy-prospect-form']"
+              class="btn btn-primary rounded-pill"
+              (click)="copyLink()"
+            >
+              <i
+                tooltip="Click to copy link for Prospect form."
+                class="ri-file-copy-line clickable fs-2xl"
+              ></i></button
+            >&nbsp;
+            <!-- btn for filter  -->
+            <button
+            *ngIf="!isClient"
+              class="btn btn-primary myButton rounded-pill default-btn-width"
+              (click)="filterWindow.show()"
+            >
+              <i
+                class="bi bi-funnel align-baseline fs-2xl"
+                tooltip="show filters"
+              ></i></button
+            >&nbsp;
+            <button
+              class="btn btn-primary myButton rounded-pill default-btn-width"
+              (click)="clearFilters()"
+            >
+              <i
+                class="ri-filter-off-line align-baseline fs-2xl"
+                tooltip="clear filters"
+              ></i>
+            </button>
+          </div>
+          <!--Search Input-->
+          <div class="col-xl-3">
+            <div class="form-group has-search">
+              <span class="bi bi-search fs-2xl form-control-feedback"></span>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Search"
+                maxlength="100"
+                [(ngModel)]="searchText"
+                (keyup)="filterChanged()"
+              />
+            </div>
+          </div>
+        </div>
+        <!--end row-->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- tab for adding and copy link and filter end -->
+
+<!--  Prospect  from here pop up is calling  -->
+<div
+  bsModal
+  #addModal="bs-modal"
+  class="modal bs-example-modal-md fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        *ngIf="true"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <p class="modal-title" id="myLargeModalLabel"></p>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          (click)="addModal.hide()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <app-prospect-form (closeModal)="addModal.hide()"></app-prospect-form>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- Prospect prospect card start -->
+
+<!--  Client  from here pop up is calling  -->
+<div
+  bsModal
+  #addClient="bs-modal"
+  class="modal bd-example-modal-md fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        *ngIf="true"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <p class="modal-title" id="myLargeModalLabel"></p>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          (click)="addClient.hide()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center pt-3 pb-4 mb-1">
+          <h5>Add Client</h5>
+        </div>
+        <div class="w-50 text-center mx-auto">
+          <ng-select
+            [items]="prospectsForMakingClient"
+            [multiple]="false"
+            bindLabel="name"
+            class="form-control"
+            placeholder="Select Company"
+            [(ngModel)]="selectedProspectForMakingClient"
+            [clearable]="false"
+            style="padding: 0"
+          ></ng-select>
+        </div>
+        <br />
+        <span *ngIf='selectedProspectForMakingClient?.referedBy'>Refered by {{selectedProspectForMakingClient.referedBy.name}}</span><br>
+        <input *ngIf='selectedProspectForMakingClient' type='checkbox' (click)='clickedOnReferalRemoval()'>&nbsp;<span *ngIf='selectedProspectForMakingClient'>Remove referal benefits for this client.</span>
+        <div class="text-center">
+          <button type="submit" class="btn btn-success" (click)="addAsClient()">
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- Client /prospect card start -->
+<div class="row" id="prospect-list">
+  <div
+    *ngFor="let p of prospects; let i = index"
+    class="col-xxl-4 col-lg-4 col-md-6 p-2"
+  >
+  <!-- Contract Shared = Pieworks Green 4ED5BD, Build Trust = Dark Green 116557, Present Value Proposition = Lightest Green D3F4EF, Negotiation = Yellow FBDE6E, To Connect = sky blue AAE0FF, Validated = dark blue 2086BF, Client = PINK FBD8DB, rest all - BLACK -->
+    <div
+      class="card real-estate-grid-widgets card-animate p-4"
+      (click)="clickedOnMandate(p)"
+      style="height: 100%"
+      [ngStyle]="{
+        'box-shadow':
+              p?.prospect?.status === 'Contract Shared'
+            ? '0px 0px 10px #4ED5BD'
+            : p?.prospect?.status === 'To connect'
+            ? '0px 0px 10px #AAE0FF'
+            : p?.prospect?.status === 'Present Value Proposition'
+            ? '0px 0px 10px #D3F4EF'
+            : p?.prospect?.status === 'Validated'
+            ? '0px 0px 10px #2086BF'
+            : p?.prospect?.status === 'Negotiations'
+            ? '0px 0px 10px #FBDE6E'
+            : p?.prospect?.status === 'Build Trust'
+            ? '0px 0px 10px #116557'
+            : p?.prospect?.status === 'Client'
+            ? '0px 0px 10px #FDF1BC'
+            : '0px 0px 10px #000000'
+      }"
+    >
+      <div class="text-start">
+        <div class="row">
+          <div class="col-xl-10 col-8">
+            <!-- [ngClass]="{ isClient ? 'd-flex gap-4': ''}" -->
+            <div [ngClass]="isClient ? 'd-flex gap-4' : 'd-flex '">
+              <!-- icon of company -->
+              <div>
+                <img
+                  src="{{ commonService.getPicUrl(p.icon) }}"
+                  alt="img-01.jpg"
+                  *ngIf="isClient"
+                  class="rounded-circle border"
+                  style="height: 70px; width: 70px"
+                />
+              </div>
+              <!-- role and company name -->
+              <div class="align-self-center">
+                <h4 class="text-dark fw-bold">
+                  {{ p.name ? p.name : "Company Name - NA" }}
+                </h4>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+      </div>
+      <ul
+        class="d-flex justify-content-between gap-2 flex-wrap list-unstyled mb-2"
+      >
+        <li style="width: 50%">
+          <p class="text-muted mb-0">
+            Name
+            <br />
+            <span class="text-dark">
+              {{
+                p?.prospect?.prospectName
+                  ? p?.prospect?.prospectName
+                  : "Name - NA"
+              }}
+            </span>
+          </p>
+        </li>
+        <li>
+          <p class="text-muted text-end mb-0">
+            Contact
+            <br />
+            <span class="text-dark">
+              {{
+                p?.prospect?.prospectPhoneNo
+                  ? p?.prospect?.prospectPhoneNo
+                  : "Contact - NA"
+              }}
+            </span>
+          </p>
+        </li>
+      </ul>
+      <ul
+        class="d-flex justify-content-between gap-2 flex-wrap list-unstyled mb-2"
+      >
+        <li style="width: 50%">
+          <p class="text-muted mb-0">
+            Email Id
+            <br />
+            <span class="text-dark">
+              {{
+                p?.prospect?.prospectEmailId
+                  ? p?.prospect?.prospectEmailId
+                  : "Email Id - NA"
+              }}
+            </span>
+          </p>
+        </li>
+        <li>
+          <p class="text-muted text-end mb-0">
+            Funding
+            <br />
+            <span class="text-dark">
+              {{ p?.latestFunding ? p?.latestFunding : "Funding - NA" }}
+            </span>
+          </p>
+        </li>
+      </ul>
+      <ul
+        class="d-flex justify-content-between gap-2 flex-wrap list-unstyled mb-2"
+      >
+        <li style="width: 50%">
+          <p class="text-muted mb-0">
+            Sector
+            <br />
+            <span class="text-dark">
+              {{ p?.sector ? p?.sector : "Sector - NA" }}
+            </span>
+          </p>
+        </li>
+        <li>
+          <p class="text-muted text-end mb-0">
+            Employees
+            <br />
+            <span class="text-dark">
+              {{ p?.employees ? p?.employees : "Employees - NA" }}
+            </span>
+          </p>
+        </li>
+      </ul>
+      <ul
+        class="d-flex justify-content-between gap-2 flex-wrap list-unstyled mb-2"
+      >
+        <li style="width: 50%" *ngIf="!isClient">
+          <p class="text-muted mb-0">
+            Status
+            <br />
+            <span class="text-dark">
+              {{ p?.prospect?.status ? p?.prospect?.status : " Status - NA" }}
+            </span>
+          </p>
+        </li>
+
+        <li *ngIf="!isClient">
+          <p class="text-muted text-end mb-0">
+            Designation
+            <br />
+            <span class="text-dark">
+              {{
+                p?.prospect?.userDesignation
+                  ? p?.prospect?.userDesignation
+                  : "Designation - NA"
+              }}
+            </span>
+          </p>
+        </li>
+      </ul>
+
+      <div
+        dropdown
+        class="dropdown dropdown-real-estate"
+        *ngIf="!isClient && menuOptions?.length > 0"
+      >
+        <div
+          (click)="selectedProspect = p"
+          style="min-width: inherit"
+          dropdownToggle
+          class="fs-2xl"
+          type="button"
+        >
+          <i class="bi bi-three-dots-vertical"></i>
+        </div>
+        <ul *bsDropdownMenu class="dropdown-menu dropdown-menu-end">
+          <li *ngFor="let item of menuOptions">
+            <a
+              (click)="handleMenu(item)"
+              style="font-size: 12px"
+              class="dropdown-item edit-list"
+              href="javascript:void(0);"
+              >{{ item }}</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- prospect card end here -->
+<!-- status set pop up  in three dot start -->
+<div
+  bsModal
+  #addStatus="bs-modal"
+  class="modal bs-example-modal-md fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        *ngIf="true"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <p class="modal-title" id="myLargeModalLabel"></p>
+        <button
+          type="button"
+          class="btn-close clickable btn-close-white"
+          (click)="addStatus.hide()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center pt-3 pb-4 mb-1">
+          <h5>Update Status</h5>
+        </div>
+        <div class="w-50 text-center mx-auto">
+          <ng-select
+            [items]="clientStatus"
+            [multiple]="false"
+            bindLabel="name"
+            class="form-control"
+            placeholder="Status"
+            [(ngModel)]="selectedProspect?.prospect.status"
+            [clearable]="false"
+            style="padding: 0"
+          ></ng-select>
+        </div>
+
+        <br />
+        <div class="text-center">
+          <button
+            type="submit"
+            class="btn btn-success"
+            (click)="updateClient()"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- status set pop up in three dot end -->
+
+<!-- for showing loading during data load -->
+<div id="elmLoader" *ngIf="false">
+  <div class="spinner-border text-primary avatar-sm" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+<!-- for showing not loaded data -->
+
+<!-- if there is no data in prospects then it will be shown -->
+<div id="noresult" [ngClass]="prospects?.length != 0 ? 'd-none' : ''">
+  <div class="text-center py-4">
+    <div class="avatar-md mx-auto mb-4">
+      <div class="avatar-tooltip bg-light text-primary rounded-circle fs-4xl">
+        <i class="bi bi-search"></i>
+      </div>
+    </div>
+    <h5 class="mt-2">Sorry! No Result Found</h5>
+  </div>
+</div>
+
+<!-- prospect card end here -->
+
+<!-- start of filter  -->
+<div
+  bsModal
+  #filterWindow="bs-modal"
+  [ngClass]="
+    isClient
+      ? 'modal fade bs-example-modal-md'
+      : 'modal fade bs-example-modal-sm'
+  "
+  id="exampleModalScrollable"
+>
+  <div
+    class=""
+    [ngClass]="!isClient ? 'modal-dialog modal-sm' : 'modal-dialog  modal-md'"
+  >
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <h5
+          class="modal-tooltip"
+          id="exampleModalScrollableTitle"
+          style="width: 90%"
+        >
+          Filter
+        </h5>
+        <i
+          class="mdi mdi-broom clickable text-white-75"
+          style="font-size: 20px"
+          (click)="clearFilters()"
+        ></i>
+        <button
+          type="button"
+          class="btn-close clickable rightMost btn-close-white"
+          (click)="filterWindow.hide()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row gy-5">
+          <!-- <div
+            [ngClass]="
+              isClient
+                ? 'col-xl-12 col-md-6 col-sm-6'
+                : 'col-xl-6 col-md-6 col-sm-6 '
+            "
+          >
+            <div class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3">
+              <i class="bi bi-binoculars"></i>Search
+            </div>
+            <input
+              placeholder="Enter text"
+              type="text"
+              class="form-control"
+              maxlength="100"
+              [(ngModel)]="searchText"
+              (keyup)="filterChanged()"
+            />
+          </div> -->
+          <div *ngIf="!isClient" class="col-xl-12 col-md-12 col-sm-12">
+            <div class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3">
+              <i class="mdi mdi-timer-sand-complete"></i>Status
+            </div>
+            <ng-select
+              [items]="statusArray"
+              [multiple]="true"
+              bindLabel="name"
+              bindValue="id"
+              class="form-control"
+              placeholder="Select status"
+              [(ngModel)]="status"
+              [clearable]="true"
+              style="padding: 0"
+              (ngModelChange)="filterChanged()"
+            ></ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" *ngIf="false">
+        <button
+          type="button"
+          class="btn btn-light"
+          (click)="filterWindow.hide()"
+        >
+          Close
+        </button>
+        <button type="button" class="btn btn-primary">Apply</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- end of filter -->

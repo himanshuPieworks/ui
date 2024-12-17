@@ -1,0 +1,10 @@
+<p>redeem-rewards works!</p>
+<div class="d-flex flex-wrap ">
+  <div *ngFor="let card of pendingCardArray" class="mt-1">
+    <app-scratch-card
+      [imageForwardSrc]="'assets/images/Group.png'"
+      [prizeMessage]="'🎉 Congratulations! You won a prize! 🎉'"
+      (scratchCompleted)="onScratchComplete()"
+    ></app-scratch-card>
+  </div>
+</div>

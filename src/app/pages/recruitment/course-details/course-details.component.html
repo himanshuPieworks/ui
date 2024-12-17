@@ -1,0 +1,453 @@
+<app-breadcrumbs [breadcrumbItems]="breadCrumbItems"> </app-breadcrumbs>
+<br />
+
+<tabset>
+  <tab heading="Course Material">
+    <br />
+    <div class="row">
+      <div class="col-xl-4" *ngFor="let cm of courseMaterialById">
+        <div class="card card-animate">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-xl-10 col-8">
+                {{ cm.materialTitle }}
+              </div>
+              <div class="col-xl-2 col-4">
+                <div class="relative text-end">
+                  <div
+                    dropdown
+                    class="dropdown dropdown-real-estate absolute top-0 right-0"
+                  >
+                    <i
+                      (click)="selectedCourseMaterial = cm"
+                      dropdownToggle
+                      class="bi bi-three-dots-vertical text-dark fs-2xl"
+                    ></i>
+
+                    <ul
+                      *bsDropdownMenu
+                      class="dropdown-menu dropdown-menu-end mb-0"
+                    >
+                      <li *ngFor="let item of menuOptions">
+                        <a
+                          (click)="handleMenu(item)"
+                          class="dropdown-item edit-list"
+                          href="javascript:void(0);"
+                          >{{ item }}</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr class="mb-0 mt-1 mb-2" />
+            <!-- For youtube -->
+            <div *ngIf="cm.materialType == 'YouTube'" class="rounded">
+              <iframe
+                class="rounded"
+                [src]="cm.materialLink | safe"
+                title="YouTube video player"
+                width="100%"
+                height="352"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+              ></iframe>
+            </div>
+            <!-- For PDF -->
+            <div *ngIf="cm.materialType == 'PDF'" class="rounded">
+              <iframe
+                [src]="cm.materialLink | safe"
+                class="rounded"
+                width="100%"
+                height="352"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              ></iframe>
+              <!-- <object
+                type="application/pdf "
+                [attr.data]="cm.materialLink | safe"
+                heigh="100%"
+                width="100%"
+              ></object> -->
+            </div>
+
+            <!-- For PPT -->
+            <div *ngIf="cm.materialType == 'PPT'" class="rounded">
+              <iframe
+                [src]="cm.materialLink | safe"
+                class="rounded"
+                width="100%"
+                height="352"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              ></iframe>
+            </div>
+            <!-- For PPT -->
+            <div *ngIf="cm.materialType == 'Spotify'" class="rounded">
+              <iframe
+                style="border-radius: 12px"
+                [src]="cm.materialLink | safe"
+                width="100%"
+                height="352"
+                frameBorder="0"
+                allowfullscreen=""
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy"
+              ></iframe>
+              <!-- <iframe
+                [src]="cm.materialLink | safe"
+                class="rounded"
+                style="height: 100%; width: 100%"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              ></iframe> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </tab>
+  <!-- Add Course Material -->
+  <tab heading="Add Course Material">
+    <br />
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-xl-6">
+            <div class="mb-3">
+              <label for="courseMaterialName" class="form-label"
+                >Course Material Name</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                name="courseMaterialName"
+                id="courseMaterialName"
+                placeholder="Course Name"
+                [(ngModel)]="courseMaterial.materialTitle"
+              />
+            </div>
+          </div>
+          <div class="col-xl-6">
+            <div class="mb-3">
+              <label for="type" class="form-label">Course Material Type</label>
+              <ng-select
+                [items]="type"
+                [multiple]="false"
+                bindLabel="name"
+                placeholder="Course Type *"
+                class="form-control"
+                name="type"
+                [(ngModel)]="courseMaterial.materialType"
+                [clearable]="false"
+                style="padding: 0"
+              >
+              </ng-select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-6">
+            <div class="mb-3">
+              <label for="courseMaterialDescription" class="form-label"
+                >Course Description</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                name="courseMaterialDescription"
+                id="courseMaterialDescription"
+                placeholder="Course Description"
+                [(ngModel)]="courseMaterial.materialDescription"
+              />
+            </div>
+          </div>
+          <div class="col-xl-6">
+            <div class="mb-3">
+              <label for="courseMaterialLink" class="form-label"
+                >Course Link</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                name="courseMaterialLink"
+                id="courseMaterialLink"
+                placeholder="Course Link"
+                [(ngModel)]="courseMaterial.materialLink"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-6">
+            <div class="mb-3">
+              <label for="courseMaterialDuration" class="form-label"
+                >Course Duration</label
+              >
+              <ng-select
+                [items]="duration"
+                [multiple]="false"
+                bindLabel="name"
+                placeholder="Course Duration in Minutes *"
+                class="form-control"
+                name="type"
+                [(ngModel)]="courseMaterial.materialDuration"
+                [clearable]="false"
+                style="padding: 0"
+              >
+              </ng-select>
+            </div>
+          </div>
+          <div class="col-xl-6">
+            <button
+              type="submit"
+              class="btn btn-success"
+              (click)="saveCourseMaterial()"
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </tab>
+</tabset>
+
+<!--  New Course  from here pop up is calling  -->
+<div
+  bsModal
+  #addAssignment="bs-modal"
+  class="modal bs-example-modal-lg fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        *ngIf="true"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <p class="modal-title" id="myLargeModalLabel">
+          Add Assignment and Update Material
+        </p>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          (click)="addAssignment.hide()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <!-- This div is for selectedCourseMaterial -->
+        <div>
+          <div class="row">
+            <div class="col-xl-6">
+              <div class="mb-3">
+                <label for="courseMaterialName" class="form-label"
+                  >Course Material Name</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  name="courseMaterialName"
+                  id="courseMaterialName"
+                  placeholder="Course Name"
+                  [(ngModel)]="selectedCourseMaterial.materialTitle"
+                />
+              </div>
+            </div>
+            <div class="col-xl-6">
+              <div class="mb-3">
+                <label for="type" class="form-label"
+                  >Course Material Type</label
+                >
+                <ng-select
+                  [items]="type"
+                  [multiple]="false"
+                  bindLabel="name"
+                  placeholder="Course Type *"
+                  class="form-control"
+                  name="type"
+                  [(ngModel)]="selectedCourseMaterial.materialType"
+                  [clearable]="false"
+                  style="padding: 0"
+                >
+                </ng-select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-6">
+              <div class="mb-3">
+                <label for="courseMaterialDescription" class="form-label"
+                  >Course Description</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  name="courseMaterialDescription"
+                  id="courseMaterialDescription"
+                  placeholder="Course Description"
+                  [(ngModel)]="selectedCourseMaterial.materialDescription"
+                />
+              </div>
+            </div>
+            <div class="col-xl-6">
+              <div class="mb-3">
+                <label for="courseMaterialLink" class="form-label"
+                  >Course Link</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  name="courseMaterialLink"
+                  id="courseMaterialLink"
+                  placeholder="Course Link"
+                  [(ngModel)]="selectedCourseMaterial.materialLink"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-6">
+              <div class="mb-3">
+                <label for="courseMaterialDuration" class="form-label"
+                  >Course Duration</label
+                >
+                <ng-select
+                  [items]="duration"
+                  [multiple]="false"
+                  bindLabel="name"
+                  placeholder="Course Duration in Minutes *"
+                  class="form-control"
+                  name="type"
+                  [(ngModel)]="selectedCourseMaterial.materialDuration"
+                  [clearable]="false"
+                  style="padding: 0"
+                >
+                </ng-select>
+              </div>
+            </div>
+            <div class="col-xl-6">
+              <!-- <button
+                type="submit"
+                class="btn btn-success"
+                (click)="saveCourseMaterial()"
+              >
+                Save
+              </button> -->
+            </div>
+          </div>
+        </div>
+        <h6>Add Assignments:</h6>
+        <!-- This Div is for assignment -->
+        <div>
+          <div class="row">
+            <div class="col-xl-6">
+              <div class="mb-3">
+                <label for="courseMaterialName" class="form-label"
+                  >Question</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  name="courseMaterialName"
+                  id="courseMaterialName"
+                  placeholder="Course Name"
+                  [(ngModel)]="assignment.question"
+                />
+              </div>
+            </div>
+            <div class="col-xl-6">
+              <div class="mb-3">
+                <label for="type" class="form-label">Answer 1</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="courseMaterialName"
+                  id="courseMaterialName"
+                  placeholder="Course Name"
+                  [(ngModel)]="assignment.answer1"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-6">
+              <div class="mb-3">
+                <label for="type" class="form-label">Answer 2</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="courseMaterialName"
+                  id="courseMaterialName"
+                  placeholder="Course Name"
+                  [(ngModel)]="assignment.answer2"
+                />
+              </div>
+            </div>
+            <div class="col-xl-6">
+              <div class="mb-3">
+                <label for="type" class="form-label">Answer 3</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="courseMaterialName"
+                  id="courseMaterialName"
+                  placeholder="Course Name"
+                  [(ngModel)]="assignment.answer3"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row align-items-center">
+            <div class="col-xl-6">
+              <div class="mb-3">
+                <label for="type" class="form-label">Answer 4</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="courseMaterialName"
+                  id="courseMaterialName"
+                  placeholder="Course Name"
+                  [(ngModel)]="assignment.answer4"
+                />
+              </div>
+            </div>
+            <div class="col-xl-6 align-self-center">
+              <div class="mb-3">
+                <br />
+                <button
+                  type="submit"
+                  class="btn btn-success mt-1"
+                  (click)="addCourseMaterialAssignment()"
+                >
+                  + Add
+                </button>
+              </div>
+            </div>
+            <br />
+            <ul>
+              <li *ngFor="let c of assignmentArray">
+                <i class="icofont-hand-drawn-right"></i>Q.
+                {{ c?.question }} &nbsp;&nbsp;&nbsp;<a
+                  (click)="removeCourseMaterialAssignment(c)"
+                  href="javascript:void(0)"
+                  ><i class="bi bi-trash" style="font-size: 17px"></i
+                ></a>
+              </li>
+            </ul>
+          </div>
+          <br />
+          <button
+            type="submit"
+            class="btn btn-success"
+            (click)="updateCourseMaterial()"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

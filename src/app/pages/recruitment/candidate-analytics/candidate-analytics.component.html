@@ -1,0 +1,368 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs
+  tooltip="Analytics"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs
+><br />
+<!-- End Breadcrumbs -->
+<div class="row">
+  <div class="col-xl-2" *ngIf="areColumnsVisible">
+    <div class="card">
+      <div class="card-body">
+        <accordion class="accordion" id="default-accordion-example">
+          <accordion-group class="accordion-item">
+            <h2 accordion-heading class="accordion-header" id="headingOne">
+              <button
+                class="accordion-button"
+                type="button"
+                (click)="onClickDipstick('nothing')"
+              >
+                Candidate Dipstick
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show">
+              <div class="accordion-body">
+                <p class="clickable" (click)="onClickDipstick('candidate')">
+                  Candidate Dipstick
+                </p>
+                <p class="clickable" (click)="onClickDipstick('client')">
+                  Client Wise
+                </p>
+              </div>
+            </div>
+          </accordion-group>
+        </accordion>
+      </div>
+    </div>
+  </div>
+  <div [ngClass]="areColumnsVisible ? 'col-xl-7' : 'col-xl-10'">
+    <div
+      class="form-check form-switch mb-4"
+      tooltip="{{ areColumnsVisible ? 'Hide' : 'Show' }}"
+    >
+      <input
+        [ngClass]="{
+          'bg-success': areColumnsVisible,
+          'border-0': areColumnsVisible
+        }"
+        class="form-check-input"
+        type="checkbox"
+        role="switch"
+        [(ngModel)]="areColumnsVisible"
+        (change)="onSelectChange({ selectedOption: areColumnsVisible })"
+        id="flexSwitchCheckDefault"
+        style="width: 50px; height: 30px"
+      />
+    </div>
+    <div class="row" *ngIf="!candidateDipstick && !clientDipstick">
+      <div class="col-xxl-12 col-md-12" style="overflow: auto">
+        <div class="table-responsive table-container" style="overflow: unset">
+          <div class="table-responsive" style="overflow: unset" id="bigTable">
+            <table
+              class="table table-striped table-nowrap align-top mb-0 header-table"
+              style="width: 100%"
+            >
+              <thead>
+                <tr style="background-color: #1a9783" class="position-relative">
+                  <th
+                    scope="col"
+                    style="
+                      background-color: #1a9783;
+                      color: white;
+                      width: 10rem;
+                    "
+                  >
+                    Candidate Name
+                  </th>
+                  <th scope="col">Onboarding experience</th>
+                  <th scope="col">Roles & Responsibilities</th>
+                  <th scope="col">Integration & Culture</th>
+                  <th scope="col" style="width: 20rem">
+                    Do you have access to tools and resources to do your job
+                    effectively?
+                  </th>
+                  <th scope="col" style="width: 20rem">
+                    Is there any specific training or support needed, to help
+                    you perform your role better?
+                  </th>
+                  <th scope="col" style="width: 20rem">
+                    What has been the most positive aspect of your first month
+                    here?
+                  </th>
+                  <th scope="col" style="width: 20rem">
+                    What has been the most challenging aspect of your first
+                    month here?
+                  </th>
+                  <th scope="col" style="width: 20rem">
+                    Are there any areas where you feel the need for additional
+                    training or support?
+                  </th>
+                  <th scope="col" style="width: 20rem">
+                    Do you have any suggestions or feedback on improving the
+                    onboarding experience?
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let d of myData"
+                  [ngClass]="d.classOnRowClick ? d.classOnRowClick : ''"
+                  title="{{ d.name }}"
+                  class="position-relative"
+                >
+                  <td
+                    scope="col"
+                    class="fw-medium align-top"
+                    style="
+                      background-color: #1a9783;
+                      color: white;
+                      width: 10rem;
+                    "
+                  >
+                    {{ d.discovery.candidate.name }}
+                  </td>
+                  <td class="align-top">
+                    {{
+                      (d.section1Q1Weightage +
+                        d.section1Q2Weightage +
+                        d.section1Q3Weightage) /
+                        3 | number : "1.0-0"
+                    }}
+                  </td>
+                  <td class="table-td-dashboard align-top">
+                    {{
+                      (d.section2Q1Weightage +
+                        d.section2Q2Weightage +
+                        d.section2Q3Weightage) /
+                        3 | number : "1.0-0"
+                    }}
+                  </td>
+                  <td class="table-td-dashboard align-top">
+                    {{
+                      (d.section3Q1Weightage +
+                        d.section3Q2Weightage +
+                        d.section3Q3Weightage) /
+                        3 | number : "1.0-0"
+                    }}
+                  </td>
+                  <!-- Wrapping long content with text-wrap and text-break -->
+                  <td
+                    class="table-td-dashboard align-top text-wrap text-break"
+                    style="width: 20rem"
+                  >
+                    {{ d.descAns1 }}
+                  </td>
+                  <td
+                    class="table-td-dashboard align-top text-wrap text-break"
+                    style="width: 20rem"
+                  >
+                    {{ d.descAns2 }}
+                  </td>
+                  <td
+                    class="table-td-dashboard align-top text-wrap text-break"
+                    style="width: 20rem"
+                  >
+                    {{ d.descAns3 }}
+                  </td>
+                  <td
+                    class="table-td-dashboard align-top text-wrap text-break"
+                    style="width: 20rem"
+                  >
+                    {{ d.descAns4 }}
+                  </td>
+                  <td
+                    class="table-td-dashboard align-top text-wrap text-break"
+                    style="width: 20rem"
+                  >
+                    {{ d.descAns5 }}
+                  </td>
+                  <td
+                    class="table-td-dashboard align-top text-wrap text-break"
+                    style="width: 20rem"
+                  >
+                    {{ d.descAns6 }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- end table -->
+        </div>
+      </div>
+    </div>
+    <div *ngIf="candidateDipstick">
+      <app-candidate-dipstick-report
+        #report
+        [parentObj]="candidate"
+      ></app-candidate-dipstick-report>
+    </div>
+
+    <div *ngIf="clientDipstick">
+      <app-dipstick-client-wise-report
+        #report2
+      ></app-dipstick-client-wise-report>
+    </div>
+  </div>
+  <!-- filter -->
+  <div class="col-xl-2">
+    <div class="card">
+      <div class="card-body">
+        <h3>
+          <div class="col-lg-12">
+            Filters<span
+              class="mdi mdi-broom text-end"
+              style="
+                cursor: pointer;
+                top: 0px;
+                font-size: 20px;
+                padding-left: 40%;
+              "
+              (click)="clearFilter()"
+            ></span>
+          </div>
+        </h3>
+        <div class="row">
+          <div class="col-lg-12">
+            <ng-select
+              #Selecter2
+              [items]="allMonths"
+              [multiple]="false"
+              bindLabel="name"
+              placeholder="Month"
+              class="form-control"
+              labelForId="ngSelectId"
+              name="months"
+              id="months"
+              (change)="loadMonthlyReport()"
+              [(ngModel)]="selectedIndividualMonth"
+              [clearable]="false"
+              style="padding: 0"
+            >
+            </ng-select>
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-lg-12">
+            <ng-select
+              #Selecter1
+              [items]="months"
+              [multiple]="false"
+              bindLabel="name"
+              placeholder="Quarter"
+              class="form-control"
+              labelForId="ngSelectId"
+              name="months"
+              id="months"
+              (change)="loadQuarterReport()"
+              [(ngModel)]="selectedMonth"
+              [clearable]="false"
+              style="padding: 0"
+            >
+            </ng-select>
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-lg-12">
+            <ng-select
+              #Selecter2
+              [items]="years"
+              [multiple]="false"
+              placeholder="Year"
+              class="form-control"
+              labelForId="ngSelectId"
+              name="years"
+              id="years"
+              (change)="loadQuarterReport()"
+              [(ngModel)]="selectedYear"
+              [clearable]="false"
+              style="padding: 0"
+            >
+            </ng-select>
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-lg-12">
+            <p class="mb-1">Client</p>
+            <ng-select
+              [items]="clients"
+              [multiple]="false"
+              bindLabel="name"
+              bindValue="id"
+              class="form-control"
+              name="clientFilter"
+              placeholder="Select Client"
+              [(ngModel)]="clientId"
+              [clearable]="true"
+              style="padding: 0"
+              (ngModelChange)="filterChanged()"
+              [searchFn]="clientLocalSearch"
+              (search)="onClientSearch($event)"
+            ></ng-select>
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-lg-12">
+            <p class="mb-1">Talent Name</p>
+            <input
+              class="form form-control text-muted"
+              type="text"
+              name="name"
+              id="name"
+              placeholder="Talent Name.."
+              [(ngModel)]="talentName"
+              (change)="
+                selectedYear = undefined;
+                selectedMonth = undefined;
+                selectedIndividualMonth = undefined;
+                filterChanged()
+              "
+            />
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-lg-12">
+            <p class="mb-1">From</p>
+            <input
+              class="form form-control text-muted"
+              type="date"
+              name="from"
+              id="from"
+              [(ngModel)]="startDate"
+              (change)="
+                selectedYear = undefined;
+                selectedMonth = undefined;
+                selectedIndividualMonth = undefined;
+                filterChanged()
+              "
+            />
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-lg-12">
+            <p class="mb-1">To</p>
+            <input
+              class="form form-control text-muted"
+              type="date"
+              name="to"
+              id="to"
+              [(ngModel)]="endDate"
+              (change)="
+                selectedYear = undefined;
+                selectedMonth = undefined;
+                selectedIndividualMonth = undefined;
+                filterChanged()
+              "
+            />
+          </div>
+        </div>
+        <br />
+      </div>
+    </div>
+  </div>
+</div>

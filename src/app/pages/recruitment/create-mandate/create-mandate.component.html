@@ -1,0 +1,338 @@
+<div class="card">
+  <div class="card-header">
+    <h4 class="card-title mb-0">Create Mandate</h4>
+  </div>
+  <!-- end card header -->
+  <div class="card-body">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="gen-info-username-input"
+            id="ngSelectId"
+            >{{ client ? "Client *" : "" }}</label
+          >
+          <div class="input-group">
+            <ng-select
+              #Selecter1
+              [items]="clients"
+              [multiple]="false"
+              bindLabel="name"
+              placeholder="Client *"
+              class="form-control"
+              labelForId="ngSelectId"
+              [searchFn]="clientLocalSearch"
+              (search)="onClientSearch($event)"
+              name="client"
+              id="client"
+              [ngClass]="{ 'is-invalid': !client }"
+              [(ngModel)]="client"
+              [clearable]="false"
+              style="padding: 0"
+              (change)="rspp = {}; onRsppClientSelect()"
+            >
+            </ng-select>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col-lg-6"
+        [hidden]="false && parentObj.menuAction == 'Create Mandate'"
+      >
+        <div class="mb-3">
+          <label class="form-label" for="gen-info-username-input" id="rspp">{{
+            rspp ? "RSPP *" : ""
+          }}</label>
+          <div class="input-group">
+            <ng-select
+              #Selecter2
+              [items]="rspps"
+              [multiple]="false"
+              bindLabel="role.name"
+              placeholder="RSPP *"
+              class="form-control"
+              labelForId="rspp"
+              [searchFn]="rsppLocalSearch"
+              (search)="filterRspp($event)"
+              name="rspp"
+              id="rsppId"
+              [ngClass]="{ 'is-invalid': !rspp }"
+              [(ngModel)]="rspp"
+              [clearable]="false"
+              style="padding: 0"
+              (change)="onRsppClientSelect()"
+            >
+              <ng-template ng-option-tmp let-item="item">
+                <!-- Define your custom label here -->
+                <span>{{ item.role.name + ", " + item.orgName }}</span>
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6" *ngIf="false">
+        <div class="mb-3">
+          <label class="form-label" for="writeup1"
+            >Why does
+            {{ rspp?.client ? rspp.orgName : "it" }}
+            exist ?*
+          </label>
+          <textarea
+            *ngIf="rspp"
+            class="form-control"
+            id="writeup1"
+            [ngClass]="{ 'is-invalid': !rspp?.companyWriteup1 }"
+            rows="5"
+            placeholder=""
+            [(ngModel)]="rspp.companyWriteup1"
+            name="writeup1"
+          ></textarea>
+        </div>
+      </div>
+      <div class="col-lg-6" *ngIf="false">
+        <div class="mb-3">
+          <label class="form-label" for="writeup2"
+            >What does it solve? *
+          </label>
+          <textarea
+            *ngIf="rspp"
+            class="form-control"
+            id="writeup2"
+            [ngClass]="{ 'is-invalid': !rspp?.companyWriteup2 }"
+            rows="5"
+            placeholder=""
+            [(ngModel)]="rspp.companyWriteup2"
+            name="writeup2"
+          >
+          </textarea>
+        </div>
+      </div>
+      <div class="col-lg-6" *ngIf="false">
+        <div class="mb-3">
+          <label class="form-label" for="writeup3">How does it solve ? * </label>
+          <textarea
+            *ngIf="rspp"
+            class="form-control"
+            id="writeup3"
+            [ngClass]="{ 'is-invalid': !rspp?.companyWriteup3 }"
+            rows="5"
+            placeholder=""
+            [(ngModel)]="rspp.companyWriteup3"
+            name="writeup3"
+          ></textarea>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="gen-info-username-input"
+            id="statusId"
+            >{{ status ? "Status *" : "" }}</label
+          >
+          <div class="input-group">
+            <ng-select
+              #Selecter3
+              [items]="statusArray"
+              [multiple]="false"
+              bindLabel="name"
+              placeholder="Status *"
+              class="form-control"
+              labelForId="statusId"
+              name="statuss"
+              id="statuss"
+              [ngClass]="{ 'is-invalid': !status }"
+              [(ngModel)]="status"
+              [clearable]="false"
+              style="padding: 0"
+            >
+            </ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="gen-info-username-input"
+            id="statusId"
+            >Account Manager *</label
+          >
+          <div class="input-group">
+            <ng-select
+              [items]="members"
+              [multiple]="false"
+              bindLabel="user.name"
+              bindValue="user"
+              placeholder="Search member"
+              class="form-control"
+              [(ngModel)]="clientAnchor"
+              [clearable]="false"
+              placeholder="Select Account Manager"
+              style="padding: 0"
+            >
+            </ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="gen-info-username-input"
+            id="statusId"
+            >Standby Account Manager</label
+          >
+          <div class="input-group">
+            <ng-select
+              [items]="members"
+              [multiple]="false"
+              bindLabel="user.name"
+              bindValue="user"
+              placeholder="Search member"
+              class="form-control"
+              [(ngModel)]="standbyClientAnchor"
+              [clearable]="false"
+              placeholder="Standby Account Manager"
+              style="padding: 0"
+            >
+            </ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="row mb-3">
+          <label
+            class="form-label"
+            for="gen-info-username-input"
+            id="statusId"
+            >Office Address *</label
+          >
+          <div class="col-lg-12">
+            
+            <input
+              type="text"
+              maxlength="300"
+              [(ngModel)]="addressTemp"
+              class="from form-control"
+              placeholder="Address"
+            />
+          </div>
+          <div class="col-lg-12">
+            <div class="job-category-area">
+              &nbsp;
+              <input
+                type="button"
+                class="btn rounded-pill btn-info text-center"
+                value="+ Add"
+                (click)="addAddress()"
+              />
+            </div>
+            <div *ngFor="let j of addresses">
+              <p class="mb-1">
+                <i class="ri-map-pin-line"></i>&nbsp;{{
+                  j.remark.split("@")[0]
+                }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="gen-info-username-input"
+            id="statusId"
+            >Hiring Manager *</label
+          >
+          <ng-select
+            *ngIf="client"
+            [items]="client.communityClientContacts"
+            [multiple]="false"
+            bindLabel="name"
+            placeholder="Search"
+            class="form-control rounded-pill"
+            [(ngModel)]="rspp.hiringManager"
+            [clearable]="false"
+            placeholder="Hiring Manager"
+            style="padding: 0"
+          >
+          </ng-select>
+        </div>
+      </div>
+      <div class="col-lg-6" *ngIf="false">
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="percentageBilling"
+            id="percentageBillingId"
+            >{{ percentageBilling ? "Percentage Billing" : "" }}</label
+          >
+          <div class="input-group">
+            <input
+              type="text"
+              id="percentageBilling"
+              name="percentageBilling"
+              [(ngModel)]="percentageBilling"
+              maxlength="50"
+              placeholder="Percentage Billing"
+              class="form form-control"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6" *ngIf="false">
+        <div class="mb-3">
+          <label class="form-label" for="retainerFee" id="retainerFeeId">{{
+            retainerFee ? "Retainer Fee" : ""
+          }}</label>
+          <div class="input-group">
+            <input
+              type="text"
+              id="retainerFee"
+              name="retainerFee"
+              [(ngModel)]="retainerFee"
+              class="form form-control"
+              placeholder="Advance Fee"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="percentageBilling"
+            id="percentageBillingId"
+            >{{ noOfVaccancy ? "No. of positions" : "" }}</label
+          >
+          <div class="input-group">
+            <input
+              type="number"
+              id="positions"
+              name="positions"
+              [(ngModel)]="noOfVaccancy"
+              maxlength="50"
+              placeholder="No. of positions"
+              class="form form-control"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <button
+          type="button"
+          class="btn btn-success btn-label right"
+          (click)="createMandate()"
+        >
+          <i class="ri-save-3-line label-icon align-middle fs-16 ms-2"></i
+          >Create
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,1283 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs
+  title="{{ prospect?.name }}"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+<br />
+<!-- prospects details -->
+<div class="row">
+  <div class="col-xl-3 col-lg-4 p-3" *ngIf="!isProspect">
+    <!-- this row is for user icon  -->
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="">
+          <div class="" style="transform: scale(0.5)">
+            <div class="text-center">
+              <img
+                (click)="clickedOnLogo()"
+                src="{{ commonService.getPicUrl(prospect?.icon) }}"
+                alt=""
+                style="width: 180px; height: 180px"
+                class="avatar-md mx-auto d-block clickable rounded-circle"
+                tooltip="Company logo"
+              />
+              <input
+                type="file"
+                [hidden]="true"
+                class="form-control-file"
+                id="logoHiddenButton"
+                name="logo"
+                (change)="onLogoSelect($event)"
+              />
+              <!-- <p class="text-muted mb-4" *ngIf="prospect.client?.address && prospect.client?.address!='null'">{{prospect.client?.address}}</p> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--end col-->
+    </div>
+
+    <!-- this row is for sector / funding/ since employee strength -->
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card p-3">
+          <!-- card for sector edit and show -->
+          <div class="card p-3 border rounded">
+            <div class="d-flex align-items-center gap-2">
+              <div
+                class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3"
+                style="width: 99%"
+              >
+                <i class="mdi mdi-bullseye-arrow"></i>Sector
+              </div>
+              <p class="fs-md mb-0 text-muted">
+                <i
+                  *ngIf="
+                    (!isClient && commonService.rbac['edit-prospect-sector']) ||
+                    (isClient && commonService.rbac['edit-client-sector'])
+                  "
+                  (click)="edit.clientSector = !edit.clientSector"
+                  class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                ></i>
+              </p>
+            </div>
+            <div
+              class="d-flex align-items-center gap-2"
+              *ngIf="!edit.clientSector"
+            >
+              <p class="text-muted">
+                {{ prospect?.sector ? prospect?.sector : "NA" }}
+              </p>
+            </div>
+            <div
+              *ngIf="edit.clientSector"
+              class="d-flex align-items-center gap-2"
+            >
+              <ng-select
+                [items]="availableSectors"
+                [multiple]="false"
+                bindLabel="name"
+                bindValue="name"
+                placeholder="Search"
+                class="form-control"
+                [(ngModel)]="prospect.sector"
+                [clearable]="false"
+                style="padding: 0"
+              >
+              </ng-select>
+            </div>
+            <br />
+            <div class="text-center">
+              <button
+                *ngIf="edit.clientSector"
+                type="button"
+                class="btn rounded-pill btn-info text-center"
+                (click)="updateClient()"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+          <!-- Funding Status -->
+          <div class="card p-3 border rounded">
+            <div class="d-flex align-items-center gap-2">
+              <div
+                class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3"
+                style="width: 99%"
+              >
+                <i class="mdi mdi-sack"></i>Funding Status
+              </div>
+              <p class="fs-md mb-0 text-muted">
+                <i
+                  *ngIf="
+                    (!isClient &&
+                      commonService.rbac['edit-prospect-funding']) ||
+                    (isClient && commonService.rbac['edit-client-funding'])
+                  "
+                  (click)="edit.funding = !edit.funding"
+                  class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                ></i>
+              </p>
+            </div>
+            <div *ngIf="!edit.funding" class="d-flex align-items-center gap-2">
+              <p class="text-muted">
+                {{ prospect?.latestFunding ? prospect?.latestFunding : "NA" }}
+              </p>
+            </div>
+            <div *ngIf="edit.funding" class="d-flex align-items-center gap-2">
+              <ng-select
+                [items]="fundingStatus"
+                [multiple]="false"
+                bindLabel="name"
+                bindValue="name"
+                placeholder="Search"
+                class="form-control"
+                [(ngModel)]="prospect.latestFunding"
+                [clearable]="false"
+                style="padding: 0"
+              >
+              </ng-select>
+            </div>
+            <br />
+            <div class="text-center">
+              <button
+                *ngIf="edit.funding"
+                type="button"
+                class="btn rounded-pill btn-info text-center"
+                (click)="updateClient()"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+          <!-- Employee Strength -->
+          <div class="card p-3 border rounded">
+            <div class="d-flex align-items-center gap-2">
+              <div
+                class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3"
+                style="width: 99%"
+              >
+                <i class="mdi mdi-account-group"></i>Employee Strength
+              </div>
+              <p class="fs-md mb-0 text-muted">
+                <i
+                  *ngIf="
+                    (!isClient &&
+                      commonService.rbac['edit-prospect-empstrength']) ||
+                    (isClient && commonService.rbac['edit-client-empstrength'])
+                  "
+                  (click)="edit.employees = !edit.employees"
+                  class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                ></i>
+              </p>
+            </div>
+            <div
+              *ngIf="!edit.employees"
+              class="d-flex align-items-center gap-2"
+            >
+              <p class="text-muted">
+                {{ prospect?.employees ? prospect?.employees : "NA" }}
+              </p>
+            </div>
+            <div *ngIf="edit.employees" class="d-flex align-items-center gap-2">
+              <ng-select
+                [items]="employeeStrength"
+                [multiple]="false"
+                bindLabel="name"
+                bindValue="name"
+                placeholder="Search"
+                class="form-control"
+                [(ngModel)]="prospect.employees"
+                [clearable]="false"
+                style="padding: 0"
+              >
+              </ng-select>
+            </div>
+            <br />
+            <div class="text-center">
+              <button
+                *ngIf="edit.employees"
+                type="button"
+                class="btn rounded-pill btn-info text-center"
+                (click)="updateClient()"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+          <!-- Establish since -->
+          <div class="card p-3 border rounded">
+            <div class="d-flex align-items-center gap-2">
+              <div
+                class="fs-md mb-0 hstack gap-2 flex-wrap list-unstyled mb-3"
+                style="width: 99%"
+              >
+                <i class="mdi mdi-flag-variant-outline"></i>Since
+              </div>
+              <p class="fs-md mb-0 text-muted">
+                <i
+                  *ngIf="
+                    (!isClient && commonService.rbac['edit-prospect-since']) ||
+                    (isClient && commonService.rbac['edit-client-since'])
+                  "
+                  (click)="edit.established = !edit.established"
+                  class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                ></i>
+              </p>
+            </div>
+            <div
+              *ngIf="!edit.established"
+              class="d-flex align-items-center gap-2"
+            >
+              <p class="text-muted">
+                {{ prospect?.established ? prospect?.established : "NA" }}
+              </p>
+            </div>
+            <div
+              *ngIf="edit.established"
+              class="d-flex align-items-center gap-2"
+            >
+              <input
+                type="number"
+                [(ngModel)]="prospect.established"
+                class="rounded-pill form-control"
+              />
+            </div>
+            <br />
+            <div class="text-center">
+              <button
+                *ngIf="edit.established"
+                type="button"
+                class="btn rounded-pill btn-info text-center"
+                (click)="updateClient()"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--end col-->
+    </div>
+  </div>
+
+  <div class="{{ isProspect ? 'col-xl-12 col-lg-12' : 'col-xl-9 col-lg-8' }}">
+    <div class="card">
+      <div class="card-body">
+        <!-- Swiper -->
+        <tabset
+          class="nav-tabs-custom rounded card-header-tabs border-bottom-0 mx-0"
+          role="tablist"
+        >
+          <tab heading="Overview">
+            <br />
+            <!-- Company name Remarks edit and post date location -->
+            <div class="pt-1">
+              <h6 class="card-title">
+                <i class="ri-building-line text-primary align-self-center"></i>
+                {{ prospect?.name ? prospect?.name : "Company Name - NA" }}
+              </h6>
+              <div class="text-muted hstack gap-2 flex-wrap list-unstyled mb-3">
+                <div style="width: 20%">
+                  <i class="bi bi-geo-alt align-baseline me-1"></i>
+                  {{
+                    prospect?.address == "null"
+                      ? "NA"
+                      : prospect?.address
+                      ? prospect?.address
+                      : "NA"
+                  }}
+                </div>
+                <div style="width: 65%">
+                  <i class="bi bi-calendar-event align-baseline me-1"></i>
+                  Posted on
+                  {{
+                    prospect?.createdOn
+                      ? commonService.formatDate(prospect?.createdOn)
+                      : "Date of Post - NA"
+                  }}
+                </div>
+              </div>
+            </div>
+            <br />
+            <div class="mb-3">
+              <h6 class="card-title mb-3">Overview</h6>
+
+              <div class="row g-3">
+                <div class="col-xl-12 col-md-8 col-sm-6">
+                  <div class="row g-3">
+                    <!-- Prospect Name -->
+                    <div class="col-xl-4 col-md-6 col-sm-6">
+                      <div class="p-3 border rounded">
+                        <div
+                          class="fs-md hstack gap-2 flex-wrap list-unstyled mb-3"
+                        >
+                          <i class="ri-user-fill"></i>
+                          <span style="width: 80%">Name</span>
+                          <i
+                            *ngIf="
+                              !isClient &&
+                              commonService.rbac['edit-prospect-name']
+                            "
+                            style="text-align: right; width: 5%"
+                            (click)="edit.name = !edit.name"
+                            class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                          ></i>
+                        </div>
+                        <div
+                          *ngIf="!edit.name"
+                          class="d-flex align-items-center gap-2"
+                        >
+                          <p class="text-muted mb-0">
+                            {{
+                              prospect?.prospect?.prospectName
+                                ? prospect?.prospect?.prospectName
+                                : "N/A"
+                            }}
+                          </p>
+                        </div>
+                        <div
+                          *ngIf="edit.name"
+                          class="d-flex align-items-center gap-2"
+                        >
+                          <input
+                            type="text"
+                            [(ngModel)]="prospect.prospect.prospectName"
+                            class="form-control"
+                            name="name"
+                          />
+                        </div>
+                        <br />
+                        <div class="text-center">
+                          <button
+                            *ngIf="edit.name"
+                            type="button"
+                            class="btn rounded-pill btn-info text-center"
+                            (click)="updateClient()"
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Prospect Email -->
+                    <div class="col-xl-4 col-md-6 col-sm-6">
+                      <div class="p-3 border rounded">
+                        <div
+                          class="fs-md hstack gap-2 flex-wrap list-unstyled mb-3"
+                        >
+                          <i class="ri-at-line"></i>
+                          <span style="width: 80%">Email</span>
+                          <i
+                            *ngIf="
+                              !isClient &&
+                              commonService.rbac['edit-prospect-email']
+                            "
+                            style="text-align: right; width: 5%"
+                            (click)="edit.email = !edit.email"
+                            class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                          ></i>
+                        </div>
+                        <div
+                          *ngIf="!edit.email"
+                          class="d-flex align-items-center gap-2"
+                        >
+                          <p class="text-muted mb-0">
+                            {{
+                              prospect?.prospect?.prospectEmailId
+                                ? prospect?.prospect?.prospectEmailId
+                                : "N/A"
+                            }}
+                          </p>
+                        </div>
+                        <div
+                          *ngIf="edit.email"
+                          class="d-flex align-items-center gap-2"
+                        >
+                          <input
+                            type="text"
+                            [(ngModel)]="prospect.prospect.prospectEmailId"
+                            class="form-control"
+                            name="email"
+                          />
+                        </div>
+                        <br />
+                        <div class="text-center">
+                          <button
+                            *ngIf="edit.email"
+                            type="button"
+                            class="btn rounded-pill btn-info text-center"
+                            (click)="updateClient()"
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Prospect contact Number -->
+                    <div class="col-xl-4 col-md-6 col-sm-6">
+                      <div class="p-3 border rounded">
+                        <div
+                          class="fs-md hstack gap-2 flex-wrap list-unstyled mb-3"
+                        >
+                          <i class="ri-phone-fill"></i>
+                          <span style="width: 80%">Contact</span>
+                          <i
+                            *ngIf="
+                              !isClient &&
+                              commonService.rbac['edit-prospect-contact']
+                            "
+                            style="text-align: right; width: 5%"
+                            (click)="edit.contact = !edit.contact"
+                            class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                          ></i>
+                        </div>
+                        <div
+                          *ngIf="!edit.contact"
+                          class="d-flex align-items-center gap-2"
+                        >
+                          <p class="text-muted mb-0">
+                            {{
+                              prospect?.prospect?.prospectPhoneNo
+                                ? prospect?.prospect?.prospectPhoneNo
+                                : "N/A"
+                            }}
+                          </p>
+                        </div>
+                        <div
+                          *ngIf="edit.contact"
+                          class="d-flex align-items-center gap-2"
+                        >
+                          <input
+                            type="tel"
+                            [(ngModel)]="prospect.prospect.prospectPhoneNo"
+                            class="form-control"
+                            name="contact"
+                          />
+                        </div>
+                        <br />
+                        <div class="text-center">
+                          <button
+                            *ngIf="edit.contact"
+                            type="button"
+                            class="btn rounded-pill btn-info text-center"
+                            (click)="updateClient()"
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Status -->
+                    <div class="col-xl-4 col-md-6 col-sm-6" *ngIf="!isClient">
+                      <div class="p-3 border rounded">
+                        <div
+                          class="fs-md hstack gap-2 flex-wrap list-unstyled mb-3"
+                        >
+                          <i class="ri-line-chart-fill"></i>
+                          <span style="width: 80%">Status</span>
+                          <i
+                            *ngIf="
+                              (!isClient &&
+                                commonService.rbac['update-prospect-status']) ||
+                              (isClient &&
+                                commonService.rbac['update-prospect-status'])
+                            "
+                            style="text-align: right; width: 5%"
+                            (click)="edit.status = !edit.status"
+                            class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                          ></i>
+                        </div>
+                        <div
+                          *ngIf="!edit.status"
+                          class="d-flex align-items-center gap-2"
+                        >
+                          <p class="text-muted mb-0">
+                            {{ prospect?.prospect?.status }}
+                          </p>
+                        </div>
+                        <div
+                          *ngIf="edit.status"
+                          class="d-flex align-items-center gap-2"
+                        >
+                          <ng-select
+                            [items]="clientStatus"
+                            [multiple]="false"
+                            bindLabel="name"
+                            bindValue="name"
+                            placeholder="Search"
+                            class="form-control"
+                            [(ngModel)]="prospect.prospect.status"
+                            [clearable]="false"
+                            style="padding: 0"
+                          >
+                          </ng-select>
+                        </div>
+                        <br />
+                        <div class="text-center">
+                          <button
+                            *ngIf="edit.status"
+                            type="button"
+                            class="btn rounded-pill btn-info text-center"
+                            (click)="updateClient()"
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <br />
+              <div class="row g-3">
+                <div class="col-xl-12 col-md-8 col-sm-6">
+                  <div class="row g-3">
+                    <!-- Referred By Name -->
+                    <div class="col-xl-4 col-md-6 col-sm-6">
+                      <div class="p-3 border rounded">
+                        <div
+                          class="fs-md hstack gap-2 flex-wrap list-unstyled mb-3"
+                        >
+                          <i class="ri-link-unlink"></i>
+                          <span style="width: 80%">Referred By</span>
+                          <i
+                            *ngIf="
+                              !isClient &&
+                              commonService.rbac['edit-prospect-referredby']
+                            "
+                            style="text-align: right; width: 5%"
+                            (click)="edit.referredBy = !edit.referredBy"
+                            class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                          ></i>
+                        </div>
+                        <div
+                          *ngIf="!edit.referredBy"
+                          class="d-flex align-items-center gap-2"
+                        >
+                          <p class="text-muted mb-0">
+                            {{
+                              prospect?.prospect?.userName
+                                ? prospect?.prospect?.userName
+                                : "N/A"
+                            }}
+                          </p>
+                        </div>
+                        <div
+                          *ngIf="edit.referredBy"
+                          class="d-flex align-items-center gap-2"
+                        >
+                          <input
+                            type="text"
+                            [(ngModel)]="prospect.prospect.userName"
+                            class="form-control"
+                            name="referredBy"
+                          />
+                        </div>
+                        <br />
+                        <div class="text-center">
+                          <button
+                            *ngIf="edit.referredBy"
+                            type="button"
+                            class="btn rounded-pill btn-info text-center"
+                            (click)="updateClient()"
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Referred By Email ID -->
+                    <div class="col-xl-4 col-md-6 col-sm-6">
+                      <div class="p-3 border rounded">
+                        <div
+                          class="fs-md hstack gap-2 flex-wrap list-unstyled mb-3"
+                        >
+                          <i class="ri-at-line"></i>
+                          <span style="width: 80%">Referral Email Id</span>
+                          <i
+                            *ngIf="
+                              !isClient &&
+                              commonService.rbac[
+                                'edit-prospect-referralemailid'
+                              ]
+                            "
+                            style="text-align: right; width: 5%"
+                            (click)="
+                              edit.referralEmailId = !edit.referralEmailId
+                            "
+                            class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                          ></i>
+                        </div>
+                        <div
+                          *ngIf="!edit.referralEmailId"
+                          class="d-flex align-items-center gap-2"
+                        >
+                          <p class="text-muted mb-0">
+                            {{
+                              prospect?.prospect?.userEmailId
+                                ? prospect?.prospect?.userEmailId
+                                : "N/A"
+                            }}
+                          </p>
+                        </div>
+                        <div
+                          *ngIf="edit.referralEmailId"
+                          class="d-flex align-items-center gap-2"
+                        >
+                          <input
+                            type="text"
+                            [(ngModel)]="prospect.prospect.userEmailId"
+                            class="form-control"
+                            name="referralEmailId"
+                          />
+                        </div>
+                        <br />
+                        <div class="text-center">
+                          <button
+                            *ngIf="edit.referralEmailId"
+                            type="button"
+                            class="btn rounded-pill btn-info text-center"
+                            (click)="updateClient()"
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Website  -->
+                    <div class="col-xl-4 col-md-6 col-sm-6">
+                      <div class="p-3 border rounded">
+                        <div
+                          class="fs-md hstack gap-2 flex-wrap list-unstyled mb-3"
+                        >
+                          <i class="ri-global-line"></i>
+                          <span style="width: 80%">Website</span>
+                          <i
+                            *ngIf="
+                              (!isClient &&
+                                commonService.rbac['edit-prospect-website']) ||
+                              (isClient &&
+                                commonService.rbac['edit-client-website'])
+                            "
+                            style="text-align: right; width: 5%"
+                            (click)="edit.website = !edit.website"
+                            class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                          ></i>
+                        </div>
+                        <div
+                          *ngIf="!edit.website"
+                          class="d-flex align-items-center gap-2"
+                        >
+                          <p class="text-muted mb-0">
+                            {{ prospect?.website ? prospect?.website : "NA" }}
+                          </p>
+                        </div>
+                        <div
+                          *ngIf="edit.website"
+                          class="d-flex align-items-center gap-2"
+                        >
+                          <input
+                            type="text"
+                            [(ngModel)]="prospect.website"
+                            class="form-control"
+                            name="website"
+                          />
+                        </div>
+                        <br />
+                        <div class="text-center">
+                          <button
+                            *ngIf="edit.website"
+                            type="button"
+                            class="btn rounded-pill btn-info text-center"
+                            (click)="updateClient()"
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <br />
+            </div>
+            <!-- Remarks  -->
+            <div class="col-xl-12 col-md-8 col-sm-6">
+              <div class="p-3 border rounded">
+                <div class="row">
+                  <div class="col-xl-10">
+                    <h5>Remarks</h5>
+                  </div>
+                  <div class="col-xl-2">
+                    <div style="width: 5%; text-align: right">
+                      <i
+                        *ngIf="
+                          (!isClient &&
+                            commonService.rbac['edit-prospect-remarks']) ||
+                          (isClient &&
+                            commonService.rbac['edit-client-remarks'])
+                        "
+                        class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                        (click)="edit.remarks = !edit.remarks"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <p>
+                    <i class="ri-book-mark-fill"></i>
+                    {{
+                      prospect?.prospect?.remarks
+                        ? prospect?.prospect?.remarks
+                        : "No Remarks"
+                    }}
+                  </p>
+                </div>
+                <textarea
+                  *ngIf="edit.remarks"
+                  [(ngModel)]="prospect.prospect.remarks"
+                  class="form-control rounded-5"
+                  rows="{{ getWriteUpRows(prospect.remarks) }}"
+                  style="background: inherit"
+                  placeholder="You can write your Remarks"
+                  maxlength="200"
+                ></textarea>
+                <br />
+                <div class="text-center">
+                  <button
+                    *ngIf="edit.remarks"
+                    type="button"
+                    class="btn rounded-pill btn-info text-center"
+                    (click)="updateClient()"
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!--  USP -->
+            <div class="col-xl-12 col-md-8 col-sm-6 mt-2">
+              <div class="p-3 border rounded">
+                <div class="row">
+                  <div class="col-xl-10">
+                    <h5>USP</h5>
+                  </div>
+                  <div class="col-xl-2">
+                    <div style="width: 5%; text-align: right">
+                      <i
+                        *ngIf="
+                          (!isClient &&
+                            commonService.rbac['edit-prospect-remarks']) ||
+                          (isClient &&
+                            commonService.rbac['edit-client-remarks'])
+                        "
+                        class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                        (click)="edit.usp = !edit.usp"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <p>
+                    <i class="ri-book-mark-fill"></i>
+                    {{ prospect?.usp ? prospect?.usp : "No USP" }}
+                  </p>
+                </div>
+                <textarea
+                  *ngIf="edit.usp"
+                  [(ngModel)]="prospect.usp"
+                  class="form-control rounded-5"
+                  rows="{{ getWriteUpRows(prospect.usp) }}"
+                  style="background: inherit"
+                  placeholder="You can write company USP"
+                ></textarea>
+                <br />
+                <div class="text-center">
+                  <button
+                    *ngIf="edit.usp"
+                    type="button"
+                    class="btn rounded-pill btn-info text-center"
+                    (click)="updateClient()"
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            </div>
+          </tab>
+          <tab heading=" More Details">
+            <!-- Referral Link  -->
+            <div class="card">
+              <!-- Referral Link  -->
+              <div class="card-body">
+                <h4>Referral Link</h4>
+
+                <div class="col-xl-12 col-md-6 col-sm-6">
+                  <div class="p-3 border rounded">
+                    <div
+                      class="fs-md hstack gap-2 flex-wrap list-unstyled mb-3"
+                    >
+                      <i class="ri-links-fill"></i>
+                      <span style="width: 80%">Referral Link</span>
+
+                      <i
+                        *ngIf="
+                          (!isClient &&
+                            commonService.rbac[
+                              'edit-prospect-referrallinks'
+                            ]) ||
+                          (isClient &&
+                            commonService.rbac['edit-client-referrallinks'])
+                        "
+                        style="text-align: right; width: 5%"
+                        (click)="edit.referral = !edit.referral"
+                        class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                      ></i>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                      <ul>
+                        <li *ngIf="remarks?.length == 0">
+                          <i class="icofont-hand-drawn-right"></i>Not Available
+                        </li>
+                        <li *ngFor="let j of remarks">
+                          <i class="icofont-hand-drawn-right"></i
+                          ><a
+                            href="{{ j.remark.split('@')[1] }}"
+                            target="_new"
+                            >{{ j.remark.split("@")[0] }}</a
+                          >
+                          &nbsp;&nbsp;&nbsp;<a
+                            *ngIf="edit.referral"
+                            (click)="removeRemark(j)"
+                            href="javascript:void(0)"
+                            ><i class="ri-delete-bin-line"></i
+                          ></a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div
+                      *ngIf="edit.referral"
+                      class="d-flex align-items-center gap-2"
+                    >
+                      <input
+                        type="text"
+                        placeholder="Title"
+                        [(ngModel)]="titleTemp"
+                        class="form-control"
+                        name="referral"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Link"
+                        [(ngModel)]="remarkTemp"
+                        class="form-control"
+                        name="referral"
+                      />
+                    </div>
+                    <br />
+                    <div class="text-center">
+                      <button
+                        *ngIf="edit.referral"
+                        type="button"
+                        class="btn rounded-pill btn-info text-center"
+                        (click)="addRemark()"
+                      >
+                        Add
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <br />
+            <!-- Founder  -->
+            <div class="card">
+              <!-- Founder -->
+              <div class="card-body">
+                <h4>Founder</h4>
+
+                <div class="col-xl-12 col-md-6 col-sm-6">
+                  <div class="p-3 border rounded">
+                    <div
+                      class="fs-md hstack gap-2 flex-wrap list-unstyled mb-3"
+                    >
+                      <i class="ri-shield-user-fill"></i>
+                      <span style="width: 80%">Founder</span>
+
+                      <i
+                        *ngIf="
+                          (!isClient &&
+                            commonService.rbac['edit-prospect-founder']) ||
+                          (isClient &&
+                            commonService.rbac['edit-client-founder'])
+                        "
+                        style="text-align: right; width: 5%"
+                        (click)="edit.founder = !edit.founder"
+                        class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                      ></i>
+                    </div>
+                    <!-- edit founder -->
+                    <div *ngIf="edit.founder" class="p-3 border rounded">
+                      <div class="d-flex align-items-center gap-2 flex-wrap">
+                        Upload Founder Picture :
+                        <input
+                          id="fileinput"
+                          [hidden]="false"
+                          style="margin-top: 25px"
+                          type="file"
+                          name="logo"
+                          class="form-control-file"
+                          accept="application/png/jpeg"
+                          (change)="onProfilePicSelect($event)"
+                        />
+                        <input
+                          type="text"
+                          placeholder="Founder Name"
+                          [(ngModel)]="founderName"
+                          class="form-control"
+                          name="founder"
+                        />
+                        <br />
+                        <textarea
+                          name="founderDescription"
+                          id="founderDescription"
+                          class="form-control rounded-5"
+                          [(ngModel)]="founderDescription"
+                          placeholder="Founder Description "
+                        ></textarea>
+                      </div>
+                      <br />
+                      <div class="text-center">
+                        <button
+                          *ngIf="edit.founder"
+                          type="button"
+                          class="btn rounded-pill btn-info text-center"
+                          (click)="addFounderDetails()"
+                        >
+                          Add
+                        </button>
+                      </div>
+                    </div>
+                    <br />
+
+                    <div class="">
+                      <div class="d-flex align-items-center gap-2">
+                        <div class="col-xl-12 col-md-6 col-sm-6">
+                          <div
+                            class="row p-3 border rounded"
+                            *ngFor="let founder of founders"
+                          >
+                            <div class="card col-xl-4 col-md-6 col-sm-6">
+                              <div
+                                class="card-body"
+                                style="transform: scale(0.5)"
+                              >
+                                <div class="">
+                                  <img
+                                    src="{{
+                                      commonService.getPicUrl(founder?.picture)
+                                    }}"
+                                    alt=""
+                                    style="width: 160px; height: 160px"
+                                    class="avatar-md d-block"
+                                  />
+                                  <!-- <p class="text-muted mb-4" *ngIf="prospect.client?.address && prospect.client?.address!='null'">{{prospect.client?.address}}</p> -->
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              class="card col-xl-6 col-md-6 col-sm-6 align-baseline"
+                            >
+                              <div class="card-body">
+                                <div>
+                                  <h5>{{ founder.name }}</h5>
+                                </div>
+                                <div>
+                                  <p>{{ founder.description }}</p>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xl-2">
+                              <a
+                                *ngIf="edit.founder"
+                                (click)="removeFounder(founder)"
+                                href="javascript:void(0)"
+                                ><i class="ri-delete-bin-line fs-4xl"></i
+                              ></a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <br />
+            <!-- Prospect Contact Details -->
+            <div class="card">
+              <div class="card-body">
+                <h4>Contact</h4>
+                <div class="col-xl-12 col-md-6 col-sm-6">
+                  <div class="p-3 border rounded">
+                    <div
+                      class="fs-md hstack gap-2 flex-wrap list-unstyled mb-3"
+                    >
+                      <i class="ri-phone-fill"></i>
+                      <span style="width: 80%">Contact</span>
+
+                      <i
+                        *ngIf="
+                          (!isClient &&
+                            commonService.rbac['edit-prospect-contacts']) ||
+                          (isClient &&
+                            commonService.rbac['edit-client-contacts'])
+                        "
+                        style="text-align: right; width: 5%"
+                        (click)="edit.prospectContact = !edit.prospectContact"
+                        class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                      ></i>
+                    </div>
+
+                    <div *ngIf="edit.prospectContact">
+                      <div class="row">
+                        <div class="col-xl-4">
+                          <ng-select
+                            [items]="prospectContactType"
+                            [multiple]="false"
+                            bindLabel="name"
+                            bindValue="name"
+                            placeholder="Contact Type"
+                            class="form-control"
+                            [(ngModel)]="clientContact.contactType"
+                            [clearable]="false"
+                            style="padding: 0"
+                          >
+                          </ng-select>
+                        </div>
+                        <div class="col-xl-4">
+                          <input
+                            type="text"
+                            placeholder=" Contact Name"
+                            [(ngModel)]="clientContact.name"
+                            class="form-control"
+                            name="founder"
+                          />
+                        </div>
+
+                        <div class="col-xl-4">
+                          <input
+                            type="email"
+                            placeholder=" Contact Email@ID"
+                            [(ngModel)]="clientContact.emailId"
+                            class="form-control"
+                            name="founder"
+                          />
+                        </div>
+                      </div>
+                      <br />
+                      <div class="row">
+                        <div class="col-xl-4">
+                          <input
+                            type="tel"
+                            placeholder=" Contact Number +91 "
+                            [(ngModel)]="clientContact.contactNo"
+                            class="form-control"
+                            name="founder"
+                          />
+                        </div>
+                        <div class="col-xl-4">
+                          <input
+                            type="text"
+                            placeholder=" http://linkedin.com "
+                            [(ngModel)]="clientContact.linkedIn"
+                            class="form-control"
+                            name="founder"
+                          />
+                        </div>
+                        <div class="col-xl-4">
+                          <input
+                            type="text"
+                            placeholder=" Contact Address"
+                            [(ngModel)]="clientContact.address"
+                            class="form-control"
+                            name="founder"
+                          />
+                        </div>
+                      </div>
+
+                      <br />
+
+                      <div class="text-center">
+                        <button
+                          *ngIf="edit.prospectContact"
+                          type="button"
+                          class="btn rounded-pill btn-info text-center"
+                          (click)="addClientContact()"
+                        >
+                          Save
+                        </button>
+                      </div>
+                    </div>
+                    <br />
+                    <div *ngFor="let contact of contactDetails">
+                      <div
+                        class="card p-3 border rounded"
+                        *ngIf="!edit.selectedClient"
+                      >
+                        <div class="row">
+                          <div class="col-xl-8">
+                            <h6>
+                              <!-- <i class="ri-cellphone-line"></i> -->
+                              {{ contact.name }} , {{ contact.contactType }}
+                            </h6>
+                            <p>
+                              <i class="ri-phone-fill"></i>
+                              {{ contact.contactNo }}
+                            </p>
+                            <p>
+                              <i class="ri-at-line"></i>
+                              {{ contact.emailId }}
+                            </p>
+                            <p>
+                              <i class="bi bi-linkedin"></i>
+                              <a href="{{ contact.linkedIn }}">
+                                {{ contact.linkedIn }}</a
+                              >
+                              <span *ngIf="!contact.linkedIn"> NA </span>
+                            </p>
+                            <p>
+                              <i class="ri-map-pin-fill"></i>
+                              {{ contact.address ? contact.address : "NA" }}
+                            </p>
+                          </div>
+                          <div class="col-xl-4 text-end">
+                            <button
+                              type="button"
+                              class="btn btn-success"
+                              (click)="
+                                selectedClientContact = contact;
+                                sendLoginIdPasswordToClient()
+                              "
+                              [disabled]="contact.createdAccount"
+                            >
+                            Invite
+                            </button>
+                            &nbsp;&nbsp;&nbsp;
+                            <a
+                              *ngIf="edit.prospectContact"
+                              (click)="removeContact(contact)"
+                              href="javascript:void(0)"
+                              ><i class="ri-delete-bin-line fs-4xl"></i
+                            ></a>
+                            &nbsp;&nbsp;&nbsp;
+                            <a
+                              *ngIf="edit.prospectContact"
+                              (click)="
+                                selectedClientContact = contact;
+                                edit.selectedClient = true;
+                                edit.prospectContact = false
+                              "
+                              href="javascript:void(0)"
+                              ><i
+                                class="ri-edit-box-line clickable text-warning align-baseline me-1 fs-4xl"
+                              ></i
+                            ></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div *ngIf="edit.selectedClient">
+                      <h5>Edit Contact {{ selectedClientContact.name }}</h5>
+                      <div class="row">
+                        <div class="col-xl-4">
+                          <ng-select
+                            [items]="prospectContactType"
+                            [multiple]="false"
+                            bindLabel="name"
+                            bindValue="name"
+                            placeholder="Contact Type"
+                            class="form-control"
+                            [(ngModel)]="selectedClientContact.contactType"
+                            [clearable]="false"
+                            style="padding: 0"
+                          >
+                          </ng-select>
+                        </div>
+                        <div class="col-xl-4">
+                          <input
+                            type="text"
+                            placeholder=" Contact Name"
+                            [(ngModel)]="selectedClientContact.name"
+                            class="form-control"
+                            name="founder"
+                          />
+                        </div>
+                        <div class="col-xl-4">
+                          <input
+                            type="email"
+                            placeholder=" Contact Email@ID"
+                            [(ngModel)]="selectedClientContact.emailId"
+                            class="form-control"
+                            name="founder"
+                          />
+                        </div>
+                      </div>
+                      <br />
+                      <div class="row">
+                        <div class="col-xl-4">
+                          <input
+                            type="tel"
+                            placeholder=" Contact Number +91 "
+                            [(ngModel)]="selectedClientContact.contactNo"
+                            class="form-control"
+                            name="founder"
+                          />
+                        </div>
+                        <div class="col-xl-4">
+                          <input
+                            type="text"
+                            placeholder=" http://linkedin.com "
+                            [(ngModel)]="selectedClientContact.linkedIn"
+                            class="form-control"
+                            name="founder"
+                          />
+                        </div>
+                        <div class="col-xl-4">
+                          <input
+                            type="text"
+                            placeholder=" Contact Address"
+                            [(ngModel)]="selectedClientContact.address"
+                            class="form-control"
+                            name="founder"
+                          />
+                        </div>
+                      </div>
+                      <br />
+                      <div class="text-center">
+                        <button
+                          type="button"
+                          class="btn rounded-pill btn-info text-center"
+                          (click)="editContact()"
+                        >
+                          Update
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </tab>
+        </tabset>
+      </div>
+    </div>
+
+    <br />
+  </div>
+</div>
+<!-- Prospects Details -->

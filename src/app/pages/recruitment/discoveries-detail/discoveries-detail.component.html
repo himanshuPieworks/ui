@@ -1,0 +1,1345 @@
+<app-breadcrumbs [breadcrumbItems]="breadCrumbItems"> </app-breadcrumbs>
+<br />
+<div class="row">
+  <div class="col-xl-3">
+    <div class="card">
+      <div class="card-body">
+        <div class="profile-inner" style="top: 45px">
+          <h3>{{ shortlist.candidate ? shortlist.candidate.name : "" }}</h3>
+          <!-- Candidate Status Start -->
+          <div *ngIf="isDiscovery">
+            <div class="d-flex align-items-center gap-2">
+              <div
+                class="h6 fs-md hstack gap-2 flex-wrap text-muted list-unstyled mb-1"
+                style="width: 99%"
+              >
+                <i class="mdi mdi-sack"></i>Status
+              </div>
+              <p class="fs-md mb-0 text-muted">
+                <i
+                  *ngIf="
+                    amIClientAnchor ||
+                    amIAceMaker ||
+                    commonService.rbac['edit-disc-status'] ||
+                    commonService.isTesting
+                  "
+                  (click)="editStatus = !editStatus"
+                  class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                ></i>
+              </p>
+            </div>
+            <div *ngIf="!editStatus" class="d-flex align-items-center gap-2">
+              <p class="text-dark" style="margin-left: 23px">
+                {{ shortlist?.status?.name ? shortlist?.status?.name : "N/A" }}
+              </p>
+              <p
+                class="text-dark"
+                style="margin-left: 23px"
+                *ngIf="
+                  shortlist?.status?.id == 8 || shortlist?.status?.id == 11
+                "
+              >
+                ({{
+                  shortlist?.intvRound?.process
+                    ? shortlist?.intvRound?.process
+                    : "Unknown round"
+                }})
+              </p>
+            </div>
+            <div *ngIf="editStatus" class=" align-items-center gap-2">
+              <ng-select
+                [items]="status"
+                [multiple]="false"
+                bindLabel="name"
+                placeholder="Select status"
+                class="form-control mb-2"
+                [(ngModel)]="shortlist.status"
+                [clearable]="false"
+                style="padding: 0"
+                (ngModelChange)="confirmStatusChange()"
+              >
+              </ng-select>
+              
+              <ng-select
+                *ngIf="
+                  shortlist?.status?.id == 8 || shortlist?.status?.id == 11
+                "
+                [items]="processes"
+                [multiple]="false"
+                bindLabel="process"
+                placeholder="Select selection round"
+                class="form-control"
+                [(ngModel)]="shortlist.intvRound"
+                [clearable]="false"
+                style="padding: 0"
+                (ngModelChange)="confirmStatusChange()"
+              >
+              </ng-select>
+            </div>
+          </div>
+
+          <div *ngIf="shortlist?.status?.id > 7">
+            <!-- status after reaching interview (8) -->
+            <!-- Date of Joining start -->
+            <div>
+              <div class="d-flex align-items-center gap-2">
+                <div
+                  class="fs-md h6 hstack gap-2 flex-wrap text-muted list-unstyled mb-1"
+                  style="width: 99%"
+                >
+                  <i class="bi bi-calendar-plus"></i>Date of Joining
+                </div>
+                <p class="fs-md mb-0 text-muted"></p>
+              </div>
+              <div *ngIf="!editStatus" class="d-flex align-items-center gap-2">
+                <p class="text-dark" style="margin-left: 23px">
+                  {{
+                    shortlist?.doj
+                      ? commonService.formatDate(shortlist?.doj)
+                      : "N/A"
+                  }}
+                </p>
+              </div>
+              <div *ngIf="editStatus" class="d-flex align-items-center gap-2">
+                <input
+                  type="date"
+                  [(ngModel)]="shortlist.doj"
+                  class="form form-control"
+                  (change)="updateDiscovery()"
+                />
+              </div>
+            </div>
+
+            <!-- Joined At CTC start -->
+            <div>
+              <div class="d-flex align-items-center gap-2">
+                <div
+                  class="fs-md h6 hstack gap-2 flex-wrap text-muted list-unstyled mb-1"
+                  style="width: 99%"
+                >
+                  <i class="bi bi-currency-rupee"></i>Joined At CTC
+                </div>
+                <p class="fs-md mb-0 text-muted"></p>
+              </div>
+              <div *ngIf="!editStatus" class="d-flex align-items-center gap-2">
+                <p class="text-dark" style="margin-left: 23px">
+                  {{ shortlist?.joinedAtCtc ? shortlist?.joinedAtCtc : "N/A" }}
+                </p>
+              </div>
+              <div *ngIf="editStatus" class="d-flex align-items-center gap-2">
+                <input
+                  type="number"
+                  [(ngModel)]="shortlist.joinedAtCtc"
+                  class="form form-control"
+                  (change)="updateDiscovery()"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- current company -->
+          <div>
+            <div class="d-flex align-items-center gap-2">
+              <div
+                class="h6 hstack gap-2 flex-wrap text-muted list-unstyled mb-1"
+                style="width: 99%"
+              >
+                <i class="bi bi-calendar-plus"></i>Current Company
+              </div>
+              <p
+                class="fs-md mb-0 text-muted"
+                *ngIf="
+                  amIClientAnchor ||
+                  amIAceMaker ||
+                  commonService.rbac['edit-expected-ctc']
+                "
+              >
+                <i
+                  (click)="edit.currentCompany = !edit.currentCompany"
+                  class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                ></i>
+              </p>
+            </div>
+            <div *ngIf="!edit.currentCompany">
+              <p class="text-dark" style="margin-left: 23px">
+                {{
+                  shortlist.candidate?.currentCompany
+                    ? shortlist.candidate?.currentCompany
+                    : "N/A"
+                }}
+              </p>
+            </div>
+
+            <div
+              *ngIf="edit.currentCompany"
+              class="d-flex align-items-center gap-2"
+            >
+              <input
+                type="text"
+                [(ngModel)]="shortlist.candidate.currentCompany"
+                class="form form-control"
+                (change)="
+                  updateCandidate(shortlist.candidate);
+                  edit.currentCompany = false
+                "
+              />
+            </div>
+          </div>
+
+          <!-- Current Location -->
+          <div>
+            <div class="d-flex align-items-center gap-2">
+              <div
+                class="h6 hstack gap-2 flex-wrap text-muted list-unstyled mb-1"
+                style="width: 99%"
+              >
+                <i class="bi bi-calendar-plus"></i>Current Location
+              </div>
+              <p
+                class="fs-md mb-0 text-muted"
+                *ngIf="
+                  amIClientAnchor ||
+                  amIAceMaker ||
+                  commonService.rbac['edit-expected-ctc']
+                "
+              >
+                <i
+                  (click)="edit.currentLocation = !edit.currentLocation"
+                  class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                ></i>
+              </p>
+            </div>
+            <div *ngIf="!edit.currentLocation">
+              <p class="text-dark" style="margin-left: 23px">
+                {{
+                  shortlist.candidate?.currentLocation
+                    ? shortlist.candidate?.currentLocation
+                    : "N/A"
+                }}
+              </p>
+            </div>
+
+            <div
+              *ngIf="edit.currentLocation"
+              class="d-flex align-items-center gap-2"
+            >
+              <input
+                type="text"
+                [(ngModel)]="shortlist.candidate.currentLocation"
+                class="form form-control"
+                (change)="
+                  updateCandidate(shortlist.candidate);
+                  edit.currentLocation = false
+                "
+              />
+            </div>
+          </div>
+          <!-- Expected CTC -->
+          <div>
+            <div class="d-flex align-items-center gap-2">
+              <div
+                class="h6 hstack gap-2 flex-wrap text-muted list-unstyled mb-1"
+                style="width: 99%"
+              >
+                <i class="bi bi-calendar-plus"></i>Expected CTC
+              </div>
+              <p
+                class="fs-md mb-0 text-muted"
+                *ngIf="
+                  amIClientAnchor ||
+                  amIAceMaker ||
+                  commonService.rbac['edit-expected-ctc']
+                "
+              >
+                <i
+                  (click)="edit.expectedCtc = !edit.expectedCtc"
+                  class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                ></i>
+              </p>
+            </div>
+            <div *ngIf="!edit.expectedCtc">
+              <p
+                class="text-dark"
+                style="margin-left: 23px"
+                *ngIf="shortlist.candidate?.expectedCtc > 0"
+              >
+                {{
+                  shortlist.candidate?.expectedCtc + "(LPA)"
+                    ? shortlist.candidate?.expectedCtc + "(LPA)"
+                    : "Open"
+                }}
+              </p>
+              <p
+                class="text-dark"
+                style="margin-left: 23px"
+                *ngIf="shortlist.candidate?.expectedCtc == 0"
+              >
+                Open
+              </p>
+            </div>
+
+            <div
+              *ngIf="edit.expectedCtc"
+              class="d-flex align-items-center gap-2"
+            >
+              <input
+                type="number"
+                [(ngModel)]="shortlist.candidate.expectedCtc"
+                class="form form-control"
+                (change)="updateCandidate(shortlist.candidate)"
+              />
+            </div>
+          </div>
+          <!-- Current CTC Fixed  -->
+          <div>
+            <div class="d-flex align-items-center gap-2">
+              <div
+                class="h6 hstack gap-2 flex-wrap text-muted list-unstyled mb-1"
+                style="width: 99%"
+              >
+                <i class="bi bi-currency-rupee"></i>Current CTC Fixed
+              </div>
+              <p
+                class="fs-md mb-0 text-muted"
+                *ngIf="
+                  amIClientAnchor ||
+                  amIAceMaker ||
+                  commonService.rbac['edit-expected-ctc']
+                "
+              >
+                <i
+                  (click)="edit.fixedCtc = !edit.fixedCtc"
+                  class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                ></i>
+              </p>
+            </div>
+            <div *ngIf="!edit.fixedCtc">
+              <p
+                class="text-dark"
+                style="margin-left: 23px"
+                *ngIf="shortlist.candidate?.expectedCtc > 0"
+              >
+                {{
+                  shortlist.candidate?.currentCtcFixed + "(LPA)"
+                    ? shortlist.candidate?.currentCtcFixed + "(LPA)"
+                    : "Open"
+                }}
+              </p>
+              <p
+                class="text-dark"
+                style="margin-left: 23px"
+                *ngIf="shortlist.candidate?.currentCtcFixed == 0"
+              >
+                Open
+              </p>
+            </div>
+
+            <div *ngIf="edit.fixedCtc" class="d-flex align-items-center gap-2">
+              <input
+                type="text"
+                [(ngModel)]="shortlist.candidate.currentCtcFixed"
+                class="form form-control"
+                (change)="updateCandidate(shortlist.candidate)"
+              />
+            </div>
+          </div>
+          <!-- Current CTC Variable :  -->
+          <div>
+            <div class="d-flex align-items-center gap-2">
+              <div
+                class="h6 hstack gap-2 flex-wrap text-muted list-unstyled mb-1"
+                style="width: 99%"
+              >
+                <i class="bi bi-currency-rupee"></i>Current CTC Variable
+              </div>
+              <p
+                class="fs-md mb-0 text-muted"
+                *ngIf="
+                  amIClientAnchor ||
+                  amIAceMaker ||
+                  commonService.rbac['edit-expected-ctc']
+                "
+              >
+                <i
+                  (click)="edit.variableCtc = !edit.variableCtc"
+                  class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                ></i>
+              </p>
+            </div>
+            <div *ngIf="!edit.variableCtc">
+              <p
+                class="text-dark"
+                style="margin-left: 23px"
+                *ngIf="shortlist.candidate?.currentCtcVariable > 0"
+              >
+                {{
+                  shortlist.candidate?.currentCtcVariable + "(LPA)"
+                    ? shortlist.candidate?.currentCtcVariable + "(LPA)"
+                    : "Open"
+                }}
+              </p>
+              <p
+                class="text-dark"
+                style="margin-left: 23px"
+                *ngIf="shortlist.candidate?.currentCtcVariable == 0"
+              >
+                Open
+              </p>
+            </div>
+
+            <div
+              *ngIf="edit.variableCtc"
+              class="d-flex align-items-center gap-2"
+            >
+              <input
+                type="text"
+                [(ngModel)]="shortlist.candidate.currentCtcVariable"
+                class="form form-control"
+                (change)="updateCandidate(shortlist.candidate)"
+              />
+            </div>
+          </div>
+          <!-- Current CTC Total  -->
+          <div>
+            <div class="d-flex align-items-center gap-2">
+              <div
+                class="h6 hstack gap-2 flex-wrap text-muted list-unstyled mb-1"
+                style="width: 99%"
+              >
+                <i class="bi bi-currency-rupee"></i>Current CTC Total
+              </div>
+              <p
+                class="fs-md mb-0 text-muted"
+                *ngIf="
+                  amIClientAnchor ||
+                  amIAceMaker ||
+                  commonService.rbac['edit-expected-ctc']
+                "
+              >
+                <i
+                  (click)="edit.totalCtc = !edit.totalCtc"
+                  class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                ></i>
+              </p>
+            </div>
+            <div *ngIf="!edit.totalCtc">
+              <p
+                class="text-dark"
+                style="margin-left: 23px"
+                *ngIf="shortlist.candidate?.expectedCtc > 0"
+              >
+                {{
+                  shortlist.candidate?.currentCtcTotal + "(LPA)"
+                    ? shortlist.candidate?.currentCtcTotal + "(LPA)"
+                    : "Open"
+                }}
+              </p>
+              <p
+                class="text-dark"
+                style="margin-left: 23px"
+                *ngIf="shortlist.candidate?.currentCtcTotal == 0"
+              >
+                Open
+              </p>
+            </div>
+
+            <div *ngIf="edit.totalCtc" class="d-flex align-items-center gap-2">
+              <input
+                type="text"
+                [(ngModel)]="shortlist.candidate.currentCtcTotal"
+                class="form form-control"
+                (change)="updateCandidate(shortlist.candidate)"
+              />
+            </div>
+          </div>
+          <!-- Current esop  -->
+          <div>
+            <div class="d-flex align-items-center gap-2">
+              <div
+                class="h6 hstack gap-2 flex-wrap text-muted list-unstyled mb-1"
+                style="width: 99%"
+              >
+                <i class="bi bi-currency-rupee"></i>Current ESOP plan
+              </div>
+              <p
+                class="fs-md mb-0 text-muted"
+                *ngIf="
+                  amIClientAnchor ||
+                  amIAceMaker ||
+                  commonService.isTesting ||
+                  commonService.rbac['edit-disc-esop'] ||
+                  (shortlist.createdBy && myId == shortlist.createdBy.id)
+                "
+              >
+                <i
+                  (click)="editEsop = !editEsop"
+                  class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                ></i>
+              </p>
+            </div>
+            <div *ngIf="!editEsop">
+              <p style="margin-left: 23px" class="text-dark">
+                {{
+                  shortlist.currentEsopPlan ? shortlist.currentEsopPlan : "N/A"
+                }}
+              </p>
+            </div>
+
+            <div *ngIf="editEsop" class="d-flex align-items-center gap-2">
+              <input
+                type="text"
+                [(ngModel)]="shortlist.currentEsopPlan"
+                class="form form-control"
+                (change)="updateDiscovery(); editEsop = false"
+              />
+            </div>
+          </div>
+          <!-- Exposure  -->
+          <div>
+            <div class="d-flex align-items-center gap-2">
+              <div
+                class="h6 hstack gap-2 flex-wrap text-muted list-unstyled mb-1"
+                style="width: 99%"
+              >
+                <i class="bi bi-binoculars"></i>Exposure
+              </div>
+              <p
+                class="fs-md mb-0 text-muted"
+                *ngIf="
+                  amIClientAnchor ||
+                  amIAceMaker ||
+                  commonService.isTesting ||
+                  commonService.rbac['edit-disc-experience'] ||
+                  (shortlist.createdBy && myId == shortlist.createdBy.id)
+                "
+              >
+                <i
+                  (click)="editExperience = !editExperience"
+                  class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                ></i>
+              </p>
+            </div>
+            <div *ngIf="!editExperience">
+              <p style="margin-left: 23px" class="text-dark">
+                {{
+                  shortlist.candidate &&
+                  shortlist.candidate.experience != undefined &&
+                  shortlist.candidate.experience != "null" &&
+                  shortlist.candidate.experience != null &&
+                  shortlist.candidate.experience
+                    ? shortlist.candidate.experience + " Years"
+                    : "Not Available"
+                }}
+              </p>
+            </div>
+
+            <div *ngIf="editExperience" class="d-flex align-items-center gap-2">
+              <input
+                type="text"
+                [(ngModel)]="shortlist.candidate.experience"
+                class="form form-control"
+                (change)="
+                  updateCandidate(shortlist.candidate); editExperience = false
+                "
+              />
+            </div>
+          </div>
+          <!-- Notice Period  -->
+          <div>
+            <div class="d-flex align-items-center gap-2">
+              <div
+                class="h6 hstack gap-2 flex-wrap text-muted list-unstyled mb-1"
+                style="width: 99%"
+              >
+                <i class="bi bi-calendar-plus"></i>Notice Period (Days)
+              </div>
+              <p
+                class="fs-md mb-0 text-muted"
+                *ngIf="
+                  amIClientAnchor ||
+                  amIAceMaker ||
+                  commonService.isTesting ||
+                  commonService.rbac['edit-notice-period'] ||
+                  (shortlist.createdBy && myId == shortlist.createdBy.id)
+                "
+              >
+                <i
+                  (click)="editNoticePeriod = !editNoticePeriod"
+                  class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                ></i>
+              </p>
+            </div>
+            <div *ngIf="!editNoticePeriod">
+              <p style="margin-left: 23px" class="text-dark">
+                {{
+                  shortlist.noticePeriod
+                    ? shortlist.noticePeriod + " Days"
+                    : "N/A"
+                }}
+              </p>
+            </div>
+
+            <div
+              *ngIf="editNoticePeriod"
+              class="d-flex align-items-center gap-2"
+            >
+              <input
+                type="text"
+                [(ngModel)]="shortlist.noticePeriod"
+                class="form form-control"
+                (change)="updateDiscovery(); editNoticePeriod = false"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-0">
+      <div class="card-body">
+        <!-- Discovered By  -->
+        <div *ngIf="isDiscovery">
+          <h6 class="text-muted">
+            <i class="bi bi-globe-americas"></i> &nbsp; Discovered By
+          </h6>
+
+          <p class="text-dark" style="margin-left: 23px">
+            {{
+              shortlist.createdBy
+                ? shortlist.createdBy.name +
+                  " on " +
+                  commonService.changeMysqlToNormalDate(
+                    shortlist.createdOn.split(" ")[0]
+                  )
+                : "N/A"
+            }}
+          </p>
+        </div>
+        <!-- Candidate Interaction start -->
+        <div>
+          <div class="d-flex align-items-center gap-2">
+            <div
+              class="fs-md hstack h6 gap-2 flex-wrap text-muted list-unstyled mb-1"
+              style="width: 99%"
+            >
+              <i class="ph-handshake-fill"></i>Candidate Interaction
+            </div>
+            <p class="fs-md mb-0 text-muted">
+              <i
+                *ngIf="
+                  amIClientAnchor ||
+                  amIAceMaker ||
+                  commonService.rbac['edit-disc-status'] ||
+                  commonService.isTesting
+                "
+                (click)="edit.candidateInteractor = !edit.candidateInteractor"
+                class="ri-edit-box-line clickable text-warning align-baseline me-1"
+              ></i>
+            </p>
+          </div>
+          <div
+            *ngIf="!edit.candidateInteractor"
+            class="d-flex align-items-center gap-2"
+          >
+            <p class="text-dark" style="margin-left: 23px">
+              {{
+                shortlist?.candidateInteractorId ? candidateInteractor : "N/A"
+              }}
+            </p>
+          </div>
+          <div
+            *ngIf="edit.candidateInteractor"
+            class="d-flex align-items-center gap-2"
+          >
+            <ng-select
+              [items]="users"
+              [multiple]="false"
+              bindLabel="name"
+              bindValue="id"
+              placeholder="Search"
+              class="form-control"
+              [(ngModel)]="shortlist.candidateInteractorId"
+              [clearable]="false"
+              style="padding: 0"
+              (ngModelChange)="updateDiscovery()"
+              [searchFn]="memberLocalSearch"
+              (search)="onMemberSearch($event)"
+            >
+            </ng-select>
+          </div>
+        </div>
+        <!-- Account Manager Name-->
+        <div [hidden]="!amIClientAnchor && !amIAceMaker">
+          <div class="d-flex align-items-center gap-2">
+            <div
+              class="fs-md h6 hstack gap-2 flex-wrap text-muted list-unstyled mb-1"
+              style="width: 99%"
+            >
+              <i class="bi bi-link-45deg"></i>Account Manager
+            </div>
+          </div>
+          <p class="text-dark" style="margin-left: 23px">
+            {{
+              shortlist.requirement?.clientAnchor?.name
+                ? shortlist.requirement?.clientAnchor?.name
+                : "N/A"
+            }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-9">
+    <div class="card">
+      <div class="card-body">
+        <tabset>
+          <!-- Tab for Discovery Details  -->
+          <tab heading="Discovery Details" *ngIf="!isDiscovery">
+              <app-candidate-detail
+              *ngIf="shortlist.candidate"
+              [candidateId]="shortlist.candidate.id"
+            ></app-candidate-detail>
+          </tab>
+          <tab heading="Discovery Details" *ngIf="isDiscovery">
+            <app-candidate-detail
+              *ngIf="shortlist.candidate"
+              [candidateId]="shortlist.candidate.id"
+            ></app-candidate-detail>
+
+            <div class="row">
+              <!-- Remarks -->
+              <div class="col-xl-6">
+                <div class="card h-100 card-animate border">
+                  <div class="card-body">
+                    <div class="single-profile-heading">
+                      <span></span>
+                      <div class="row">
+                        <div class="col-lg-10">
+                          <h6 class="text-muted">Account Manager Remarks</h6>
+                        </div>
+                        <div
+                          class="col-lg-2"
+                          *ngIf="
+                            amIAceMaker ||
+                            commonService.isTesting ||
+                            amIClientAnchor ||
+                            commonService.rbac['edit-disc-remarks'] ||
+                            (shortlist.createdBy &&
+                              myId == shortlist.createdBy.id)
+                          "
+                        >
+                          <i
+                            (click)="editRemark = !editRemark"
+                            class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                          ></i>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="single-profile-paragraph">
+                      <div class="row" [hidden]="!editRemark">
+                        <div class="col-lg-10">
+                          chars left
+                          {{ remarkTemp ? 300 - remarkTemp.length : 300 }}
+                          <input
+                            type="text"
+                            maxlength="300"
+                            [(ngModel)]="remarkTemp"
+                            class="from form-control"
+                            placeholder="remarks"
+                          />
+                        </div>
+                        <div class="col-lg-1">
+                          <div class="job-category-area">
+                            &nbsp;
+                            <input
+                              type="button"
+                              class="btn rounded-pill btn-info text-center"
+                              value="+ Add"
+                              (click)="addRemark()"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <ul *ngIf="remarks?.length > 0" class="px-0">
+                        <li *ngFor="let j of remarks">
+                          {{
+                            this.commonService.changeMysqlToNormalDate(
+                              j.createdOn
+                            ) +
+                            " : " +
+                            j.remark
+                              ? this.commonService.changeMysqlToNormalDate(
+                                  j.createdOn
+                                ) +
+                                " : " +
+                                j.remark
+                              : "N/A"
+                          }}
+                          &nbsp;&nbsp;&nbsp;<i
+                            class="ri-delete-bin-2-line text-primary clickable fs-4xl"
+                            (click)="removeRemark(j)"
+                            [hidden]="!editRemark"
+                          ></i>
+                        </li>
+                      </ul>
+                      <span *ngIf="remarks?.length == 0">NA</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Client Feedback -->
+              <div class="col-xl-6">
+                <div class="card h-100 card-animate border">
+                  <div class="card-body">
+                    <div class="single-profile-textarea">
+                      <div class="single-profile-heading">
+                        <span></span>
+                        <div class="row">
+                          <div class="col-lg-10">
+                            <h6 class="text-muted">Client Feedback</h6>
+                          </div>
+                          <div
+                            class="col-lg-2"
+                            *ngIf="
+                              amIAceMaker ||
+                              commonService.isTesting ||
+                              amIClientAnchor ||
+                              commonService.rbac['edit-client-feedback'] ||
+                              (shortlist.createdBy &&
+                                myId == shortlist.createdBy.id)
+                            "
+                          >
+                            <i
+                              (click)="editClientFeedBack = !editClientFeedBack"
+                              class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                            ></i>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="single-profile-paragraph">
+                        <div class="row" [hidden]="!editClientFeedBack">
+                          <div class="col-lg-9">
+                            chars left
+
+                            <input
+                              type="text"
+                              [(ngModel)]="feedback"
+                              class="from form-control"
+                              placeholder="Feedback"
+                            />
+                          </div>
+                          <div class="col-lg-2">
+                            <div class="job-category-area">
+                              &nbsp;
+                              <input
+                                type="button"
+                                class="btn rounded-pill btn-info text-center"
+                                value="+ Add"
+                                (click)="addFeedback(); updateFeedbacks()"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <ul class="px-0">
+                          <li *ngFor="let f of feedbacks">
+                            {{ f.feedback ? f.feedback : "N/A" }}
+                            {{
+                              "" +
+                                this.commonService.changeMysqlToNormalDate(
+                                  f.date
+                                ) +
+                                " : " +
+                                f.feedback
+                            }}
+                            &nbsp;&nbsp;&nbsp;<i
+                              class="ri-delete-bin-2-line text-primary clickable fs-4xl"
+                              (click)="removeFeedback(f); updateFeedbacks()"
+                              [hidden]="!editClientFeedBack"
+                            ></i>
+                          </li>
+                        </ul>
+                      </div>
+                      <span *ngIf="feedbacks?.length == 0">NA</span>
+
+                      <input
+                        [hidden]="!editClientFeedBack || true"
+                        type="button"
+                        class="btn rounded-pill btn-info text-center"
+                        value="Save"
+                        (click)="updateFeedbacks()"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-5" *ngIf="false">
+              <!-- Notice Period  -->
+              <div class="col-xl-3">
+                <div class="card card-animate border">
+                  <div class="card-body">
+                    <div>
+                      <div class="row">
+                        <div class="col-xl-10">
+                          <h6 class="text-muted">Notice Period (Days)</h6>
+                        </div>
+                        <div
+                          class="col-lg-2"
+                          *ngIf="
+                            amIClientAnchor ||
+                            amIAceMaker ||
+                            commonService.isTesting ||
+                            commonService.rbac['edit-notice-period'] ||
+                            (shortlist.createdBy &&
+                              myId == shortlist.createdBy.id)
+                          "
+                        >
+                          <i
+                            (click)="editNoticePeriod = !editNoticePeriod"
+                            class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                          ></i>
+                        </div>
+                      </div>
+                      <div [hidden]="editNoticePeriod" class="text-dark">
+                        <p>{{ shortlist.noticePeriod }} Days</p>
+                      </div>
+                      <input
+                        [hidden]="!editNoticePeriod"
+                        type="number"
+                        [(ngModel)]="shortlist.noticePeriod"
+                        class="form form-control"
+                      />
+                    </div>
+                    <br />
+                    <input
+                      [hidden]="!editNoticePeriod"
+                      type="button"
+                      class="btn rounded-pill btn-info text-center"
+                      value="Save"
+                      (click)="updateDiscovery(); editNoticePeriod = false"
+                    />
+                  </div>
+                </div>
+              </div>
+              <!-- Exposer  -->
+              <div class="col-xl-3">
+                <div class="card card-animate border">
+                  <div class="card-body">
+                    <div>
+                      <div>
+                        <div class="row">
+                          <div class="col-xl-10">
+                            <h6 class="text-muted">Exposure</h6>
+                          </div>
+                          <div
+                            class="col-lg-2"
+                            *ngIf="
+                              amIClientAnchor ||
+                              amIAceMaker ||
+                              commonService.isTesting ||
+                              commonService.rbac['edit-disc-experience'] ||
+                              (shortlist.createdBy &&
+                                myId == shortlist.createdBy.id)
+                            "
+                          >
+                            <i
+                              (click)="editExperience = !editExperience"
+                              class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                            ></i>
+                          </div>
+                        </div>
+                      </div>
+                      <div [hidden]="editExperience" class="text-dark">
+                        <p>
+                          <i class="icofont-calendar"></i
+                          >{{
+                            shortlist.candidate &&
+                            shortlist.candidate.experience != undefined &&
+                            shortlist.candidate.experience != "null" &&
+                            shortlist.candidate.experience != null &&
+                            shortlist.candidate.experience
+                              ? shortlist.candidate.experience + " Years"
+                              : "Not Available"
+                          }}
+                        </p>
+                      </div>
+                      <input
+                        *ngIf="editExperience"
+                        type="number"
+                        [(ngModel)]="shortlist.candidate.experience"
+                        class="form form-control"
+                        min="0"
+                      />
+                    </div>
+                    <br />
+                    <input
+                      [hidden]="!editExperience"
+                      type="button"
+                      class="btn rounded-pill btn-info text-center"
+                      value="Save"
+                      (click)="
+                        updateCandidate(shortlist.candidate);
+                        editExperience = false
+                      "
+                    />
+                  </div>
+                </div>
+              </div>
+              <!-- Value System -->
+              <!-- <div class="col-xl-3">
+                <div class="card card-animate border">
+                  <div class="card-body">
+                    <div class="single-profile-contact">
+                      <div class="row">
+                        <div class="col-lg-10">
+                          <h6 class="text-muted">Value Element</h6>
+                        </div>
+                        <div
+                          class="col-lg-2"
+                          *ngIf="
+                            amIClientAnchor ||
+                            amIAceMaker ||
+                            commonService.isTesting ||
+                            commonService.rbac['edit-disc-value'] ||
+                            (shortlist.createdBy &&
+                              myId == shortlist.createdBy.id)
+                          "
+                        >
+                          <i
+                            (click)="editValueElement = !editValueElement"
+                            class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                          ></i>
+                        </div>
+                      </div>
+                      <div [hidden]="editValueElement" class="text-dark">
+                        <p class="">
+                          {{ shortlist.valueElement }}
+                          NPS -{{ shortlist.nps ? shortlist.nps : "NA" }}
+                        </p>
+                      </div>
+                      <input
+                        [hidden]="!editValueElement"
+                        type="text"
+                        [(ngModel)]="shortlist.valueElement"
+                        class="form form-control"
+                      />
+                    </div>
+                    <br />
+                    <input
+                      [hidden]="!editValueElement"
+                      type="button"
+                      class="btn rounded-pill btn-info text-center"
+                      value="Save"
+                      (click)="updateDiscovery(); editValueElement = false"
+                    />
+                  </div>
+                </div>
+              </div> -->
+              <!--  Current ESOP plan ( Granted v/s Vested)  -->
+              <div class="col-xl-3">
+                <div class="card card-animate border">
+                  <div class="card-body">
+                    <div class="single-profile-contact">
+                      <div class="row">
+                        <div class="col-lg-10">
+                          <h6 class="text-muted">Current ESOP plan</h6>
+                        </div>
+                        <div
+                          class="col-lg-2"
+                          *ngIf="
+                            amIClientAnchor ||
+                            amIAceMaker ||
+                            commonService.isTesting ||
+                            commonService.rbac['edit-disc-esop'] ||
+                            (shortlist.createdBy &&
+                              myId == shortlist.createdBy.id)
+                          "
+                        >
+                          <i
+                            (click)="editEsop = !editEsop"
+                            class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                          ></i>
+                        </div>
+                      </div>
+                      <div [hidden]="editEsop" class="text-dark">
+                        <p>
+                          {{
+                            shortlist.currentEsopPlan
+                              ? shortlist.currentEsopPlan
+                              : "N/A"
+                          }}
+                        </p>
+                      </div>
+                      <input
+                        [hidden]="!editEsop"
+                        type="text"
+                        [(ngModel)]="shortlist.currentEsopPlan"
+                        class="form form-control"
+                      />
+                    </div>
+                    <br />
+                    <input
+                      [hidden]="!editEsop"
+                      type="button"
+                      class="btn rounded-pill btn-info text-center"
+                      value="Save"
+                      (click)="updateDiscovery(); editEsop = false"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <!-- Job Fitment Justification -->
+              <div class="col-xl-12">
+                <div class="card card-animate border">
+                  <div class="card-body">
+                    <div class="single-profile-heading">
+                      <div class="row">
+                        <div class="col-lg-11">
+                          <h6 class="text-muted">Job Fitment Justification</h6>
+                        </div>
+                        <div
+                          class="col-lg-1"
+                          *ngIf="
+                            amIAceMaker ||
+                            commonService.isTesting ||
+                            amIClientAnchor ||
+                            commonService.rbac['edit-disc-justification'] ||
+                            (shortlist.createdBy &&
+                              myId == shortlist.createdBy.id)
+                          "
+                        >
+                          <i
+                            (click)="editJustification = !editJustification"
+                            class="ri-edit-box-line clickable text-warning align-baseline me-1"
+                          ></i>
+                        </div>
+                      </div>
+                    </div>
+                    <br />
+                    <div class="single-profile-paragraph">
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <span
+                            *ngIf="
+                              justifications[0] &&
+                              justifications[0].justification?.length > 0
+                            "
+                            class="text-muted"
+                            >In what ways does your candidate stand out from the
+                            rest? *</span
+                          >
+
+                          <div
+                            class="p-1 text-dark border"
+                            style="white-space: pre-wrap"
+                            *ngIf="!editJustification"
+                          >
+                            {{
+                              justifications[0].justification
+                                ? justifications[0].justification
+                                : "N/A"
+                            }}
+                          </div>
+                          <textarea
+                            *ngIf="editJustification"
+                            style="background: inherit"
+                            [(ngModel)]="justifications[0].justification"
+                            class="form-control"
+                            rows="3"
+                            palceholder="In what ways does your candidate stand out from the rest?"
+                            (ngModelChange)="
+                              commonService.autoResizeTextArea('area1')
+                            "
+                            id="area1"
+                          ></textarea>
+                          <!-- <textarea
+                            maxlength="300"
+                            rows="5"
+                            cols="15"
+                            [disabled]="!editJustification"
+                            [(ngModel)]="justifications[0].justification"
+                            class="from form-control"
+                            placeholder="In what ways does your candidate stand out from the rest?"
+                          ></textarea> -->
+                        </div>
+                      </div>
+                      <br />
+                      <div class="row">
+                        <div class="col-lg-6">
+                          <p
+                            *ngIf="
+                              justifications[1] &&
+                              justifications[1].justification?.length > 0
+                            "
+                            class="mb-1 text-muted"
+                          >
+                            Could you provide an explanation if there is a
+                            short-term stint (less than 1 year) in a company or
+                            if the candidate has made numerous job changes
+                            within a short period? *
+                          </p>
+
+                          <div
+                            class="p-1 text-dark border"
+                            style="white-space: pre-wrap"
+                            *ngIf="!editJustification"
+                          >
+                            {{
+                              justifications[1].justification
+                                ? justifications[1].justification
+                                : "N/A"
+                            }}
+                          </div>
+                          <textarea
+                            *ngIf="editJustification"
+                            style="background: inherit"
+                            [(ngModel)]="justifications[1].justification"
+                            class="form-control"
+                            rows="3"
+                            palceholder="Could you provide an explanation if there is a short-term stint (less than 1 year) in a company or if the candidate has made numerous job changes within a short period?"
+                            (ngModelChange)="
+                              commonService.autoResizeTextArea('area1')
+                            "
+                            id="area1"
+                          ></textarea>
+                          <!-- <textarea
+                          maxlength="300"
+                          rows="5"
+                          cols="15"
+                          [disabled]="!editJustification"
+                          [(ngModel)]="justifications[1].justification"
+                          class="from form-control"
+                          placeholder="Could you provide an explanation if there is a short-term stint (less than 1 year) in a company or if the candidate has made numerous job changes within a short period?"
+                        ></textarea> -->
+                        </div>
+
+                        <div class="col-lg-6">
+                          <p
+                            class="text-muted mb-4"
+                            *ngIf="
+                              justifications[2] &&
+                              justifications[2].justification?.length > 0
+                            "
+                          >
+                            If there is a gap in the candidate's career
+                            exceeding 6 months, please elaborate on how they
+                            were engaged or occupied during that time. *
+                          </p>
+
+                          <div
+                            class="p-1 text-dark border"
+                            style="white-space: pre-wrap"
+                            *ngIf="!editJustification"
+                          >
+                            {{
+                              justifications[2].justification
+                                ? justifications[2].justification
+                                : "N/A"
+                            }}
+                          </div>
+                          <textarea
+                            *ngIf="editJustification"
+                            style="background: inherit"
+                            [(ngModel)]="justifications[2].justification"
+                            class="form-control"
+                            rows="3"
+                            palceholder="If there is a gap in the candidate's career exceeding 6 months, please elaborate on how they were engaged or occupied during that time."
+                            (ngModelChange)="
+                              commonService.autoResizeTextArea('area1')
+                            "
+                            id="area1"
+                          ></textarea>
+                          <!-- <textarea
+                          maxlength="300"
+                          rows="5"
+                          cols="15"
+                          [disabled]="!editJustification"
+                          [(ngModel)]="justifications[2].justification"
+                          class="from form-control"
+                          placeholder="If there is a gap in the candidate's career exceeding 6 months, please elaborate on how they were engaged or occupied during that time."
+                        ></textarea> -->
+                        </div>
+                      </div>
+                      <br />
+                    </div>
+                    <br />
+                    <input
+                      [hidden]="!editJustification"
+                      type="button"
+                      class="btn rounded-pill btn-info text-center"
+                      value="Save"
+                      (click)="updateJustificiations()"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- For mandate  -->
+            <!-- <div class="row mt-2">
+              <div class="col-xl-4">
+                <div class="card card-animate border">
+                  <div class="card-body">
+                    <h6 class="text-muted">For Mandate</h6>
+                    <ul class="text-dark">
+                      <li>
+                        <i class="icofont-package"></i
+                        ><a [routerLink]="reqLink" style="color: blue">{{
+                          shortlist.requirement
+                            ? shortlist.requirement.role.name +
+                              ", " +
+                              shortlist.requirement.client.name +
+                              "," +
+                              shortlist.requirement.location
+                            : ""
+                        }}</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              
+            </div> -->
+          </tab>
+          <!-- Tab for candidate Profile -->
+          <!-- <tab heading="Candidate Profile" *ngIf="shortlist">
+            <app-candidate-detail
+              *ngIf="shortlist.candidate"
+              [candidateId]="shortlist.candidate.id"
+            ></app-candidate-detail>
+          </tab> -->
+          <!-- app-post-offer-followups -->
+          <tab
+            heading="Post Offer Follow-up {{isDiscovery}}"
+            *ngIf="
+             (isDiscovery && ((
+              (shortlist?.status?.id == 12 ||
+                shortlist?.status?.id == 13 ||
+                shortlist?.status?.id == 14 ||
+                shortlist?.status?.id == 15 ||
+                shortlist?.status?.id == 17) &&
+                amIAceMaker) ||
+              commonService.isTesting ||
+              commonService.rbac['post-offer-framework'] ||
+              amIClientAnchor ||
+              (shortlist.createdBy && myId == shortlist.createdBy.id)
+              ))
+            "
+          >
+            <app-post-offer-followups
+              [discovery]="shortlist"
+            ></app-post-offer-followups>
+          </tab>
+        </tabset>
+      </div>
+    </div>
+  </div>
+</div>

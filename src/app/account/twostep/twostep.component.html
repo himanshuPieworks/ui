@@ -1,0 +1,151 @@
+<section
+  class="auth-page-wrapper py-1 position-relative d-flex align-items-center justify-content-center "
+>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-11">
+        <div class="card mb-0">
+          <div class="row g-0 align-items-center">
+            <!--end col-->
+            <div class="col-xxl-11 mx-auto">
+              <div class="card mb-0 border-0 shadow-none mb-0">
+                <div class="card-body p-sm-6 m-lg-7">
+                  <div>
+                    <div class="text-muted text-center mb-4 pb-2 mx-lg-3">
+                      <div class="mb-4">
+                        <img
+                          src="assets/images/auth/permission.png"
+                          alt=""
+                          class="avatar-md"
+                        />
+                      </div>
+                      <h4>{{ parentObj?.purpose }}</h4>
+                      <p>
+                        Please enter the 4 digit code sent to
+                        <span class="fw-semibold">{{
+                          parentObj?.otpIdentifier
+                        }}</span
+                        >. Valid for 5 mins.
+                      </p>
+                    </div>
+                    <form autocomplete="off">
+                      <div class="row">
+                        <div class="col-3">
+                          <div class="mb-3">
+                            <label for="digit1-input" class="visually-hidden"
+                              >Digit 1</label
+                            >
+                            <input
+                              [(ngModel)]="otp.digit1"
+                              type="text"
+                              class="form-control form-control-lg text-center"
+                              placeholder="0"
+                              (keyup)="moveToNext(1)"
+                              maxLength="1"
+                              id="digit1-input"
+                              name="digit1-input"
+                            />
+                          </div>
+                        </div>
+
+                        <div class="col-3">
+                          <div class="mb-3">
+                            <label for="digit2-input" class="visually-hidden"
+                              >Digit 2</label
+                            >
+                            <input
+                              [(ngModel)]="otp.digit2"
+                              type="text"
+                              class="form-control form-control-lg text-center"
+                              placeholder="0"
+                              (keyup)="moveToNext(2)"
+                              maxLength="1"
+                              id="digit2-input"
+                              name="digit2-input"
+                            />
+                          </div>
+                        </div>
+                        <!-- end col -->
+
+                        <div class="col-3">
+                          <div class="mb-3">
+                            <label for="digit3-input" class="visually-hidden"
+                              >Digit 3</label
+                            >
+                            <input
+                              [(ngModel)]="otp.digit3"
+                              type="text"
+                              class="form-control form-control-lg text-center"
+                              placeholder="0"
+                              (keyup)="moveToNext(3)"
+                              maxLength="1"
+                              id="digit3-input"
+                              name="digit3-input"
+                            />
+                          </div>
+                        </div>
+                        <!-- end col -->
+
+                        <div class="col-3">
+                          <div class="mb-3">
+                            <label for="digit4-input" class="visually-hidden"
+                              >Digit 4</label
+                            >
+                            <input
+                              [(ngModel)]="otp.digit4"
+                              type="text"
+                              class="form-control form-control-lg text-center"
+                              placeholder="0"
+                              maxLength="1"
+                              id="digit4-input"
+                              name="digit4-input"
+                            />
+                          </div>
+                        </div>
+                        <!-- end col -->
+                      </div>
+                    </form>
+                    <!-- end form -->
+                    <div class="mt-11 text-center text-danger">
+                      {{ message }}
+                    </div>
+                    <div class="mt-3">
+                      <button
+                        type="button"
+                        class="btn btn-primary w-100"
+                        (click)="matchOtp()"
+                      >
+                        Verify
+                      </button>
+                    </div>
+                  </div>
+                  <div class="mt-4 text-center">
+                    <p class="mb-0">
+                      Didn't receive a code ?
+                      <a
+                        class="fw-semibold text-primary text-decoration-underline {{
+                          seconds == 0 ? 'clickable' : ''
+                        }}"
+                        (click)="seconds == 0 ? generateOtp() : ''"
+                        >Resend{{
+                          seconds > 0 ? " in " + seconds + "s." : ""
+                        }}</a
+                      >
+                    </p>
+                  </div>
+                </div>
+                <!-- end card body -->
+              </div>
+              <!-- end card -->
+            </div>
+            <!--end col-->
+          </div>
+          <!--end row-->
+        </div>
+      </div>
+      <!--end col-->
+    </div>
+    <!--end row-->
+  </div>
+  <!--end container-->
+</section>

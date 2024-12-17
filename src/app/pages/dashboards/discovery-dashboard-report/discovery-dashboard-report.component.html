@@ -1,0 +1,472 @@
+<div class="row gy-4">
+    <div class="col-md-2 p-2" style="text-align: center">
+        <input
+            type="checkbox"
+            [(ngModel)]="hideEmptyColumns"
+            (click)="hideBlankColumns()"
+            />&nbsp;&nbsp;Hide Blank Columns
+    </div>
+    <div class="col-md-2 p-2" style="text-align: center" *ngIf="commonService.rbac['manage-others-reports']">
+        <input
+            type="checkbox"
+            [(ngModel)]="showOnlyMyData"
+            (change)="loadDiscoveryCommunityReport()"
+            />&nbsp;&nbsp;Show my data
+    </div>
+    <div
+        class="col-md-2"
+        *ngIf="name == 'Monthly Leadership Board - Weighted(Actual)'"
+        >
+        <select
+            class="form-select rounded-pill mb-3"
+            aria-label="Default select example"
+            [(ngModel)]="year"
+            (change)="loadDiscoveryCommunityReport()"
+            >
+            <option [ngValue]="s" *ngFor="let s of years">{{ s }}</option>
+        </select>
+    </div>
+    <div
+        class="col-md-2"
+        *ngIf="name == 'Monthly Leadership Board - Weighted(Actual)'"
+        >
+        <select
+            class="form-select rounded-pill mb-3"
+            aria-label="Default select example"
+            [(ngModel)]="month"
+            (change)="loadDiscoveryCommunityReport()"
+            >
+            <option [ngValue]="s.id" *ngFor="let s of months">{{ s.name }}</option>
+        </select>
+    </div>
+    <div class="col-md-1 p-2" style="text-align: center" *ngIf='!showOnlyMyData'>
+        <i class='ri-fullscreen-line clickable' (click)='showFullScreen()' tooltip='click to view the report in full screen'></i>
+    </div>
+    <div class="col-md-1">
+        <a
+            class="pieworks-black"
+            title="Export to xls"
+            href="javascript:void()"
+            (click)="exportReport()"
+            >&nbsp;&nbsp;&nbsp;<span
+                style="font-size: 18px; font-weight: bold"
+                class="icofont-file-excel"
+                ></span
+            ></a>
+    </div>
+</div>
+<!-- <form> -->
+<div class="row gy-4"></div>
+<br />
+<div class="row gy-4">
+    <div class="col-xxl-4 col-md-4" *ngIf='myData'></div>
+    <div class="col-xxl-4 col-md-4" *ngIf='myData'>
+        <div class="table-responsive table-container">
+            <div class="table-responsive" id='smallTable'>
+                <table class="table table-striped table-nowrap align-middle mb-0">
+                    <thead>
+
+                    </thead>
+                    <tbody>
+                        <tr><th class="table-th" scope="col" style="text-align: left">
+                                Community Member
+                            </th><td>{{myData.name}}</td></tr>
+                        <tr *ngIf="showStatusColumn[1]"><th class="table-th">To Call</th><td><a (click)="setDiscFilter(myData.userId, 1)" style="cursor: pointer; color: blue" >{{myData.status1}}</a></td></tr>
+                        <tr *ngIf="showStatusColumn[2]"><th class="table-th">Interested</th><td><a (click)="setDiscFilter(myData.userId, 2)" style="cursor: pointer; color: blue" >{{myData.status2}}</a></td></tr>
+                        <tr *ngIf="showStatusColumn[21]"><th class="table-th" >Validated</th><td><a (click)="setDiscFilter(myData.userId, 21)" style="cursor: pointer; color: blue" >{{myData.status21}}</a></td></tr>
+                        <tr *ngIf="showStatusColumn[3]"><th class="table-th" >Not Interested</th><td><a (click)="setDiscFilter(myData.userId, 2)" style="cursor: pointer; color: blue" >{{myData.status3}}</a></td></tr>
+                        <tr *ngIf="showStatusColumn[4]"><th class="table-th">CAdrop</th><td><a (click)="setDiscFilter(myData.userId, 4)" style="cursor: pointer; color: blue" >{{myData.status4}}</a></td></tr>
+                        <tr *ngIf="showStatusColumn[6]"><th class="table-th">s2c</th><td><a (click)="setDiscFilter(myData.userId, 6)" style="cursor: pointer; color: blue" >{{myData.status6}}</a></td></tr>
+                        <tr *ngIf="showStatusColumn[22]"><th class="table-th">screendrop</th><td><a (click)="setDiscFilter(myData.userId, 22)" style="cursor: pointer; color: blue" >{{myData.status22}}</a></td></tr>
+                        <tr *ngIf="showStatusColumn[5]"><th class="table-th">nowshow@intrv</th><td><a (click)="setDiscFilter(myData.userId, 5)" style="cursor: pointer; color: blue" >{{myData.status5}}</a></td></tr>
+                        <tr *ngIf="showStatusColumn[7]"><th class="table-th">val.drop@c</th><td><a (click)="setDiscFilter(myData.userId, 7)" style="cursor: pointer; color: blue" >{{myData.status7}}</a></td></tr>
+                        <tr *ngIf="showStatusColumn[19]"><th class="table-th">expc</th><td><a (click)="setDiscFilter(myData.userId, 19)" style="cursor: pointer; color: blue" >{{myData.status19}}</a></td></tr>
+                        <tr *ngIf="showStatusColumn[8]"><th class="table-th">intv</th><td><a (click)="setDiscFilter(myData.userId, 8)" style="cursor: pointer; color: blue" >{{myData.status8}}</a></td></tr>
+                        <tr *ngIf="showStatusColumn[11]"><th class="table-th">intrv.drop</th><td><a (click)="setDiscFilter(myData.userId, 11)" style="cursor: pointer; color: blue" >{{myData.status11}}</a></td></tr>
+                        <tr *ngIf="showStatusColumn[9]"><th class="table-th">select2adv</th><td><a (click)="setDiscFilter(myData.userId, 9)" style="cursor: pointer; color: blue" >{{myData.status9}}</a></td></tr>
+                        <tr *ngIf="showStatusColumn[18]"><th class="table-th">On Hold</th><td><a (click)="setDiscFilter(myData.userId, 18)" style="cursor: pointer; color: blue" >{{myData.status18}}</a></td></tr>
+                        <tr *ngIf="showStatusColumn[23]"><th class="table-th">offer made</th><td><a (click)="setDiscFilter(myData.userId, 23)" style="cursor: pointer; color: blue" >{{myData.status23}}</a></td></tr>
+                        <tr *ngIf="showStatusColumn[24]"><th class="table-th">offer negotiation</th><td><a (click)="setDiscFilter(myData.userId, 24)" style="cursor: pointer; color: blue" >{{myData.status24}}</a></td></tr>
+                        <tr *ngIf="showStatusColumn[10]"><th class="table-th">Offer Sent</th><td><a (click)="setDiscFilter(myData.userId, 10)" style="cursor: pointer; color: blue" >{{myData.status10}}</a></td></tr>
+                        <tr *ngIf="showStatusColumn[13]"><th class="table-th">Offer Accepted</th><td><a (click)="setDiscFilter(myData.userId, 13)" style="cursor: pointer; color: blue" >{{myData.status13}}</a></td></tr>
+                        <tr *ngIf="showStatusColumn[12]"><th class="table-th">Joined</th><td><a (click)="setDiscFilter(myData.userId, 12)" style="cursor: pointer; color: blue" >{{myData.status12}}</a></td></tr>
+                        <tr *ngIf="showStatusColumn[14] && false"><th class="table-th">noshow</th><td><a (click)="setDiscFilter(myData.userId, 14)" style="cursor: pointer; color: blue" >{{myData.status14}}</a></td></tr>
+                        <tr *ngIf="showStatusColumn[15]"><th class="table-th">OfferDeclined</th><td><a (click)="setDiscFilter(myData.userId, 15)" style="cursor: pointer; color: blue" >{{myData.status15}}</a></td></tr>
+                        <tr *ngIf="showStatusColumn[17]"><th class="table-th">surety.prd.ovr</th><td><a (click)="setDiscFilter(myData.userId, 17)" style="cursor: pointer; color: blue" >{{myData.status17}}</a></td></tr>
+                        <tr *ngIf="showStatusColumn[20]"><th class="table-th">surety.prd.nt.ovr</th><td><a (click)="setDiscFilter(myData.userId, 20)" style="cursor: pointer; color: blue" >{{myData.status20}}</a></td></tr>
+                        <tr><th class="table-th">Client Referral</th><td><a (click)="showReferedClients(myData.userId)" style="cursor: pointer; color: blue" >{{myData.clientReferal}}({{myData.clientReferal/10}})</a></td></tr>
+                        <tr><th
+                                class="table-th"
+                                title="Sent To Client & Above"
+                                style="text-align: center"
+                                >
+                                Active Talent Count
+                            </th>
+                            <td
+                                class="table-td-dashboard"
+                                style="text-align: center"
+                                *ngIf="myData.teamTarget && member?.grade?.id != 3"
+                                title="{{
+              myData.buddyNames ? 'Contribution from buddies - ' + myData.buddyNames : ''
+                                }}"
+                                >
+                                I&nbsp;&nbsp;&nbsp;&nbsp; : {{ myData.total }}<br />BT :
+                                {{ myData.buddyTeamTotal }}
+                            </td>
+                            <td
+                                class="table-td-dashboard"
+                                style="text-align: center"
+                                *ngIf="!myData.teamTarget || member?.grade?.id == 3"
+                                title=""
+                                >
+                                {{ myData.total }}
+                            </td>
+                        </tr>
+                        <tr><th class="table-th" style="text-align: left">Northstar</th>
+                            <td
+                                class="table-td-dashboard"
+                                style="text-align: center"
+                                title=""
+                                *ngIf="myData.teamTarget && member?.grade?.id != 3"
+                                >
+                                I&nbsp;&nbsp;&nbsp;&nbsp; : {{ myData.Target }}<br />BT :
+                                {{ myData.teamTarget }}
+                            </td>
+                            <td
+                                class="table-td-dashboard"
+                                style="text-align: center"
+                                title=""
+                                *ngIf="!myData.teamTarget || member?.grade?.id == 3"
+                                >
+                                {{ myData.Target }}
+                            </td></tr>
+                        <tr><th class="table-th" style="text-align: left">Deficit</th><td
+                                class="table-td-dashboard"
+                                style="text-align: center"
+                                title="Based on weighted total"
+                                *ngIf="myData.teamTarget && member?.grade?.id != 3"
+                                >
+                                I&nbsp;&nbsp;&nbsp;&nbsp; :
+                                {{ myData.deficientPerc != undefined ? myData.deficientPerc : 100 }} %<br />BT
+                                : {{ myData.deficientPercTeam }} %
+                            </td>
+                            <td
+                                class="table-td-dashboard"
+                                style="text-align: center"
+                                title="Based on weighted total"
+                                *ngIf="!myData.teamTarget || member?.grade?.id == 3"
+                                >
+                                {{ myData.deficientPerc != undefined ? myData.deficientPerc : 100 }} %
+                            </td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-xxl-12 col-md-12" style="overflow: auto">
+        <div class="table-responsive table-container" style="overflow: unset">
+            <div class="table-responsive" style="overflow: unset" id='bigTable'>
+                Total Discoveries : {{statusTotal?.total?statusTotal?.total:0}}
+                <table class="table table-striped table-nowrap align-middle mb-0 header-table" [hidden]="Table.length == 0 || myData" style="width: 100%">
+                    <thead>
+                        <tr style="background-color: #1a9783;">
+                            <th scope="col" style='z-index: 2;background-color: #1a9783;color:white'>
+                                Community Member
+                            </th>                            
+                            <th
+                                scope="col"
+                                title="Sent To Client & Above"
+                                style="text-align: left"
+                                >
+                                Active Talent Count
+                             </th>
+                            <th scope="col" style="text-align: left">Northstar</th>
+                            <th scope="col" style="text-align: left">Deficit</th>
+                            <!--            <th class="table-th">Nurture </th>-->
+                            <th scope="col" *ngIf="showStatusColumn[1]">To Call ({{statusTotal?.status1?statusTotal?.status1:0}})</th>
+                            <th scope="col" *ngIf="showStatusColumn[2]">Interested ({{statusTotal?.status2?statusTotal?.status2:0}})</th>
+                            <th scope="col" *ngIf="showStatusColumn[21]">Validated ({{statusTotal?.status21?statusTotal?.status21:0}})</th>
+                            <th scope="col" *ngIf="showStatusColumn[3]">Not Interested ({{statusTotal?.status3?statusTotal?.status3:0}})</th>
+                            <th scope="col" *ngIf="showStatusColumn[4]">CAdrop ({{statusTotal?.status4?statusTotal?.status4:0}})</th>
+                            <th scope="col" *ngIf="showStatusColumn[6]">s2c ({{statusTotal?.status6?statusTotal?.status6:0}})</th>
+                            <th scope="col" *ngIf="showStatusColumn[22]">screendrop ({{statusTotal?.status22?statusTotal?.status22:0}})</th>
+                            <th scope="col" *ngIf="showStatusColumn[5]">nowshow@intrv ({{statusTotal?.status5?statusTotal?.status5:0}})</th>
+                            <th scope="col" *ngIf="showStatusColumn[7]">val.drop@c ({{statusTotal?.status7?statusTotal?.status7:0}})</th>
+                            <th scope="col" *ngIf="showStatusColumn[19]">expc ({{statusTotal?.status19?statusTotal?.status19:0}})</th>
+                            <th scope="col" *ngIf="showStatusColumn[8]">intv ({{statusTotal?.status8?statusTotal?.status8:0}})</th>
+                            <th scope="col" *ngIf="showStatusColumn[11]">intrv.drop ({{statusTotal?.status11?statusTotal?.status11:0}})</th>
+                            <th scope="col" *ngIf="showStatusColumn[9]">select2adv ({{statusTotal?.status9?statusTotal?.status9:0}})</th>
+                            <th scope="col" *ngIf="showStatusColumn[18]">On Hold ({{statusTotal?.status18?statusTotal?.status18:0}})</th>
+                            <th scope="col" *ngIf="showStatusColumn[23]">Offer Made ({{statusTotal?.status23?statusTotal?.status23:0}})</th>
+                            <th scope="col" *ngIf="showStatusColumn[24]">Offer Negotiation ({{statusTotal?.status24?statusTotal?.status24:0}})</th>
+                            <th scope="col" *ngIf="showStatusColumn[10]">Offer Sent ({{statusTotal?.status10?statusTotal?.status10:0}})</th>
+                            <th scope="col" *ngIf="showStatusColumn[13]">Offer Accepted ({{statusTotal?.status13?statusTotal?.status13:0}})</th>
+                            <th scope="col" *ngIf="showStatusColumn[12]">Joined ({{statusTotal?.status12?statusTotal?.status12:0}})</th>
+                            <th scope="col" *ngIf="showStatusColumn[14] && false">noshow ({{statusTotal?.status14?statusTotal?.status14:0}})</th>
+                            <th scope="col" *ngIf="showStatusColumn[15]">OfferDeclined ({{statusTotal?.status15?statusTotal?.status15:0}})</th>
+                            <th scope="col" *ngIf="showStatusColumn[17]">surety.prd.ovr ({{statusTotal?.status17?statusTotal?.status17:0}})</th>
+                            <th scope="col" *ngIf="showStatusColumn[20]">surety.prd.nt.ovr ({{statusTotal?.status20?statusTotal?.status20:0}})</th>
+                            <th scope="col" >Client Referral ({{statusTotal?.clientReferral?statusTotal?.clientReferral:0}})</th>
+                        </tr>
+                    </thead>
+                </table>
+                <table class="data-table" [hidden]="Table.length == 0 || myData">
+                    <tbody>
+                        <tr *ngFor="let d of Table"
+                            [ngClass]="d.classOnRowClick ? d.classOnRowClick : ''"
+                            (click)="toggleClassOnRowClick(d)"
+                            title="weighted(actual)" title="{{d.name}}">
+                            <td class="fw-medium" style='color:white'>{{ d.name }}</td>
+                            
+                            <td
+                                class="table-td-dashboard"
+                                style="text-align: left"
+                                *ngIf="d.teamTarget && member?.grade?.id != 3"
+                                title="{{
+              d.buddyNames ? 'Contribution from buddies - ' + d.buddyNames : ''
+                                }}"
+                                >
+                                I&nbsp;&nbsp;&nbsp;&nbsp; : {{ d.total }}<br />BT :
+                                {{ d.buddyTeamTotal }}
+                            </td>
+                            <td
+                                class="table-td-dashboard"
+                                style="text-align: left"
+                                *ngIf="!d.teamTarget || member?.grade?.id == 3"
+                                >
+                                {{ d.total }}
+                            </td>
+                            <td
+                                class="table-td-dashboard"
+                                style="text-align: left"
+                                title=""
+                                *ngIf="d.teamTarget && member?.grade?.id != 3"
+                                >
+                                I&nbsp;&nbsp;&nbsp;&nbsp; : {{ d.Target }}<br />BT :
+                                {{ d.teamTarget }}
+                            </td>
+                            <td
+                                class="table-td-dashboard"
+                                style="text-align: left"
+                                title=""
+                                *ngIf="!d.teamTarget || member?.grade?.id == 3"
+                                >
+                                {{ d.Target }}
+                            </td>
+                            <td
+                                class="table-td-dashboard"
+                                style="text-align: left"
+                                title="Based on weighted total"
+                                *ngIf="d.teamTarget && member?.grade?.id != 3"
+                                >
+                                I&nbsp;&nbsp;&nbsp;&nbsp; :
+                                {{ d.deficientPerc != undefined ? d.deficientPerc : 100 }} %<br />BT
+                                : {{ d.deficientPercTeam }} %
+                            </td>
+                            <td
+                                class="table-td-dashboard"
+                                style="text-align: left"
+                                title="Based on weighted total"
+                                *ngIf="!d.teamTarget || member?.grade?.id == 3"
+                                >
+                                {{ d.deficientPerc != undefined ? d.deficientPerc : 100 }} %
+                            </td>
+                            <td *ngIf="showStatusColumn[1]">
+                                <a
+                                    (click)="setDiscFilter(d.userId, 1)"
+                                    style="cursor: pointer; color: blue"
+                                    >{{ d.status1 }}</a>
+                            </td>
+                            <td class="table-td-dashboard" *ngIf="showStatusColumn[2]">
+                                <a
+                                    (click)="setDiscFilter(d.userId, 2)"
+                                    style="cursor: pointer; color: blue"
+                                    >{{ d.status2 }}</a
+                                >
+                            </td>
+                            <td class="table-td-dashboard" *ngIf="showStatusColumn[21]">
+                                <a
+                                    (click)="setDiscFilter(d.userId, 2)"
+                                    style="cursor: pointer; color: blue"
+                                    >{{ d.status21 }}</a
+                                >
+                            </td>
+                            <td class="table-td-dashboard" *ngIf="showStatusColumn[3]">
+                                <a
+                                    (click)="setDiscFilter(d.userId, 3)"
+                                    style="cursor: pointer; color: blue"
+                                    >{{ d.status3 }}</a
+                                >
+                            </td>
+                            <td class="table-td-dashboard" *ngIf="showStatusColumn[4]">
+                                <a
+                                    (click)="setDiscFilter(d.userId, 4)"
+                                    style="cursor: pointer; color: blue"
+                                    >{{ d.status4 }}</a
+                                >
+                            </td>
+                            <td class="table-td-dashboard" *ngIf="showStatusColumn[6]">
+                                <a
+                                    (click)="setDiscFilter(d.userId, 6)"
+                                    style="cursor: pointer; color: blue"
+                                    >{{ d.status6 }}</a
+                                >
+                            </td>
+                            <td class="table-td-dashboard" *ngIf="showStatusColumn[22]">
+                                <a
+                                    (click)="setDiscFilter(d.userId, 6)"
+                                    style="cursor: pointer; color: blue"
+                                    >{{ d.status22 }}</a
+                                >
+                            </td>
+                            <td class="table-td-dashboard" *ngIf="showStatusColumn[5]">
+                                <a
+                                    (click)="setDiscFilter(d.userId, 5)"
+                                    style="cursor: pointer; color: blue"
+                                    >{{ d.status5 }}</a
+                                >
+                            </td>
+                            <td class="table-td-dashboard" *ngIf="showStatusColumn[7]">
+                                <a
+                                    (click)="setDiscFilter(d.userId, 7)"
+                                    style="cursor: pointer; color: blue"
+                                    >{{ d.status7 }}</a
+                                >
+                            </td>
+                            <td class="table-td-dashboard" *ngIf="showStatusColumn[19]">
+                                <a
+                                    (click)="setDiscFilter(d.userId, 19)"
+                                    style="cursor: pointer; color: blue"
+                                    >{{ d.status19 }}</a
+                                >
+                            </td>
+                            <td class="table-td-dashboard" *ngIf="showStatusColumn[8]">
+                                <a
+                                    (click)="setDiscFilter(d.userId, 8)"
+                                    style="cursor: pointer; color: blue"
+                                    >{{ d.status8 }}</a
+                                >
+                            </td>
+                            <td class="table-td-dashboard" *ngIf="showStatusColumn[11]">
+                                <a
+                                    (click)="setDiscFilter(d.userId, 11)"
+                                    style="cursor: pointer; color: blue"
+                                    >{{ d.status11 }}</a
+                                >
+                            </td>
+                            <td class="table-td-dashboard" *ngIf="showStatusColumn[9]">
+                                <a
+                                    (click)="setDiscFilter(d.userId, 9)"
+                                    style="cursor: pointer; color: blue"
+                                    >{{ d.status9 }}</a
+                                >
+                            </td>
+                            <td class="table-td-dashboard" *ngIf="showStatusColumn[18]">
+                                <a
+                                    (click)="setDiscFilter(d.userId, 18)"
+                                    style="cursor: pointer; color: blue"
+                                    >{{ d.status18 }}</a
+                                >
+                            </td>
+                            <td class="table-td-dashboard" *ngIf="showStatusColumn[23]">
+                                <a
+                                    (click)="setDiscFilter(d.userId, 18)"
+                                    style="cursor: pointer; color: blue"
+                                    >{{ d.status23 }}</a
+                                >
+                            </td>
+                            <td class="table-td-dashboard" *ngIf="showStatusColumn[24]">
+                                <a
+                                    (click)="setDiscFilter(d.userId, 18)"
+                                    style="cursor: pointer; color: blue"
+                                    >{{ d.status24 }}</a
+                                >
+                            </td>
+                            <td class="table-td-dashboard" *ngIf="showStatusColumn[10]">
+                                <a
+                                    (click)="setDiscFilter(d.userId, 10)"
+                                    style="cursor: pointer; color: blue"
+                                    >{{ d.status10 }}</a
+                                >
+                            </td>
+                            <td class="table-td-dashboard" *ngIf="showStatusColumn[13]">
+                                <a
+                                    (click)="setDiscFilter(d.userId, 13)"
+                                    style="cursor: pointer; color: blue"
+                                    >{{ d.status13 }}</a
+                                >
+                            </td>
+                            <td class="table-td-dashboard" *ngIf="showStatusColumn[12]">
+                                <a
+                                    (click)="setDiscFilter(d.userId, 12)"
+                                    style="cursor: pointer; color: blue"
+                                    >{{ d.status12 }}</a
+                                >
+                            </td>
+                            <td class="table-td-dashboard" *ngIf="showStatusColumn[14] && false">
+                                <a
+                                    (click)="setDiscFilter(d.userId, 14)"
+                                    style="cursor: pointer; color: blue"
+                                    >{{ d.status14 }}</a
+                                >
+                            </td>
+                            <td class="table-td-dashboard" *ngIf="showStatusColumn[15]">
+                                <a
+                                    (click)="setDiscFilter(d.userId, 15)"
+                                    style="cursor: pointer; color: blue"
+                                    >{{ d.status15 }}</a
+                                >
+                            </td>
+                            <td class="table-td-dashboard" *ngIf="showStatusColumn[17]">
+                                <a
+                                    (click)="setDiscFilter(d.userId, 17)"
+                                    style="cursor: pointer; color: blue"
+                                    >{{ d.status17 }}</a
+                                >
+                            </td>
+                            <td class="table-td-dashboard" *ngIf="showStatusColumn[20]">
+                                <a
+                                    (click)="setDiscFilter(d.userId, 20)"
+                                    style="cursor: pointer; color: blue"
+                                    >{{ d.status20 }}</a
+                                >
+                            </td>
+
+                            <td class="table-td-dashboard">
+                                <a
+                                    (click)="showReferedClients(d.userId)"
+                                    style="cursor: pointer; color: blue"
+                                    >{{ d.clientReferal }}({{d.clientReferal/10}})</a
+                                >
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- end table -->
+        </div>
+    </div>
+</div>
+
+<label [hidden]="Table.length > 0"
+       >No new discoveries are there in this period.</label
+>
+<div bsModal #fullscreen="bs-modal" class="modal fade exampleModalFullscreen" tabindex="-1"
+     aria-labelledby="exampleModalFullscreenLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalFullscreenLabel">Report</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        (click)="fullscreen.hide()"></button>
+            </div>
+            <div class="modal-body" id='fullbody'>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0);" class="btn btn-link link-success fw-medium"
+                   (click)="fullscreen.hide()"><i class="ri-close-line me-1 align-middle"></i>
+                    Close</a>
+            </div>
+        </div><!-- /.modal-content -->  1
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

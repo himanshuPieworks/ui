@@ -1,0 +1,1012 @@
+<div class="card">
+  <div class="card-header">
+    <h4 class="card-title mb-0"></h4>
+  </div>
+  <!-- end card header -->
+  <div class="card-body form-steps">
+    <form action="#">
+      <div class="text-center pt-3 pb-4 mb-1">
+        <h5 *ngIf="!parentObj">RSPP Form</h5>
+        <h5 *ngIf="parentObj">
+          Create new {{ parentObj.isRspp ? "RSPP" : "Mandate" }}
+        </h5>
+      </div>
+      <div id="custom-progress-bar" class="progress-nav">
+        <div
+          class="progress"
+          style="height: 1px"
+          *ngIf="message?.indexOf('Saved') !== -1"
+        >
+          <div
+            class="progress-bar"
+            role="progressbar"
+            style="width: 0%"
+            aria-valuenow="0"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          ></div>
+        </div>
+        <ng-stepper
+          cdkStepper
+          [linear]="true"
+          (selectionChange)="change($event)"
+          *ngIf="!message"
+          class="cdksteppercontent nav nav-pills progress-bar-tab custom-nav"
+        >
+          <cdk-step [optional]="false">
+            <ng-template cdkStepLabel class="wizard-nav mb-5">
+              <button
+                class="nav-link rounded-pill active"
+                data-progressbar="custom-progress-bar"
+                id="pills-gen-info-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#pills-gen-info"
+                type="button"
+                role="tab"
+                aria-controls="pills-gen-info"
+                aria-selected="true"
+              >
+                1
+              </button>
+            </ng-template>
+            <div class="mb-4">
+              <div>
+                <h5 class="mb-1">Company Details</h5>
+                <p class="text-muted">Fill all information as below</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label" for="orgName">Company name *</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="orgName"
+                    [ngClass]="{
+                      'is-invalid': requirement && !requirement.orgName
+                    }"
+                    placeholder="Enter organization name"
+                    [(ngModel)]="requirement.orgName"
+                    (keyup)="onRsppClientSelect(); validatePage1Completion()"
+                    name="orgName"
+                  />
+                </div>
+              </div>
+              <div class="col-lg-6" *ngIf="false">
+                <div class="mb-3">
+                  <label class="form-label" for="gen-info-username-input"
+                    >Client *</label
+                  >
+                  <div class="input-group">
+                    <ng-select
+                      #Selecter
+                      [items]="clients"
+                      [multiple]="false"
+                      bindLabel="name"
+                      placeholder="Client *"
+                      class="form-control"
+                      labelForId="ngSelectId"
+                      (keyup)="filterClients()"
+                      name="client"
+                      (change)="validatePage1Completion()"
+                      [ngClass]="{ 'is-invalid': !requirement.client }"
+                      [(ngModel)]="requirement.client"
+                      [clearable]="false"
+                      style="padding: 0"
+                    >
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6" *ngIf="false">
+                <div class="mb-3">
+                  <label class="form-label" for="writeup1"
+                    >Why does
+                    {{ requirement.orgName ? requirement.orgName : "it" }}
+                    exist ?
+                  </label>
+                  <textarea
+                    class="form-control"
+                    id="writeup1"
+                    [ngClass]="{ 'is-invalid': !requirement.companyWriteup1 }"
+                    rows="5"
+                    placeholder=""
+                    [(ngModel)]="requirement.companyWriteup1"
+                    (keyup)="validatePage1Completion()"
+                    name="writeup1"
+                  ></textarea>
+                </div>
+              </div>
+              <div class="col-lg-6" *ngIf="false">
+                <div class="mb-3">
+                  <label class="form-label" for="writeup2"
+                    >What does it solve?
+                  </label>
+                  <textarea
+                    class="form-control"
+                    id="writeup2"
+                    [ngClass]="{ 'is-invalid': !requirement.companyWriteup2 }"
+                    rows="5"
+                    placeholder=""
+                    [(ngModel)]="requirement.companyWriteup2"
+                    (keyup)="validatePage1Completion()"
+                    name="writeup2"
+                  >
+                  </textarea>
+                </div>
+              </div>
+              <div class="col-lg-6" *ngIf="false">
+                <div class="mb-3">
+                  <label class="form-label" for="writeup3"
+                    >How does it solve ?
+                  </label>
+                  <textarea
+                    class="form-control"
+                    id="writeup3"
+                    [ngClass]="{ 'is-invalid': !requirement.companyWriteup3 }"
+                    rows="5"
+                    placeholder=""
+                    [(ngModel)]="requirement.companyWriteup3"
+                    (keyup)="validatePage1Completion()"
+                    name="writeup3"
+                  ></textarea>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label" for="dynamicRoles"
+                    >Designation *</label
+                  >
+                  <input
+                    [ngClass]="{ 'is-invalid': !roleSearchText }"
+                    type="text"
+                    list="dynamicRoles"
+                    [(ngModel)]="roleSearchText"
+                    (keyup)="loadRoles()"
+                    class="form-control"
+                    placeholder="Search/Enter new designation"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                  <datalist
+                    id="dynamicRoles"
+                    [(ngModel)]="roleSearchText"
+                    name="dynamicRoles"
+                    (change)="validatePage1Completion()"
+                  >
+                    <option [value]="'Select'">Select</option>
+                    <option *ngFor="let role of roles" [value]="role.name">
+                      {{ role.name }}
+                    </option>
+                  </datalist>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label" for="jobFamilyId3"
+                    >Location *</label
+                  >
+                  <div class="input-group">
+                    <ng-select
+                      [items]="locations"
+                      [multiple]="true"
+                      bindLabel="name"
+                      placeholder="Search location"
+                      class="form-control z-1"
+                      [ngClass]="{
+                        'is-invalid': selectedLocations.length == 0
+                      }"
+                      [(ngModel)]="selectedLocations"
+                      [clearable]="false"
+                      style="padding: 0"
+                      (change)="validatePage1Completion()"
+                      name="selectedLocations"
+                    >
+                      <ng-template ng-optgroup-tmp let-item="item">
+                        {{ item }}
+                      </ng-template>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="mb-3">
+                  <div class="d-flex align-items-center gap-1">
+                    <p>CTC (LPA) in INR</p>
+                    <br />
+                  </div>
+                  <div class="row justify-content-between11">
+                    <div class="col-xl-3 align-baseline">
+                      <p>Fixed</p>
+                    </div>
+                    <div class="col-xl-8 align-middle">
+                      <!-- <ngx-slider
+                        [(value)]="minFixedLpa"
+                        [(highValue)]="maxFixedLpa"
+                        [options]="sliderOptions"
+                      ></ngx-slider> -->
+                      <div class="row" style="align-items: center">
+                        <div class="col-xl-5">
+                          <input
+                            type="number"
+                            name="minLpa"
+                            [(ngModel)]="minFixedLpa"
+                            placeholder="minLpa"
+                            class="rounded-pill form-control"
+                          />
+                        </div>
+                        <div class="col-xl-2 align-middle text-center">to</div>
+                        <div class="col-xl-5">
+                          <input
+                            name="maxLpa"
+                            type="number"
+                            [(ngModel)]="maxFixedLpa"
+                            placeholder="maxLpa"
+                            class="rounded-pill form-control"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-1">
+                    <input
+                      type="checkbox"
+                      [(ngModel)]="zeroVariable"
+                      (click)="setMinVariable()"
+                      name="noVariable"
+                      id="noVariable"
+                      class="align-middle"
+                    />
+                    <span class="align-middle"
+                      >&nbsp;No variable component</span
+                    >
+                  </div>
+                  <div class="row justify-content-between11">
+                    <div class="col-xl-3">
+                      <div>
+                        <p>Variable</p>
+                      </div>
+                    </div>
+                    <div class="col-xl-8">
+                      <!-- <ngx-slider
+                        [(value)]="minVariableLpa"
+                        [(highValue)]="maxVariableLpa"
+                        [options]="sliderOptions"
+                        (change)="onSlide($event)"
+                      ></ngx-slider> -->
+                      <div class="row" style="align-items: center">
+                        <div class="col-xl-5">
+                          <input
+                            type="number"
+                            [(ngModel)]="minVariableLpa"
+                            class="rounded-pill form-control"
+                            name="minLpa"
+                            placeholder="minLpa"
+                          />
+                        </div>
+                        <div class="col-xl-2 align-middle text-center">to</div>
+                        <div class="col-xl-5">
+                          <input
+                            type="number"
+                            name="maxLpa"
+                            [(ngModel)]="maxVariableLpa"
+                            class="rounded-pill form-control"
+                            placeholder="maxLpa"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <br />
+                  <div class="d-flex align-items-center gap-2">
+                    <textarea
+                      placeholder="Role Description"
+                      [(ngModel)]="requirement.roleDescr"
+                      class="form-control rounded-2"
+                      name="esops"
+                      rows="3"
+                      (keyup)="validatePage1Completion()"
+                    ></textarea>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+            <div class="d-flex align-items-start gap-3 mt-4">
+              <button
+                type="button"
+                [disabled]="!completedStep1"
+                class="btn btn-success btn-label right ms-auto nexttab nexttab"
+                (click)="currentStep = 'Position details'"
+                data-nexttab="pills-info-desc-tab"
+                cdkStepperNext
+                (mouseover)="validatePage1Completion()"
+              >
+                <i
+                  class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
+                ></i
+                >Next
+              </button>
+            </div>
+          </cdk-step>
+          <cdk-step [optional]="false">
+            <ng-template cdkStepLabel class="wizard-nav mb-5">
+              <button
+                class="nav-link rounded-pill"
+                data-progressbar="custom-progress-bar"
+                [disabled]="!completedStep1"
+                id="pills-gen-info-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#pills-gen-info"
+                type="button"
+                role="tab"
+                aria-controls="pills-gen-info"
+                aria-selected="true"
+              >
+                2
+              </button>
+            </ng-template>
+            <div class="mb-4">
+              <div>
+                <h5 class="mb-1">Position details</h5>
+                <p class="text-muted">Fill all information as below</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label" for="jobFamilyId1"
+                    >Job family *</label
+                  >
+                  <div class="input-group">
+                    <ng-select
+                      [items]="jobFamiliesL1"
+                      [multiple]="false"
+                      bindLabel="name"
+                      placeholder="Job family *"
+                      class="form-control"
+                      labelForId="jobFamilyId1"
+                      name="client"
+                      (change)="
+                        loadJobFamilyForDropdown(2); validatePage2Completion()
+                      "
+                      [ngClass]="{ 'is-invalid': !selectedJobFamilyL1 }"
+                      name="jobeFamily1"
+                      [(ngModel)]="selectedJobFamilyL1"
+                      [clearable]="true"
+                      style="padding: 0"
+                    >
+                    </ng-select>
+                  </div>
+                  <br />
+                  <input
+                    type="checkbox"
+                    (click)="otherJobFamily = !otherJobFamily"
+                    name="otherJobFamily"
+                  />
+                  &nbsp;
+                  <label class="form-label" for="otherJobFamily"
+                    >Other Job family</label
+                  >
+                  <input
+                    *ngIf="otherJobFamily && !selectedJobFamilyL1"
+                    type="text"
+                    name="otherJobFamily"
+                    placeholder="Job family "
+                    class="form-control"
+                    id="otherJobFamily"
+                    (change)="checkNewJobFamilyName('l1')"
+                    [(ngModel)]="otherJobFamilyL1"
+                  />
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label" for="jobFamilyId2"
+                    >Job sub family *</label
+                  >
+                  <div class="input-group">
+                    <ng-select
+                      [items]="jobFamiliesL2"
+                      [multiple]="false"
+                      bindLabel="name"
+                      placeholder="Job sub family *"
+                      class="form-control z-3"
+                      labelForId="jobFamilyId2"
+                      (change)="
+                        loadJobFamilyForDropdown(3); validatePage2Completion()
+                      "
+                      [ngClass]="{ 'is-invalid': !selectedJobFamilyL2 }"
+                      name="jobeFamily2"
+                      [(ngModel)]="selectedJobFamilyL2"
+                      [clearable]="false"
+                      style="padding: 0"
+                    >
+                    </ng-select>
+                  </div>
+                  <br />
+
+                  <input
+                    *ngIf="otherJobFamily"
+                    type="text"
+                    name="otherSubJobFamily"
+                    placeholder="Job sub family *"
+                    class="form-control mt-4"
+                    id="otherSubJobFamily"
+                    (change)="checkNewJobFamilyName('l2')"
+                    [(ngModel)]="otherJobFamilyL2"
+                  />
+                </div>
+              </div>
+
+              <div
+                class="col-lg-6"
+                *ngIf="false && !parentObj.isRspp && jobFamiliesL3.length > 0"
+              >
+                <div class="mb-3">
+                  <label class="form-label" for="jobFamilyId3"
+                    >Job sub family2 *</label
+                  >
+                  <div class="input-group">
+                    <ng-select
+                      [items]="jobFamiliesL3"
+                      [multiple]="false"
+                      bindLabel="name"
+                      placeholder="Job sub family2 *"
+                      class="form-control"
+                      labelForId="jobFamilyId3"
+                      name="client"
+                      (change)="
+                        loadJobFamilyForDropdown(3); validatePage2Completion()
+                      "
+                      [ngClass]="{ 'is-invalid': !selectedJobFamilyL3 }"
+                      name="jobeFamily3"
+                      [(ngModel)]="selectedJobFamilyL3"
+                      [clearable]="false"
+                      style="padding: 0"
+                    >
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-lg-12">
+                <div class="mb-3">
+                 
+                  <br />
+                  <div class="d-flex align-items-center gap-2">
+                    <textarea
+                      placeholder="Esops"
+                      [(ngModel)]="requirement.esop"
+                      class="form-control rounded-2"
+                      name="esops"
+                      rows="3"
+                      (keyup)="validatePage2Completion()"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="d-flex align-items-start gap-3 mt-4"
+              (mouseover)="validatePage2Completion()"
+            >
+              <button
+                type="button"
+                class="btn btn-success text-decoration-none btn-label previestab"
+                data-previous="pills-gen-info-tab"
+                cdkStepperPrevious
+              >
+                <i
+                  class="ri-arrow-left-line label-icon align-middle fs-16 me-2"
+                ></i>
+                Previous
+              </button>
+              <button
+                type="button"
+                [disabled]="!completedStep2"
+                class="btn btn-success btn-label right ms-auto nexttab nexttab"
+                (click)="currentStep = 'Okrs & Criterias'"
+                data-nexttab="pills-info-desc-tab"
+                cdkStepperNext
+                (mouseover)="validatePage2Completion()"
+              >
+                <i
+                  class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
+                ></i
+                >Next
+              </button>
+            </div>
+          </cdk-step>
+          <cdk-step [optional]="false">
+            <ng-template cdkStepLabel class="wizard-nav mb-5">
+              <button
+                class="nav-link rounded-pill"
+                data-progressbar="custom-progress-bar"
+                [disabled]="!completedStep2"
+                id="pills-gen-info-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#pills-gen-info"
+                type="button"
+                role="tab"
+                aria-controls="pills-gen-info"
+                aria-selected="true"
+              >
+                3
+              </button>
+            </ng-template>
+            <div class="mb-4">
+              <div>
+                <h5 class="mb-1">Position details</h5>
+                <p class="text-muted">Fill all information as below</p>
+              </div>
+            </div>
+            <div class="row">
+              <div
+                class="col-lg-6"
+                placement="right"
+                tooltip="Enter level of this role in organization (least value for entry level)*"
+              >
+                <div class="mb-3">
+                  <label class="form-label" for="orgLevel"
+                    >Level at organization (least value being for entry
+                    level)*</label
+                  >
+                  <div class="input-group">
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="orgLevel"
+                      [ngClass]="{
+                        'is-invalid': requirement && !requirement.orgLevel
+                      }"
+                      placeholder="Level at organization (least value being for entry level)*"
+                      [(ngModel)]="requirement.orgLevel"
+                      (keyup)="validatePage3Completion()"
+                      name="orgLevel"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label" for="totalOrgLevels"
+                    >Total Levels in organization*</label
+                  >
+                  <div class="input-group">
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="totalOrgLevels"
+                      [ngClass]="{
+                        'is-invalid': requirement && !requirement.totalOrgLevels
+                      }"
+                      placeholder="Enter total levels in organization*"
+                      [(ngModel)]="requirement.totalOrgLevels"
+                      (keyup)="validatePage3Completion()"
+                      name="totalOrgLevels"
+                    />
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label" for="hiringManager">
+                    Hiring manager's linkedin profile *</label
+                  >
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="hiringManager"
+                      [ngClass]="{
+                        'is-invalid': requirement && !requirement.hiringManager
+                      }"
+                      placeholder="Enter hiring manager's linkedin profile"
+                      [(ngModel)]="requirement.hiringManager"
+                      (keyup)="validatePage3Completion()"
+                      name="hiringManager"
+                    />
+                  </div>
+                </div>
+              </div> -->
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label" for="successProfile">
+                    Success persona (linkedin url)
+                  </label>
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="successProfile"
+                      [ngClass]="{
+                        'is-invalid': requirement && !requirement.successProfile
+                      }"
+                      placeholder="Success persona (linkedin url) "
+                      [(ngModel)]="requirement.successProfile"
+                      name="successProfile"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label" for="experience"
+                    >Mandatory years of exposure *</label
+                  >
+                  <div class="input-group">
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="experience"
+                      [ngClass]="{
+                        'is-invalid':
+                          requirement && requirement.experience == undefined
+                      }"
+                      placeholder="Minimum exposure *"
+                      [(ngModel)]="requirement.experience"
+                      (keyup)="validatePage3Completion()"
+                      name="experience"
+                    />
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="experience"
+                      [ngClass]="{
+                        'is-invalid':
+                          requirement &&
+                          requirement.experienceLimit == undefined
+                      }"
+                      placeholder="Maximum exposure *"
+                      [(ngModel)]="requirement.experienceLimit"
+                      (keyup)="validatePage3Completion()"
+                      name="experience"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label" for="workMode"> OKR </label>
+                  <div class="input-group">
+                    <textarea
+                      type="text"
+                      class="form-control"
+                      id="okr"
+                      [ngClass]="{
+                        'is-invalid': requirement && !requirement.okr
+                      }"
+                      rows="5"
+                      placeholder="OKR"
+                      [(ngModel)]="requirement.okr"
+                      name="okr"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label" for="mandatorySkill"
+                    >Mandatory skills *</label
+                  >
+                  <div class="input-group">
+                    <textarea
+                      type="text"
+                      class="form-control"
+                      id="mandatorySkill"
+                      [ngClass]="{
+                        'is-invalid': requirement && !requirement.mandatorySkill
+                      }"
+                      rows="5"
+                      placeholder="Mandatory skills *"
+                      [(ngModel)]="requirement.mandatorySkill"
+                      (keyup)="validatePage3Completion()"
+                      name="mandatorySkill"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label" for="workMode"> Work mode *</label>
+                  <div class="input-group">
+                    <ng-select
+                      [items]="workModes"
+                      [multiple]="false"
+                      bindLabel="name"
+                      bindValue="name"
+                      placeholder="Work mode *"
+                      class="form-control rounded-pill"
+                      [ngClass]="{
+                        'is-invalid': requirement && !requirement.workMode
+                      }"
+                      (change)="validatePage3Completion()"
+                      name="workMode"
+                      [(ngModel)]="requirement.workMode"
+                      [clearable]="false"
+                      placeholder="Work Mode"
+                      style="padding: 0"
+                    >
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex align-items-start gap-3 mt-4">
+              <button
+                type="button"
+                class="btn btn-success text-decoration-none btn-label previestab"
+                data-previous="pills-gen-info-tab"
+                cdkStepperPrevious
+              >
+                <i
+                  class="ri-arrow-left-line label-icon align-middle fs-16 me-2"
+                ></i>
+                Previous
+              </button>
+              <button
+                type="button"
+                [disabled]="!completedStep3"
+                class="btn btn-success btn-label right ms-auto nexttab nexttab"
+                (click)="currentStep = 'Culture fit'"
+                data-nexttab="pills-info-desc-tab"
+                cdkStepperNext
+                (mouseover)="validatePage3Completion()"
+              >
+                <i
+                  class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
+                ></i
+                >Next
+              </button>
+            </div>
+          </cdk-step>
+          <cdk-step [optional]="false">
+            <ng-template cdkStepLabel class="wizard-nav mb-5">
+              <button
+                class="nav-link rounded-pill"
+                data-progressbar="custom-progress-bar"
+                [disabled]="!completedStep3"
+                id="pills-gen-info-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#pills-gen-info"
+                type="button"
+                role="tab"
+                aria-controls="pills-gen-info"
+                aria-selected="true"
+              >
+                4
+              </button>
+            </ng-template>
+            <div class="mb-4">
+              <div>
+                <h5 class="mb-1">Culture Fit</h5>
+                <p class="text-muted">
+                  Select relevant values of {{ requirement.orgName }}
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12" placement="right">
+                <div
+                  class="mb-3"
+                  *ngFor="let valueSet of valueSets; let ind = index"
+                >
+                  <h6 class="card-title mb-3">
+                    {{ valueSet.question }} (Pick any one)
+                  </h6>
+                  <div class="row">
+                    <div
+                      class="col-xl-3 col-lg-3 col-md-4 col-sm-4"
+                      *ngFor="let value of valueSet?.values; let i = index"
+                    >
+                      <button
+                        style="width: 100%; margin-top: 15px"
+                        type="button"
+                        class="{{
+                          value.selected
+                            ? 'btn btn-primary'
+                            : 'btn btn-outline-primary'
+                        }}"
+                        (click)="
+                          clickedValue(value, ind); validatePage4Completion()
+                        "
+                      >
+                        {{ value.value }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex align-items-start gap-3 mt-4">
+              <button
+                type="button"
+                class="btn btn-success text-decoration-none btn-label previestab"
+                data-previous="pills-gen-info-tab"
+                cdkStepperPrevious
+              >
+                <i
+                  class="ri-arrow-left-line label-icon align-middle fs-16 me-2"
+                ></i>
+                Previous
+              </button>
+              <button
+                type="button"
+                [disabled]="!completedStep4"
+                class="btn btn-success btn-label right ms-auto nexttab nexttab"
+                data-nexttab="pills-info-desc-tab"
+                cdkStepperNext
+                (mouseover)="validatePage4Completion()"
+              >
+                <i
+                  class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
+                ></i
+                >Next
+              </button>
+            </div>
+          </cdk-step>
+          <cdk-step [optional]="false">
+            <ng-template cdkStepLabel class="wizard-nav mb-5">
+              <button
+                class="nav-link rounded-pill"
+                data-progressbar="custom-progress-bar"
+                [disabled]="!completedStep4"
+                id="pills-gen-info-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#pills-gen-info"
+                type="button"
+                role="tab"
+                aria-controls="pills-gen-info"
+                aria-selected="true"
+              >
+                5
+              </button>
+            </ng-template>
+            <div class="mb-4">
+              <div>
+                <h5 class="mb-1">Additional Info</h5>
+                <p class="text-muted">You can provide additional info here</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12" placement="right">
+                <div class="mb-3">
+                  <label class="form-label" for="process"
+                    >Selection Process</label
+                  >
+                  <div class="input-group">
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="process"
+                      rows="5"
+                      style="width: 10%"
+                      placeholder="Enter no. of rounds"
+                      [(ngModel)]="requirement.interviewRounds"
+                      name="process"
+                    />
+                  </div>
+                  <br />
+                  <div class="row">
+                    <div class="col-lg-12">
+                      Max {{ 100 - processString.length }}
+                      <input
+                        name="processString"
+                        class="form form-control"
+                        type="text"
+                        length="100"
+                        [(ngModel)]="processString"
+                        placeholder="Enter round {{ processes.length + 1 }}"
+                        [disabled]="
+                          processes.length == requirement.interviewRounds
+                        "
+                      />
+                    </div>
+                  </div>
+                  <br />
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <button
+                        type="button"
+                        class="btn btn-info"
+                        (click)="addProcess()"
+                      >
+                        Add process
+                      </button>
+                    </div>
+                  </div>
+                  <br />
+                  <ul>
+                    <li *ngFor="let p of processes">{{ p.process }}</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12" placement="right">
+                <div class="mb-3">
+                  <label
+                    *ngIf="requirement.extra"
+                    class="form-label"
+                    for="additionalInfo"
+                    >Additional Info</label
+                  >
+                  <div class="input-group">
+                    <textarea
+                      type="text"
+                      class="form-control"
+                      id="additionalInfo"
+                      rows="5"
+                      placeholder="Additional Info"
+                      [(ngModel)]="requirement.extra"
+                      name="additionalInfo"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12" placement="right">
+                <div class="mb-3">
+                  <label class="form-label" for="additionalFile"
+                    >Do you have any file to attach ?</label
+                  >
+                  <div class="input-group">
+                    <input
+                      type="file"
+                      accept="image/png, image/jpeg, image/jpg, application/pdf"
+                      (change)="onFileSelect($event)"
+                    />
+                    <a
+                      target="_blank"
+                      href="{{ commonService.getPicUrl(requirement.file1) }}"
+                      *ngIf="requirement.file1"
+                      >Download</a
+                    >
+                    &nbsp;&nbsp;
+                    <i
+                      class="ri-delete-bin-line clickable"
+                      (click)="requirement.file1 = undefined"
+                      *ngIf="requirement.file1"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex align-items-start gap-3 mt-4">
+              <button
+                type="button"
+                class="btn btn-success text-decoration-none btn-label previestab"
+                data-previous="pills-gen-info-tab"
+                cdkStepperPrevious
+              >
+                <i
+                  class="ri-arrow-left-line label-icon align-middle fs-16 me-2"
+                ></i>
+                Previous
+              </button>
+              <button
+                type="button"
+                class="btn btn-success btn-label right ms-auto nexttab nexttab"
+                (click)="saveRoleIfRequiredAndPostRequirement()"
+                data-nexttab="pills-info-desc-tab"
+                cdkStepperNext
+                (mouseover)="validatePage4Completion()"
+              >
+                <i
+                  class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"
+                ></i
+                >Submit
+              </button>
+            </div>
+          </cdk-step> </ng-stepper
+        ><br />
+        <h5 *ngIf="message?.indexOf('Saved') > -1 && isOpenUrl">
+          {{ message }}
+        </h5>
+      </div>
+    </form>
+  </div>
+</div>

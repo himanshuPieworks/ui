@@ -1,0 +1,218 @@
+<app-breadcrumbs [breadcrumbItems]="breadCrumbItems"> </app-breadcrumbs>
+<br />
+
+<!-- tab for adding  start -->
+<div class="row">
+  <div class="col-lg">
+    <div
+      class="card"
+      style="background-image: url('assets/images/background.png')"
+    >
+      <div class="card-body">
+        <div class="row align-items-center gy-3">
+          <div class="col-6">
+            <h6 class="card-tooltip fs-2xl mb-0">
+              Clubs<span
+                class="badge bg-secondary-subtle text-secondary align-baseline ms-1"
+              ></span>
+            </h6>
+          </div>
+          <!--end col-->
+          <div class="col-auto ms-auto">
+            <!-- button for popup  -->
+            <button
+              class="btn btn-primary me-1 rounded-pill default-btn-width"
+              (click)="addClubs.show()"
+            >
+              <i class="bi bi-plus align-baseline fs-2xl"></i></button
+            >&nbsp;
+          </div>
+          <!--end col-->
+        </div>
+        <!--end row-->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- tab for adding and copy link and filter end -->
+
+<div class="row" id="prospect-list">
+  <div *ngFor="let club of clubs" class="col-xxl-4 col-lg-4 col-md-6 p-2">
+    <div
+      class="card real-estate-grid-widgets card-animate"
+      style="height: 100%"
+    >
+      <div class="card-body">
+        <div class="d-flex gap-4 flex-wrap">
+          <!-- icon of club-->
+          <div>
+            <i class="{{ club.icon }}" style="font-size: 30px"></i>
+          </div>
+          <!-- club name -->
+          <div class="align-self-center">
+            <h5>
+              {{ club.name ? club.name : "Club Name - NA" }}
+            </h5>
+          </div>
+        </div>
+
+        <hr class="mt-0" />
+        <div dropdown class="dropdown dropdown-real-estate">
+          <div
+            style="min-width: inherit"
+            dropdownToggle
+            class="fs-2xl"
+            type="button"
+          >
+            <i class="bi bi-three-dots-vertical"></i>
+          </div>
+          <div *bsDropdownMenu class="dropdown-menu dropdown-menu-end">
+            <li>
+              <a
+                (click)="removeClub(club)"
+                class="dropdown-item edit-list"
+                href="javascript:void(0);"
+                style="font-size: 12px"
+                >Delete Club</a
+              >
+            </li>
+            <li>
+              <a
+                (click)="selectedClub = club; membersModal.show(); loadMember()"
+                class="dropdown-item edit-list"
+                href="javascript:void(0);"
+                style="font-size: 12px"
+                >Show Members</a
+              >
+            </li>
+          </div>
+        </div>
+        <div>
+          <p>
+            {{ club.description ? club.description : "No Description- NA" }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  New Club  from here pop up is calling  -->
+<div
+  bsModal
+  #addClubs="bs-modal"
+  class="modal bs-example-modal-lg fade"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        *ngIf="true"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <p class="modal-title" id="myLargeModalLabel"></p>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          (click)="addClubs.hide()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="clubName" class="form-label">Club Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="clubName"
+            id="clubName"
+            placeholder="Club Name"
+            [(ngModel)]="payload.name"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            name="description"
+            id="description"
+            placeholder="Description"
+            [(ngModel)]="payload.description"
+          />
+        </div>
+
+        <button type="submit" class="btn btn-success" (click)="saveClubs()">
+          Submit
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- New Club prospect card start -->
+
+<!--  members   -->
+<div
+  bsModal
+  #membersModal="bs-modal"
+  class="modal bs-example-modal-sm fade"
+  id="exampleModalScrollable"
+  [config]="{ backdrop: 'static', keyboard: true }"
+>
+  <div class="modal-dialog modal-dialog-scrollable modal-sm">
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        *ngIf="true"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <div
+          class="modal-title flex-grow-1"
+          id="myLargeModalLabel"
+          style="max-width: 80%"
+        >
+          Members
+        </div>
+        <div
+          class="bi bi-clipboard-check-fill text-light fs-2xl clickable"
+          (click)="copyClubMember()"
+          tooltip="copy members email id."
+          aria-label="Close"
+        ></div>
+        <div class="">
+          <button
+            type="button"
+            class="btn-close btn-close-white fs-xl"
+            (click)="membersModal.hide()"
+            aria-label="Close"
+          ></button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div>
+          <div *ngIf="clubMember && clubMember?.length === 0">
+            <p>There are no members.</p>
+          </div>
+          <div *ngFor="let c of clubMember">
+            <div class="d-flex gap-3 mb-1">
+              <div class="align-self-center">
+                <img src="{{ commonService.getPicUrl(c?.user?.profilepic) }}" alt="" style="width: 40px; height:40px;" class="rounded-circle">
+              </div>
+              <div>
+                <h6 class="mb-0">{{ c?.user?.name }}</h6>
+                <span>{{commonService.convertToTitleCase(c?.user?.userrole)}}</span>
+              </div>
+            </div>
+            <!-- <h6>{{ c.user.name }}</h6> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- New Club prospect card start -->

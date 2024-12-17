@@ -1,0 +1,60 @@
+<div class="mt-sm-0 mt-5"></div>
+<div class="container" *ngIf="!clickOnApply">
+  <br />
+  <div class="card">
+    <div class="card-header">
+      <div class="d-flex justify-content-between">
+        <div class="align-self-center">
+          <div class="d-flex gap-1">
+            <div class="align-self-center">
+              <img src="assets/images/logo-sm.png" alt="" class="img-fluid"/>
+            </div>
+            <div class="align-self-center">
+              <h4>{{ requirement?.role?.name }}</h4>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      <hr />
+    </div>
+    <div class="card-body">
+      <div>
+        <h4>About the Client</h4>
+        <p>
+          The client, based in {{ requirement?.location }}, operates in the
+          {{ requirement?.client?.sector }} sector and has been in business
+          since {{ requirement?.client?.established }}. With a team size of
+          {{ requirement?.client?.employees }} employees and
+          {{ requirement?.client?.latestFunding }} funding, they are seeking
+          candidates with {{ requirement?.experience }}-{{
+            requirement?.experienceLimit
+          }}
+          years of experience, offering a competitive salary range of ₹{{
+            requirement?.minFixedLpa
+          }}-{{ requirement?.maxFixedLpa }} LPA.
+        </p>
+       
+      </div>
+      <div>
+        <h4>Role Description</h4>
+        <p [innerHTML]="requirement?.roleDescr"></p>
+      </div>
+      <div class="mt-1">
+        <h4>Mandatory Criteria</h4>
+        <p [innerHTML]="requirement?.mandatorySkill"></p>
+      </div>
+      <div class="d-flex justify-content-end">
+        <div class="align-self-center">
+          <button class="btn btn-primary" (click)="onApply()">
+            Apply Now &nbsp;<i class="bi bi-box-arrow-in-up-right fs-xl"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container" *ngIf="clickOnApply">
+  <app-community-open-form></app-community-open-form>
+</div>

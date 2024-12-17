@@ -1,0 +1,60 @@
+<!-- Begin page -->
+<div id="layout-wrapper">
+  <!-- Top Bar -->
+  <app-topbar (mobileMenuButtonClicked)="onToggleMobileMenu()"></app-topbar>
+  <!-- first horizontal bar with logo and profile photo and all. -->
+  <!-- Side Bar -->
+  <app-horizontal-topbar *ngIf="true"></app-horizontal-topbar>
+  <div
+    *ngIf="
+      commonService.currentLocation?.indexOf('home') > -1 ||
+      commonService.currentLocation == '/'
+    "
+    class="position-relative w-100 sm-mb-0 mb-3"
+    style="
+      background-image: url('assets/images/background.png');
+      background-size: cover;
+      height: 300px;
+      box-shadow: inset 0 300px 0 rgba(0, 0, 0, 0.3);
+    "
+  >
+    <div
+      class="position-absolute top-50 translate-middle-y"
+      style="left: 9vw; color: white"
+    >
+      <p class="text-white h1">Welcome Back {{ getFirstName(userName) }}</p>
+      <p *ngIf="commonService.user.userrole == 'COMMUNITY MEMBER'">
+        Let's get you updated on your journey – where every PIE of your energy
+        is monetised
+      </p>
+      <p *ngIf="commonService.user.userrole == 'Talent'">
+        Let's see what’s happening in the ecosystem
+      </p>
+      <p *ngIf="commonService.user.userrole == 'Client'">
+        Let's see how the Hiring Rigour looks like!
+      </p>
+    </div>
+  </div>
+  <div class="main-content px-xl-5">
+    <div class="page-content mt-2">
+      <div class="container-fluid">
+        <!-- Main Content -->
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+    <!-- Footer -->
+    <app-footer></app-footer>
+  </div>
+</div>
+<!--  floating button -->
+<div >
+  <app-add-float-button
+    *ngIf="
+      commonService.user.userrole == 'COMMUNITY MEMBER' &&
+      commonService.user.confirmedUser == 1
+    "
+    class="d-none d-sm-block"
+    title="Add from your Network & make Money"
+  ></app-add-float-button>
+</div>
+<ngx-spinner type="ball-clip-rotate"></ngx-spinner>

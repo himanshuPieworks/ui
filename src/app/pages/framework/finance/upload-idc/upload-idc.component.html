@@ -1,0 +1,53 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs tooltip="Workspace" [breadcrumbItems]="breadCrumbItems" [title]="'Community'"></app-breadcrumbs><br>
+<!-- End Breadcrumbs -->
+
+<div class="row">
+    <div class="col-lg">
+        <div class="card">
+            <div class="card-body">
+                <div class="row align-items-center gy-3">
+                    <div class="col-6">
+                        <h6 class="card-tooltip fs-2xl mb-0">Independent contracts
+                            <span class="badge bg-secondary-subtle text-secondary align-baseline ms-1"></span>
+                        </h6>
+                    </div><!--end col-->
+                    <div class="col-auto ms-auto">
+                        <!--                        <button class="btn btn-primary me-1 rounded-pill default-btn-width" (click)='exportToXls()' tooltip='export to xls'><i
+                                                        class="bi bi-file-excel align-baseline"></i></button>
+                                                <button class="btn btn-primary me-1 rounded-pill default-btn-width" tooltip='add new {{rssppMandateLabel}}' (click)="menuAction='Create RSPP';addModal.show()"><i
+                                                        class="bi bi-plus align-baseline"></i></button>-->
+                        <!--                        <button class="btn btn-primary myButton rounded-pill default-btn-width" (click)="filterWindow.show()"><i
+                                                        class="bi bi-funnel align-baseline" tooltip='show filters'></i></button>-->
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-10" style="text-align: left">
+                        <form [formGroup] = "uploadForm"  enctype="multipart/form-data">
+                            Upload new document : <input id="fileinput" [hidden]="false" style="margin-top: 25px" type="file" name="profile" class="form-control-file" accept="application/pdf" (change)="onProfilePicSelect($event);">
+                            <input type='button' class="btn btn-success" value="Upload" (click)="uploadFile()">
+                        </form>
+                    </div>
+                </div>
+                <div class="row" id="property-list">
+                    <table class="table" style="max-width: 100%;" >
+                        <thead>
+                            <tr>
+                                <th class="table-th" scope="col" style="text-align: left">View</th>
+                                <th class="table-th">Uploaded On</th>
+                            </tr>
+                        </thead>
+                        <tr *ngFor="let d of documents" [ngClass]="d.classOnRowClick?d.classOnRowClick:''">
+                            <td class="table-td-dashboard" style="text-align: left" ><a href="{{commonService.getPicUrl(d.url)}}" target="_new">View</a></td>
+                            <td class="table-td-dashboard"><a style="cursor: pointer;color:blue">{{d.createdOn}}</a></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

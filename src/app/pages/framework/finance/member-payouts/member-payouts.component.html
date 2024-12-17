@@ -1,0 +1,1072 @@
+<!-- BreadCrumbs for links -->
+<app-breadcrumbs [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs><br />
+
+<div class="card">
+  <div class="card-body">
+    <tabset>
+      <tab heading="UnBilled Items">
+        <br />
+        <div class="text-center mt-4">
+          <h4>Pending Payout Request !</h4>
+        </div>
+
+        <!-- table of Un-Billed Payment start here -->
+        <div class="row mt-5">
+          <div
+            class="col-sm-6 col-lg-12"
+            *ngIf="!selectedPayout && !selectedPiecosPayout"
+          >
+            <table
+              [ngClass]="
+                commonService.isMobileDevice
+                  ? 'table overflow'
+                  : 'table table-striped'
+              "
+            >
+              <thead class="thead-dark">
+                <tr>
+                  <th class="table-th">Name</th>
+                  <th class="table-th">Status</th>
+                  <th class="table-th">Escrow Amount</th>
+                  <th class="table-th">Amount Claimed</th>
+                  <th class="table-th">Amount Passed</th>
+                  <th class="table-th">Type</th>
+                  <th
+                    class="table-th"
+                    tooltip="Community Manager can use this field to validate the payout. Post validation, finance team can approve the payout."
+                  >
+                    Core Team Validation
+                  </th>
+                  <th class="table-th">Remarks</th>
+                  <th class="table-th">Validator</th>
+                  <th class="table-th" scope="col">Date</th>
+                </tr>
+              </thead>
+              <tr
+                *ngFor="let invoice of pendingInvoices; let i = index"
+                style="cursor: pointer"
+              >
+                <td
+                  class="table-td"
+                  (click)="
+                    selectedPiecosPayout = undefined;
+                    selectedPayout = invoice;
+                    loadPayoutItems()
+                  "
+                >
+                  {{ invoice.user.name ? invoice.user.name : "N/A" }}
+                </td>
+                <td
+                  class="table-td"
+                  (click)="
+                    selectedPiecosPayout = undefined;
+                    selectedPayout = invoice;
+                    loadPayoutItems()
+                  "
+                >
+                  {{ invoice.status ? invoice.status : "N/A" }}
+                </td>
+                <td
+                  class="table-td"
+                  (click)="
+                    selectedPiecosPayout = undefined;
+                    selectedPayout = invoice;
+                    loadPayoutItems()
+                  "
+                >
+                  {{ invoice.escrowAmount ? invoice.escrowAmount : "N/A" }}/-
+                </td>
+                <td
+                  class="table-td"
+                  (click)="
+                    selectedPiecosPayout = undefined;
+                    selectedPayout = invoice;
+                    loadPayoutItems()
+                  "
+                >
+                  {{ invoice.total ? invoice.total : "N/A" }}/-
+                </td>
+                <td
+                  class="table-td"
+                  (click)="
+                    selectedPiecosPayout = undefined;
+                    selectedPayout = invoice;
+                    loadPayoutItems()
+                  "
+                >
+                  {{ invoice.totalPassed ? invoice.totalPassed : "N/A" }}/-
+                </td>
+                <td
+                  class="table-td"
+                  (click)="
+                    selectedPiecosPayout = undefined;
+                    selectedPayout = invoice;
+                    loadPayoutItems()
+                  "
+                >
+                  Discovery
+                </td>
+                <td class="table-td">
+                  <ng-select
+                    [items]="valStatus"
+                    [(ngModel)]="invoice.validationStatus"
+                    [multiple]="false"
+                    placeholder="Select"
+                    class="form-control"
+                    [clearable]="false"
+                    (change)="
+                      invoice.validatedBy = this.commonService.user;
+                      updateInvoice(invoice)
+                    "
+                    style="padding: 0"
+                  >
+                  </ng-select>
+                </td>
+                <td class="table-td">
+                  <input
+                    type="text"
+                    class="form form-control"
+                    [(ngModel)]="invoice.remarks"
+                    placeholder="remarks"
+                    (change)="updateInvoice(invoice)"
+                  />
+                </td>
+                <td class="table-td">
+                  {{ invoice.validatedBy ? invoice.validatedBy.name : "NA" }}
+                </td>
+                <td class="table-td">
+                  {{ invoice.logTime ? invoice.logTime : "N/A" }}
+                </td>
+              </tr>
+              <tr
+                *ngFor="let invoice of pendingPiecosInvoices; let i = index"
+                style="cursor: pointer"
+              >
+                <td
+                  class="table-td"
+                  (click)="
+                    selectedPayout = undefined;
+                    selectedPiecosPayout = invoice;
+                    loadPiecosPayoutItems()
+                  "
+                >
+                  {{ invoice.userName }}
+                </td>
+                <td
+                  class="table-td"
+                  (click)="
+                    selectedPayout = undefined;
+                    selectedPiecosPayout = invoice;
+                    loadPiecosPayoutItems()
+                  "
+                >
+                  {{ invoice.status }}
+                </td>
+                <td
+                  class="table-td"
+                  (click)="
+                    selectedPayout = undefined;
+                    selectedPiecosPayout = invoice;
+                    loadPiecosPayoutItems()
+                  "
+                >
+                  N/A
+                </td>
+                <td
+                  class="table-td"
+                  (click)="
+                    selectedPayout = undefined;
+                    selectedPiecosPayout = invoice;
+                    loadPiecosPayoutItems()
+                  "
+                >
+                  {{ invoice.netAmount }}/-
+                </td>
+                <td
+                  class="table-td"
+                  (click)="
+                    selectedPayout = undefined;
+                    selectedPiecosPayout = invoice;
+                    loadPiecosPayoutItems()
+                  "
+                >
+                  {{ invoice.netAmountPassed }}/-
+                </td>
+                <td
+                  class="table-td"
+                  (click)="
+                    selectedPayout = undefined;
+                    selectedPiecosPayout = invoice;
+                    loadPiecosPayoutItems()
+                  "
+                >
+                  Piecoins
+                </td>
+                <td class="table-td">
+                  <ng-select
+                    [items]="valStatus"
+                    [(ngModel)]="invoice.validationStatus"
+                    [multiple]="false"
+                    placeholder="Select"
+                    class="form-control"
+                    [clearable]="false"
+                    (change)="
+                      invoice.validatedBy = commonService.user;
+                      updatePiecosInvoice(invoice)
+                    "
+                    style="padding: 0"
+                  >
+                  </ng-select>
+                </td>
+                <td class="table-td">
+                  <input
+                    type="text"
+                    class="form form-control"
+                    [(ngModel)]="invoice.remarks"
+                    placeholder="remarks"
+                    (change)="updatePiecosInvoice(invoice)"
+                  />
+                </td>
+                <td class="table-td">
+                  {{ invoice.validatedBy ? invoice.validatedBy.name : "NA" }}
+                </td>
+                <td class="table-td">{{ invoice.createdOn }}</td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="col-sm-6 col-lg-12" *ngIf="selectedPayout">
+            <input
+              type="button"
+              class="btn btn-success"
+              value="Approve"
+              (click)="confirmUpdateStatus('approve')"
+            />&nbsp;&nbsp;<!-- comment -->
+            <input
+              type="button"
+              class="btn btn-danger"
+              value="Reject"
+              (click)="confirmUpdateStatus('reject')"
+            />
+            &nbsp;&nbsp;
+            <input
+              type="button"
+              class="btn btn-dark"
+              value="Go Back"
+              (click)="goBack()"
+            />
+            <table
+              [ngClass]="
+                commonService.isMobileDevice
+                  ? 'table overflow'
+                  : 'table table-striped'
+              "
+            >
+              <thead class="thead-dark">
+                <tr>
+                  <th class="table-th">Discovery</th>
+                  <th class="table-th">Status</th>
+                  <th class="table-th">Escrow Amount</th>
+                  <th class="table-th">Amount Claimed</th>
+                  <th class="table-th">Amount Passed</th>
+                  <th class="table-th">Remarks</th>
+                  <th class="table-th" scope="col">Status Updated On</th>
+                </tr>
+              </thead>
+              <tr
+                *ngFor="let item of payoutItems; let i = index"
+                style="cursor: pointer"
+              >
+                <td (click)="openModal(item)" class="table-td">
+                  {{
+                    item.discovery.candidate.name +
+                      "," +
+                      item.discovery.requirement.role.name +
+                      "," +
+                      item.discovery.requirement.client.name
+                  }}/-
+                </td>
+                <td (click)="openModal(item)" class="table-td">
+                  {{ item.discovery.status.name }}
+                </td>
+                <td (click)="openModal(item)" class="table-td">
+                  {{ item.escrowAmount }}/-
+                </td>
+                <td (click)="openModal(item)" class="table-td">
+                  {{ item.maturedAmount }}/-
+                </td>
+                <td class="table-td">
+                  <input
+                    type="number"
+                    class="form form-control"
+                    [(ngModel)]="item.maturedAmountPassed"
+                    (change)="calculatePendingTotal()"
+                  />
+                </td>
+                <td class="table-td">
+                  <input
+                    type="text"
+                    class="form form-control"
+                    [(ngModel)]="item.remarks"
+                    maxlength="255"
+                  />
+                </td>
+                <td (click)="showPayoutBreakup()" class="table-td">
+                  {{ item.logTime }}
+                </td>
+              </tr>
+              <tr>
+                <td
+                  class="table-td"
+                  colspan="3"
+                  style="text-align: right; font-weight: bold"
+                >
+                  Total
+                </td>
+                <td class="table-td" colspan="1">{{ pendingTotal }}/-</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td
+                  class="table-td"
+                  colspan="3"
+                  style="text-align: right; font-weight: bold"
+                >
+                  Tax @10%
+                </td>
+                <td class="table-td" colspan="1">
+                  {{ (pendingTotal * 10) / 100 }}/-
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+
+              <tr>
+                <td
+                  class="table-td"
+                  colspan="3"
+                  style="text-align: right; font-weight: bold"
+                >
+                  Net Total
+                </td>
+                <td class="table-td" colspan="1">{{ getFinalTotal() }}/-</td>
+                <td></td>
+                <td></td>
+              </tr>
+            </table>
+            <br />
+            <h2>Member Performance History</h2>
+            &nbsp; Eligible Payout %
+            <input
+              type="number"
+              [(ngModel)]="selectedPayout.eligiblePayoutPerc"
+              class="form form-control"
+              style="width: 15%"
+            />
+            <table
+              [ngClass]="
+                commonService.isMobileDevice
+                  ? 'table overflow'
+                  : 'table table-striped'
+              "
+            >
+              <thead class="thead-dark">
+                <tr>
+                  <th
+                    scope="col"
+                    class="table-th"
+                    style="
+                      border-width: 2px;
+                      border-color: #fffbfb;
+                      border-top-left-radius: 0px;
+                      border-top-style: solid;
+                    "
+                  >
+                    Month
+                  </th>
+                  <th
+                    class="table-th"
+                    scope="col"
+                    style="
+                      border-width: 2px;
+                      border-color: #fffbfb;
+                      border-top-right-radius: 0px;
+                      border-top-style: solid;
+                    "
+                  >
+                    Weighted Count
+                  </th>
+                  <th
+                    class="table-th"
+                    scope="col"
+                    style="
+                      border-width: 2px;
+                      border-color: #fffbfb;
+                      border-top-right-radius: 0px;
+                      border-top-style: solid;
+                    "
+                  >
+                    Target
+                  </th>
+                </tr>
+                <tr *ngFor="let details of penaltyDetails; let i = index">
+                  <td class="table-td" style="text-align: center">
+                    <br />{{ commonService.getMonthNameFromNumber(details[3]) }}
+                  </td>
+                  <td class="table-td" scope="col">{{ details[1] }}</td>
+                  <td scope="row" class="table-td">{{ details[2] }}</td>
+                </tr>
+              </thead>
+            </table>
+          </div>
+
+          <div class="col-sm-6 col-lg-12" *ngIf="selectedPiecosPayout">
+            <table
+              [ngClass]="
+                commonService.isMobileDevice
+                  ? 'table overflow'
+                  : 'table table-striped'
+              "
+            >
+              <thead class="thead-dark text-center">
+                <tr>
+                  <th class="table-th">Picoins For</th>
+                  <th class="table-th">Credit</th>
+                  <th class="table-th">Debit</th>
+                  <th class="table-th">Worth of 1 Piecos</th>
+                  <th class="table-th">Amount</th>
+                  <!-- <th class="table-th">Amount Passed</th>
+                  <th class="table-th">Remarks</th> -->
+                  <th class="table-th">Log time</th>
+                </tr>
+              </thead>
+              <tr
+                *ngFor="let item of piecosStatement; let i = index"
+                style="cursor: pointer"
+                class="text-center"
+              >
+                <td class="table-td">{{ item.remarks }}/-</td>
+                <td class="table-td">
+                  {{ item.credit }}
+                </td>
+                <td class="table-td">{{ item?.debit }}</td>
+                <td class="table-td">{{ item?.worthOf1Pieco }}/-</td>
+                <td class="table-td">
+                  <input
+                    type="number"
+                    [(ngModel)]="item.amountPassed"
+                    class="form form-control text-center"
+                    (change)="calculateTotalPiecosAmount()"
+                  />
+                  <!-- {{ item.amountPassed }} -->
+                </td>
+                <td class="table-td">
+                  {{ item.createdOn }}
+                </td>
+
+                <td class="table-td">
+                  {{ item?.logTime }}
+                </td>
+              </tr>
+              <tr>
+                <td
+                  class="table-td"
+                  colspan="3"
+                  style="text-align: right; font-weight: bold"
+                >
+                  Total
+                </td>
+                <td class="table-td" colspan="1">{{ totalPiecosAmount }}/-</td>
+                <td></td>
+                <td></td>
+              </tr>
+
+              <tr>
+                <td
+                  class="table-td"
+                  colspan="3"
+                  style="text-align: right; font-weight: bold"
+                >
+                  Tax @10%
+                </td>
+                <td class="table-td" colspan="1">
+                  {{ (totalPiecosAmount * 10) / 100 }}/-
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+
+              <tr>
+                <td
+                  class="table-td"
+                  colspan="3"
+                  style="text-align: right; font-weight: bold"
+                >
+                  Net Total
+                </td>
+                <td class="table-td" colspan="1">
+                  {{ selectedPiecosPayout.netAmountPassed }}/-
+                </td>
+
+                <td></td>
+                <td></td>
+              </tr>
+            </table>
+            <br />
+
+            <input
+              type="button"
+              class="btn btn-success"
+              value="Approve"
+              (click)="confirmUpdateStatusPiecos('approve')"
+            />&nbsp;&nbsp;<!-- comment -->
+            <input
+              type="button"
+              class="btn btn-danger"
+              value="Reject"
+              (click)="confirmUpdateStatusPiecos('reject')"
+            />
+            &nbsp;&nbsp;
+            <input
+              type="button"
+              class="btn btn-dark"
+              value="Go Back"
+              (click)="goBack()"
+            />
+          </div>
+        </div>
+      </tab>
+
+      <tab heading="Previous Payouts">
+        <br />
+        <div class="row" *ngIf="!selectedPayout">
+          <div class="col-lg-2">
+            <p style="margin-left: 5px; font-weight: bold">Starting Date</p>
+            <div class="row">
+              <div class="col-lg-12">
+                <input
+                  type="date"
+                  [(ngModel)]="startingDate"
+                  (change)="loadMembers(); filterChanged()"
+                  class="form-control"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2">
+            <p style="margin-left: 5px; font-weight: bold">Ending Date</p>
+            <div class="row">
+              <div class="col-lg-12">
+                <input
+                  type="date"
+                  [(ngModel)]="endingDate"
+                  (change)="loadMembers(); filterChanged()"
+                  class="form-control"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2">
+            <p style="margin-left: 5px; font-weight: bold">Member</p>
+            <div class="row">
+              <div class="col-lg-12">
+                <ng-select
+                  [items]="members"
+                  bindLabel="user.name"
+                  bindValue="user.id"
+                  [(ngModel)]="userId"
+                  [multiple]="false"
+                  placeholder="Select Member"
+                  class="form-control"
+                  [clearable]="false"
+                  (change)="filterChanged()"
+                  style="padding: 0"
+                  [searchFn]="localSearch"
+                  (search)="onSearch($event)"
+                >
+                </ng-select>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2">
+            <i
+              class="bx bx-brush clickable"
+              (click)="clearFilter()"
+              title="clear filter"
+            ></i>
+          </div>
+        </div>
+        <br /><br />
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="row">
+              <div class="col-sm-6 col-lg-12" *ngIf="!selectedPayout">
+                <table
+                  [ngClass]="
+                    commonService.isMobileDevice
+                      ? 'table overflow'
+                      : 'table table-striped'
+                  "
+                >
+                  <thead class="thead-dark">
+                    <tr>
+                      <th class="table-th" scope="col">Name</th>
+                      <th class="table-th" scope="col">Type</th>
+                      <th class="table-th">Amount Claimed</th>
+                      <th class="table-th">Amount Passed</th>
+                      <th class="table-th" scope="col">Status</th>
+                      <th class="table-th" scope="col">Claimed On</th>
+                      <th class="table-th" scope="col">Approved On</th>
+                    </tr>
+                  </thead>
+                  <tr
+                    *ngFor="let invoice of invoices; let i = index"
+                    (click)="
+                      selectedPiecosPayout = undefined;
+                      selectedPayout = invoice;
+                      loadPayoutItems()
+                    "
+                    style="cursor: pointer"
+                  >
+                    <td class="table-td">{{ invoice.user.name }}</td>
+                    <td class="table-td">Discovery</td>
+                    <td class="table-td">{{ invoice.total }}/-</td>
+                    <td class="table-td">
+                      {{
+                        invoice.status == "processed"
+                          ? invoice.totalPassed
+                          : "0"
+                      }}/-
+                    </td>
+                    <td class="table-td">{{ invoice.status }}</td>
+                    <td class="table-td">{{ invoice.logTime }}</td>
+                    <td class="table-td">{{ invoice.approvedOn }}</td>
+                  </tr>
+                  <tr
+                    *ngFor="let invoice of piecosInvoices; let i = index"
+                    (click)="
+                      selectedPayout = undefined;
+                      selectedPiecosPayout = invoice;
+                      loadPiecosPayoutItems()
+                    "
+                    style="cursor: pointer"
+                  >
+                    <td class="table-td">{{ invoice.userName }}</td>
+                    <td class="table-td">Piecoins</td>
+                    <td class="table-td">{{ invoice.netAmount }}/-</td>
+                    <td class="table-td">
+                      {{
+                        invoice.status == "processed"
+                          ? invoice.netAmountPassed
+                          : "0"
+                      }}/-
+                    </td>
+                    <td class="table-td">{{ invoice.status }}</td>
+                    <td class="table-td">{{ invoice.createdOn }}</td>
+                    <td class="table-td">{{ invoice.approvedOn }}</td>
+                  </tr>
+                </table>
+              </div>
+              <div class="col-sm-6 col-lg-12" *ngIf="selectedPayout">
+                <div class="text-right">
+                  <input
+                    type="text"
+                    class="btn btn-dark"
+                    value="Go Back"
+                    (click)="goBack()"
+                  />
+                </div>
+                <table
+                  [ngClass]="
+                    commonService.isMobileDevice
+                      ? 'table overflow'
+                      : 'table table-striped'
+                  "
+                >
+                  <thead class="thead-dark">
+                    <tr>
+                      <th class="table-th">Discovery</th>
+                      <th class="table-th">Status</th>
+                      <th class="table-th">Amount Requested</th>
+                      <th class="table-th">Amount Passed</th>
+                      <th class="table-th">Remark</th>
+                      <th class="table-th" scope="col">Status Updated On</th>
+                    </tr>
+                  </thead>
+                  <tr
+                    *ngFor="let item of payoutItems; let i = index"
+                    (click)="openModal(item)"
+                    style="cursor: pointer"
+                  >
+                    <td class="table-td">
+                      {{
+                        item.discovery.candidate.name +
+                          "," +
+                          item.discovery.requirement.role.name +
+                          "," +
+                          item.discovery.requirement.client.name
+                      }}/-
+                    </td>
+                    <td class="table-td">{{ item.discovery.status.name }}</td>
+                    <td class="table-td">{{ item.maturedAmount }}/-</td>
+                    <td class="table-td">{{ item.maturedAmountPassed }}/-</td>
+                    <td class="table-td">{{ item.remarks }}</td>
+                    <td class="table-td">{{ item.logTime }}</td>
+                  </tr>
+                  <tr>
+                    <td
+                      class="table-td"
+                      colspan="3"
+                      style="text-align: right; font-weight: bold"
+                    >
+                      Total
+                    </td>
+                    <td class="table-td" colspan="1">{{ pendingTotal }}/-</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+
+                  <!--                                            <tr>
+                                                <td class="table-td" colspan="3" style="text-align: right;font-weight: bold">Eligible Matured Amount {{selectedPayout.eligiblePayoutPerc}}% of {{pendingTotal}} </td>
+                                                <td class="table-td">{{pendingTotal*selectedPayout.eligiblePayoutPerc/100}}</td>
+                                            </tr>-->
+                  <tr>
+                    <td
+                      class="table-td"
+                      colspan="3"
+                      style="text-align: right; font-weight: bold"
+                    >
+                      Tax @10%
+                    </td>
+                    <td class="table-td" colspan="1">
+                      {{ (pendingTotal * 10) / 100 }}/-
+                    </td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+
+                  <tr>
+                    <td
+                      class="table-td"
+                      colspan="3"
+                      style="text-align: right; font-weight: bold"
+                    >
+                      Net Total
+                    </td>
+                    <td class="table-td" colspan="1">
+                      {{
+                        pendingTotal ? pendingTotal - pendingTotal * 0.1 : 0
+                      }}/-
+                    </td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </table>
+                <br />
+                <h2>Member Performance History</h2>
+                <table
+                  [ngClass]="
+                    commonService.isMobileDevice
+                      ? 'table overflow'
+                      : 'table table-striped'
+                  "
+                >
+                  <thead class="thead-dark">
+                    <tr>
+                      <th
+                        scope="col"
+                        class="table-th"
+                        style="
+                          border-width: 2px;
+                          border-color: #fffbfb;
+                          border-top-left-radius: 0px;
+                          border-top-style: solid;
+                        "
+                      >
+                        Month
+                      </th>
+                      <th
+                        class="table-th"
+                        scope="col"
+                        style="
+                          border-width: 2px;
+                          border-color: #fffbfb;
+                          border-top-right-radius: 0px;
+                          border-top-style: solid;
+                        "
+                      >
+                        Weighted Count
+                      </th>
+                      <th
+                        class="table-th"
+                        scope="col"
+                        style="
+                          border-width: 2px;
+                          border-color: #fffbfb;
+                          border-top-right-radius: 0px;
+                          border-top-style: solid;
+                        "
+                      >
+                        Target
+                      </th>
+                    </tr>
+                    <tr *ngFor="let details of penaltyDetails; let i = index">
+                      <td class="table-td" style="text-align: center">
+                        <br />{{
+                          commonService.getMonthNameFromNumber(details[3])
+                        }}
+                      </td>
+                      <td class="table-td" scope="col">{{ details[1] }}</td>
+                      <td scope="row" class="table-td">{{ details[2] }}</td>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+              <!--  -->
+            </div>
+          </div>
+        </div>
+      </tab>
+    </tabset>
+  </div>
+</div>
+
+<!-- start of Payout items  -->
+<div
+  bsModal
+  #payoutItem="bs-modal"
+  [ngClass]="'modal fade bs-example-modal-md'"
+  id="exampleModalScrollable"
+>
+  <div [ngClass]="'modal-dialog modal-dialog-scrollable modal-md'">
+    <!-- <div class="model-content">
+      <app-payout-item-breakup
+          [data]="selectedReq"
+          [correctionDueToPenalty]="correctionDueToPenalty"
+        ></app-payout-item-breakup>
+    </div> -->
+    <div class="modal-content">
+      <div
+        class="modal-header"
+        style="background-image: url('assets/images/background.png')"
+      >
+        <h5
+          class="modal-tooltip text-center"
+          id="exampleModalScrollableTitle"
+          style="width: 80%"
+        >
+          Payout Item Breakup
+        </h5>
+
+        <button
+          type="button"
+          class="btn-close rightMost"
+          (click)="payoutItem.hide()"
+        ></button>
+      </div>
+      <div class="row px-5">
+        <div class="col-lg-12 text-center">
+          Joined at CTC {{ item?.discovery?.joinedAtCtc | json }}/- on
+          {{ item?.discovery?.doj }}
+        </div>
+        <div class="col-lg-4" *ngIf="commonService.rbac['client-contracts']">
+          <a href="{{ item?.contract?.contractDoc }}" target="_blank"
+            >View Contract ({{ item?.contract?.logTime }})</a
+          >
+        </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-lg-6 text-left">
+          <table
+            [ngClass]="
+              commonService.isMobileDevice
+                ? 'table overflow'
+                : 'table table-striped'
+            "
+          >
+            <thead class="thead-dark">
+              <tr>
+                <th>CTC (LPA)</th>
+                <th>Success Fee</th>
+              </tr>
+              <tr *ngFor="let slab of item?.contract?.slabs">
+                <th>{{ slab.slabName }}</th>
+                <td class="table-td">{{ slab.successFeePerc }}%</td>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+      <hr />
+      <div
+        class="row"
+        *ngIf="item.candidateInteractionShare"
+        title="{{ item.candidateInteractionShareCalculation }}"
+      >
+        <div class="col-lg-2"></div>
+        <div class="col-lg-4"><label>Candidate Interaction</label></div>
+        <div class="col-lg-4" style="text-align: right">
+          :{{ item.candidateInteractionShare }}/-
+        </div>
+      </div>
+      <div
+        class="row"
+        *ngIf="item.clientAnchorShare"
+        title="{{ item.clientAnchorShareCalculation }}"
+      >
+        <div class="col-lg-2"></div>
+        <div class="col-lg-4"><label>Account Manager Share</label></div>
+        <div class="col-lg-4" style="text-align: right">
+          :{{ item.clientAnchorShare }}/-
+        </div>
+      </div>
+      <div
+        class="row"
+        *ngIf="item.clientRefererShare"
+        title="{{ item.clientRefererShareCalculation }}"
+      >
+        <div class="col-lg-2"></div>
+        <div class="col-lg-4"><label>Mandate Share</label></div>
+        <div class="col-lg-4" style="text-align: right">
+          :{{ item.clientRefererShare }}/-
+        </div>
+      </div>
+      <div
+        class="row"
+        *ngIf="item.communityLeaderShare"
+        title="{{ item.communityLeaderShareCalculation }}"
+      >
+        <div class="col-lg-2"></div>
+        <div class="col-lg-4"><label>Community Leader Share</label></div>
+        <div class="col-lg-4" style="text-align: right">
+          : {{ item.communityLeaderShare }}/-
+        </div>
+      </div>
+      <div
+        class="row"
+        *ngIf="item.discovererShare"
+        title="{{ item.discovererShareCalculation }}"
+      >
+        <div class="col-lg-2"></div>
+        <div class="col-lg-4"><label>Discoverer Share</label></div>
+        <div class="col-lg-4" style="text-align: right">
+          : {{ item.discovererShare }}/-
+        </div>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-4"><label>Total</label></div>
+        <div class="col-lg-4" style="text-align: right">
+          : {{ getTotal() }}/-
+        </div>
+      </div>
+      <div class="row" title="{{ item.totalCalculation }}">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-4">
+          <label
+            >{{ item.gradeName }} Share ({{
+              item.memberShareCorrection + "% of Total"
+            }})</label
+          >
+        </div>
+        <div class="col-lg-4" style="text-align: right">
+          : {{ (this.total * item.memberShareCorrection) / 100 }}/-
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12"><hr /></div>
+      </div>
+      <div class="row" *ngIf="correctionDueToPenalty != 100">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-4">
+          <label
+            >Eligible payout due to missing northstar
+            {{ correctionDueToPenalty }}%</label
+          >
+        </div>
+        <div class="col-lg-4" style="text-align: right">
+          :
+          {{
+            (((this.total * item.memberShareCorrection) / 100) *
+              correctionDueToPenalty) /
+              100
+          }}/-
+        </div>
+      </div>
+      <div
+        class="row"
+        *ngIf="
+          item.discovery &&
+          item.discovererShare &&
+          item.discovery.commitChocolates
+        "
+      >
+        <div class="col-lg-2"></div>
+        <div class="col-lg-4"><label>Piecoins correction (Commit)</label></div>
+        <div class="col-lg-4" style="text-align: right">
+          : -{{ item.discovery.commitChocolates * 500 }}/-
+        </div>
+      </div>
+      <div
+        class="row"
+        *ngIf="
+          item.discovery &&
+          item.discovererShare &&
+          item.discovery.chocolatesEligible
+        "
+      >
+        <div class="col-lg-2"></div>
+        <div class="col-lg-4">
+          <label>Piecoins correction (Discovery)</label>
+        </div>
+        <div class="col-lg-4" style="text-align: right">
+          : -{{ piecosCreditedWorth }}/-
+        </div>
+      </div>
+      <div
+        class="row"
+        *ngIf="
+          item.discovery &&
+          item.discovererShare &&
+          item.discovery.chocolatesEligible
+        "
+      >
+        <div class="col-lg-2"></div>
+        <div class="col-lg-4"><label>Net Payout</label></div>
+        <div class="col-lg-4" style="text-align: right">
+          : {{ item.total }}/-
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-4"><label>Previous Payment if any</label></div>
+        <div class="col-lg-4" style="text-align: right">
+          : -{{ item.total - item.escrowAmount - item.maturedAmount }}/-
+        </div>
+      </div>
+      <br />
+      <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-4"><label>Ready to payout</label></div>
+        <div class="col-lg-4" style="text-align: right">
+          : {{ item.maturedAmount }}/-
+        </div>
+      </div>
+      <br />
+      <hr />
+      * 10% TDS will be deducted on the matured amount.
+
+      <div class="modal-footer" *ngIf="false">
+        <button type="button" class="btn btn-light" (click)="payoutItem.hide()">
+          Close
+        </button>
+        <button type="button" class="btn btn-primary">Apply</button>
+      </div>
+    </div>
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- end of Payout Items -->
